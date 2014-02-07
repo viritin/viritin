@@ -172,12 +172,12 @@
                     </descriptors>
                 </configuration>
                 <executions>
-                    <execution>
+<!--                    <execution>
                         <goals>
                             <goal>single</goal>
                         </goals>
                         <phase>install</phase>
-                    </execution>
+                    </execution>-->
                 </executions>
             </plugin>
 
