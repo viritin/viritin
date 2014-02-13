@@ -78,6 +78,16 @@ t.addValueChangeListener(new MValueChangeListener<Entity>() {
 });
 ```
 
+Using Label extensions can make your life both simpler and safer:
+
+```java
+layout.addComponent(new Header("Tempertures during past week:"));
+layout.addComponent(new RichText().withMarkDown("#How di hou [We have a link](https://vaadin.com/)!"));
+layout.addComponent(new RichText().withMarkDown(getClass().getResourceAsStream("/readme.md")));
+layout.addComponent(new RichText().withSafeHtml(getClass().getResourceAsStream("/readme.html")));
+```
+
+
 
 Hopefully all of these enhancements will end up in the core Vaadin library, in a one form or another. 
 
