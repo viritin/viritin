@@ -127,6 +127,9 @@ Currently project contains following helpers:
       	  	* in addition to typing and related methods
          		* smart selection mode and immediate (based on value change listener, [Vaadin Ticket](http://dev.vaadin.com/ticket/8029) ) 
 	     	   	* withProperties(String...), withColumnHeaders
+* Label extensions
+ * Header to make headers without html hacking
+ * RichText component for XSS safe html inclusion. Also supports Markdown syntax.
 				
 
 

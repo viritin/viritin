@@ -28,7 +28,6 @@
 			<outputDirectory></outputDirectory>
 			<includes>
 				<include>*.jar</include>
-                <include>*.pdf</include>
 			</includes>
 		</fileSet>
 	</fileSets>
