@@ -41,7 +41,7 @@ public class PrimaryButton extends Button {
     }
 
     private void setupPrimaryButton() {
-        setStyleName(Reindeer.BUTTON_DEFAULT);
+        setStyleName("primary default");
         setClickShortcut(ShortcutAction.KeyCode.ENTER, null);
     }
     
