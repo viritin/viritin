@@ -70,7 +70,7 @@ to...
 MTable<Entity> t = new MTable(findBeans())
         .withProperties("property", "another")
         .withColumnHeaders("Property 1", "Second");
-t.addValueChangeListener(new MValueChangeListener<Entity>() {
+t.addMValueChangeListener(new MValueChangeListener<Entity>() {
     @Override
     public void valueChange(MValueChangeEvent<Entity> event) {
         editEntity(event.getValue());
@@ -146,74 +146,8 @@ Online demo for this add-on hopefully makes no sense. Otherwise this add-on has 
 Official releases of this add-on are available at Vaadin Directory. For Maven instructions, download and reviews, go to http://vaadin.com/addon/maddon
 
 
-## Development with Eclipse IDE
-
-For further development of this add-on, the following tool-chain is recommended:
-- IDE that supports Maven
-
-### Importing project
-
-Choose File > Import... > Existing Maven Projects
-
-Note that Eclipse may give "Plugin execution not covered by lifecycle configuration" errors for pom.xml. Use "Permanently mark goal resources in pom.xml as ignored in Eclipse build" quick-fix to mark these errors as permanently ignored in your project. Do not worry, the project still works fine. 
-
- 
 ## Release notes
 
-### Version 1.0-SNAPSHOT
-- ...
-- ...
-
-## Roadmap
-
-This component is developed as a hobby with no public roadmap or any guarantees of upcoming releases. That said, the following features are planned for upcoming releases:
-- ...
-- ...
-
-## Issue tracking
-
-The issues for this add-on are tracked on its github.com page. All bug reports and feature requests are appreciated. 
-
-## Contributions
-
-Contributions are welcome, but there are no guarantees that they are accepted as such. Process for contributing is the following:
-- Fork this project
-- Create an issue to this project about the contribution (bug or feature) if there is no such issue about it already. Try to keep the scope minimal.
-- Develop and test the fix or functionality carefully. Only include minimum amount of code needed to fix the issue.
-- Refer to the fixed issue in commit
-- Send a pull request for the original project
-- Comment on the original issue that you have implemented a fix for it
-
-## License & Author
-
-Add-on is distributed under Apache License 2.0. For license terms, see LICENSE.txt.
-
-MVerticalLayout is written by <...>
-
-# Developer Guide
-
-## Getting started
-
-Here is a simple example on how to try out the add-on component:
-
-<...>
-
-For a more comprehensive example, see src/test/java/org/vaadin/template/demo/DemoUI.java
-
-## Features
-
-### Feature A
-
-<...>
-
-### Feature B
-
-<...>
-
-### Feature C
-
-<...>
-
-## API
-
-MVerticalLayout JavaDoc is available online at <...>
+### Version 1.1
+* MValueChangeListeners now added with addMValueChangeListener (previously addValueChangeListener)
+* Added PrimaryButton and ConfirmButton

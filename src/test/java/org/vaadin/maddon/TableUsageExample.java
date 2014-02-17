@@ -33,7 +33,7 @@ public class TableUsageExample {
         MTable<Entity> t = new MTable(findBeans())
                 .withProperties("property", "another")
                 .withColumnHeaders("Property 1", "Second");
-        t.addValueChangeListener(new MValueChangeListener<Entity>() {
+        t.addMValueChangeListener(new MValueChangeListener<Entity>() {
 
             @Override
             public void valueChange(MValueChangeEvent<Entity> event) {
