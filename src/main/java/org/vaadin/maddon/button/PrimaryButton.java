@@ -18,7 +18,6 @@ package org.vaadin.maddon.button;
 
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.themes.Reindeer;
 
 /**
  * A primary button, commonly used for e.g. saving an entity. Automatically sets 
