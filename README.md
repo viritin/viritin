@@ -130,6 +130,9 @@ Currently project contains following helpers:
 * Label extensions
  * Header to make headers without html hacking
  * RichText component for XSS safe html inclusion. Also supports Markdown syntax.
+* Button extension
+ * PrimaryButton (stylename + enter shortcut)
+ * ConfirmButton (Customizeble confirm dialog before the actual listener is called)
 				
 
 
