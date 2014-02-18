@@ -151,3 +151,4 @@ Official releases of this add-on are available at Vaadin Directory. For Maven in
 ### Version 1.1
 * MValueChangeListeners now added with addMValueChangeListener (previously addValueChangeListener)
 * Added PrimaryButton and ConfirmButton
+* MTable now has withFullWidth()
