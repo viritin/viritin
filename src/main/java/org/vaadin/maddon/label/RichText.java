@@ -27,7 +27,7 @@ import org.markdown4j.Markdown4jProcessor;
 /**
  * XSS safe rich text label with either Markdown syntax or raw html (sanitized
  * with Jsoup).
- * 
+ *
  * By default jsoups Whitelist.relaxed is used for sanitizing.
  */
 public class RichText extends Label {
@@ -76,6 +76,7 @@ public class RichText extends Label {
 
     public RichText setWhitelist(Whitelist whitelist) {
         this.whitelist = whitelist;
+        markAsDirty();
         return this;
     }
 
@@ -90,6 +91,7 @@ public class RichText extends Label {
 
     public RichText setRichText(String text) {
         this.richText = text;
+        markAsDirty();
         return this;
     }
 

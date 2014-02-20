@@ -22,11 +22,11 @@ import org.jsoup.safety.Whitelist;
 
 /**
  * Label whose content is wrapped in an H1,H2,H3.. element.
- * 
+ *
  * Uses Jsoup for sanitation. Only text by default.
  */
 public class Header extends Label {
-    
+
     private String text;
     private int headerLevel = 1;
     private Whitelist whitelist = Whitelist.none();
@@ -37,6 +37,7 @@ public class Header extends Label {
 
     public Header setWhitelist(Whitelist whitelist) {
         this.whitelist = whitelist;
+        markAsDirty();
         return this;
     }
 
@@ -46,6 +47,7 @@ public class Header extends Label {
 
     public Header setText(String text) {
         this.text = text;
+        markAsDirty();
         return this;
     }
 
@@ -54,10 +56,11 @@ public class Header extends Label {
     }
 
     public Header setHeaderLevel(int headerLevel) {
-        if(headerLevel < 1 || headerLevel > 6) {
+        if (headerLevel < 1 || headerLevel > 6) {
             throw new IllegalArgumentException("Header levels 1-6 supported");
         }
         this.headerLevel = headerLevel;
+        markAsDirty();
         return this;
     }
 
@@ -69,7 +72,7 @@ public class Header extends Label {
     public void setValue(String newStringValue) {
         setText(newStringValue);
     }
-    
+
     @Override
     public void beforeClientResponse(boolean initial) {
         setContentMode(ContentMode.HTML);
@@ -83,5 +86,5 @@ public class Header extends Label {
         super.setValue(sb.toString());
         super.beforeClientResponse(initial);
     }
-    
+
 }
