@@ -15,16 +15,14 @@
  */
 package org.vaadin.maddon;
 
-import com.vaadin.data.fieldgroup.BeanFieldGroup;
-
 /**
  * This class will hopefully be obsolete in V7.2 once my patch gets through our
  * insanely slow review process. https://dev.vaadin.com/review/#/c/2351/
  */
 public class BeanBinder {
 
-    public static <T> BeanFieldGroup<T> bind(T bean, Object objectWithMemberFields) {
-        BeanFieldGroup<T> beanFieldGroup = new BeanFieldGroup<T>((Class<T>) bean.getClass());
+    public static <T> MBeanFieldGroup<T> bind(T bean, Object objectWithMemberFields) {
+        MBeanFieldGroup<T> beanFieldGroup = new MBeanFieldGroup<T>((Class<T>) bean.getClass());
         beanFieldGroup.setItemDataSource(bean);
         beanFieldGroup.setBuffered(false);
         beanFieldGroup.bindMemberFields(objectWithMemberFields);
