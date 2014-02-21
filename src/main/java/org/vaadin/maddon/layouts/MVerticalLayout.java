@@ -2,6 +2,7 @@ package org.vaadin.maddon.layouts;
 
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.VerticalLayout;
 
 public class MVerticalLayout extends VerticalLayout {
@@ -54,6 +55,13 @@ public class MVerticalLayout extends VerticalLayout {
     public MVerticalLayout alignAll(Alignment alignment) {
         for (Component component : this) {
             setComponentAlignment(component, alignment);
+        }
+        return this;
+    }
+
+    public MVerticalLayout expand(Component... componentsToExpand) {
+        for (Component component : componentsToExpand) {
+            setExpandRatio(component, 1);
         }
         return this;
     }

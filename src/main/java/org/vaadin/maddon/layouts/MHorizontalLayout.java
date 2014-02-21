@@ -58,4 +58,11 @@ public class MHorizontalLayout extends HorizontalLayout {
         return this;
     }
 
+    public MHorizontalLayout expand(Component... componentsToExpand) {
+        for (Component component : componentsToExpand) {
+            setExpandRatio(component, 1);
+        }
+        return this;
+    }
+
 }
