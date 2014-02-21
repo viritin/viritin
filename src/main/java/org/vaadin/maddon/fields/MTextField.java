@@ -63,5 +63,10 @@ public class MTextField extends TextField {
         setInputPrompt(inputPrompt);
         return this;
     }
+
+    public TextField withWidth(float width, Unit unit) {
+        setWidth(width,unit);
+        return this;
+    }
     
 }
