@@ -1,5 +1,6 @@
 package org.vaadin.maddon.layouts;
 
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 
@@ -47,6 +48,13 @@ public class MHorizontalLayout extends HorizontalLayout {
 
     public MHorizontalLayout withFullHeight() {
         setHeight("100%");
+        return this;
+    }
+
+    public MHorizontalLayout alignAll(Alignment alignment) {
+        for (Component component : this) {
+            setComponentAlignment(component, alignment);
+        }
         return this;
     }
 

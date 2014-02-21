@@ -1,5 +1,6 @@
 package org.vaadin.maddon.layouts;
 
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.VerticalLayout;
 
@@ -14,12 +15,11 @@ public class MVerticalLayout extends VerticalLayout {
         this();
         addComponents(components);
     }
-    
+
     public MVerticalLayout with(Component... components) {
         addComponents(components);
         return this;
     }
-
 
     public MVerticalLayout withSpacing(boolean spacing) {
         setSpacing(spacing);
@@ -48,6 +48,13 @@ public class MVerticalLayout extends VerticalLayout {
 
     public MVerticalLayout withFullHeight() {
         setHeight("100%");
+        return this;
+    }
+
+    public MVerticalLayout alignAll(Alignment alignment) {
+        for (Component component : this) {
+            setComponentAlignment(component, alignment);
+        }
         return this;
     }
 
