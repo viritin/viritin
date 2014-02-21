@@ -102,4 +102,11 @@ public class RichText extends Label {
         super.beforeClientResponse(initial);
     }
 
+    public RichText withMarkDownResource(String resourceName) {
+        return withMarkDown(getClass().getResourceAsStream(resourceName));
+    }
+
+    public RichText withSafeHtmlResource(String resourceName) {
+        return withSafeHtml(getClass().getResourceAsStream(resourceName));
+    }
 }
