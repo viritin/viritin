@@ -58,5 +58,10 @@ public class MTextField extends TextField {
         // Remove once 7.2 is out
         setImmediate(true);
     }
+
+    public TextField withInputPrompt(String inputPrompt) {
+        setInputPrompt(inputPrompt);
+        return this;
+    }
     
 }
