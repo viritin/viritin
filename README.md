@@ -133,7 +133,8 @@ Currently project contains following helpers:
 * Button extension
  * PrimaryButton (stylename + enter shortcut)
  * ConfirmButton (Customizeble confirm dialog before the actual listener is called)
-				
+* ListContainer (used by MTable)
+ * A lightweight replacement for BeanItemContainer that uses apache-beanutils for introspection
 
 
 ## Online demo

@@ -17,12 +17,15 @@ package org.vaadin.maddon.fields;
 
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Table;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
+import org.vaadin.maddon.ListContainer;
 
 public class MTable<T> extends Table {
 
-    private BeanItemContainer<T> bic;
+    private ListContainer<T> bic;
     private String[] pendingProperties;
     private String[] pendingHeaders;
 
@@ -30,15 +33,17 @@ public class MTable<T> extends Table {
     }
 
     public MTable(T... beans) {
-        this();
-        addBeans(beans);
+        this(new ArrayList<T>(Arrays.asList(beans)));
     }
 
     public MTable(Collection<T> beans) {
         this();
         if(beans != null) {
-            ensureBeanItemContainer(beans.iterator().next());
-            bic.addAll(beans);
+            if(beans.getClass().isAssignableFrom(List.class)) {
+                bic = new ListContainer<T>((List<T>) beans);
+            } else {
+                bic = new ListContainer<T>(new ArrayList<T>(beans));
+            }
         }
     }
 
@@ -85,7 +90,7 @@ public class MTable<T> extends Table {
 
     private void ensureBeanItemContainer(T bean) {
         if (!containerInitialized()) {
-            bic = new BeanItemContainer<T>((Class<? super T>) bean.getClass());
+            bic = new ListContainer(bean.getClass());
             setContainerDataSource(bic);
             if (pendingProperties != null) {
                 setVisibleColumns((Object[]) pendingProperties);
