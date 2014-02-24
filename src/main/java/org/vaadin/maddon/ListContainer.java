@@ -20,7 +20,6 @@ import com.vaadin.data.Container.ItemSetChangeNotifier;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.AbstractContainer;
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -304,18 +303,17 @@ public class ListContainer<T> extends AbstractContainer implements
 
         private T bean;
 
-        private transient WeakReference<DynaBean> db;
+        private transient DynaBean db;
 
         public DynaBeanItem(T bean) {
             this.bean = bean;
         }
 
         private DynaBean getDynaBean() {
-            if (db == null || db.get() == null) {
-                db = new WeakReference<DynaBean>(new WrapDynaBean(bean,
-                        getDynaClass()));
+            if (db == null) {
+                db = new WrapDynaBean(bean);
             }
-            return db.get();
+            return db;
         }
 
         @Override
