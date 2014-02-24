@@ -15,7 +15,6 @@
  */
 package org.vaadin.maddon.fields;
 
-import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Table;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -70,6 +69,11 @@ public class MTable<T> extends Table {
             setColumnHeaders(columnNamesForVisibleProperties);
         } else {
             pendingHeaders = columnNamesForVisibleProperties;
+            // Add headers to temporary indexed container, in case table is initially
+            // empty
+            for (String prop : columnNamesForVisibleProperties) {
+                addContainerProperty(prop, String.class, "");
+            }
         }
         return this;
     }
