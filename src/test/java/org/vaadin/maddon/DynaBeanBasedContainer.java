@@ -23,6 +23,7 @@ import java.lang.management.MemoryUsage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.logging.Logger;
 import org.junit.Test;
 
 /**
@@ -54,24 +55,27 @@ public class DynaBeanBasedContainer {
 
         long initial = reportMemoryUsage();
 
-        Container lc = new ListContainer<Person>(persons);
-        System.out.println("After creation");
+        long ms = System.currentTimeMillis();
+        ListContainer lc = new ListContainer<Person>(persons);
+        System.out.println(
+                "After creation (took " + (System.currentTimeMillis() - ms) + ")");
         long after = reportMemoryUsage();
         System.err.println("Delta (bytes)" + (after - initial));
 
+        ms = System.currentTimeMillis();
         for (int i = 0; i < amount; i++) {
             Item item = lc.getItem(persons.get(i));
             String str;
             str = item.getItemProperty("firstName").toString();
         }
 
-        System.out.println("After loop");
+        System.out.println(
+                "After loop (took " + (System.currentTimeMillis() - ms) + ")");
         after = reportMemoryUsage();
         System.err.println("Delta (bytes)" + (after - initial));
 
         // call to avoid GC:n the whole container
         lc.getItemIds();
-
         System.out.println("After GC");
         after = reportMemoryUsage();
         System.err.println("Delta (bytes)" + (after - initial));
@@ -84,18 +88,22 @@ public class DynaBeanBasedContainer {
 
         long initial = reportMemoryUsage();
 
-        Container lc = new BeanItemContainer<Person>(persons);
-        System.out.println("After creation");
+        long ms = System.currentTimeMillis();
+        BeanItemContainer lc = new BeanItemContainer<Person>(persons);
+        System.out.println(
+                "After creation (took " + (System.currentTimeMillis() - ms) + ")");
         long after = reportMemoryUsage();
         System.err.println("Delta (bytes)" + (after - initial));
 
+        ms = System.currentTimeMillis();
         for (int i = 0; i < amount; i++) {
             Item item = lc.getItem(persons.get(i));
             String str;
             str = item.getItemProperty("firstName").toString();
         }
 
-        System.out.println("After loop");
+        System.out.println(
+                "After loop (took " + (System.currentTimeMillis() - ms) + ")");
         after = reportMemoryUsage();
         System.err.println("Delta (bytes)" + (after - initial));
 
@@ -111,11 +119,11 @@ public class DynaBeanBasedContainer {
     private long reportMemoryUsage() {
         try {
             System.gc();
-            Thread.sleep(1000);
+            Thread.sleep(100);
             System.gc();
-            Thread.sleep(1000);
+            Thread.sleep(100);
             System.gc();
-            Thread.sleep(1000);
+            Thread.sleep(100);
             System.gc();
         } catch (InterruptedException ex) {
         }
