@@ -149,6 +149,11 @@ Official releases of this add-on are available at Vaadin Directory. For Maven in
 
 ## Release notes
 
+### Version 1.2
+* ListContainer (used by MTable) to replace BeanItemContainer, almost tenfold memory saving with small beans, huge performance enhancement when populating large abounts of data.
+* MTable without data now displays explicitly set columnnames
+* Lots of other small enhancements and bugfixes (see changelist)
+
 ### Version 1.1
 * MValueChangeListeners now added with addMValueChangeListener (previously addValueChangeListener)
 * Added PrimaryButton and ConfirmButton
