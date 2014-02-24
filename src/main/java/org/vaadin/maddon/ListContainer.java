@@ -43,8 +43,12 @@ public class ListContainer<T> extends AbstractContainer implements
 
     private final List<T> backingList;
 
-    public ListContainer(List<T> backingList) {
-        this.backingList = backingList;
+    public ListContainer(Collection<T> backingList) {
+        if(backingList.getClass().isAssignableFrom(List.class)) {
+            this.backingList = (List<T>) backingList;
+        } else {
+            this.backingList = new ArrayList<T>(backingList);
+        }
     }
 
     public ListContainer(Class<T> type) {

@@ -53,7 +53,7 @@ public class MTable<T> extends Table {
     }
 
     public MTable<T> withProperties(String... visibleProperties) {
-        if (containerInitialized()) {
+        if (isContainerInitialized()) {
             setVisibleColumns((Object[]) visibleProperties);
         } else {
             pendingProperties = visibleProperties;
@@ -61,12 +61,12 @@ public class MTable<T> extends Table {
         return this;
     }
 
-    private boolean containerInitialized() {
+    private boolean isContainerInitialized() {
         return bic != null;
     }
 
     public MTable<T> withColumnHeaders(String... columnNamesForVisibleProperties) {
-        if (containerInitialized()) {
+        if (isContainerInitialized()) {
             setColumnHeaders(columnNamesForVisibleProperties);
         } else {
             pendingHeaders = columnNamesForVisibleProperties;
@@ -95,9 +95,9 @@ public class MTable<T> extends Table {
         fireEvent(new MValueChangeEventImpl(this));
     }
 
-    private void ensureBeanItemContainer(T bean) {
-        if (!containerInitialized()) {
-            bic = new ListContainer(bean.getClass());
+    private void ensureBeanItemContainer(Collection<T> beans) {
+        if (!isContainerInitialized()) {
+            bic = new ListContainer(beans);
             setContainerDataSource(bic);
             if (pendingProperties != null) {
                 setVisibleColumns((Object[]) pendingProperties);
@@ -127,19 +127,22 @@ public class MTable<T> extends Table {
 
     public void addBeans(Collection<T> beans) {
         if (!beans.isEmpty()) {
-            ensureBeanItemContainer(beans.iterator().next());
+            ensureBeanItemContainer(beans);
             bic.addAll(beans);
         }
     }
 
     public void setBeans(T... beans) {
-        removeAllItems();
-        addBeans(beans);
+        setBeans(new ArrayList<T>(Arrays.asList(beans)));
     }
 
     public void setBeans(Collection<T> beans) {
-        removeAllItems();
-        addBeans(beans);
+        if (!isContainerInitialized() && !beans.isEmpty()) {
+            ensureBeanItemContainer(beans);
+        } else {
+            removeAllItems();
+            addBeans(beans);
+        }
     }
 
     public MTable<T> withFullWidth() {
