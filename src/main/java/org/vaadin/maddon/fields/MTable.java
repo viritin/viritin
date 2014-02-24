@@ -32,14 +32,19 @@ public class MTable<T> extends Table {
     public MTable() {
     }
 
+    public MTable(Class<T> type) {
+        bic = new ListContainer<T>(type);
+        setContainerDataSource(bic);
+    }
+
     public MTable(T... beans) {
         this(new ArrayList<T>(Arrays.asList(beans)));
     }
 
     public MTable(Collection<T> beans) {
         this();
-        if(beans != null) {
-            if(beans.getClass().isAssignableFrom(List.class)) {
+        if (beans != null) {
+            if (beans.getClass().isAssignableFrom(List.class)) {
                 bic = new ListContainer<T>((List<T>) beans);
             } else {
                 bic = new ListContainer<T>(new ArrayList<T>(beans));
@@ -70,7 +75,8 @@ public class MTable<T> extends Table {
     }
 
     public void addMValueChangeListener(MValueChangeListener<T> listener) {
-        addListener(MValueChangeEvent.class, listener, MValueChangeEventImpl.VALUE_CHANGE_METHOD);
+        addListener(MValueChangeEvent.class, listener,
+                MValueChangeEventImpl.VALUE_CHANGE_METHOD);
         // implicitly consider the table should be selectable
         setSelectable(true);
         // TODO get rid of this when 7.2 is out
@@ -78,7 +84,8 @@ public class MTable<T> extends Table {
     }
 
     public void removeMValueChangeListener(MValueChangeListener<T> listener) {
-        removeListener(MValueChangeEvent.class, listener, MValueChangeEventImpl.VALUE_CHANGE_METHOD);
+        removeListener(MValueChangeEvent.class, listener,
+                MValueChangeEventImpl.VALUE_CHANGE_METHOD);
         setSelectable(hasListeners(MValueChangeEvent.class));
     }
 
