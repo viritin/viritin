@@ -88,7 +88,6 @@ layout.addComponent(new RichText().withSafeHtml(getClass().getResourceAsStream("
 ```
 
 
-
 Hopefully all of these enhancements will end up in the core Vaadin library, in a one form or another. 
 
 If you have a re-usable server side Vaadin "api-hack" that you continuosly use in you project to reduce your madness, please contribute it. I promise to accept pull requests sooner and with lighter process than to the core Vaadin. 
@@ -134,7 +133,8 @@ Currently project contains following helpers:
  * PrimaryButton (stylename + enter shortcut)
  * ConfirmButton (Customizeble confirm dialog before the actual listener is called)
 * ListContainer (used by MTable)
- * A lightweight replacement for BeanItemContainer that uses apache-beanutils for introspection
+ * A lightweight replacement for BeanItemContainer that uses apache commons-beanutils for introspection
+ * Note, that beans are kept in orinal list that developer used to pass beans. Wrap in e.g. ArrayList if you wish to keep original List unmodified.
 
 
 ## Online demo

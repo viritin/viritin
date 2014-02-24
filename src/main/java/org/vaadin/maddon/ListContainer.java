@@ -34,8 +34,12 @@ import org.apache.commons.collections.comparators.ComparableComparator;
 import org.apache.commons.collections.comparators.ReverseComparator;
 
 /**
- *
- * @author mattitahvonenitmill
+ * A replacement for BeanItemContainer from the core
+ * <p>
+ * The ListContainer is rather similar to the cores BeanItemContainer, but has
+ * better typed API, much smaller memory overhead (practically no overhead if 
+ * data is given as List) and also otherwise better performance.
+ * 
  * @param <T> the type of beans in the backed list
  */
 public class ListContainer<T> extends AbstractContainer implements
