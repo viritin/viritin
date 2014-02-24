@@ -136,6 +136,9 @@ public class ListContainer<T> extends AbstractContainer implements
 
     @Override
     public Item getItem(Object itemId) {
+        if (itemId == null) {
+            return null;
+        }
         return new DynaBeanItem<T>((T) itemId);
     }
 
