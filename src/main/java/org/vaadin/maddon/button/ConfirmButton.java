@@ -16,14 +16,13 @@
 package org.vaadin.maddon.button;
 
 import com.vaadin.shared.MouseEventDetails;
-import com.vaadin.ui.Button;
 import org.vaadin.dialogs.ConfirmDialog;
 
 /**
  *
  * @author mattitahvonenitmill
  */
-public class ConfirmButton extends Button {
+public class ConfirmButton extends MButton {
 
     private String confirmWindowCaption;
     private String confirmationText = "Are you sure?";

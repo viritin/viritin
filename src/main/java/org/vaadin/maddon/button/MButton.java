@@ -16,31 +16,42 @@
 
 package org.vaadin.maddon.button;
 
-import com.vaadin.event.ShortcutAction;
+import com.vaadin.server.Resource;
+import com.vaadin.ui.Button;
 
 /**
- * A primary button, commonly used for e.g. saving an entity. Automatically sets 
- * "primary" class name and hooks click shortcut for ENTER.
+ *
  */
-public class PrimaryButton extends MButton {
+public class MButton extends Button {
 
-    public PrimaryButton() {
-        setupPrimaryButton();
+    public MButton() {
+    }
+    
+    public MButton(Resource icon) {
+        setIcon(icon);
+    }
+    public MButton(Resource icon, ClickListener listener) {
+        super(null, listener);
+        setIcon(icon);
     }
 
-    public PrimaryButton(String caption) {
+    public MButton(String caption) {
         super(caption);
-        setupPrimaryButton();
     }
 
-    public PrimaryButton(String caption, ClickListener listener) {
+    public MButton(String caption, ClickListener listener) {
         super(caption, listener);
-        setupPrimaryButton();
     }
-
-    private void setupPrimaryButton() {
-        setStyleName("primary default");
-        setClickShortcut(ShortcutAction.KeyCode.ENTER, null);
+    
+    public MButton withIcon(Resource icon) {
+        setIcon(icon);
+        return this;
     }
+    
+    public MButton withListener(ClickListener listener) {
+        addClickListener(listener);
+        return this;
+    }
+    
     
 }
