@@ -144,8 +144,7 @@ public class MTable<T> extends Table {
         if (!isContainerInitialized() && !beans.isEmpty()) {
             ensureBeanItemContainer(beans);
         } else {
-            removeAllItems();
-            addBeans(beans);
+            bic.setCollection(beans);
         }
     }
 

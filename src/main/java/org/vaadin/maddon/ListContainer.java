@@ -45,14 +45,19 @@ import org.apache.commons.collections.comparators.ReverseComparator;
 public class ListContainer<T> extends AbstractContainer implements
         Container.Indexed, Container.Sortable, ItemSetChangeNotifier {
 
-    private final List<T> backingList;
+    private List<T> backingList;
 
     public ListContainer(Collection<T> backingList) {
-        if(backingList.getClass().isAssignableFrom(List.class)) {
-            this.backingList = (List<T>) backingList;
+        setCollection(backingList);
+    }
+
+    public final void setCollection(Collection<T> backingList1) {
+        if (backingList1.getClass().isAssignableFrom(List.class)) {
+            this.backingList = (List<T>) backingList1;
         } else {
-            this.backingList = new ArrayList<T>(backingList);
+            this.backingList = new ArrayList<T>(backingList1);
         }
+        fireItemSetChange();
     }
 
     public ListContainer(Class<T> type) {
