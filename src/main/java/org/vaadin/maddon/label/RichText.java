@@ -70,6 +70,14 @@ public class RichText extends Label {
         }
     }
 
+    /**
+     * Only replaces all new line characters with &ltbr /&gt, but no Markdown
+     * processing.
+     */
+    public RichText withNewLines(String text) {
+        return setRichText(text.replaceAll("(\\r|\\n|\\r\\n)+", "<br />"));
+    }
+
     public Whitelist getWhitelist() {
         return whitelist;
     }
