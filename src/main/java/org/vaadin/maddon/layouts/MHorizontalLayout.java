@@ -8,7 +8,6 @@ public class MHorizontalLayout extends HorizontalLayout {
 
     public MHorizontalLayout() {
         super.setSpacing(true);
-        super.setMargin(true);
     }
 
     public MHorizontalLayout(Component... components) {
