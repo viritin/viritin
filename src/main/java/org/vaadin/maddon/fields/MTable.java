@@ -56,6 +56,9 @@ public class MTable<T> extends Table {
             setVisibleColumns((Object[]) visibleProperties);
         } else {
             pendingProperties = visibleProperties;
+            for (String string : visibleProperties) {
+                addContainerProperty(string, String.class, "");
+            }
         }
         return this;
     }
@@ -102,10 +105,11 @@ public class MTable<T> extends Table {
     private void ensureBeanItemContainer(Collection<T> beans) {
         if (!isContainerInitialized()) {
             bic = new ListContainer(beans);
-            setContainerDataSource(bic);
-            if (pendingProperties != null) {
-                setVisibleColumns((Object[]) pendingProperties);
+            if(pendingProperties != null) {
+                setContainerDataSource(bic, Arrays.asList(pendingProperties));
                 pendingProperties = null;
+            } else {
+                setContainerDataSource(bic);
             }
             if (pendingHeaders != null) {
                 setColumnHeaders(pendingHeaders);
@@ -131,8 +135,11 @@ public class MTable<T> extends Table {
 
     public void addBeans(Collection<T> beans) {
         if (!beans.isEmpty()) {
-            ensureBeanItemContainer(beans);
-            bic.addAll(beans);
+            if (isContainerInitialized()) {
+                bic.addAll(beans);
+            } else {
+                ensureBeanItemContainer(beans);
+            }
         }
     }
 
@@ -143,7 +150,7 @@ public class MTable<T> extends Table {
     public void setBeans(Collection<T> beans) {
         if (!isContainerInitialized() && !beans.isEmpty()) {
             ensureBeanItemContainer(beans);
-        } else {
+        } else if (isContainerInitialized()) {
             bic.setCollection(beans);
         }
     }
