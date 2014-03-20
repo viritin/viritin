@@ -54,7 +54,7 @@ public class MButton extends Button {
     }
     
     public MButton withStyleName(String styleName) {
-        setPrimaryStyleName(styleName);
+        setStyleName(styleName);
         return this;
     }
     
