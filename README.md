@@ -120,7 +120,10 @@ Currently project contains following helpers:
 		* Generics for value/options
 		* Has API for fluent usages with java.util.Collections
 		* on TODO separate multi select implementations 
-	* Current implementations (TODO lots of essential stuff needed here!!) 
+	* Current implementations (TODO lots of essential stuff needed here!!)
+		* TypedSelect
+			* A single select to another entity type
+			* By default NativeSelect, but implementation is configurable
    		* MBeanTable extends Table (note that Table is often also the best real life listselect) 
 			* single select only but better typed for generic bean usage 
       	  	* in addition to typing and related methods
@@ -135,6 +138,8 @@ Currently project contains following helpers:
 * ListContainer (used by MTable)
  * A lightweight replacement for BeanItemContainer that uses apache commons-beanutils for introspection
  * Note, that beans are kept in orinal list that developer used to pass beans. Wrap in e.g. ArrayList if you wish to keep original List unmodified.
+* AbstractForm
+ * An abstract super class for simple entity editor. Provides save/cancel buttons and interfaces for hooking into them. Does binding with naming convention using BeanBinder when setEntity(T) is called.
 
 
 ## Online demo
@@ -148,6 +153,11 @@ Official releases of this add-on are available at Vaadin Directory. For Maven in
 
 
 ## Release notes
+
+### Version 1.3
+ * Added TypedSelect
+ * Added AbstractForm
+ * Lots of smaller enhancements
 
 ### Version 1.2
 * ListContainer (used by MTable) to replace BeanItemContainer, almost tenfold memory saving with small beans, huge performance enhancement when populating large abounts of data.

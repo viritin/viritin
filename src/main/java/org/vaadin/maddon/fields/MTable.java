@@ -31,6 +31,12 @@ public class MTable<T> extends Table {
     public MTable() {
     }
 
+    /**
+     * Constructs a Table with explicit bean type. Handy for example if your
+     * beans are JPA proxies or the table in empty when showing it initially.
+     * 
+     * @param type
+     */
     public MTable(Class<T> type) {
         bic = new ListContainer<T>(type);
         setContainerDataSource(bic);
@@ -133,7 +139,7 @@ public class MTable<T> extends Table {
         addBeans(Arrays.asList(beans));
     }
 
-    public void addBeans(Collection<T> beans) {
+    public MTable addBeans(Collection<T> beans) {
         if (!beans.isEmpty()) {
             if (isContainerInitialized()) {
                 bic.addAll(beans);
@@ -141,22 +147,30 @@ public class MTable<T> extends Table {
                 ensureBeanItemContainer(beans);
             }
         }
+        return this;
     }
 
-    public void setBeans(T... beans) {
+    public MTable setBeans(T... beans) {
         setBeans(new ArrayList<T>(Arrays.asList(beans)));
+        return this;
     }
 
-    public void setBeans(Collection<T> beans) {
+    public MTable setBeans(Collection<T> beans) {
         if (!isContainerInitialized() && !beans.isEmpty()) {
             ensureBeanItemContainer(beans);
         } else if (isContainerInitialized()) {
             bic.setCollection(beans);
         }
+        return this;
     }
 
     public MTable<T> withFullWidth() {
         setWidth(100, Unit.PERCENTAGE);
+        return this;
+    }
+
+    public MTable<T> withHeight(String height) {
+        setHeight(height);
         return this;
     }
 
