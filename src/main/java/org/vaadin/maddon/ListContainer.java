@@ -65,6 +65,10 @@ public class ListContainer<T> extends AbstractContainer implements
         dynaClass = WrapDynaClass.createDynaClass(type);
     }
 
+    protected List<T> getBackingList() {
+    	return backingList;
+    }
+    
     private transient WrapDynaClass dynaClass;
 
     private WrapDynaClass getDynaClass() {
