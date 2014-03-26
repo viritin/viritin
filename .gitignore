@@ -10,8 +10,11 @@ target
 
 .DS_Store
 
-dependency-reduced-pom.xml
-
-pom.xml.versionsBackup
-
 bin
+nb-configuration.xml
+
+dependency-reduced-pom.xml
+pom.xml.versionsBackup
+pom.xml.releaseBackup
+pom.xml.next
+release.properties
