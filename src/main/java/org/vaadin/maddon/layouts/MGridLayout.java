@@ -3,6 +3,7 @@ package org.vaadin.maddon.layouts;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.GridLayout;
+import java.util.Collection;
 
 public class MGridLayout extends GridLayout {
 
@@ -56,6 +57,14 @@ public class MGridLayout extends GridLayout {
             setComponentAlignment(component, alignment);
         }
         return this;
+    }
+    
+    public MGridLayout add(Component... component) {
+        return with(component);
+    }
+    
+    public MGridLayout add(Collection<Component> component) {
+        return with(component.toArray(new Component[component.size()]));
     }
 
 }

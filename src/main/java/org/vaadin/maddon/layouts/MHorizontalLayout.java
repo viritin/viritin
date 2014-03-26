@@ -3,6 +3,7 @@ package org.vaadin.maddon.layouts;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
+import java.util.Collection;
 
 public class MHorizontalLayout extends HorizontalLayout {
 
@@ -62,6 +63,14 @@ public class MHorizontalLayout extends HorizontalLayout {
             setExpandRatio(component, 1);
         }
         return this;
+    }
+    
+    public MHorizontalLayout add(Component... component) {
+        return with(component);
+    }
+    
+    public MHorizontalLayout add(Collection<Component> component) {
+        return with(component.toArray(new Component[component.size()]));
     }
 
 }
