@@ -61,12 +61,12 @@ public class FilterableListContainer<T> extends ListContainer<T> implements	Filt
 	
 	private void filterContainer() {
 		if (applyFilters()) {
-			fireItemSetChange();
+			super.fireItemSetChange();
 		}
 	}
 
 	private boolean applyFilters() {
-		int origSize = filteredItems.size();
+		int origSize =  filteredItems == null ? 0 : filteredItems.size();
 		filteredItems = new ArrayList<T>();
 		boolean itemSetChanged = false;
 		if (isFiltered()) {
@@ -99,11 +99,23 @@ public class FilterableListContainer<T> extends ListContainer<T> implements	Filt
 	}
 	
 	private boolean isFiltered() {
-		return filters.size() > 0;
+		return filters == null ? false : filters.size() > 0;
 	}
 	
 	private boolean contains(T itemId) {
 		return getBackingList().contains(itemId);
+	}
+	
+	/**
+	 * If the parent {@link ListContainer} wants to fire an ItemSetChange,
+	 * we need to refilter.
+	 * @see com.vaadin.data.util.AbstractContainer#fireItemSetChange()
+	 * 
+	 */
+	@Override
+	protected void fireItemSetChange() {
+		applyFilters();
+		super.fireItemSetChange();
 	}
 	
 	@Override
