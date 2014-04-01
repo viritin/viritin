@@ -17,6 +17,7 @@
 package org.vaadin.maddon.fields;
 
 import com.vaadin.data.Property;
+import com.vaadin.data.util.converter.Converter;
 import com.vaadin.ui.TextField;
 
 /**
@@ -59,13 +60,28 @@ public class MTextField extends TextField {
         setImmediate(true);
     }
 
-    public TextField withInputPrompt(String inputPrompt) {
+    public MTextField withConverter(Converter<String, ?> converter) {
+        setConverter(converter);
+        return this;
+    }
+
+    public MTextField withInputPrompt(String inputPrompt) {
         setInputPrompt(inputPrompt);
         return this;
     }
 
-    public TextField withWidth(float width, Unit unit) {
+    public MTextField withReadOnly(boolean readOnly) {
+    	setReadOnly(readOnly);
+    	return this;
+    }
+
+    public MTextField withWidth(float width, Unit unit) {
         setWidth(width,unit);
+        return this;
+    }
+
+    public MTextField withWidth(String width) {
+        setWidth(width);
         return this;
     }
     
