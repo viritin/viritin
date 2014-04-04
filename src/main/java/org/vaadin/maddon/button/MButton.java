@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.vaadin.maddon.button;
 
 import com.vaadin.server.Resource;
@@ -26,10 +25,11 @@ public class MButton extends Button {
 
     public MButton() {
     }
-    
+
     public MButton(Resource icon) {
         setIcon(icon);
     }
+
     public MButton(Resource icon, ClickListener listener) {
         super(null, listener);
         setIcon(icon);
@@ -42,20 +42,25 @@ public class MButton extends Button {
     public MButton(String caption, ClickListener listener) {
         super(caption, listener);
     }
-    
+
     public MButton withIcon(Resource icon) {
         setIcon(icon);
         return this;
     }
-    
+
     public MButton withListener(ClickListener listener) {
         addClickListener(listener);
         return this;
     }
-    
+
     public MButton withStyleName(String styleName) {
         setStyleName(styleName);
         return this;
     }
-    
+
+    public MButton withCaption(String caption) {
+        setCaption(caption);
+        return this;
+    }
+
 }
