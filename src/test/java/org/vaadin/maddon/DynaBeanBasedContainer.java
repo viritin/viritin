@@ -27,6 +27,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.logging.Logger;
+import junit.framework.Assert;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -70,9 +71,9 @@ public class DynaBeanBasedContainer {
     		System.out.print(p + " ");
     	}
 
-    	// Test ListContainer with setCollection call
+        // Test ListContainer with setCollection call
     	System.out.println("\n\nListContainer with empty list via setCollection");
-    	ListContainer<Person> lc = new ListContainer<Person>(Person.class);
+        ListContainer<Person> lc = new ListContainer<Person>(Person.class);
     	lc.setCollection(l);
     	System.out.println("   container size=" + lc.size());
     	System.out.print("Properties: ");
@@ -104,16 +105,13 @@ public class DynaBeanBasedContainer {
 
     	
     	// Test ListContainer with constructor that takes the List -- empty List 
-    	// will cause exception in getDynaClass method when properties are accessed
+    	// will cause zarro properties
     	System.out.println("\n\nListContainer with empty list via Collection<T> constructor");
     	l = new ArrayList<Person>();
     	lc = new ListContainer<Person>(l);
     	System.out.println("   container size=" + lc.size());
     	System.out.println("Properties: none should print due to exception");
-    	thrown.expect(IndexOutOfBoundsException.class);
-    	for (String p : lc.getContainerPropertyIds()) {
-    		System.out.print(p + " ");
-    	}
+        Assert.assertEquals(0, lc.getContainerPropertyIds().size());
     }
     
     @Test

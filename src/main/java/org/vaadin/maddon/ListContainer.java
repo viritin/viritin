@@ -37,9 +37,9 @@ import org.apache.commons.collections.comparators.ReverseComparator;
  * A replacement for BeanItemContainer from the core
  * <p>
  * The ListContainer is rather similar to the cores BeanItemContainer, but has
- * better typed API, much smaller memory overhead (practically no overhead if 
+ * better typed API, much smaller memory overhead (practically no overhead if
  * data is given as List) and also otherwise better performance.
- * 
+ *
  * @param <T> the type of beans in the backed list
  */
 public class ListContainer<T> extends AbstractContainer implements
@@ -55,9 +55,10 @@ public class ListContainer<T> extends AbstractContainer implements
         dynaClass = WrapDynaClass.createDynaClass(type);
         setCollection(backingList);
     }
-    
+
     public final void setCollection(Collection<T> backingList1) {
-        if (backingList1.getClass().isAssignableFrom(List.class) || backingList1.isEmpty()) {
+        if (backingList1.getClass().isAssignableFrom(List.class) || backingList1.
+                isEmpty()) {
             this.backingList = (List<T>) backingList1;
         } else {
             this.backingList = new ArrayList<T>(backingList1);
@@ -71,13 +72,13 @@ public class ListContainer<T> extends AbstractContainer implements
     }
 
     protected List<T> getBackingList() {
-    	return backingList;
+        return backingList;
     }
-    
+
     private transient WrapDynaClass dynaClass;
 
     private WrapDynaClass getDynaClass() {
-        if (dynaClass == null) {
+        if (dynaClass == null && !backingList.isEmpty()) {
             dynaClass = WrapDynaClass.createDynaClass(backingList.get(0).
                     getClass());
         }
@@ -166,10 +167,12 @@ public class ListContainer<T> extends AbstractContainer implements
     @Override
     public Collection<String> getContainerPropertyIds() {
         ArrayList<String> properties = new ArrayList<String>();
-        for (DynaProperty db : getDynaClass().getDynaProperties()) {
-            properties.add(db.getName());
+        if (getDynaClass() != null) {
+            for (DynaProperty db : getDynaClass().getDynaProperties()) {
+                properties.add(db.getName());
+            }
+            properties.remove("class");
         }
-        properties.remove("class");
         return properties;
     }
 
