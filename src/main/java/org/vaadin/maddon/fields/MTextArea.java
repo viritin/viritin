@@ -53,6 +53,16 @@ public class MTextArea extends TextArea {
         super(caption, value);
     }
 
+    public MTextArea withRows(int rows) {
+    	setRows(rows);
+    	return this;
+    }
+    
+    public MTextArea withWordwrap(boolean wordwrap) {
+    	setWordwrap(wordwrap);
+    	return this;
+    }
+    
     @Override
     public void addValueChangeListener(ValueChangeListener listener) {
         super.addValueChangeListener(listener);
