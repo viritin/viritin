@@ -1,5 +1,8 @@
 package org.vaadin.maddon.form;
 
+import com.vaadin.ui.AbstractComponentContainer;
+import com.vaadin.ui.AbstractField;
+import com.vaadin.ui.AbstractTextField;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
@@ -92,22 +95,51 @@ public abstract class AbstractForm<T> extends CustomComponent {
         super.attach();
     }
 
+    public void focusFirst() {
+        Component compositionRoot = getCompositionRoot();
+        findFieldAndFocus(compositionRoot);
+    }
+
+    private boolean findFieldAndFocus(Component compositionRoot) {
+        if (compositionRoot instanceof AbstractComponentContainer) {
+            AbstractComponentContainer cc = (AbstractComponentContainer) compositionRoot;
+
+            for (Component component : cc) {
+                if (component instanceof AbstractTextField) {
+                    AbstractTextField abstractTextField = (AbstractTextField) component;
+                    abstractTextField.selectAll();
+                    return true;
+                }
+                if (component instanceof AbstractField) {
+                    AbstractField abstractField = (AbstractField) component;
+                    abstractField.focus();
+                    return true;
+                }
+                if (component instanceof AbstractComponentContainer) {
+                    if (findFieldAndFocus(component)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     /**
      * This method should return the actual content of the form, including
      * possible toolbar.
      *
-     * Example implementation could look like this:
-     * <code>
+     * Example implementation could look like this:      <code>
      * public class PersonForm extends AbstractForm&lt;Person&gt; {
-     * 
+     *
      *     private TextField firstName = new MTextField(&quot;First Name&quot;);
      *     private TextField lastName = new MTextField(&quot;Last Name&quot;);
-     * 
+     *
      *     @Override
      *     protected Component createContent() {
      *         return new MVerticalLayout(
      *                 new FormLayout(
-     *                         firstName, 
+     *                         firstName,
      *                         lastName
      *                 ),
      *                 getToolbar()
