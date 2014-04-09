@@ -64,13 +64,22 @@ public class MHorizontalLayout extends HorizontalLayout {
         }
         return this;
     }
-    
+
     public MHorizontalLayout add(Component... component) {
         return with(component);
     }
-    
+
     public MHorizontalLayout add(Collection<Component> component) {
         return with(component.toArray(new Component[component.size()]));
+    }
+
+    public MHorizontalLayout add(Component component, Alignment alignment) {
+        return add(component).withAlign(component, alignment);
+    }
+
+    public MHorizontalLayout withAlign(Component component, Alignment alignment) {
+        setComponentAlignment(component, alignment);
+        return this;
     }
 
 }

@@ -1,8 +1,10 @@
 package org.vaadin.maddon.layouts;
 
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 import java.util.Collection;
 
@@ -73,6 +75,15 @@ public class MVerticalLayout extends VerticalLayout {
 
     public MVerticalLayout add(Collection<Component> component) {
         return with(component.toArray(new Component[component.size()]));
+    }
+
+    public MVerticalLayout add(Component component, Alignment alignment) {
+        return add(component).withAlign(component, alignment);
+    }
+
+    public MVerticalLayout withAlign(Component component, Alignment alignment) {
+        setComponentAlignment(component, alignment);
+        return this;
     }
 
 }
