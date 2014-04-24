@@ -57,7 +57,7 @@ public class ListContainer<T> extends AbstractContainer implements
     }
 
     public final void setCollection(Collection<T> backingList1) {
-        if (backingList1.getClass().isAssignableFrom(List.class) || backingList1.
+        if ((backingList1 instanceof List) || backingList1.
                 isEmpty()) {
             this.backingList = (List<T>) backingList1;
         } else {

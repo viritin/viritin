@@ -49,11 +49,12 @@ public class MTable<T> extends Table {
     public MTable(Collection<T> beans) {
         this();
         if (beans != null) {
-            if (beans.getClass().isAssignableFrom(List.class)) {
+            if (beans instanceof List) {
                 bic = new ListContainer<T>((List<T>) beans);
             } else {
                 bic = new ListContainer<T>(new ArrayList<T>(beans));
             }
+            setContainerDataSource(bic);
         }
     }
 
@@ -171,6 +172,15 @@ public class MTable<T> extends Table {
 
     public MTable<T> withHeight(String height) {
         setHeight(height);
+        return this;
+    }
+
+    public MTable<T> withFullHeight() {
+        return withHeight("100%");
+    }
+
+    public MTable<T> withWidth(String width) {
+        setWidth(width);
         return this;
     }
 
