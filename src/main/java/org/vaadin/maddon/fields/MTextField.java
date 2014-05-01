@@ -104,10 +104,5 @@ public class MTextField extends TextField {
         setWidth(width);
         return this;
     }
-    
-    public MTextField withFullWidth() {
-        setWidth(100, Unit.PERCENTAGE);
-        return this;
-    }
-    
+        
 }
