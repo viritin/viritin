@@ -184,4 +184,9 @@ public class MTable<T> extends Table {
         return this;
     }
 
+    public MTable<T> withCaption(String caption) {
+        setCaption(caption);
+        return this;
+    }
+
 }
