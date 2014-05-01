@@ -17,6 +17,7 @@
 package org.vaadin.maddon.fields;
 
 import com.vaadin.data.Property;
+import com.vaadin.data.Validator;
 import com.vaadin.ui.TextArea;
 
 /**
@@ -56,6 +57,25 @@ public class MTextArea extends TextArea {
     public MTextArea withRows(int rows) {
     	setRows(rows);
     	return this;
+    }
+    
+
+    public MTextArea withFullWidth() {
+    	setWidth("100%");
+    	return this;
+    }
+    
+
+    public MTextArea withValidator(Validator validator) {
+    	setImmediate(true);
+    	addValidator(validator);
+    	return this;
+    }
+
+
+    public MTextArea withWidth(String width) {
+        setWidth(width);
+        return this;
     }
     
     public MTextArea withWordwrap(boolean wordwrap) {
