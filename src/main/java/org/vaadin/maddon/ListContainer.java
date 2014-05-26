@@ -32,6 +32,7 @@ import org.apache.commons.beanutils.WrapDynaBean;
 import org.apache.commons.beanutils.WrapDynaClass;
 import org.apache.commons.collections.comparators.ComparableComparator;
 import org.apache.commons.collections.comparators.ReverseComparator;
+import org.apache.commons.lang3.ClassUtils;
 
 /**
  * A replacement for BeanItemContainer from the core
@@ -188,7 +189,14 @@ public class ListContainer<T> extends AbstractContainer implements
 
     @Override
     public Class<?> getType(Object propertyId) {
-        return getDynaClass().getDynaProperty(propertyId.toString()).getType();
+        final Class<?> type = getDynaClass().getDynaProperty(propertyId.toString()).getType();
+        if(type.isPrimitive()) {
+            // Vaadin can't handle primitive types in _all_ places, so use
+            // wrappers instead. FieldGroup works, but e.g. Table in _editable_ 
+            // mode fails for some reason
+            return ClassUtils.primitiveToWrapper(type);
+        }
+        return type;
     }
 
     @Override
@@ -309,8 +317,7 @@ public class ListContainer<T> extends AbstractContainer implements
 
             @Override
             public Class getType() {
-                return getDynaClass().getPropertyDescriptor(propertyName).
-                        getPropertyType();
+                return ListContainer.this.getType(propertyName);
             }
 
             @Override
