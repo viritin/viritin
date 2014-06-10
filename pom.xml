@@ -4,7 +4,7 @@
     <groupId>org.peimari</groupId>
     <artifactId>maddon</artifactId>
     <packaging>jar</packaging>
-    <version>1.6</version>
+    <version>1.7-SNAPSHOT</version>
     <name>Maddon</name>
 
     <properties>
