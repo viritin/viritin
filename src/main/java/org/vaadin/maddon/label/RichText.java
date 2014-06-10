@@ -32,7 +32,7 @@ import org.markdown4j.Markdown4jProcessor;
  */
 public class RichText extends Label {
 
-    private Whitelist whitelist = Whitelist.relaxed();
+    transient private Whitelist whitelist;
     private String richText;
 
     public RichText() {
@@ -79,9 +79,20 @@ public class RichText extends Label {
     }
 
     public Whitelist getWhitelist() {
+        if(whitelist == null) {
+            return Whitelist.relaxed();
+        }
         return whitelist;
     }
 
+    /**
+     * 
+     * @param whitelist
+     * @return 
+     * @deprecated Whitelist is not serializable. Override getWhitelist instead 
+     * if you need to support serialiazation
+     */
+    @Deprecated
     public RichText setWhitelist(Whitelist whitelist) {
         this.whitelist = whitelist;
         markAsDirty();
@@ -106,7 +117,7 @@ public class RichText extends Label {
     @Override
     public void beforeClientResponse(boolean initial) {
         setContentMode(ContentMode.HTML);
-        super.setValue(Jsoup.clean(richText, whitelist));
+        super.setValue(Jsoup.clean(richText, getWhitelist()));
         super.beforeClientResponse(initial);
     }
 

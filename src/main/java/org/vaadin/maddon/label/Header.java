@@ -29,14 +29,20 @@ public class Header extends Label {
 
     private String text;
     private int headerLevel = 1;
-    private Whitelist whitelist = Whitelist.none();
 
-    public Whitelist getWhitelist() {
-        return whitelist;
+    protected Whitelist getWhitelist() {
+        return Whitelist.none();
     }
 
+    /**
+     *
+     * @param whitelist
+     * @return
+     * @deprecated Whitelist is not serializable. If using e.g. clustering,
+     * override getter.
+     */
+    @Deprecated
     public Header setWhitelist(Whitelist whitelist) {
-        this.whitelist = whitelist;
         markAsDirty();
         return this;
     }
@@ -75,16 +81,23 @@ public class Header extends Label {
 
     @Override
     public void beforeClientResponse(boolean initial) {
-        setContentMode(ContentMode.HTML);
-        StringBuilder sb = new StringBuilder("<h");
-        sb.append(headerLevel);
-        sb.append(">");
-        sb.append(Jsoup.clean(text, whitelist));
-        sb.append("</h");
-        sb.append(headerLevel);
-        sb.append(">");
-        super.setValue(sb.toString());
+        render();
         super.beforeClientResponse(initial);
+    }
+
+    private void render() {
+        if (text != null) {
+            setContentMode(ContentMode.HTML);
+            StringBuilder sb = new StringBuilder("<h");
+            sb.append(headerLevel);
+            sb.append(">");
+            sb.append(Jsoup.clean(text, getWhitelist()));
+            sb.append("</h");
+            sb.append(headerLevel);
+            sb.append(">");
+            super.setValue(sb.toString());
+            text = null;
+        }
     }
 
 }
