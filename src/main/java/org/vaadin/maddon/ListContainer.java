@@ -117,14 +117,20 @@ public class ListContainer<T> extends AbstractContainer implements
 
     @Override
     public T nextItemId(Object itemId) {
-        int i = backingList.indexOf(itemId);
-        return backingList.get(i + 1);
+        int i = backingList.indexOf(itemId) + 1;
+        if(backingList.size() == i) {
+            return null;
+        }
+        return backingList.get(i);
     }
 
     @Override
     public T prevItemId(Object itemId) {
-        int i = backingList.indexOf(itemId);
-        return backingList.get(i - 1);
+        int i = backingList.indexOf(itemId) -1;
+        if(i < 0) {
+            return null;
+        }
+        return backingList.get(i);
     }
 
     @Override
