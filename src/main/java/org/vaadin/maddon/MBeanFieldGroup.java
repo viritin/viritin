@@ -79,6 +79,7 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
      * @return
      */
     public MBeanFieldGroup<T> withEagarValidation(FieldGroupListener<T> listener) {
+        this.listener = listener;
         for (Field<?> field : getFields()) {
             ((AbstractComponent) field).setImmediate(true);
             field.addValueChangeListener(this);

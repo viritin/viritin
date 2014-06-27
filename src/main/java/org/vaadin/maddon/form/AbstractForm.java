@@ -31,7 +31,7 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     }
 
     protected void adjustSaveButtonState() {
-        if (isEagarValidation() && isBound()) {
+        if (isAttached() && isEagarValidation() && isBound()) {
             boolean beanModified = fieldGroup.isBeanModified();
             boolean valid = fieldGroup.isValid();
             getSaveButton().setEnabled(beanModified && valid);
@@ -43,10 +43,9 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     }
 
     private void adjustCancelButtonState() {
-        if (isEagarValidation() && isBound()) {
+        if (isAttached() && isEagarValidation() && isBound()) {
             boolean beanModified = fieldGroup.isBeanModified();
-            saveButton.setEnabled(beanModified);
-
+            getResetButton().setEnabled(beanModified);
         }
     }
 
@@ -87,6 +86,8 @@ public abstract class AbstractForm<T> extends CustomComponent implements
             fieldGroup = BeanBinder.bind(entity, this);
             if (isEagarValidation()) {
                 fieldGroup.withEagarValidation(this);
+                adjustSaveButtonState();
+                adjustCancelButtonState();
             }
             setVisible(true);
             return fieldGroup;
@@ -115,17 +116,25 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     }
 
     protected Component createCancelButton() {
-        resetButton = new MButton("Cancel", new Button.ClickListener() {
+        setResetButton(new MButton("Cancel", new Button.ClickListener() {
 
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 reset(event);
             }
-        });
-        return resetButton;
+        }));
+        return getResetButton();
     }
     private MButton resetButton;
 
+    public MButton getResetButton() {
+        return resetButton;
+    }
+    
+    public void setResetButton(MButton resetButton) {
+        this.resetButton = resetButton;
+    }
+    
     protected Component createSaveButton() {
         setSaveButton(new PrimaryButton("Save", new Button.ClickListener() {
 
@@ -136,7 +145,7 @@ public abstract class AbstractForm<T> extends CustomComponent implements
         }));
         return getSaveButton();
     }
-    
+
     private Button saveButton;
 
     public void setSaveButton(Button saveButton) {
@@ -146,7 +155,7 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     public Button getSaveButton() {
         return saveButton;
     }
-    
+
     protected void save(Button.ClickEvent e) {
         savedHandler.onSave(entity);
     }
@@ -159,6 +168,8 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     public void attach() {
         setCompositionRoot(createContent());
         super.attach();
+        adjustSaveButtonState();
+        adjustCancelButtonState();
     }
 
     public void focusFirst() {

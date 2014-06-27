@@ -24,5 +24,4 @@ public class MFormLayout extends FormLayout {
         return this;
     }
 
-
 }
