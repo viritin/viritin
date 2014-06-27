@@ -58,8 +58,8 @@ public class ListContainer<T> extends AbstractContainer implements
     }
 
     public final void setCollection(Collection<T> backingList1) {
-        if ((backingList1 instanceof List) || backingList1.
-                isEmpty()) {
+        if ((backingList1 instanceof List) || ((backingList1 instanceof List)&&backingList1.
+                isEmpty())) {
             this.backingList = (List<T>) backingList1;
         } else {
             this.backingList = new ArrayList<T>(backingList1);
