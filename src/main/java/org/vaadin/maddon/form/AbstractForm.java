@@ -8,6 +8,8 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
 import org.vaadin.maddon.BeanBinder;
+import org.vaadin.maddon.MBeanFieldGroup;
+import org.vaadin.maddon.MBeanFieldGroup.FieldGroupListener;
 import org.vaadin.maddon.button.MButton;
 import org.vaadin.maddon.button.PrimaryButton;
 import org.vaadin.maddon.layouts.MHorizontalLayout;
@@ -17,7 +19,36 @@ import org.vaadin.maddon.layouts.MHorizontalLayout;
  *
  * @param <T> the type of the bean edited
  */
-public abstract class AbstractForm<T> extends CustomComponent {
+public abstract class AbstractForm<T> extends CustomComponent implements
+        FieldGroupListener {
+
+    private MBeanFieldGroup<T> fieldGroup;
+
+    @Override
+    public void onFieldGroupChange(MBeanFieldGroup beanFieldGroup) {
+        adjustSaveButtonState();
+        adjustCancelButtonState();
+    }
+
+    protected void adjustSaveButtonState() {
+        if (isEagarValidation() && isBound()) {
+            boolean beanModified = fieldGroup.isBeanModified();
+            boolean valid = fieldGroup.isValid();
+            getSaveButton().setEnabled(beanModified && valid);
+        }
+    }
+
+    protected boolean isBound() {
+        return fieldGroup != null;
+    }
+
+    private void adjustCancelButtonState() {
+        if (isEagarValidation() && isBound()) {
+            boolean beanModified = fieldGroup.isBeanModified();
+            saveButton.setEnabled(beanModified);
+
+        }
+    }
 
     public interface SavedHandler<T> {
 
@@ -32,14 +63,36 @@ public abstract class AbstractForm<T> extends CustomComponent {
     private T entity;
     private SavedHandler<T> savedHandler;
     private ResetHandler<T> resetHandler;
+    private boolean eagarValidation;
 
-    public void setEntity(T entity) {
+    public boolean isEagarValidation() {
+        return eagarValidation;
+    }
+
+    /**
+     * In case one is working with "detached entities" enabling eager validation
+     * will highly improve usability. The validity of the form will be updated
+     * on each changes and save & cancel buttons will reflect to the validity
+     * and possible changes.
+     *
+     * @param eagarValidation
+     */
+    public void setEagarValidation(boolean eagarValidation) {
+        this.eagarValidation = eagarValidation;
+    }
+
+    public MBeanFieldGroup<T> setEntity(T entity) {
         this.entity = entity;
         if (entity != null) {
-            BeanBinder.bind(entity, this);
+            fieldGroup = BeanBinder.bind(entity, this);
+            if (isEagarValidation()) {
+                fieldGroup.withEagarValidation(this);
+            }
             setVisible(true);
+            return fieldGroup;
         } else {
             setVisible(false);
+            return null;
         }
     }
 
@@ -62,25 +115,38 @@ public abstract class AbstractForm<T> extends CustomComponent {
     }
 
     protected Component createCancelButton() {
-        return new MButton("Cancel", new Button.ClickListener() {
+        resetButton = new MButton("Cancel", new Button.ClickListener() {
 
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 reset(event);
             }
         });
+        return resetButton;
     }
+    private MButton resetButton;
 
     protected Component createSaveButton() {
-        return new PrimaryButton("Save", new Button.ClickListener() {
+        setSaveButton(new PrimaryButton("Save", new Button.ClickListener() {
 
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 save(event);
             }
-        });
+        }));
+        return getSaveButton();
+    }
+    
+    private Button saveButton;
+
+    public void setSaveButton(Button saveButton) {
+        this.saveButton = saveButton;
     }
 
+    public Button getSaveButton() {
+        return saveButton;
+    }
+    
     protected void save(Button.ClickEvent e) {
         savedHandler.onSave(entity);
     }

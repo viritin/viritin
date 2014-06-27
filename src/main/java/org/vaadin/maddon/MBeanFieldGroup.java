@@ -13,11 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.vaadin.maddon;
 
+import com.vaadin.data.Property;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
+import com.vaadin.event.FieldEvents;
 import com.vaadin.ui.AbstractComponent;
+import com.vaadin.ui.AbstractTextField;
 import com.vaadin.ui.Field;
 
 /**
@@ -25,19 +27,75 @@ import com.vaadin.ui.Field;
  * @author mattitahvonenitmill
  * @param <T>
  */
-public class MBeanFieldGroup<T> extends BeanFieldGroup<T> {
+public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
+        Property.ValueChangeListener {
+
+    public interface FieldGroupListener<T> {
+
+        public void onFieldGroupChange(MBeanFieldGroup<T> beanFieldGroup);
+
+    }
+
+    @Override
+    public void valueChange(Property.ValueChangeEvent event) {
+        setBeanModified(true);
+        if(listener != null) {
+            listener.onFieldGroupChange(this);
+        }
+    }
+
+    private boolean beanModified = false;
+    private FieldGroupListener<T> listener;
+
+    public void setBeanModified(boolean beanModified) {
+        this.beanModified = beanModified;
+    }
+
+    public boolean isBeanModified() {
+        return beanModified;
+    }
+
+    @Override
+    public boolean isModified() {
+        return super.isModified();
+    }
 
     public MBeanFieldGroup(Class beanType) {
         super(beanType);
     }
-    
+
+    public MBeanFieldGroup<T> withEagarValidation() {
+        return withEagarValidation(new FieldGroupListener() {
+            @Override
+            public void onFieldGroupChange(MBeanFieldGroup beanFieldGroup) {
+            }
+        });
+    }
+
     /**
      * Makes all fields "immediate" to trigger eager validation
-     * @return 
+     *
+     * @param listener
+     * @return
      */
-    public MBeanFieldGroup<T> withEagarValidation() {
+    public MBeanFieldGroup<T> withEagarValidation(FieldGroupListener<T> listener) {
         for (Field<?> field : getFields()) {
             ((AbstractComponent) field).setImmediate(true);
+            field.addValueChangeListener(this);
+            if (field instanceof AbstractTextField) {
+                final AbstractTextField abstractTextField = (AbstractTextField) field;
+                abstractTextField.addTextChangeListener(
+                        new FieldEvents.TextChangeListener() {
+
+                            @Override
+                            public void textChange(
+                                    FieldEvents.TextChangeEvent event) {
+                                        // Set eagerly as value to trigger validation
+                                        abstractTextField.setValue(event.
+                                                getText());
+                                    }
+                        });
+            }
         }
         return this;
     }
