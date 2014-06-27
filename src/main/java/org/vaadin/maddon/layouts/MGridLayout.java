@@ -1,5 +1,6 @@
 package org.vaadin.maddon.layouts;
 
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.GridLayout;
@@ -32,6 +33,11 @@ public class MGridLayout extends GridLayout {
         return this;
     }
 
+    public MGridLayout withMargin(MarginInfo marginInfo) {
+        setMargin(marginInfo);
+        return this;
+    }
+
     public MGridLayout withWidth(String width) {
         setWidth(width);
         return this;
@@ -58,11 +64,11 @@ public class MGridLayout extends GridLayout {
         }
         return this;
     }
-    
+
     public MGridLayout add(Component... component) {
         return with(component);
     }
-    
+
     public MGridLayout add(Collection<Component> component) {
         return with(component.toArray(new Component[component.size()]));
     }

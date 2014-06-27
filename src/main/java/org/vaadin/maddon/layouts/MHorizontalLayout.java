@@ -1,5 +1,6 @@
 package org.vaadin.maddon.layouts;
 
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
@@ -28,6 +29,11 @@ public class MHorizontalLayout extends HorizontalLayout {
 
     public MHorizontalLayout withMargin(boolean marging) {
         setMargin(marging);
+        return this;
+    }
+    
+    public MHorizontalLayout withMargin(MarginInfo marginInfo) {
+        setMargin(marginInfo);
         return this;
     }
 

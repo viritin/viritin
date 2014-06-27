@@ -1,10 +1,8 @@
 package org.vaadin.maddon.layouts;
 
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.CssLayout;
-import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 import java.util.Collection;
 
@@ -32,6 +30,11 @@ public class MVerticalLayout extends VerticalLayout {
 
     public MVerticalLayout withMargin(boolean marging) {
         setMargin(marging);
+        return this;
+    }
+    
+    public MVerticalLayout withMargin(MarginInfo marginInfo) {
+        setMargin(marginInfo);
         return this;
     }
 
