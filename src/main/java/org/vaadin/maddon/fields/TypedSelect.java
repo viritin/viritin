@@ -51,29 +51,40 @@ public class TypedSelect<T> extends CustomComponent implements Field<T> {
         bic = new ListContainer<T>(type);
     }
 
-	public interface TypedValueChangeListener<X> {
-		public void onValueChange(Property.ValueChangeEvent event, X val);
-	}
+    class TypedValueChangeEvent<X> implements MValueChangeEvent<X> {
+    	
+    	private Property.ValueChangeEvent event;
+
+		public TypedValueChangeEvent(Property.ValueChangeEvent event) {
+    		this.event = event;
+		}
+
+		@Override
+		public Property getProperty() {
+			return event.getProperty();
+		}
+
+		@SuppressWarnings("unchecked")
+		@Override
+		public X getValue() {
+			return (X) event.getProperty().getValue();
+		}
+    	
+    }
 
 	/**
-	 * Adds a listener which, on value change, automatically extracts and casts the value.
+	 * Adds a listener which passes an {@link MValueChangeListener}
 	 * i.e. no more (SomeClass) event.getProperty().getValue()
-	 * 
-	 * The event is also provided, but is perhaps less likely to be used.
-	 *  
 	 * 
 	 * @param valueChangeListener
 	 */
-	public void addTypedValueChangeListener(final TypedValueChangeListener<T> valueChangeListener) {
+	public void addTypedValueChangeListener(final MValueChangeListener<T> valueChangeListener) {
 		
 		addValueChangeListener(new Property.ValueChangeListener() {
 			
-			@SuppressWarnings("unchecked")
 			@Override
 			public void valueChange(Property.ValueChangeEvent event) {
-				if (event.getProperty() != null) {
-					valueChangeListener.onValueChange(event, (T) event.getProperty().getValue());
-				}
+					valueChangeListener.valueChange(new TypedValueChangeEvent<T>(event));
 			}
 		});
 	}
