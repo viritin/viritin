@@ -19,8 +19,8 @@ import com.vaadin.data.Property;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.event.FieldEvents;
 import com.vaadin.ui.AbstractComponent;
-import com.vaadin.ui.AbstractTextField;
 import com.vaadin.ui.Field;
+import org.vaadin.maddon.fields.MTextField;
 
 /**
  *
@@ -28,7 +28,7 @@ import com.vaadin.ui.Field;
  * @param <T>
  */
 public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
-        Property.ValueChangeListener {
+        Property.ValueChangeListener, FieldEvents.TextChangeListener {
 
     public interface FieldGroupListener<T> {
 
@@ -39,9 +39,14 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
     @Override
     public void valueChange(Property.ValueChangeEvent event) {
         setBeanModified(true);
-        if(listener != null) {
+        if (listener != null) {
             listener.onFieldGroupChange(this);
         }
+    }
+
+    @Override
+    public void textChange(FieldEvents.TextChangeEvent event) {
+        valueChange(null);
     }
 
     private boolean beanModified = false;
@@ -83,19 +88,10 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
         for (Field<?> field : getFields()) {
             ((AbstractComponent) field).setImmediate(true);
             field.addValueChangeListener(this);
-            if (field instanceof AbstractTextField) {
-                final AbstractTextField abstractTextField = (AbstractTextField) field;
-                abstractTextField.addTextChangeListener(
-                        new FieldEvents.TextChangeListener() {
-
-                            @Override
-                            public void textChange(
-                                    FieldEvents.TextChangeEvent event) {
-                                        // Set eagerly as value to trigger validation
-                                        abstractTextField.setValue(event.
-                                                getText());
-                                    }
-                        });
+            if (field instanceof MTextField) {
+                final MTextField abstractTextField = (MTextField) field;
+                abstractTextField.setEagerValidation(true);
+                abstractTextField.addTextChangeListener(this);
             }
         }
         return this;

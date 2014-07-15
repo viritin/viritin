@@ -37,6 +37,13 @@
         <system>GitHub</system>
         <url>https://github.com/mstahv/maddon/issues</url>
     </issueManagement>
+    
+    <distributionManagement>
+        <repository>
+            <id>v4</id>
+            <url>sftp://v4.tahvonen.fi/home/dev/maven2/</url>
+        </repository>
+    </distributionManagement>
 
     <licenses>
         <license>
