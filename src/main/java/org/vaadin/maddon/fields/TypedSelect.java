@@ -14,7 +14,9 @@ import com.vaadin.ui.ListSelect;
 import com.vaadin.ui.NativeSelect;
 import com.vaadin.ui.OptionGroup;
 import com.vaadin.ui.TwinColSelect;
+
 import java.util.Arrays;
+
 import org.vaadin.maddon.ListContainer;
 
 /**
@@ -49,6 +51,44 @@ public class TypedSelect<T> extends CustomComponent implements Field<T> {
         bic = new ListContainer<T>(type);
     }
 
+    class TypedValueChangeEvent<X> implements MValueChangeEvent<X> {
+    	
+    	private Property.ValueChangeEvent event;
+
+		public TypedValueChangeEvent(Property.ValueChangeEvent event) {
+    		this.event = event;
+		}
+
+		@Override
+		public Property getProperty() {
+			return event.getProperty();
+		}
+
+		@SuppressWarnings("unchecked")
+		@Override
+		public X getValue() {
+			return (X) event.getProperty().getValue();
+		}
+    	
+    }
+
+	/**
+	 * Adds a listener which passes an {@link MValueChangeListener}
+	 * i.e. no more (SomeClass) event.getProperty().getValue()
+	 * 
+	 * @param valueChangeListener
+	 */
+	public void addTypedValueChangeListener(final MValueChangeListener<T> valueChangeListener) {
+		
+		addValueChangeListener(new Property.ValueChangeListener() {
+			
+			@Override
+			public void valueChange(Property.ValueChangeEvent event) {
+					valueChangeListener.valueChange(new TypedValueChangeEvent<T>(event));
+			}
+		});
+	}
+
     /**
      * Note, that with this constructor, you cannot override the select type.
      * @param options options to select from
@@ -59,6 +99,11 @@ public class TypedSelect<T> extends CustomComponent implements Field<T> {
     
     public TypedSelect(String caption) {
         setCaption(caption);
+    }
+    
+    @Override
+    public void setWidth(String width) {
+    	getSelect().setWidth(width);
     }
 
     /**
