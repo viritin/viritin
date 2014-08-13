@@ -4,7 +4,7 @@
     <groupId>org.peimari</groupId>
     <artifactId>maddon</artifactId>
     <packaging>jar</packaging>
-    <version>1.8-SNAPSHOT</version>
+    <version>1.9-SNAPSHOT</version>
     <name>Maddon</name>
 
     <properties>
@@ -37,6 +37,13 @@
         <system>GitHub</system>
         <url>https://github.com/mstahv/maddon/issues</url>
     </issueManagement>
+    
+    <distributionManagement>
+        <repository>
+            <id>v4</id>
+            <url>sftp://v4.tahvonen.fi/home/dev/maven2/</url>
+        </repository>
+    </distributionManagement>
 
     <licenses>
         <license>
@@ -224,6 +231,13 @@
             </resource>
         </resources>
 		
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-ssh</artifactId>
+                <version>2.4</version>
+            </extension>
+        </extensions>
     </build>
 
 </project>
