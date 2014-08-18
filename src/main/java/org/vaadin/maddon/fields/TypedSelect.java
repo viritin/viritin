@@ -60,6 +60,43 @@ public class TypedSelect<T> extends CustomComponent implements Field<T> {
     public TypedSelect(String caption) {
         setCaption(caption);
     }
+    
+    /**
+     * {@inheritDoc}
+     * 
+     * Sets the width of the wrapped select component.
+     * 
+     * @param width
+     * @param unit
+     */
+    @Override
+    public void setWidth(float width, Unit unit) {
+    	getSelect().setWidth(width, unit);
+    	super.setWidth(width, unit);
+    }
+    
+    /**
+     * {@inheritDoc}
+     * 
+     * Adds a style to the wrapped select.
+     */
+    @Override
+    public void addStyleName(String style) {
+    	getSelect().addStyleName(style);
+    	super.addStyleName(style);
+    }
+    
+    /**
+     * {@inheritDoc}
+     * 
+     * Sets the style of the wrapped select.
+     */
+    @Override
+    public void setStyleName(String style) {
+    	getSelect().setStyleName(style);
+    	super.setStyleName(style);
+    }
+    
 
     /**
      * Note, that with this constructor, you cannot override the select type.
