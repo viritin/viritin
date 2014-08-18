@@ -72,6 +72,7 @@ public class TypedSelect<T> extends CustomComponent implements Field<T> {
     @Override
     public void setWidth(float width, Unit unit) {
     	getSelect().setWidth(width, unit);
+    	super.setWidth(width, unit);
     }
     
     /**
@@ -82,6 +83,7 @@ public class TypedSelect<T> extends CustomComponent implements Field<T> {
     @Override
     public void addStyleName(String style) {
     	getSelect().addStyleName(style);
+    	super.addStyleName(style);
     }
     
     /**
@@ -92,6 +94,7 @@ public class TypedSelect<T> extends CustomComponent implements Field<T> {
     @Override
     public void setStyleName(String style) {
     	getSelect().setStyleName(style);
+    	super.setStyleName(style);
     }
     
 
