@@ -116,13 +116,7 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     }
 
     protected Component createCancelButton() {
-        setResetButton(new MButton("Cancel", new Button.ClickListener() {
-
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                reset(event);
-            }
-        }));
+        setResetButton(new MButton("Cancel"));
         return getResetButton();
     }
     private MButton resetButton;
@@ -130,19 +124,20 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     public MButton getResetButton() {
         return resetButton;
     }
-    
+
     public void setResetButton(MButton resetButton) {
         this.resetButton = resetButton;
-    }
-    
-    protected Component createSaveButton() {
-        setSaveButton(new PrimaryButton("Save", new Button.ClickListener() {
+        this.resetButton.addClickListener(new Button.ClickListener() {
 
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                save(event);
+                reset(event);
             }
-        }));
+        });
+    }
+
+    protected Component createSaveButton() {
+        setSaveButton(new PrimaryButton("Save"));
         return getSaveButton();
     }
 
@@ -150,6 +145,13 @@ public abstract class AbstractForm<T> extends CustomComponent implements
 
     public void setSaveButton(Button saveButton) {
         this.saveButton = saveButton;
+        saveButton.addClickListener(new Button.ClickListener() {
+
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                save(event);
+            }
+        });
     }
 
     public Button getSaveButton() {
