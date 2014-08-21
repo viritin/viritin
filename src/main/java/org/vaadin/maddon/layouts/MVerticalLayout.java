@@ -66,14 +66,17 @@ public class MVerticalLayout extends VerticalLayout {
     }
 
     /**
-     * Expands selected components. Also sets the only sane height for expanded 
-     * components (100%).
+     * Expands selected components. Also adds to layout and sets the only sane height for expanded 
+     * components (100%) if needed.
      * 
      * @param componentsToExpand
      * @return 
      */
     public MVerticalLayout expand(Component... componentsToExpand) {
         for (Component component : componentsToExpand) {
+            if(component.getParent() != this) {
+                addComponent(component);
+            }
             setExpandRatio(component, 1);
             component.setHeight(100, Unit.PERCENTAGE);
         }

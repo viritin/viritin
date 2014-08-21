@@ -31,7 +31,7 @@ public class MHorizontalLayout extends HorizontalLayout {
         setMargin(marging);
         return this;
     }
-    
+
     public MHorizontalLayout withMargin(MarginInfo marginInfo) {
         setMargin(marginInfo);
         return this;
@@ -69,10 +69,13 @@ public class MHorizontalLayout extends HorizontalLayout {
      * components (100%).
      *
      * @param componentsToExpand
-     * @return 
+     * @return
      */
     public MHorizontalLayout expand(Component... componentsToExpand) {
         for (Component component : componentsToExpand) {
+            if (component.getParent() != this) {
+                addComponent(component);
+            }
             setExpandRatio(component, 1);
             component.setWidth(100, Unit.PERCENTAGE);
         }
