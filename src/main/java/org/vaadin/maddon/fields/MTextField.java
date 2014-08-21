@@ -146,6 +146,11 @@ public class MTextField extends TextField {
         return this;
     }
 
+    public MTextField withNullRepresentation(String nullRepresentation) {
+        setNullRepresentation(nullRepresentation);
+        return this;
+    }
+
     @Override
     public ErrorMessage getErrorMessage() {
 

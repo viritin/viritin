@@ -83,6 +83,11 @@ public class MTextArea extends TextArea {
     	return this;
     }
     
+    public MTextArea withNullRepresentation(String nullRepresentation) {
+        setNullRepresentation(nullRepresentation);
+        return this;
+    }
+
     @Override
     public void addValueChangeListener(ValueChangeListener listener) {
         super.addValueChangeListener(listener);
