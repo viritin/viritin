@@ -99,4 +99,9 @@ public class MHorizontalLayout extends HorizontalLayout {
         return this;
     }
 
+    public MHorizontalLayout withCaption(String caption) {
+        setCaption(caption);
+        return this;
+    }
+
 }

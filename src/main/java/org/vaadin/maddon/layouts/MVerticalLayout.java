@@ -99,5 +99,10 @@ public class MVerticalLayout extends VerticalLayout {
         setComponentAlignment(component, alignment);
         return this;
     }
+    
+    public MVerticalLayout withCaption(String caption) {
+        setCaption(caption);
+        return this;
+    }
 
 }

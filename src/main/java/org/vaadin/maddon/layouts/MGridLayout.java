@@ -73,4 +73,9 @@ public class MGridLayout extends GridLayout {
         return with(component.toArray(new Component[component.size()]));
     }
 
+    public MGridLayout withCaption(String caption) {
+        setCaption(caption);
+        return this;
+    }
+
 }
