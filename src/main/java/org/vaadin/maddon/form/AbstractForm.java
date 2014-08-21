@@ -110,22 +110,24 @@ public abstract class AbstractForm<T> extends CustomComponent implements
      */
     public HorizontalLayout getToolbar() {
         return new MHorizontalLayout(
-                createSaveButton(),
-                createCancelButton()
+                getSaveButton(),
+                getResetButton()
         );
     }
 
-    protected Component createCancelButton() {
-        setResetButton(new MButton("Cancel"));
-        return getResetButton();
+    protected Button createCancelButton() {
+        return new MButton("Cancel");
     }
-    private MButton resetButton;
+    private Button resetButton;
 
-    public MButton getResetButton() {
+    public Button getResetButton() {
+        if(resetButton == null) {
+            setResetButton(createCancelButton());
+        }
         return resetButton;
     }
 
-    public void setResetButton(MButton resetButton) {
+    public void setResetButton(Button resetButton) {
         this.resetButton = resetButton;
         this.resetButton.addClickListener(new Button.ClickListener() {
 
@@ -136,9 +138,8 @@ public abstract class AbstractForm<T> extends CustomComponent implements
         });
     }
 
-    protected Component createSaveButton() {
-        setSaveButton(new PrimaryButton("Save"));
-        return getSaveButton();
+    protected Button createSaveButton() {
+        return new PrimaryButton("Save");
     }
 
     private Button saveButton;
@@ -155,6 +156,9 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     }
 
     public Button getSaveButton() {
+        if(saveButton == null) {
+            setSaveButton(createSaveButton());
+        }
         return saveButton;
     }
 
