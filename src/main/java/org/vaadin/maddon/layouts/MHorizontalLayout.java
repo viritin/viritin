@@ -68,8 +68,8 @@ public class MHorizontalLayout extends HorizontalLayout {
      * Expands selected components. Also sets the only sane width for expanded
      * components (100%).
      *
-     * @param componentsToExpand
-     * @return
+     * @param componentsToExpand the components that should be expanded
+     * @return the object itself for further configuration
      */
     public MHorizontalLayout expand(Component... componentsToExpand) {
         for (Component component : componentsToExpand) {

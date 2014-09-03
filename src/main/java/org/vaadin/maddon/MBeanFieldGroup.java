@@ -25,7 +25,7 @@ import org.vaadin.maddon.fields.MTextField;
 /**
  *
  * @author mattitahvonenitmill
- * @param <T>
+ * @param <T> the type of the bean wrapped by this group
  */
 public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
         Property.ValueChangeListener, FieldEvents.TextChangeListener {
@@ -80,8 +80,10 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
     /**
      * Makes all fields "immediate" to trigger eager validation
      *
-     * @param listener
-     * @return
+     * @param listener a listener that will be notified when a field in the
+     * group has been modified
+     * @return the MBeanFieldGroup that can be used for further modifications or
+     * e.g. commit if buffered
      */
     public MBeanFieldGroup<T> withEagarValidation(FieldGroupListener<T> listener) {
         this.listener = listener;

@@ -12,7 +12,7 @@ import com.vaadin.ui.ListSelect;
  * TODO improve this, just copy pasted from archived SmartFields addon.
  * 
  * @author mstahv
- * @param <T> 
+ * @param <T> the type of the value for this select
  */
 public class CollectionSelect<T> extends CustomField<Collection<T>> {
 

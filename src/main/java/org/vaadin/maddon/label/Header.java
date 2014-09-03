@@ -36,10 +36,10 @@ public class Header extends Label {
 
     /**
      *
-     * @param whitelist
-     * @return
+     * @param whitelist the whitelist used for sanitizing the header text
+     * @return the object itself for further configuration
      * @deprecated Whitelist is not serializable. If using e.g. clustering,
-     * override getter.
+     * override the getter method for whitelist instead.
      */
     @Deprecated
     public Header setWhitelist(Whitelist whitelist) {

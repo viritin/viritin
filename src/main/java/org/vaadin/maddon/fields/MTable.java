@@ -35,7 +35,7 @@ public class MTable<T> extends Table {
      * Constructs a Table with explicit bean type. Handy for example if your
      * beans are JPA proxies or the table in empty when showing it initially.
      * 
-     * @param type
+     * @param type the type of beans that are listed in this table
      */
     public MTable(Class<T> type) {
         bic = new ListContainer<T>(type);

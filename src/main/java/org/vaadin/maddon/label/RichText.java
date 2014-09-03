@@ -71,8 +71,11 @@ public class RichText extends Label {
     }
 
     /**
-     * Only replaces all new line characters with &ltbr /&gt, but no Markdown
+     * Only replaces all new line characters with &lt;br /&gt;, but no Markdown
      * processing.
+     * 
+     * @param text the text value to be displayed
+     * @return the object itself for further configuration
      */
     public RichText withNewLines(String text) {
         return setRichText(text.replaceAll("(\\r|\\n|\\r\\n)+", "<br />"));
@@ -87,8 +90,8 @@ public class RichText extends Label {
 
     /**
      * 
-     * @param whitelist
-     * @return 
+     * @param whitelist the whitelist used for sanitizing the rich text content
+     * @return the object itself for further configuration
      * @deprecated Whitelist is not serializable. Override getWhitelist instead 
      * if you need to support serialiazation
      */

@@ -71,10 +71,10 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     /**
      * In case one is working with "detached entities" enabling eager validation
      * will highly improve usability. The validity of the form will be updated
-     * on each changes and save & cancel buttons will reflect to the validity
+     * on each changes and save/cancel buttons will reflect to the validity
      * and possible changes.
      *
-     * @param eagarValidation
+     * @param eagarValidation true if the form should have eager validation
      */
     public void setEagarValidation(boolean eagarValidation) {
         this.eagarValidation = eagarValidation;
@@ -106,7 +106,7 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     }
 
     /**
-     * @return A default toolbar containing save & cancel buttons
+     * @return A default toolbar containing save/cancel buttons
      */
     public HorizontalLayout getToolbar() {
         return new MHorizontalLayout(
@@ -218,7 +218,7 @@ public abstract class AbstractForm<T> extends CustomComponent implements
      *     private TextField firstName = new MTextField(&quot;First Name&quot;);
      *     private TextField lastName = new MTextField(&quot;Last Name&quot;);
      *
-     *     @Override
+     *     \@Override
      *     protected Component createContent() {
      *         return new MVerticalLayout(
      *                 new FormLayout(

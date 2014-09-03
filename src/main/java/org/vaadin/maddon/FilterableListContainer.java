@@ -1,12 +1,12 @@
 package org.vaadin.maddon;
 
+import com.vaadin.data.Container;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.vaadin.maddon.ListContainer;
 
 import com.vaadin.data.Container.Filterable;
 import com.vaadin.data.Item;
