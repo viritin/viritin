@@ -172,8 +172,8 @@ public abstract class AbstractForm<T> extends CustomComponent implements
 
     @Override
     public void attach() {
-        setCompositionRoot(createContent());
         super.attach();
+        setCompositionRoot(createContent());
         adjustSaveButtonState();
         adjustCancelButtonState();
     }
