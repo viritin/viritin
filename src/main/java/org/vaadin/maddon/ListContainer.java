@@ -31,6 +31,7 @@ import org.apache.commons.beanutils.DynaProperty;
 import org.apache.commons.beanutils.WrapDynaBean;
 import org.apache.commons.beanutils.WrapDynaClass;
 import org.apache.commons.collections.comparators.ComparableComparator;
+import org.apache.commons.collections.comparators.NullComparator;
 import org.apache.commons.collections.comparators.ReverseComparator;
 import org.apache.commons.lang3.ClassUtils;
 
@@ -261,7 +262,7 @@ public class ListContainer<T> extends AbstractContainer implements
 
     @Override
     public void sort(Object[] propertyId, boolean[] ascending) {
-        Comparator c = new ComparableComparator();
+        Comparator c = new NullComparator();
         if (!ascending[0]) {
             c = new ReverseComparator(c);
         }
