@@ -83,6 +83,9 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     public MBeanFieldGroup<T> setEntity(T entity) {
         this.entity = entity;
         if (entity != null) {
+            if(isBound()) {
+                fieldGroup.unbind();
+            }
             fieldGroup = BeanBinder.bind(entity, this);
             if (isEagarValidation()) {
                 fieldGroup.withEagarValidation(this);

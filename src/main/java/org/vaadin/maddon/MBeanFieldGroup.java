@@ -20,6 +20,7 @@ import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.event.FieldEvents;
 import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.Field;
+import java.util.ArrayList;
 import org.vaadin.maddon.fields.MTextField;
 
 /**
@@ -98,4 +99,22 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
         }
         return this;
     }
+
+    /**
+     * Removes all listeners from the bound fields and unbinds properties.
+     */
+    public void unbind() {
+        // wrap in array list to avoid CME
+        for (Field<?> field : new ArrayList<Field<?>>(getFields())) {
+            field.removeValueChangeListener(this);
+            if (field instanceof MTextField) {
+                final MTextField abstractTextField = (MTextField) field;
+                abstractTextField.setEagerValidation(true);
+                abstractTextField.removeTextChangeListener(this);
+            }
+            unbind(field);
+        }
+        
+    }
+    
 }
