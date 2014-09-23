@@ -28,4 +28,14 @@ public class MFormLayout extends FormLayout {
         return this;
     }
 
+    public MFormLayout withWidth(String width) {
+        setWidth(width);
+        return this;
+    }
+
+    public MFormLayout withHeight(String height) {
+        setHeight(height);
+        return this;
+    }
+
 }
