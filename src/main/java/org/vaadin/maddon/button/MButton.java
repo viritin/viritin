@@ -19,7 +19,8 @@ import com.vaadin.server.Resource;
 import com.vaadin.ui.Button;
 
 /**
- *
+ * An extension to basic Vaadin button that adds some handy constructors and
+ * fluent API.
  */
 public class MButton extends Button {
 

@@ -22,6 +22,17 @@ import java.util.Collection;
 import java.util.List;
 import org.vaadin.maddon.ListContainer;
 
+/**
+ * A better typed version of the Table component in Vaadin. Expects that users
+ * are always listing POJOs, which is most often the case in modern Java
+ * development. Uses ListContainer to bind data due to its superior performance
+ * compared to BeanItemContainer.
+ *
+ * Note, that MTable don't support "multiselection mode.
+ *
+ * @author Matti Tahvonen <matti@vaadin.com>
+ * @param <T> the type of the POJO listed in this Table.
+ */
 public class MTable<T> extends Table {
 
     private ListContainer<T> bic;
@@ -34,7 +45,7 @@ public class MTable<T> extends Table {
     /**
      * Constructs a Table with explicit bean type. Handy for example if your
      * beans are JPA proxies or the table in empty when showing it initially.
-     * 
+     *
      * @param type the type of beans that are listed in this table
      */
     public MTable(Class<T> type) {
@@ -112,7 +123,7 @@ public class MTable<T> extends Table {
     private void ensureBeanItemContainer(Collection<T> beans) {
         if (!isContainerInitialized()) {
             bic = new ListContainer(beans);
-            if(pendingProperties != null) {
+            if (pendingProperties != null) {
                 setContainerDataSource(bic, Arrays.asList(pendingProperties));
                 pendingProperties = null;
             } else {

@@ -26,8 +26,9 @@ import com.vaadin.ui.TextField;
 import java.util.EventObject;
 
 /**
- *
- * @author mattitahvonenitmill
+ * A an extension to basic Vaadin TextField. Uses the only sane default for
+ * "nullRepresentation" (""), adds support for "eager validation" (~ validate
+ * while typing) and adds some fluent APIs.
  */
 public class MTextField extends TextField {
 
@@ -164,16 +165,17 @@ public class MTextField extends TextField {
         }
         // Throw combination of the error types
         return new CompositeErrorMessage(
-                new ErrorMessage[] {
-                        superError,
-                        AbstractErrorMessage
-                                .getErrorMessageForException(validationError),
-                        AbstractErrorMessage
-                                .getErrorMessageForException(getCurrentBufferedSourceException()) });
+                new ErrorMessage[]{
+                    superError,
+                    AbstractErrorMessage
+                    .getErrorMessageForException(validationError),
+                    AbstractErrorMessage
+                    .getErrorMessageForException(
+                            getCurrentBufferedSourceException())});
     }
 
     protected Validator.InvalidValueException getValidationError() {
-        if(isEagerValidation() && lastKnownTextChangeValue != null) {
+        if (isEagerValidation() && lastKnownTextChangeValue != null) {
             return eagerValidationError;
         }
         /*
@@ -195,7 +197,6 @@ public class MTextField extends TextField {
         return validationError;
     }
 
-
     protected void doEagerValidation() {
         final boolean wasvalid = eagerValidationStatus;
         eagerValidationStatus = true;
@@ -205,7 +206,7 @@ public class MTextField extends TextField {
                 throw new Validator.EmptyValueException(getRequiredError());
             }
             validate(getLastKnownTextContent());
-            if(!wasvalid) {
+            if (!wasvalid) {
                 markAsDirty();
             }
         } catch (Validator.InvalidValueException e) {
