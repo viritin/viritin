@@ -15,6 +15,7 @@
  */
 package org.vaadin.maddon.button;
 
+import com.vaadin.server.Resource;
 import com.vaadin.shared.MouseEventDetails;
 import org.vaadin.dialogs.ConfirmDialog;
 
@@ -32,8 +33,15 @@ public class ConfirmButton extends MButton {
     public ConfirmButton() {
     }
 
-    public ConfirmButton(String buttonCaption, String confirmationText, ClickListener listener) {
+    public ConfirmButton(String buttonCaption, String confirmationText,
+            ClickListener listener) {
         super(buttonCaption, listener);
+        this.confirmationText = confirmationText;
+    }
+
+    public ConfirmButton(Resource icon, String confirmationText,
+            ClickListener listener) {
+        super(icon, listener);
         this.confirmationText = confirmationText;
     }
 

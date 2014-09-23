@@ -63,5 +63,10 @@ public class MButton extends Button {
         setCaption(caption);
         return this;
     }
+    
+    public MButton withDescription(String description) {
+        setDescription(description);
+        return this;
+    }
 
 }

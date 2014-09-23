@@ -200,4 +200,11 @@ public class MTable<T> extends Table {
         return this;
     }
 
+    public MTable<T> expand(String... propertiesToExpand) {
+        for (String property : propertiesToExpand) {
+            setColumnExpandRatio(property, 1);
+        }
+        return this;
+    }
+
 }
