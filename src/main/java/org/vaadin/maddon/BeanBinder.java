@@ -26,6 +26,7 @@ public class BeanBinder {
         beanFieldGroup.setItemDataSource(bean);
         beanFieldGroup.setBuffered(false);
         beanFieldGroup.bindMemberFields(objectWithMemberFields);
+        beanFieldGroup.configureMaddonDefaults();
         return beanFieldGroup;
     }
 

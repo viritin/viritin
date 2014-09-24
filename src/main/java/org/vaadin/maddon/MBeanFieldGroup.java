@@ -21,15 +21,53 @@ import com.vaadin.event.FieldEvents;
 import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.Field;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.validation.constraints.NotNull;
 import org.vaadin.maddon.fields.MTextField;
 
 /**
+ * Enhanced version of basic BeanFieldGroup in Vaadin. Supports "eager
+ * validation" and some enhancements to bean validation support.
  *
- * @author mattitahvonenitmill
  * @param <T> the type of the bean wrapped by this group
  */
 public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
         Property.ValueChangeListener, FieldEvents.TextChangeListener {
+
+    protected final Class nonHiddenBeanType;
+
+    /**
+     * Configures fields for some better defaults, like property fields annotated with
+     * NotNull to be "required" (kind of a special validator in Vaadin)
+     */
+    public void configureMaddonDefaults() {
+        for (Object property : getBoundPropertyIds()) {
+            final Field<?> field = getField(property);
+ 
+            // Make @NotNull annotated fields "required"
+            try {
+                java.lang.reflect.Field declaredField = nonHiddenBeanType.
+                        getDeclaredField(property.
+                                toString());
+                final NotNull notNullAnnotation = declaredField.getAnnotation(
+                        NotNull.class);
+                if (notNullAnnotation != null) {
+                    field.setRequired(true);
+                    if (notNullAnnotation.message() != null) {
+                        getField(property).setRequiredError(notNullAnnotation.
+                                message());
+                    }
+                }
+            } catch (NoSuchFieldException ex) {
+                Logger.getLogger(MBeanFieldGroup.class.getName()).
+                        log(Level.SEVERE, null, ex);
+            } catch (SecurityException ex) {
+                Logger.getLogger(MBeanFieldGroup.class.getName()).
+                        log(Level.SEVERE, null, ex);
+            }
+        }
+    }
 
     public interface FieldGroupListener<T> {
 
@@ -68,6 +106,7 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
 
     public MBeanFieldGroup(Class beanType) {
         super(beanType);
+        this.nonHiddenBeanType = beanType;
     }
 
     public MBeanFieldGroup<T> withEagarValidation() {
@@ -114,7 +153,7 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
             }
             unbind(field);
         }
-        
+
     }
-    
+
 }
