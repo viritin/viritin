@@ -32,7 +32,7 @@ public class MVerticalLayout extends VerticalLayout {
         setMargin(marging);
         return this;
     }
-    
+
     public MVerticalLayout withMargin(MarginInfo marginInfo) {
         setMargin(marginInfo);
         return this;
@@ -66,15 +66,19 @@ public class MVerticalLayout extends VerticalLayout {
     }
 
     /**
-     * Expands selected components. Also adds to layout and sets the only sane height for expanded 
-     * components (100%) if needed.
-     * 
+     * Expands selected components. Also adds to layout and sets the only sane
+     * height for expanded components (100%) if needed.
+     *
      * @param componentsToExpand components that should be expanded
      * @return the object itself for further configuration
      */
     public MVerticalLayout expand(Component... componentsToExpand) {
+        if (getHeight() < 0) {
+            // Make full height if no other size is set
+            withFullHeight();
+        }
         for (Component component : componentsToExpand) {
-            if(component.getParent() != this) {
+            if (component.getParent() != this) {
                 addComponent(component);
             }
             setExpandRatio(component, 1);
@@ -99,7 +103,7 @@ public class MVerticalLayout extends VerticalLayout {
         setComponentAlignment(component, alignment);
         return this;
     }
-    
+
     public MVerticalLayout withCaption(String caption) {
         setCaption(caption);
         return this;

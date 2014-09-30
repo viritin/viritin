@@ -72,6 +72,11 @@ public class MHorizontalLayout extends HorizontalLayout {
      * @return the object itself for further configuration
      */
     public MHorizontalLayout expand(Component... componentsToExpand) {
+        if (getWidth() < 0) {
+            // Make full height if no other size is set
+            withFullWidth();
+        }
+
         for (Component component : componentsToExpand) {
             if (component.getParent() != this) {
                 addComponent(component);
