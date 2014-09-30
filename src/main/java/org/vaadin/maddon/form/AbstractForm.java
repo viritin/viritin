@@ -7,6 +7,8 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.UI;
+import com.vaadin.ui.Window;
 import org.vaadin.maddon.BeanBinder;
 import org.vaadin.maddon.MBeanFieldGroup;
 import org.vaadin.maddon.MBeanFieldGroup.FieldGroupListener;
@@ -71,8 +73,8 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     /**
      * In case one is working with "detached entities" enabling eager validation
      * will highly improve usability. The validity of the form will be updated
-     * on each changes and save/cancel buttons will reflect to the validity
-     * and possible changes.
+     * on each changes and save/cancel buttons will reflect to the validity and
+     * possible changes.
      *
      * @param eagarValidation true if the form should have eager validation
      */
@@ -83,7 +85,7 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     public MBeanFieldGroup<T> setEntity(T entity) {
         this.entity = entity;
         if (entity != null) {
-            if(isBound()) {
+            if (isBound()) {
                 fieldGroup.unbind();
             }
             fieldGroup = BeanBinder.bind(entity, this);
@@ -108,6 +110,22 @@ public abstract class AbstractForm<T> extends CustomComponent implements
         this.resetHandler = resetHandler;
     }
 
+    public ResetHandler<T> getResetHandler() {
+        return resetHandler;
+    }
+
+    public SavedHandler<T> getSavedHandler() {
+        return savedHandler;
+    }
+
+    public Window openInModalPopup() {
+        Window window = new Window("Edit entry", this);
+        window.setModal(true);
+        UI.getCurrent().addWindow(window);
+        focusFirst();
+        return window;
+    }
+
     /**
      * @return A default toolbar containing save/cancel buttons
      */
@@ -124,7 +142,7 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     private Button resetButton;
 
     public Button getResetButton() {
-        if(resetButton == null) {
+        if (resetButton == null) {
             setResetButton(createCancelButton());
         }
         return resetButton;
@@ -159,7 +177,7 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     }
 
     public Button getSaveButton() {
-        if(saveButton == null) {
+        if (saveButton == null) {
             setSaveButton(createSaveButton());
         }
         return saveButton;
