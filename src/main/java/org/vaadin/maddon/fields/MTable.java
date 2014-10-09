@@ -30,7 +30,6 @@ import org.vaadin.maddon.ListContainer;
  *
  * Note, that MTable don't support "multiselection mode.
  *
- * @author Matti Tahvonen <matti@vaadin.com>
  * @param <T> the type of the POJO listed in this Table.
  */
 public class MTable<T> extends Table {
