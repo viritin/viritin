@@ -20,6 +20,7 @@ import com.vaadin.data.Container.Filter;
 import com.vaadin.data.Item;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.util.filter.Between;
+import com.vaadin.data.util.filter.SimpleStringFilter;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryUsage;
@@ -27,6 +28,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.logging.Logger;
+import junit.framework.Assert;
+import org.apache.commons.lang3.mutable.MutableBoolean;
 
 import org.junit.Test;
 
@@ -56,6 +59,30 @@ public class FilterableListContainerTest {
     
 
     private List<Person> persons = getListOfPersons(amount);
+    
+    @Test
+    public void clearFilters() {
+        final List<Person> listOfPersons = getListOfPersons(100);
+        FilterableListContainer<Person> container = new FilterableListContainer<Person>(listOfPersons);
+        container.addContainerFilter(new SimpleStringFilter("firstName", "First1",true, true));
+        Assert.assertNotSame(listOfPersons.size(), container.size());
+        container.removeAllContainerFilters();
+        Assert.assertEquals(listOfPersons.size(), container.size());
+        container.addContainerFilter(new SimpleStringFilter("firstName", "foobar",true, true));
+        Assert.assertEquals(0, container.size());
+        
+        final MutableBoolean fired = new MutableBoolean(false);
+        container.addListener(new Container.ItemSetChangeListener() {
+            @Override
+            public void containerItemSetChange(
+                    Container.ItemSetChangeEvent event) {
+                fired.setTrue();
+            }
+        });
+        container.removeAllContainerFilters();
+        Assert.assertTrue(fired.booleanValue());
+        Assert.assertEquals(listOfPersons.size(), container.size());
+    }
 
     @Test
     public void testMemoryUsage() {

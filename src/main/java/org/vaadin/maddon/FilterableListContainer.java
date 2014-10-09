@@ -60,15 +60,12 @@ public class FilterableListContainer<T> extends ListContainer<T> implements	Filt
 	}
 	
 	private void filterContainer() {
-		if (applyFilters()) {
-			super.fireItemSetChange();
-		}
+        applyFilters();
+        super.fireItemSetChange();
 	}
 
-	private boolean applyFilters() {
-		int origSize =  filteredItems == null ? 0 : filteredItems.size();
+	private void applyFilters() {
 		filteredItems = new ArrayList<T>();
-		boolean itemSetChanged = false;
 		if (isFiltered()) {
 			boolean appliedFilter = false;
 			for (T itemId : super.getBackingList()) {
@@ -77,12 +74,7 @@ public class FilterableListContainer<T> extends ListContainer<T> implements	Filt
 					appliedFilter = true;
 				}
 			}
-			itemSetChanged = appliedFilter || origSize != filteredItems.size();
-		} else {
-			// Not filtered now, but maybe we were
-			itemSetChanged = origSize > 0;
 		}
-		return itemSetChanged;
 	}
 	
 	private boolean passesFilters(T itemId) {
@@ -133,7 +125,6 @@ public class FilterableListContainer<T> extends ListContainer<T> implements	Filt
 		if (itemId == null) {
 			return null;
 		}
-
 		if (isFiltered() && !filteredItems.contains(itemId)) {
 			return null;
 		}
