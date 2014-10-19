@@ -24,6 +24,21 @@ import org.vaadin.maddon.layouts.MHorizontalLayout;
 public abstract class AbstractForm<T> extends CustomComponent implements
         FieldGroupListener {
 
+    public AbstractForm() {
+        addAttachListener(new AttachListener() {
+            @Override
+            public void attach(AttachEvent event) {
+                lazyInit();
+            }
+        });
+    }
+
+    protected void lazyInit() {
+        setCompositionRoot(createContent());
+        adjustSaveButtonState();
+        adjustCancelButtonState();
+    }
+
     private MBeanFieldGroup<T> fieldGroup;
 
     @Override
@@ -189,14 +204,6 @@ public abstract class AbstractForm<T> extends CustomComponent implements
 
     protected void reset(Button.ClickEvent e) {
         resetHandler.onReset(entity);
-    }
-
-    @Override
-    public void attach() {
-        super.attach();
-        setCompositionRoot(createContent());
-        adjustSaveButtonState();
-        adjustCancelButtonState();
     }
 
     public void focusFirst() {
