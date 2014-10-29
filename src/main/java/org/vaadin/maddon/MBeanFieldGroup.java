@@ -17,6 +17,7 @@ package org.vaadin.maddon;
 
 import com.vaadin.data.Property;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
+import com.vaadin.data.util.MethodProperty;
 import com.vaadin.event.FieldEvents;
 import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.Field;
@@ -38,18 +39,18 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
     protected final Class nonHiddenBeanType;
 
     /**
-     * Configures fields for some better defaults, like property fields annotated with
-     * NotNull to be "required" (kind of a special validator in Vaadin)
+     * Configures fields for some better defaults, like property fields
+     * annotated with NotNull to be "required" (kind of a special validator in
+     * Vaadin)
      */
     public void configureMaddonDefaults() {
         for (Object property : getBoundPropertyIds()) {
             final Field<?> field = getField(property);
- 
+
             // Make @NotNull annotated fields "required"
             try {
-                java.lang.reflect.Field declaredField = nonHiddenBeanType.
-                        getDeclaredField(property.
-                                toString());
+                java.lang.reflect.Field declaredField = findDeclaredFiled(
+                        property, nonHiddenBeanType);
                 final NotNull notNullAnnotation = declaredField.getAnnotation(
                         NotNull.class);
                 if (notNullAnnotation != null) {
@@ -65,6 +66,22 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
             } catch (SecurityException ex) {
                 Logger.getLogger(MBeanFieldGroup.class.getName()).
                         log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    protected java.lang.reflect.Field findDeclaredFiled(Object property,
+            Class clazz) throws NoSuchFieldException, SecurityException {
+        try {
+            java.lang.reflect.Field declaredField = clazz.
+                    getDeclaredField(property.
+                            toString());
+            return declaredField;
+        } catch (NoSuchFieldException e) {
+            if (clazz.getSuperclass() == null) {
+                throw e;
+            } else {
+                return findDeclaredFiled(property, clazz.getSuperclass());
             }
         }
     }
