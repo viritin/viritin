@@ -136,10 +136,11 @@ Currently project contains following helpers:
  * PrimaryButton (stylename + enter shortcut)
  * ConfirmButton (Customizeble confirm dialog before the actual listener is called)
 * ListContainer (used by MTable)
- * A lightweight replacement for BeanItemContainer that uses apache commons-beanutils for introspection
+ * A lightweight replacement for BeanItemContainer that uses apache commons-beanutils for introspection. The performance (both memory and CPU) is also superior to the core Vaadin counterpart.
  * Note, that beans are kept in orinal list that developer used to pass beans. Wrap in e.g. ArrayList if you wish to keep original List unmodified.
 * AbstractForm
- * An abstract super class for simple entity editor. Provides save/cancel buttons and interfaces for hooking into them. Does binding with naming convention using BeanBinder when setEntity(T) is called.
+ * An abstract super class for simple entity editor. Provides save/cancel buttons and interfaces for hooking into them. Does binding with naming convention using BeanBinder when setEntity(T) is called. It is suggested to use the "setEagerValidation(true)" mode as it will make your forms much more UX friendly by default. This makes fields validating while you edit the form, instead of postponing it until the save click.
+* DisclosurePanel is a simple panel whose content is hidden by default. Easy method to hide fields that are most often irrelevant for the end user.
 
 
 ## Online demo
