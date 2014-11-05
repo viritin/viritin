@@ -264,4 +264,12 @@ public abstract class AbstractForm<T> extends CustomComponent implements
      */
     protected abstract Component createContent();
 
+    public MBeanFieldGroup<T> getFieldGroup() {
+        return fieldGroup;
+    }
+
+    public T getEntity() {
+        return entity;
+    }
+
 }
