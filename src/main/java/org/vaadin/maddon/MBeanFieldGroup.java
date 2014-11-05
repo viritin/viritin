@@ -17,7 +17,6 @@ package org.vaadin.maddon;
 
 import com.vaadin.data.Property;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
-import com.vaadin.data.util.MethodProperty;
 import com.vaadin.event.FieldEvents;
 import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.Field;
