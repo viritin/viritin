@@ -78,4 +78,9 @@ public class MGridLayout extends GridLayout {
         return this;
     }
 
+    public MGridLayout withStyleName(String styleName) {
+        setStyleName(styleName);
+        return this;
+    }
+
 }
