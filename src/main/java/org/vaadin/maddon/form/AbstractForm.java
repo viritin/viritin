@@ -36,7 +36,7 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     protected void lazyInit() {
         setCompositionRoot(createContent());
         adjustSaveButtonState();
-        adjustCancelButtonState();
+        adjustResetButtonState();
     }
 
     private MBeanFieldGroup<T> fieldGroup;
@@ -44,7 +44,7 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     @Override
     public void onFieldGroupChange(MBeanFieldGroup beanFieldGroup) {
         adjustSaveButtonState();
-        adjustCancelButtonState();
+        adjustResetButtonState();
     }
 
     protected void adjustSaveButtonState() {
@@ -59,7 +59,7 @@ public abstract class AbstractForm<T> extends CustomComponent implements
         return fieldGroup != null;
     }
 
-    private void adjustCancelButtonState() {
+    protected void adjustResetButtonState() {
         if (isAttached() && isEagarValidation() && isBound()) {
             boolean beanModified = fieldGroup.isBeanModified();
             getResetButton().setEnabled(beanModified);
@@ -107,7 +107,7 @@ public abstract class AbstractForm<T> extends CustomComponent implements
             if (isEagarValidation()) {
                 fieldGroup.withEagarValidation(this);
                 adjustSaveButtonState();
-                adjustCancelButtonState();
+                adjustResetButtonState();
             }
             setVisible(true);
             return fieldGroup;
