@@ -48,7 +48,7 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
 
             // Make @NotNull annotated fields "required"
             try {
-                java.lang.reflect.Field declaredField = findDeclaredFiled(
+                java.lang.reflect.Field declaredField = findDeclaredField(
                         property, nonHiddenBeanType);
                 final NotNull notNullAnnotation = declaredField.getAnnotation(
                         NotNull.class);
@@ -61,7 +61,7 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
                 }
             } catch (NoSuchFieldException ex) {
                 Logger.getLogger(MBeanFieldGroup.class.getName()).
-                        log(Level.SEVERE, null, ex);
+                        log(Level.FINE, null, ex);
             } catch (SecurityException ex) {
                 Logger.getLogger(MBeanFieldGroup.class.getName()).
                         log(Level.SEVERE, null, ex);
@@ -69,7 +69,7 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
         }
     }
 
-    protected java.lang.reflect.Field findDeclaredFiled(Object property,
+    protected java.lang.reflect.Field findDeclaredField(Object property,
             Class clazz) throws NoSuchFieldException, SecurityException {
         try {
             java.lang.reflect.Field declaredField = clazz.
@@ -80,7 +80,7 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
             if (clazz.getSuperclass() == null) {
                 throw e;
             } else {
-                return findDeclaredFiled(property, clazz.getSuperclass());
+                return findDeclaredField(property, clazz.getSuperclass());
             }
         }
     }
