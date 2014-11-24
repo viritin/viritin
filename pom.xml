@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.peimari</groupId>
     <artifactId>maddon</artifactId>
-    <version>1.19</version>
+    <version>1.20-SNAPSHOT</version>
     <name>Maddon</name>
     <packaging>bundle</packaging>
     <properties>
