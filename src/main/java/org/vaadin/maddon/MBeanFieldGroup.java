@@ -125,8 +125,8 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
         this.nonHiddenBeanType = beanType;
     }
 
-    public MBeanFieldGroup<T> withEagarValidation() {
-        return withEagarValidation(new FieldGroupListener() {
+    public MBeanFieldGroup<T> withEagerValidation() {
+        return withEagerValidation(new FieldGroupListener() {
             @Override
             public void onFieldGroupChange(MBeanFieldGroup beanFieldGroup) {
             }
@@ -141,7 +141,7 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
      * @return the MBeanFieldGroup that can be used for further modifications or
      * e.g. commit if buffered
      */
-    public MBeanFieldGroup<T> withEagarValidation(FieldGroupListener<T> listener) {
+    public MBeanFieldGroup<T> withEagerValidation(FieldGroupListener<T> listener) {
         this.listener = listener;
         for (Field<?> field : getFields()) {
             ((AbstractComponent) field).setImmediate(true);
