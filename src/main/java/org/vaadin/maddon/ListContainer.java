@@ -134,12 +134,12 @@ public class ListContainer<T> extends AbstractContainer implements
 
     @Override
     public T firstItemId() {
-        return backingList.get(0);
+        return backingList.isEmpty()? null : backingList.get(0);
     }
 
     @Override
     public T lastItemId() {
-        return backingList.get(backingList.size() - 1);
+        return backingList.isEmpty()? null : backingList.get(backingList.size() - 1);
     }
 
     @Override
