@@ -48,7 +48,7 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     }
 
     protected void adjustSaveButtonState() {
-        if (isAttached() && isEagarValidation() && isBound()) {
+        if (isAttached() && isEagerValidation() && isBound()) {
             boolean beanModified = fieldGroup.isBeanModified();
             boolean valid = fieldGroup.isValid();
             getSaveButton().setEnabled(beanModified && valid);
@@ -60,7 +60,7 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     }
 
     protected void adjustResetButtonState() {
-        if (isAttached() && isEagarValidation() && isBound()) {
+        if (isAttached() && isEagerValidation() && isBound()) {
             boolean beanModified = fieldGroup.isBeanModified();
             getResetButton().setEnabled(beanModified);
         }
@@ -79,10 +79,10 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     private T entity;
     private SavedHandler<T> savedHandler;
     private ResetHandler<T> resetHandler;
-    private boolean eagarValidation;
+    private boolean eagerValidation;
 
-    public boolean isEagarValidation() {
-        return eagarValidation;
+    public boolean isEagerValidation() {
+        return eagerValidation;
     }
 
     /**
@@ -91,10 +91,10 @@ public abstract class AbstractForm<T> extends CustomComponent implements
      * on each changes and save/cancel buttons will reflect to the validity and
      * possible changes.
      *
-     * @param eagarValidation true if the form should have eager validation
+     * @param eagerValidation true if the form should have eager validation
      */
-    public void setEagarValidation(boolean eagarValidation) {
-        this.eagarValidation = eagarValidation;
+    public void setEagerValidation(boolean eagerValidation) {
+        this.eagerValidation = eagerValidation;
     }
 
     public MBeanFieldGroup<T> setEntity(T entity) {
@@ -104,8 +104,8 @@ public abstract class AbstractForm<T> extends CustomComponent implements
                 fieldGroup.unbind();
             }
             fieldGroup = BeanBinder.bind(entity, this);
-            if (isEagarValidation()) {
-                fieldGroup.withEagarValidation(this);
+            if (isEagerValidation()) {
+                fieldGroup.withEagerValidation(this);
                 adjustSaveButtonState();
                 adjustResetButtonState();
             }
