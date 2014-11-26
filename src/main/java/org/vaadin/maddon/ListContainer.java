@@ -271,6 +271,7 @@ public class ListContainer<T> extends AbstractContainer implements
 
     @Override
     public Collection<?> getSortableContainerPropertyIds() {
+        if (backingList.isEmpty()) return Collections.emptyList();
         ArrayList<String> properties = new ArrayList<String>();
         for (DynaProperty db : getDynaClass().getDynaProperties()) {
             if (db.getType().isPrimitive() || Comparable.class.isAssignableFrom(
