@@ -20,11 +20,9 @@ import com.vaadin.data.Container.ItemSetChangeNotifier;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.AbstractContainer;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+
+import java.util.*;
+
 import org.apache.commons.beanutils.BeanComparator;
 import org.apache.commons.beanutils.DynaBean;
 import org.apache.commons.beanutils.DynaProperty;
@@ -303,6 +301,8 @@ public class ListContainer<T> extends AbstractContainer implements
 
     public class DynaBeanItem<T> implements Item {
 
+        private Map<Object, DynaProperty> propertyIdToProperty = new HashMap<Object, DynaProperty>();
+
         private class DynaProperty implements Property {
 
             private final String propertyName;
@@ -356,7 +356,12 @@ public class ListContainer<T> extends AbstractContainer implements
 
         @Override
         public Property getItemProperty(Object id) {
-            return new DynaProperty(id.toString());
+            DynaProperty prop = propertyIdToProperty.get(id);
+            if (prop == null) {
+                prop = new DynaProperty(id.toString());
+                propertyIdToProperty.put(id, prop);
+            }
+            return prop;
         }
 
         @Override
