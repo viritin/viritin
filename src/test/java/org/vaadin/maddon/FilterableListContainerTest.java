@@ -20,11 +20,13 @@ import com.vaadin.data.Container.Filter;
 import com.vaadin.data.Item;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.util.filter.Between;
+import com.vaadin.data.util.filter.Compare;
 import com.vaadin.data.util.filter.SimpleStringFilter;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryUsage;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.logging.Logger;
@@ -32,6 +34,8 @@ import junit.framework.Assert;
 import org.apache.commons.lang3.mutable.MutableBoolean;
 
 import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 /**
  *
@@ -266,5 +270,25 @@ public class FilterableListContainerTest {
         return ManagementFactory.getMemoryMXBean().
                 getHeapMemoryUsage().getUsed();
     }
+
+   @Test
+   public void testFirstLast() {
+       FilterableListContainer<Person> lc = new FilterableListContainer<Person>(
+               new ArrayList<Person>(Arrays.asList(
+                   new Person("1", "1", 1),
+                   new Person("2", "2", 2),
+                   new Person("3", "3", 3)
+       )));
+
+       lc.addContainerFilter(new Compare.Greater("age", 1));
+       assertNotSame(1, lc.firstItemId().getAge());
+       lc.addContainerFilter(new Compare.LessOrEqual("age", 1));
+       try {
+           assertNull(lc.firstItemId());
+           assertNull(lc.lastItemId());
+       } catch (ArrayIndexOutOfBoundsException ex) {
+           fail("Exception was thrown: " + ex);
+       }
+   }
 
 }

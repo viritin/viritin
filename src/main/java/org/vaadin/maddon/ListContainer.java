@@ -85,7 +85,7 @@ public class ListContainer<T> extends AbstractContainer implements
 
     @Override
     public int indexOfId(Object itemId) {
-        return backingList.indexOf(itemId);
+        return getBackingList().indexOf(itemId);
     }
 
     public int indexOf(T bean) {
@@ -94,12 +94,12 @@ public class ListContainer<T> extends AbstractContainer implements
 
     @Override
     public T getIdByIndex(int index) {
-        return backingList.get(index);
+        return getBackingList().get(index);
     }
 
     @Override
     public List<T> getItemIds(int startIndex, int numberOfItems) {
-        return backingList.subList(startIndex, startIndex + numberOfItems);
+        return getBackingList().subList(startIndex, startIndex + numberOfItems);
     }
 
     @Override
@@ -114,30 +114,30 @@ public class ListContainer<T> extends AbstractContainer implements
 
     @Override
     public T nextItemId(Object itemId) {
-        int i = backingList.indexOf(itemId) + 1;
-        if(backingList.size() == i) {
+        int i = getBackingList().indexOf(itemId) + 1;
+        if(getBackingList().size() == i) {
             return null;
         }
-        return backingList.get(i);
+        return getBackingList().get(i);
     }
 
     @Override
     public T prevItemId(Object itemId) {
-        int i = backingList.indexOf(itemId) -1;
+        int i = getBackingList().indexOf(itemId) -1;
         if(i < 0) {
             return null;
         }
-        return backingList.get(i);
+        return getBackingList().get(i);
     }
 
     @Override
     public T firstItemId() {
-        return backingList.isEmpty()? null : backingList.get(0);
+        return (getBackingList().isEmpty())? null : getBackingList().get(0);
     }
 
     @Override
     public T lastItemId() {
-        return backingList.isEmpty()? null : backingList.get(backingList.size() - 1);
+        return getBackingList().isEmpty()? null : getBackingList().get(getBackingList().size() - 1);
     }
 
     @Override
@@ -182,7 +182,7 @@ public class ListContainer<T> extends AbstractContainer implements
 
     @Override
     public Collection<?> getItemIds() {
-        return backingList;
+        return getBackingList();
     }
 
     @Override
@@ -195,7 +195,7 @@ public class ListContainer<T> extends AbstractContainer implements
         final Class<?> type = getDynaClass().getDynaProperty(propertyId.toString()).getType();
         if(type.isPrimitive()) {
             // Vaadin can't handle primitive types in _all_ places, so use
-            // wrappers instead. FieldGroup works, but e.g. Table in _editable_ 
+            // wrappers instead. FieldGroup works, but e.g. Table in _editable_
             // mode fails for some reason
             return ClassUtils.primitiveToWrapper(type);
         }
@@ -204,12 +204,12 @@ public class ListContainer<T> extends AbstractContainer implements
 
     @Override
     public int size() {
-        return backingList.size();
+        return getBackingList().size();
     }
 
     @Override
     public boolean containsId(Object itemId) {
-        return backingList.contains((T) itemId);
+        return getBackingList().contains((T) itemId);
     }
 
     @Override
@@ -269,7 +269,6 @@ public class ListContainer<T> extends AbstractContainer implements
 
     @Override
     public Collection<?> getSortableContainerPropertyIds() {
-        if (backingList.isEmpty()) return Collections.emptyList();
         ArrayList<String> properties = new ArrayList<String>();
         for (DynaProperty db : getDynaClass().getDynaProperties()) {
             if (db.getType().isPrimitive() || Comparable.class.isAssignableFrom(
