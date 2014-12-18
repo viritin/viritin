@@ -30,20 +30,20 @@ import org.vaadin.maddon.ListContainer;
  * @param <ET> The type in the entity collection
  */
 public class MultiSelectTable<ET> extends CustomField<Collection> {
-    
+
     private String[] visProps;
     private String[] pendingHeaders;
-    
+
     Table table = new Table() {
-        
+
         {
             setSelectable(true);
             setMultiSelect(true);
             setSizeFull();
         }
-        
+
         private boolean clientSideChange;
-        
+
         @Override
         public void changeVariables(Object source,
                 Map<String, Object> variables) {
@@ -51,7 +51,7 @@ public class MultiSelectTable<ET> extends CustomField<Collection> {
             super.changeVariables(source, variables);
             clientSideChange = false;
         }
-        
+
         @Override
         protected void setValue(Object newValue, boolean repaintIsNotNeeded) throws ReadOnlyException {
             Set oldvalue = (Set) getValue();
@@ -67,9 +67,9 @@ public class MultiSelectTable<ET> extends CustomField<Collection> {
                 collection.addAll(newValues);
             }
         }
-        
+
     };
-    
+
     private Collection<ET> getEditedCollection() {
         Collection c = getValue();
         if (c == null) {
@@ -91,7 +91,7 @@ public class MultiSelectTable<ET> extends CustomField<Collection> {
         }
         return c;
     }
-    
+
     public MultiSelectTable<ET> withProperties(String... visibleProperties) {
         visProps = visibleProperties;
         if (isContainerInitialized()) {
@@ -103,11 +103,11 @@ public class MultiSelectTable<ET> extends CustomField<Collection> {
         }
         return this;
     }
-    
+
     private boolean isContainerInitialized() {
         return table.size() != 0;
     }
-    
+
     public MultiSelectTable<ET> withColumnHeaders(
             String... columnNamesForVisibleProperties) {
         if (isContainerInitialized()) {
@@ -122,17 +122,17 @@ public class MultiSelectTable<ET> extends CustomField<Collection> {
         }
         return this;
     }
-    
+
     @Override
     protected Component initContent() {
         return table;
     }
-    
+
     @Override
     public Class<? extends Collection> getType() {
         return Collection.class;
     }
-    
+
     @Override
     protected void setInternalValue(Collection newValue) {
         super.setInternalValue(newValue);
@@ -152,46 +152,49 @@ public class MultiSelectTable<ET> extends CustomField<Collection> {
             table.setContainerDataSource(new ListContainer(list), Arrays.asList(
                     visProps));
         }
+        if(pendingHeaders != null) {
+            table.setColumnHeaders(pendingHeaders);
+        }
         return this;
     }
-    
+
     public MultiSelectTable() {
         setHeight("300px");
         // TODO verify if this is needed in real usage, but at least to pass the test
         setConverter(new Converter<Collection, Collection>() {
-            
+
             @Override
             public Collection convertToModel(Collection value,
                     Class<? extends Collection> targetType, Locale locale) throws Converter.ConversionException {
                 return value;
             }
-            
+
             @Override
             public Collection convertToPresentation(Collection value,
                     Class<? extends Collection> targetType, Locale locale) throws Converter.ConversionException {
                 return value;
             }
-            
+
             @Override
             public Class<Collection> getModelType() {
                 return (Class<Collection>) getEditedCollection().getClass();
             }
-            
+
             @Override
             public Class<Collection> getPresentationType() {
                 return Collection.class;
             }
-            
+
         });
     }
-    
+
     public void select(ET objectToSelect) {
         if (!table.isSelected(objectToSelect)) {
             table.select(objectToSelect);
             getEditedCollection().add(objectToSelect);
         }
     }
-    
+
     public void unSelect(ET objectToDeselect) {
         if (table.isSelected(objectToDeselect)) {
             table.unselect(objectToDeselect);
@@ -206,6 +209,36 @@ public class MultiSelectTable<ET> extends CustomField<Collection> {
     protected Table getUndelayingTable() {
         return table;
     }
-    
-    
+
+    public MultiSelectTable<ET> withFullWidth() {
+        setWidth(100, Unit.PERCENTAGE);
+        return this;
+    }
+
+    public MultiSelectTable<ET> withHeight(String height) {
+        setHeight(height);
+        return this;
+    }
+
+    public MultiSelectTable<ET> withFullHeight() {
+        return withHeight("100%");
+    }
+
+    public MultiSelectTable<ET> withWidth(String width) {
+        setWidth(width);
+        return this;
+    }
+
+    public MultiSelectTable<ET> withCaption(String caption) {
+        setCaption(caption);
+        return this;
+    }
+
+    public MultiSelectTable<ET> expand(String... propertiesToExpand) {
+        for (String property : propertiesToExpand) {
+            table.setColumnExpandRatio(property, 1);
+        }
+        return this;
+    }
+
 }
