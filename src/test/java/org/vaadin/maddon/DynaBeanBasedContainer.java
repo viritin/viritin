@@ -15,6 +15,7 @@
  */
 package org.vaadin.maddon;
 
+import org.vaadin.maddon.testdomain.Person;
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.data.util.BeanItemContainer;
@@ -32,6 +33,7 @@ import junit.framework.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.vaadin.maddon.testdomain.Service;
 
 /**
  *
@@ -40,21 +42,10 @@ public class DynaBeanBasedContainer {
 
     Random r = new Random(0);
 
-    private List<Person> getListOfPersons(int total) {
-        List<Person> l = new ArrayList<Person>(total);
-        for (int i = 0; i < total; i++) {
-            Person p = new Person();
-            p.setFirstName("Fist" + i);
-            p.setLastName("Lastname" + i);
-            p.setAge(r.nextInt(100));
-            l.add(p);
-        }
-        return l;
-    }
 
     final static int amount = 1000000;
 
-    private List<Person> persons = getListOfPersons(amount);
+    private List<Person> persons = Service.getListOfPersons(amount);
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -204,7 +195,7 @@ public class DynaBeanBasedContainer {
 
     @Test
     public void ensureNullFromNextAndPrevId() {
-        final List<Person> persons = getListOfPersons(2);
+        final List<Person> persons = Service.getListOfPersons(2);
 
         ListContainer lc = new ListContainer<Person>(persons);
         

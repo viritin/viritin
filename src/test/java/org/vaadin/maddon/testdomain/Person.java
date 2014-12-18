@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-package org.vaadin.maddon;
+package org.vaadin.maddon.testdomain;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -24,6 +27,8 @@ public class Person {
     private String firstName;
     private String lastName;
     private int age;
+    
+    private List<Group> groups = new ArrayList<Group>();
 
     public Person() {
     }
@@ -32,6 +37,14 @@ public class Person {
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
+    }
+
+    public List<Group> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(List<Group> groups) {
+        this.groups = groups;
     }
 
     public String getFirstName() {
