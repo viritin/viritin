@@ -11,6 +11,7 @@ import java.util.Locale;
 import java.util.Set;
 import junit.framework.Assert;
 import org.junit.Test;
+import org.vaadin.maddon.fields.MultiSelectTable;
 import org.vaadin.maddon.form.AbstractForm;
 import org.vaadin.maddon.layouts.MVerticalLayout;
 import org.vaadin.maddon.testdomain.Group;
@@ -25,11 +26,11 @@ import org.vaadin.maddon.testdomain.Service;
  */
 public class MultiSelectMadnesInCore {
 
-    public static class PersonForm extends AbstractForm {
+    public static class PersonFormWithCoreTable extends AbstractForm {
 
         private Table groups = new Table();
 
-        public PersonForm() {
+        public PersonFormWithCoreTable() {
             setEagerValidation(true);
             groups.setMultiSelect(true);
             groups.setContainerDataSource(new ListContainer<Group>(Service.
@@ -175,10 +176,25 @@ public class MultiSelectMadnesInCore {
 
     }
 
+    public static class PersonForm extends AbstractForm<Person> {
+
+        MultiSelectTable<Group> groups = new MultiSelectTable()
+                .setOptions(Service.getAvailableGroups());
+
+        {
+            setEagerValidation(true);
+        }
+
+        @Override
+        protected Component createContent() {
+            return new MVerticalLayout(groups);
+        }
+    }
+
     @Test
     public void bindMultiSelectFormWithCoreComponent() {
 
-        PersonForm f = new PersonForm();
+        PersonFormWithCoreTable f = new PersonFormWithCoreTable();
         final Person person = Service.getPerson();
         List<Group> originalList = person.getGroups();
 
@@ -204,11 +220,42 @@ public class MultiSelectMadnesInCore {
         for (Object v : value) {
             Assert.assertTrue(person.getGroups().contains(v));
         }
-        
+
         // TODO it should be possible to keep the list same/write final for the 
         // groups collection in Person∫
         //Assert.assertSame(originalList, person.getGroups());
+    }
 
+    @Test
+    public void bindMultiSelectForm() {
+
+        PersonForm f = new PersonForm();
+        final Person person = Service.getPerson();
+        List<Group> originalList = person.getGroups();
+
+        f.setEntity(person);
+
+        // No odd casts, the table value is always Collection of your referenced types
+        Collection<Group> value = f.groups.getValue();
+        Assert.assertEquals(1, value.size());
+        Assert.assertEquals(person.getGroups().get(0), value.iterator().next());
+
+        f.groups.select(Service.getAvailableGroups().get(2));
+        f.groups.select(Service.getAvailableGroups().get(3));
+
+        Assert.assertEquals(3, person.getGroups().size());
+
+        value = f.groups.getValue();
+
+        Assert.assertEquals(3, value.size());
+
+        for (Group v : value) {
+            Assert.assertTrue(person.getGroups().contains(v));
+        }
+
+        // The backed list is kept the same
+        Assert.assertSame(originalList, person.getGroups());
+        
     }
 
 }
