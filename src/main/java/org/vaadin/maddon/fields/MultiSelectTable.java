@@ -40,6 +40,7 @@ public class MultiSelectTable<ET> extends CustomField<Collection> {
             setSelectable(true);
             setMultiSelect(true);
             setSizeFull();
+            setImmediate(true);
         }
 
         private boolean clientSideChange;
@@ -65,14 +66,24 @@ public class MultiSelectTable<ET> extends CustomField<Collection> {
                 Set newValues = new LinkedHashSet(newvalue);
                 newValues.removeAll(oldvalue);
                 collection.addAll(newValues);
+                MultiSelectTable.this.fireValueChange(true);
             }
         }
 
     };
 
+    public MultiSelectTable(String caption) {
+        this();
+        setCaption(caption);
+    }
+
     private Collection<ET> getEditedCollection() {
         Collection c = getValue();
         if (c == null) {
+            if(getPropertyDataSource() == null) {
+                // this should never happen :-)
+                return new HashSet();
+            }
             Class fieldType = getPropertyDataSource().getType();
             if (fieldType.isInterface()) {
                 if (fieldType == List.class) {
@@ -159,7 +170,7 @@ public class MultiSelectTable<ET> extends CustomField<Collection> {
     }
 
     public MultiSelectTable() {
-        setHeight("300px");
+        setHeight("230px");
         // TODO verify if this is needed in real usage, but at least to pass the test
         setConverter(new Converter<Collection, Collection>() {
 
