@@ -259,6 +259,9 @@ public class ListContainer<T> extends AbstractContainer implements
 
     @Override
     public void sort(Object[] propertyId, boolean[] ascending) {
+        if (propertyId.length == 0) {
+            return;
+        }
         Comparator c = new NullComparator();
         if (!ascending[0]) {
             c = new ReverseComparator(c);
