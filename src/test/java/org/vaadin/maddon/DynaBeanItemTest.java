@@ -1,5 +1,6 @@
 package org.vaadin.maddon;
 
+import org.vaadin.maddon.testdomain.Person;
 import com.vaadin.data.Item;
 import org.junit.Test;
 

@@ -1,5 +1,6 @@
 package org.vaadin.maddon;
 
+import org.vaadin.maddon.testdomain.Person;
 import com.vaadin.data.Property;
 import com.vaadin.ui.ListSelect;
 import java.util.ArrayList;
