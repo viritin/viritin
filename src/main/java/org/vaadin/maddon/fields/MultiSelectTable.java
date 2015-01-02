@@ -58,6 +58,8 @@ public class MultiSelectTable<ET> extends CustomField<Collection> {
             Set oldvalue = (Set) getValue();
             super.setValue(newValue, repaintIsNotNeeded);
             if (clientSideChange) {
+                // TODO add strategies for maintaining the order in case of List
+                // e.g. same as listing, selection order ...
                 Collection collection = getEditedCollection();
                 Set newvalue = (Set) getValue();
                 Set orphaned = new HashSet(oldvalue);
@@ -161,6 +163,25 @@ public class MultiSelectTable<ET> extends CustomField<Collection> {
             table.setContainerDataSource(new ListContainer(list));
         } else {
             table.setContainerDataSource(new ListContainer(list), Arrays.asList(
+                    visProps));
+        }
+        if(pendingHeaders != null) {
+            table.setColumnHeaders(pendingHeaders);
+        }
+        return this;
+    }
+
+    /**
+     * Sets the list of options available.
+     *
+     * @param list the list of available options
+     * @return this for fluent configuration
+     */
+    public MultiSelectTable<ET> setOptions(ET... list) {
+        if (visProps == null) {
+            table.setContainerDataSource(new ListContainer(Arrays.asList(list)));
+        } else {
+            table.setContainerDataSource(new ListContainer(Arrays.asList(list)), Arrays.asList(
                     visProps));
         }
         if(pendingHeaders != null) {
