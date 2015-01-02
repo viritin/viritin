@@ -28,6 +28,8 @@ public class Person {
     private String lastName;
     private int age;
     
+    private List<Address> adresses;
+    
     private List<Group> groups = new ArrayList<Group>();
 
     public Person() {
@@ -41,6 +43,14 @@ public class Person {
 
     public List<Group> getGroups() {
         return groups;
+    }
+
+    public List<Address> getAdresses() {
+        return adresses;
+    }
+
+    public void setAdresses(List<Address> adresses) {
+        this.adresses = adresses;
     }
 
     public void setGroups(List<Group> groups) {
