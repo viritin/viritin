@@ -28,7 +28,7 @@ public class Person {
     private String lastName;
     private int age;
     
-    private List<Address> adresses;
+    private List<Address> addresses = new ArrayList<Address>();
     
     private List<Group> groups = new ArrayList<Group>();
 
@@ -45,12 +45,12 @@ public class Person {
         return groups;
     }
 
-    public List<Address> getAdresses() {
-        return adresses;
+    public List<Address> getAddresses() {
+        return addresses;
     }
 
-    public void setAdresses(List<Address> adresses) {
-        this.adresses = adresses;
+    public void setAddresses(List<Address> adresses) {
+        this.addresses = adresses;
     }
 
     public void setGroups(List<Group> groups) {
@@ -83,7 +83,9 @@ public class Person {
 
     @Override
     public String toString() {
-        return "Person{" + "firstName=" + firstName + ", lastName=" + lastName + ", age=" + age + ", groups=" + groups + '}';
+        return "Person{" + "firstName=" + firstName + ", lastName=" + lastName + ", age=" + age + ", adresses=" + addresses + ", groups=" + groups + '}';
     }
+
+
     
 }

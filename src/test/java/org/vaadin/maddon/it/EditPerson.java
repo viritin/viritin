@@ -34,13 +34,17 @@ public class EditPerson extends AbstractTest {
 
         private MTextField firstName = new MTextField("Name");
 
-        private InlineEditableCollection<Address> addresses
+        private final InlineEditableCollection<Address> addresses
                 = new InlineEditableCollection<Address>(Address.class,
-                        AddressRow.class);
+                        AddressRow.class).withCaption("Addressess");
 
         private final MultiSelectTable<Group> groups = new MultiSelectTable<Group>().
                 withProperties("name")
                 .setOptions(Service.getAvailableGroups());
+
+        public PersonForm() {
+            setEagerValidation(true);
+        }
 
         @Override
         protected Component createContent() {

@@ -1,10 +1,13 @@
 package org.vaadin.maddon.fields;
 
+import com.vaadin.data.Validator;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.server.FontAwesome;
+import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomField;
+import com.vaadin.ui.Field;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.themes.ValoTheme;
@@ -12,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import org.vaadin.maddon.BeanBinder;
@@ -53,10 +57,32 @@ public class InlineEditableCollection<ET> extends CustomField<Collection> {
         @Override
         public void onFieldGroupChange(MBeanFieldGroup beanFieldGroup) {
             if (beanFieldGroup.getItemDataSource().getBean() == newInstance) {
+                if (!getFieldGroupFor(newInstance).isValid()) {
+                    return;
+                }
+                getAndEnsureValue().add(newInstance);
+                strategy.setPersisted(newInstance, true);
                 addNextNewElement();
             }
+            // TODO could optimize for only repainting on changed validity
+            fireValueChange(false);
         }
     };
+
+    public InlineEditableCollection<ET> withCaption(String caption) {
+        setCaption(caption);
+        return this;
+    }
+
+    @Override
+    public void validate() throws Validator.InvalidValueException {
+        super.validate();
+        for (Object o : getValue()) {
+            for (Field f : getFieldGroupFor((ET) o).getFields()) {
+                f.validate();
+            }
+        }
+    }
 
     private Collection<ET> getAndEnsureValue() {
         Collection<ET> value = getValue();
@@ -88,6 +114,7 @@ public class InlineEditableCollection<ET> extends CustomField<Collection> {
     private void addNextNewElement() {
         newInstance = createInstance();
         strategy.addPojo(newInstance);
+        strategy.setPersisted(newInstance, false);
     }
 
     public interface Instantiator<ET> {
@@ -154,6 +181,7 @@ public class InlineEditableCollection<ET> extends CustomField<Collection> {
     public void removeElement(ET elemnentToBeRemoved) {
         strategy.removePojo(elemnentToBeRemoved);
         getAndEnsureValue().remove(elemnentToBeRemoved);
+        fireValueChange(false);
     }
 
     @Override
@@ -169,7 +197,6 @@ public class InlineEditableCollection<ET> extends CustomField<Collection> {
 
         return strategy.getLayout();
     }
-    public static final String _ACTIONS_COLUMN_ID = "_actions";
 
     @Override
     public Class<? extends Collection> getType() {
@@ -184,6 +211,8 @@ public class InlineEditableCollection<ET> extends CustomField<Collection> {
 
         public void addPojo(T v);
 
+        public void setPersisted(T v, boolean persisted);
+
         public void removePojo(T v);
 
         public Layout getLayout();
@@ -194,15 +223,15 @@ public class InlineEditableCollection<ET> extends CustomField<Collection> {
             InlineEditableCollection.Strategy<ET> {
 
         List<ET> items = new ArrayList<ET>();
-        
+
         List<Object> visibleProperties;
 
         public GridStrategyImpl() {
             setSpacing(true);
         }
-        
+
         private List<Object> getVisibleProperties() {
-            if(visibleProperties == null) {
+            if (visibleProperties == null) {
                 // create temp instance and get bound properties
                 ET newInstance = createInstance();
                 FieldGroup fg = getFieldGroupFor(newInstance);
@@ -227,7 +256,6 @@ public class InlineEditableCollection<ET> extends CustomField<Collection> {
                             removeElement(v);
                         }
                     }).withStyleName(ValoTheme.BUTTON_ICON_ONLY));
-            this.newLine();
         }
 
         @Override
@@ -243,6 +271,49 @@ public class InlineEditableCollection<ET> extends CustomField<Collection> {
             return this;
         }
 
+        @Override
+        public void setPersisted(ET v, boolean persisted) {
+            int row = items.indexOf(v);
+            Button c = (Button) getComponent(getVisibleProperties().size(),
+                    row);
+            if (persisted) {
+                c.setDescription(getDeleteElementDescription());
+            } else {
+                for (int i = 0; i < getVisibleProperties().size(); i++) {
+                    try {
+                        AbstractField f = (AbstractField) (Field) getComponent(i,
+                                row);
+                        f.setValidationVisible(false);
+                    } catch (Exception e) {
+
+                    }
+                }
+                c.setDescription(getDisabledDeleteElementDescription());
+            }
+            c.setEnabled(persisted);
+        }
+
+    }
+
+    public String getDisabledDeleteElementDescription() {
+        return disabledDeleteThisElementDescription;
+    }
+
+    public void setDisabledDeleteThisElementDescription(
+            String disabledDeleteThisElementDescription) {
+        this.disabledDeleteThisElementDescription = disabledDeleteThisElementDescription;
+    }
+
+    private String disabledDeleteThisElementDescription = "Fill this row to add a new element, currently ignored";
+
+    public String getDeleteElementDescription() {
+        return deleteThisElementDescription;
+    }
+    private String deleteThisElementDescription = "Delete this element";
+
+    public void setDeleteThisElementDescription(
+            String deleteThisElementDescription) {
+        this.deleteThisElementDescription = deleteThisElementDescription;
     }
 
 }
