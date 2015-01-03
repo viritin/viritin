@@ -22,12 +22,10 @@ import org.vaadin.maddon.testdomain.Service;
 public class EditPerson extends AbstractTest {
 
     public static class AddressRow {
-
-        private MTextField type = new MTextField().withInputPrompt("type");
-        private MTextField street = new MTextField().withInputPrompt("street");
-        private MTextField city = new MTextField().withInputPrompt("city");
-        private MTextField zipCode = new MTextField().withInputPrompt("zip");
-
+        MTextField type = new MTextField().withInputPrompt("type");
+        MTextField street = new MTextField().withInputPrompt("street");
+        MTextField city = new MTextField().withInputPrompt("city");
+        MTextField zipCode = new MTextField().withInputPrompt("zip");
     }
 
     public static class PersonForm<Person> extends AbstractForm {

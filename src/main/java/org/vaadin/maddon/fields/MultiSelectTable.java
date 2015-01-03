@@ -242,6 +242,11 @@ public class MultiSelectTable<ET> extends CustomField<Collection> {
         return table;
     }
 
+    public MultiSelectTable<ET> withColumnHeaderMode(Table.ColumnHeaderMode mode) {
+        getUndelayingTable().setColumnHeaderMode(mode);
+        return this;
+    }
+
     public MultiSelectTable<ET> withFullWidth() {
         setWidth(100, Unit.PERCENTAGE);
         return this;

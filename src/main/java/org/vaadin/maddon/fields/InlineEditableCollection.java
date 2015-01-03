@@ -1,14 +1,15 @@
 package org.vaadin.maddon.fields;
 
 import com.vaadin.data.Validator;
-import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomField;
+import com.vaadin.ui.DefaultFieldFactory;
 import com.vaadin.ui.Field;
 import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.themes.ValoTheme;
 import java.util.ArrayList;
@@ -22,20 +23,23 @@ import org.vaadin.maddon.BeanBinder;
 import org.vaadin.maddon.MBeanFieldGroup;
 import org.vaadin.maddon.MBeanFieldGroup.FieldGroupListener;
 import org.vaadin.maddon.button.MButton;
-import org.vaadin.maddon.form.AbstractForm;
 
 /**
  * A field suitable for editing collection of referenced objects tied to parent
  * object only. E.g. OneToMany/ElementCollection fields in JPA world.
  * <p>
- * Some features/restrictions: The field is valid when all elements are valid.
- * The field is always non buffered The element type needs to have an empty
- * paremeter constructor or user must provide an Instantiator.
+ * Some features/restrictions:
+ * <ul>
+ * <li>The field is valid when all elements are valid.
+ * <li>The field is always non buffered
+ * <li>The element type needs to have an empty paremeter constructor or user
+ * must provide an Instantiator.
+ * </ul>
  *
  * <p>
- * By default the field always contains an empty instance to create new rows.
- * This can be configured to contain a separate add button or disable adding
- * altogether.
+ * By default the field always contains an empty instance to create new rows. In
+ * upcoming versions this can be configured to contain a separate add button or
+ * disable adding altogether.
  *
  * @author Matti Tahvonen
  * @param <ET> The type in the entity collection. The type must have empty
@@ -68,6 +72,7 @@ public class InlineEditableCollection<ET> extends CustomField<Collection> {
             fireValueChange(false);
         }
     };
+    private List<String> visibleProperties;
 
     public InlineEditableCollection<ET> withCaption(String caption) {
         setCaption(caption);
@@ -123,13 +128,13 @@ public class InlineEditableCollection<ET> extends CustomField<Collection> {
     }
 
     public InlineEditableCollection(Class<ET> elementType,
-            Class formType) {
+            Class<?> formType) {
         this.elementType = elementType;
         this.editorType = formType;
     }
 
     public InlineEditableCollection(Class<ET> elementType, Instantiator i,
-            Class<AbstractForm<ET>> formType) {
+            Class<?> formType) {
         this.elementType = elementType;
         this.instantiator = i;
         this.editorType = formType;
@@ -184,18 +189,63 @@ public class InlineEditableCollection<ET> extends CustomField<Collection> {
         fireValueChange(false);
     }
 
+    public InlineEditableCollection<ET> setVisibleProperties(
+            List<String> properties) {
+        visibleProperties = properties;
+        return this;
+    }
+
+    public InlineEditableCollection<ET> setVisibleProperties(
+            List<String> properties, List<String> propertyHeaders) {
+        visibleProperties = properties;
+        Iterator<String> it = propertyHeaders.iterator();
+        for (String prop : visibleProperties) {
+            setPropertyHeader(prop, it.next());
+        }
+        return this;
+    }
+
+    private final Map<String, String> propertyToHeader = new HashMap<String, String>();
+
+    public InlineEditableCollection<ET> setPropertyHeader(String propertyName,
+            String propertyHeader) {
+        propertyToHeader.put(propertyName, propertyHeader);
+        return this;
+    }
+
+    protected String getPropertyHeader(String propertyName) {
+        String header = propertyToHeader.get(propertyName);
+        if (header == null) {
+            header = DefaultFieldFactory.createCaptionByPropertyId(propertyName);
+        }
+        return header;
+    }
+
     @Override
     protected Component initContent() {
-        strategy = new GridStrategyImpl();
-        Collection<ET> value = getValue();
+        return getStrategy().getLayout();
+    }
+
+    public Strategy getStrategy() {
+        if (strategy == null) {
+            strategy = new GridStrategyImpl();
+            strategy.setVisibleProperties(visibleProperties);
+        }
+        return strategy;
+    }
+
+    @Override
+    protected void setInternalValue(Collection newValue) {
+        super.setInternalValue(newValue);
+        getStrategy().clear();
+        Collection<ET> value = newValue;
         if (value != null) {
             for (ET v : value) {
-                strategy.addPojo(v);
+                getStrategy().addPojo(v);
             }
         }
         addNextNewElement();
 
-        return strategy.getLayout();
     }
 
     @Override
@@ -217,6 +267,10 @@ public class InlineEditableCollection<ET> extends CustomField<Collection> {
 
         public Layout getLayout();
 
+        public void setVisibleProperties(List<Object> visibleProperties);
+
+        public void clear();
+
     }
 
     class GridStrategyImpl extends GridLayout implements
@@ -226,24 +280,36 @@ public class InlineEditableCollection<ET> extends CustomField<Collection> {
 
         List<Object> visibleProperties;
 
+        boolean inited = false;
+
         public GridStrategyImpl() {
             setSpacing(true);
         }
 
+        @Override
+        public void setVisibleProperties(List<Object> visibleProperties) {
+            this.visibleProperties = visibleProperties;
+        }
+
         private List<Object> getVisibleProperties() {
             if (visibleProperties == null) {
-                // create temp instance and get bound properties
-                ET newInstance = createInstance();
-                FieldGroup fg = getFieldGroupFor(newInstance);
-                visibleProperties = new ArrayList(fg.getBoundPropertyIds());
-                pojoToEditor.remove(newInstance);
+
+                visibleProperties = new ArrayList<Object>();
+
+                for (java.lang.reflect.Field f : editorType.getDeclaredFields()) {
+                    // field order can be counted since jdk6 
+                    if (Field.class.isAssignableFrom(f.getType())) {
+                        visibleProperties.add(f.getName());
+                    }
+                }
+
             }
             return visibleProperties;
         }
 
         @Override
         public void addPojo(final ET v) {
-            setColumns(getVisibleProperties().size() + 1);
+            ensureInited();
             items.add(v);
             MBeanFieldGroup<ET> fg = getFieldGroupFor(v);
             for (Object property : getVisibleProperties()) {
@@ -262,7 +328,7 @@ public class InlineEditableCollection<ET> extends CustomField<Collection> {
         public void removePojo(ET v) {
             int index = items.indexOf(v);
             items.remove(index);
-            int row = index;
+            int row = index + 1;
             removeRow(row);
         }
 
@@ -273,7 +339,7 @@ public class InlineEditableCollection<ET> extends CustomField<Collection> {
 
         @Override
         public void setPersisted(ET v, boolean persisted) {
-            int row = items.indexOf(v);
+            int row = items.indexOf(v) + 1;
             Button c = (Button) getComponent(getVisibleProperties().size(),
                     row);
             if (persisted) {
@@ -293,27 +359,52 @@ public class InlineEditableCollection<ET> extends CustomField<Collection> {
             c.setEnabled(persisted);
         }
 
+        private void ensureInited() {
+            if (!inited) {
+                setColumns(getVisibleProperties().size() + 1);
+                for (Object property : getVisibleProperties()) {
+                    Label header = new Label(getPropertyHeader(property.
+                            toString()));
+                    addComponent(header);
+                }
+                newLine();
+                inited = true;
+            }
+        }
+
+        @Override
+        public void clear() {
+            if (inited) {
+                items.clear();
+                int rows = inited ? 1 : 0;
+                while (getRows() > rows) {
+                    removeRow(rows);
+                }
+            }
+
+        }
+
+        public String getDisabledDeleteElementDescription() {
+            return disabledDeleteThisElementDescription;
+        }
+
+        public void setDisabledDeleteThisElementDescription(
+                String disabledDeleteThisElementDescription) {
+            this.disabledDeleteThisElementDescription = disabledDeleteThisElementDescription;
+        }
+
+        private String disabledDeleteThisElementDescription = "Fill this row to add a new element, currently ignored";
+
+        public String getDeleteElementDescription() {
+            return deleteThisElementDescription;
+        }
+
+        private String deleteThisElementDescription = "Delete this element";
+
+        public void setDeleteThisElementDescription(
+                String deleteThisElementDescription) {
+            this.deleteThisElementDescription = deleteThisElementDescription;
+        }
+
     }
-
-    public String getDisabledDeleteElementDescription() {
-        return disabledDeleteThisElementDescription;
-    }
-
-    public void setDisabledDeleteThisElementDescription(
-            String disabledDeleteThisElementDescription) {
-        this.disabledDeleteThisElementDescription = disabledDeleteThisElementDescription;
-    }
-
-    private String disabledDeleteThisElementDescription = "Fill this row to add a new element, currently ignored";
-
-    public String getDeleteElementDescription() {
-        return deleteThisElementDescription;
-    }
-    private String deleteThisElementDescription = "Delete this element";
-
-    public void setDeleteThisElementDescription(
-            String deleteThisElementDescription) {
-        this.deleteThisElementDescription = deleteThisElementDescription;
-    }
-
 }
