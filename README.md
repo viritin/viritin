@@ -159,6 +159,7 @@ Online demo for this add-on hopefully makes no sense. Otherwise this add-on has 
  * Add-ons test sources, both [integration tests](https://github.com/mstahv/maddon/blob/master/src/test/java/org/vaadin/maddon/it/EditPerson.java) and [unit tests](https://github.com/mstahv/maddon/tree/master/src/test/java/org/vaadin/maddon) contains some usage examples.
  * [Vaadin Java EE application example](https://hub.jazz.net/project/vaadin/vaadin-jpa-app/overview)
  * [Spring Data + Vaadin UI example](https://github.com/mstahv/spring-data-vaadin-crud)
+ * Another [Java EE app example](https://github.com/mstahv/vaadin-java-ee-essentials-example/tree/viewmenujpa) - contains JPA usage examples for ManyToMany (MultiSelectTable) and ElementCollection (InlineEditableCollection).
 
 
 ## Download release
