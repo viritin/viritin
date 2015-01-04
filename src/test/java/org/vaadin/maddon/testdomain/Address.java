@@ -7,8 +7,12 @@ import javax.validation.constraints.NotNull;
  * @author Matti Tahvonen
  */
 public class Address {
+    
+    public enum AddressType {
+        Home, Work, Leisure, Other
+    }
 
-    private String type = "home";
+    private AddressType type = AddressType.Home;
 
     @NotNull
     private String street;
@@ -18,21 +22,11 @@ public class Address {
 
     private Integer zipCode;
 
-    /**
-     * Get the value of type
-     *
-     * @return the value of type
-     */
-    public String getType() {
+    public AddressType getType() {
         return type;
     }
 
-    /**
-     * Set the value of type
-     *
-     * @param type new value of type
-     */
-    public void setType(String type) {
+    public void setType(AddressType type) {
         this.type = type;
     }
 
