@@ -3,6 +3,7 @@ package org.vaadin.maddon.fields;
 import com.vaadin.data.Validator;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.AbstractField;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomField;
@@ -50,9 +51,9 @@ public class InlineEditableCollection<ET> extends CustomField<Collection> {
     private Instantiator<ET> instantiator;
     private Instantiator<?> editorInstantiator;
 
-    private Class<ET> elementType;
+    private final Class<ET> elementType;
 
-    private Class<?> editorType;
+    private final Class<?> editorType;
     private Strategy strategy;
     private ET newInstance;
 
@@ -313,7 +314,9 @@ public class InlineEditableCollection<ET> extends CustomField<Collection> {
             items.add(v);
             MBeanFieldGroup<ET> fg = getFieldGroupFor(v);
             for (Object property : getVisibleProperties()) {
-                addComponent(fg.getField(property));
+                Component c = fg.getField(property);
+                addComponent(c);
+                setComponentAlignment(c, Alignment.MIDDLE_LEFT);
             }
             addComponent(new MButton(FontAwesome.TRASH_O).withListener(
                     new Button.ClickListener() {
