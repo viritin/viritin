@@ -59,7 +59,6 @@ public class MTextArea extends TextArea {
     	return this;
     }
     
-
     public MTextArea withFullWidth() {
     	setWidth("100%");
     	return this;
