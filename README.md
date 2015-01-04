@@ -87,12 +87,11 @@ layout.addComponent(new RichText().withMarkDown(getClass().getResourceAsStream("
 layout.addComponent(new RichText().withSafeHtml(getClass().getResourceAsStream("/readme.html")));
 ```
 
-
 Hopefully all of these enhancements will end up in the core Vaadin library, in a one form or another. 
 
-If you have a re-usable server side Vaadin "api-hack" that you continuosly use in you project to reduce your madness, please contribute it. I promise to accept pull requests sooner and with lighter process than to the core Vaadin. 
+If you have a re-usable server side Vaadin "api-hack" that you continuously use in you project to reduce your madness, please contribute it. I promise to accept pull requests sooner and with lighter process than to the core Vaadin. 
 
-Also feel free to suggest depenencies to new or possibly already existing add-ons that are similar in nature (pure server side, simple and smallish). This way you'll only need to add one helper depenency to get what you most often want to. If your dependency or addition is not small or simple, we can still consider if it is otherwise high quality (well tested, industry proven). Current dependencies:
+Also feel free to suggest dependencies to new or possibly already existing add-ons that are similar in nature (pure server side, simple and smallish). This way you'll only need to add one helper dependency to get what you most often want to. If your dependency or addition is not small or simple, we can still consider if it is otherwise high quality (well tested, industry proven). Current dependencies:
 
  * ConfirmDialog
 
@@ -124,18 +123,28 @@ Currently project contains following helpers:
 		* TypedSelect
 			* A single select to another entity type
 			* By default NativeSelect, but implementation is configurable
-   		* MBeanTable extends Table (note that Table is often also the best real life listselect) 
+		* EnumSelect
+			* a zero-conf select for enums (when used with FieldGroup), based on NativeSelect
+   		* MTable extends Table (note that Table is often also the best real life listselect) 
 			* single select only but better typed for generic bean usage 
       	  	* in addition to typing and related methods
          		* smart selection mode and immediate (based on value change listener, [Vaadin Ticket](http://dev.vaadin.com/ticket/8029) ) 
 	     	   	* withProperties(String...), withColumnHeaders
+		* MultiSelectTable
+			* A Field suitable for editing varios collections of other entities (e.g. List<MyPojo> pojos), selected from a list given by developer.
+			* Suitable for editing e.g. JPA ManyToMany mapped field
+			* The field modifies the existing set/list, making if efficent and more compatible with your backend. The standard "multiselect mode" in core Vaadin selects always uses new Set and the value is always Set :-(
+			* Works with both Set and List
+* InlineEditableCollection
+	* A Vaadin field that edits a collection of embedded objects. E.g. OneToMany or ElementCollection annotated collection fields in JPA apps.
+	* Example: Edits a List of Address objects in a Person object in an addressbook app
 * Label extensions
  * Header to make headers without html hacking
  * RichText component for XSS safe html inclusion. Also supports Markdown syntax.
 * Button extension
  * PrimaryButton (stylename + enter shortcut)
  * ConfirmButton (Customizeble confirm dialog before the actual listener is called)
-* ListContainer (used by MTable)
+* ListContainer (used by e.g. MTable, but can be used separately as well)
  * A lightweight replacement for BeanItemContainer that uses apache commons-beanutils for introspection. The performance (both memory and CPU) is also superior to the core Vaadin counterpart.
  * Note, that beans are kept in orinal list that developer used to pass beans. Wrap in e.g. ArrayList if you wish to keep original List unmodified.
 * AbstractForm
@@ -143,29 +152,16 @@ Currently project contains following helpers:
 * DisclosurePanel is a simple panel whose content is hidden by default. Easy method to hide fields that are most often irrelevant for the end user.
 
 
-## Online demo
+## Online demo/usage examples
 
-Online demo for this add-on hopefully makes no sense. Otherwise this add-on has lost its focus.
+Online demo for this add-on hopefully makes no sense. Otherwise this add-on has lost its focus. There are though many demo apps that contain good usage examples. Some of them listed here:
+
+ * Add-ons test sources, both [integration tests](https://github.com/mstahv/maddon/blob/master/src/test/java/org/vaadin/maddon/it/EditPerson.java) and [unit tests](https://github.com/mstahv/maddon/tree/master/src/test/java/org/vaadin/maddon) contains some usage examples.
+ * [Vaadin Java EE application example](https://hub.jazz.net/project/vaadin/vaadin-jpa-app/overview)
+ * [Spring Data + Vaadin UI example](https://github.com/mstahv/spring-data-vaadin-crud)
 
 
 ## Download release
 
 Official releases of this add-on are available at Vaadin Directory. For Maven instructions, download and reviews, go to http://vaadin.com/addon/maddon
 
-
-## Release notes
-
-### Version 1.3
- * Added TypedSelect
- * Added AbstractForm
- * Lots of smaller enhancements
-
-### Version 1.2
-* ListContainer (used by MTable) to replace BeanItemContainer, almost tenfold memory saving with small beans, huge performance enhancement when populating large abounts of data.
-* MTable without data now displays explicitly set columnnames
-* Lots of other small enhancements and bugfixes (see changelist)
-
-### Version 1.1
-* MValueChangeListeners now added with addMValueChangeListener (previously addValueChangeListener)
-* Added PrimaryButton and ConfirmButton
-* MTable now has withFullWidth()
