@@ -10,6 +10,7 @@ public class EnumSelect extends TypedSelect {
 
     public EnumSelect() {
         setFieldType(NativeSelect.class);
+        setWidthUndefined();
     }
 
     public EnumSelect(String caption) {
