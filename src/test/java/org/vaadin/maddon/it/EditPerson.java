@@ -26,8 +26,7 @@ public class EditPerson extends AbstractTest {
 
     public static class AddressRow {
 
-        EnumSelect type = (EnumSelect) new EnumSelect().withSelectType(
-                OptionGroup.class);
+        EnumSelect type = (EnumSelect) new EnumSelect();
         MTextField street = new MTextField().withInputPrompt("street");
         MTextField city = new MTextField().withInputPrompt("city");
         MTextField zipCode = new MTextField().withInputPrompt("zip");
@@ -43,7 +42,10 @@ public class EditPerson extends AbstractTest {
 
         private final InlineEditableCollection<Address> addresses
                 = new InlineEditableCollection<Address>(Address.class,
-                        AddressRow.class).withCaption("Addressess");
+                        AddressRow.class).withCaption("Addressess")
+                .addElementAddedListener(InlineEditableCollections.addedListener)
+                .addElementRemovedListener(InlineEditableCollections.removeListener)
+                ;
 
         private final MultiSelectTable<Group> groups = new MultiSelectTable<Group>().
                 withProperties("name")
