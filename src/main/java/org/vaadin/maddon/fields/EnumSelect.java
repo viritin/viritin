@@ -1,58 +1,83 @@
 package org.vaadin.maddon.fields;
 
-import java.util.Arrays;
-import java.util.List;
 
 import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
 import com.vaadin.ui.NativeSelect;
+import java.util.Collection;
 
-public class EnumSelect extends NativeSelect {
+public class EnumSelect extends TypedSelect {
 
     public EnumSelect() {
+        setFieldType(NativeSelect.class);
     }
 
     public EnumSelect(String caption) {
         super(caption);
     }
 
-    public EnumSelect withFullWidth() {
-        setWidth("100%");
-        return this;
-    }
-
-    public EnumSelect withReadOnly(boolean readOnly) {
-        setReadOnly(readOnly);
-        return this;
-    }
-
-    public EnumSelect withValidator(Validator validator) {
-        setImmediate(true);
-        addValidator(validator);
-        return this;
-    }
-
-    public EnumSelect withWidth(float width, Unit unit) {
-        setWidth(width, unit);
-        return this;
-    }
-
-    public EnumSelect withWidth(String width) {
-        setWidth(width);
-        return this;
-    }
-
     @Override
     public void setPropertyDataSource(Property newDataSource) {
         if (newDataSource != null) {
-            removeAllItems();
             Class<?> type = newDataSource.getType();
-            List<?> asList = Arrays.asList(type.getEnumConstants());
-            for (Object object : asList) {
-                addItem(object);
-            }
+            setOptions(type.getEnumConstants());
         }
         super.setPropertyDataSource(newDataSource);
     }
 
+    @Override
+    public EnumSelect setBeans(Collection options) {
+        return (EnumSelect) super.setBeans(options);
+    }
+
+    @Override
+    public EnumSelect setCaptionGenerator(CaptionGenerator captionGenerator) {
+        return (EnumSelect) super.setCaptionGenerator(captionGenerator);
+    }
+
+    @Override
+    public EnumSelect setFieldType(Class type) {
+        return (EnumSelect) super.setFieldType(type);
+    }
+
+    @Override
+    public EnumSelect withWidth(String width) {
+        return (EnumSelect) super.withWidth(width);
+    }
+
+    @Override
+    public EnumSelect withWidth(float width, Unit unit) {
+        return (EnumSelect) super.withWidth(width, unit);
+    }
+
+    @Override
+    public EnumSelect withValidator(Validator validator) {
+        return (EnumSelect) super.withValidator(validator);
+    }
+
+    @Override
+    public TypedSelect withReadOnly(boolean readOnly) {
+        return super.withReadOnly(readOnly);
+    }
+
+    @Override
+    public EnumSelect withFullWidth() {
+        return (EnumSelect) super.withFullWidth();
+    }
+
+    @Override
+    public EnumSelect addMValueChangeListener(MValueChangeListener listener) {
+        return (EnumSelect) super.addMValueChangeListener(listener);
+    }
+
+    @Override
+    public EnumSelect withSelectType(Class selectType) {
+        return (EnumSelect) super.withSelectType(selectType);
+    }
+
+    @Override
+    public EnumSelect withCaption(String caption) {
+        return (EnumSelect) super.withCaption(caption);
+    }
+    
 }

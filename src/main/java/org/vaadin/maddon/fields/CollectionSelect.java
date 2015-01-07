@@ -11,9 +11,12 @@ import com.vaadin.ui.ListSelect;
 /**
  * TODO improve this, just copy pasted from archived SmartFields addon.
  * 
+ * @see MultiSelectTable A table based and more complete version of this.
+ * 
  * @author mstahv
  * @param <T> the type of the value for this select
  */
+@Deprecated
 public class CollectionSelect<T> extends CustomField<Collection<T>> {
 
 	private ListSelect select = new ListSelect() {

@@ -28,8 +28,8 @@ import org.vaadin.maddon.ListContainer;
  * AbstractSelect implementation, type provided in constructor. Tree and Table
  * are not supported, see MTable.
  * <p>
- * Note, that this select is always in single select mode. See CollectionSelect
- * for "multiselect".
+ * Note, that this select is always in single select mode. See MultiSelectTable
+ * for a proper "multiselect".
  *
  * @author mstahv
  * @param <T> the type of selects value
@@ -196,7 +196,30 @@ public class TypedSelect<T> extends CustomComponent implements Field<T> {
         return fieldType;
     }
 
+    /**
+     * Use setFieldType instead.
+     *
+     * @param type
+     * @return
+     * @deprecated
+     */
+    @Deprecated
     public TypedSelect setType(Class<T> type) {
+        this.fieldType = type;
+        return this;
+    }
+
+    /**
+     * Sets the Vaadin Select type that should be used as the select
+     * implementation.
+     *
+     * Supported values are: ListSelect, OptionGroup, ComboBox, TwinColSelect
+     * and NativeSelect.
+     *
+     * @param type
+     * @return
+     */
+    public TypedSelect setFieldType(Class<T> type) {
         this.fieldType = type;
         return this;
     }
@@ -408,6 +431,32 @@ public class TypedSelect<T> extends CustomComponent implements Field<T> {
             };
             getSelect().addValueChangeListener(piggyBackListener);
         }
+    }
+
+    public TypedSelect<T> withFullWidth() {
+        setWidth("100%");
+        return this;
+    }
+
+    public TypedSelect<T> withReadOnly(boolean readOnly) {
+        setReadOnly(readOnly);
+        return this;
+    }
+
+    public TypedSelect<T> withValidator(Validator validator) {
+        setImmediate(true);
+        addValidator(validator);
+        return this;
+    }
+
+    public TypedSelect<T> withWidth(float width, Unit unit) {
+        setWidth(width, unit);
+        return this;
+    }
+
+    public TypedSelect<T> withWidth(String width) {
+        setWidth(width);
+        return this;
     }
 
 }

@@ -3,6 +3,8 @@ package org.vaadin.maddon.it;
 import com.vaadin.annotations.Theme;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.OptionGroup;
+import com.vaadin.ui.themes.ValoTheme;
 import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.maddon.fields.EnumSelect;
 import org.vaadin.maddon.fields.InlineEditableCollection;
@@ -23,10 +25,16 @@ import org.vaadin.maddon.testdomain.Service;
 public class EditPerson extends AbstractTest {
 
     public static class AddressRow {
-        EnumSelect type = new EnumSelect();
+
+        EnumSelect type = (EnumSelect) new EnumSelect().withSelectType(
+                OptionGroup.class);
         MTextField street = new MTextField().withInputPrompt("street");
         MTextField city = new MTextField().withInputPrompt("city");
         MTextField zipCode = new MTextField().withInputPrompt("zip");
+
+        {
+            type.setStyleName(ValoTheme.OPTIONGROUP_HORIZONTAL);
+        }
     }
 
     public static class PersonForm<Person> extends AbstractForm {
@@ -47,7 +55,8 @@ public class EditPerson extends AbstractTest {
 
         @Override
         protected Component createContent() {
-            return new MVerticalLayout(firstName, addresses, groups, getToolbar());
+            return new MVerticalLayout(firstName, addresses, groups,
+                    getToolbar());
         }
 
     }
