@@ -27,6 +27,7 @@ import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryUsage;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 import java.util.logging.Logger;
@@ -34,8 +35,10 @@ import junit.framework.Assert;
 import org.apache.commons.lang3.mutable.MutableBoolean;
 
 import org.junit.Test;
+import org.junit.matchers.JUnitMatchers;
 
 import static org.junit.Assert.*;
+import static org.junit.matchers.JUnitMatchers.hasItems;
 
 /**
  *
@@ -291,4 +294,26 @@ public class FilterableListContainerTest {
        }
    }
 
+  @Test
+  public void testMultiLevelSort() throws Exception {
+    FilterableListContainer<Person> lc = new FilterableListContainer<Person>(
+          new ArrayList<Person>(Arrays.asList(
+                new Person("2", "2", 3),
+                new Person("3", "2", 2),
+                new Person("1", "2", 2),
+                new Person("1", "1", 1),
+                new Person("1", "2", 4)
+          )));
+
+    lc.sort(new Object[]{"age", "firstName"}, new boolean[]{true, false});
+
+    Collection<Person> itemIds = lc.getItemIds();
+    assertThat(itemIds, hasItems(
+          new Person("1", "1", 1),
+          new Person("3", "2", 2),
+          new Person("1", "2", 2),
+          new Person("2", "2", 3),
+          new Person("1", "2", 4)
+    ));
+  }
 }

@@ -2,8 +2,6 @@ package org.vaadin.maddon;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -12,9 +10,6 @@ import com.vaadin.data.Container;
 import com.vaadin.data.Container.Filterable;
 import com.vaadin.data.Item;
 import com.vaadin.data.util.filter.UnsupportedFilterException;
-import org.apache.commons.beanutils.BeanComparator;
-import org.apache.commons.collections.comparators.NullComparator;
-import org.apache.commons.collections.comparators.ReverseComparator;
 
 /**
  * A filterable ({@link Container.Filterable}) version of {@link ListContainer}.
@@ -31,9 +26,6 @@ public class FilterableListContainer<T> extends ListContainer<T> implements
     private Set<Filter> filters = new HashSet<Filter>();
 
     private List<T> filteredItems = new ArrayList<T>();
-
-    private Object[] lastSortedPropertyId;
-    private boolean[] lastAscending;
 
     public FilterableListContainer(Class<T> type) {
         super(type);
@@ -68,10 +60,6 @@ public class FilterableListContainer<T> extends ListContainer<T> implements
 
     private void filterContainer() {
         applyFilters();
-        if (lastSortedPropertyId != null && lastAscending != null) {
-          sort(lastSortedPropertyId, lastAscending);
-        }
-
         super.fireItemSetChange();
     }
 
@@ -190,20 +178,11 @@ public class FilterableListContainer<T> extends ListContainer<T> implements
 
     @Override
     public void sort(Object[] propertyId, boolean[] ascending) {
-        lastSortedPropertyId = propertyId;
-        lastAscending = ascending;
+      super.sort(propertyId, ascending);
 
-        if (isFiltered()) {
-            Comparator c = new NullComparator();
-            if (!ascending[0]) {
-                c = new ReverseComparator(c);
-            }
-            BeanComparator<T> bc = new BeanComparator<T>(propertyId[0].
-                    toString(), c);
-            Collections.sort(filteredItems, bc);
-        } else {
-            super.sort(propertyId, ascending);
-        }
+      if (isFiltered()) {
+        filterContainer();
+      }
     }
 
 }
