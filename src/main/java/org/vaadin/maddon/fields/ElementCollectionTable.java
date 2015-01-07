@@ -63,9 +63,9 @@ public class ElementCollectionTable<ET> extends AbstractElementCollection<ET> {
         super(elementType, i, formType);
     }
 
-    MTable table;
+    private MTable table;
 
-    MButton addButton = new MButton(FontAwesome.PLUS,
+    private MButton addButton = new MButton(FontAwesome.PLUS,
             new Button.ClickListener() {
                 @Override
                 public void buttonClick(Button.ClickEvent event) {
@@ -73,11 +73,11 @@ public class ElementCollectionTable<ET> extends AbstractElementCollection<ET> {
                 }
             });
 
-    IdentityHashMap<ET, MButton> elementToDelButton = new IdentityHashMap<ET, MButton>();
+    private IdentityHashMap<ET, MButton> elementToDelButton = new IdentityHashMap<ET, MButton>();
 
     boolean inited = false;
 
-    MVerticalLayout layout = new MVerticalLayout();
+    private MVerticalLayout layout = new MVerticalLayout();
 
     @Override
     public void attach() {
@@ -100,6 +100,17 @@ public class ElementCollectionTable<ET> extends AbstractElementCollection<ET> {
     @Override
     public Layout getLayout() {
         return layout;
+    }
+
+    public MButton getAddButton() {
+        return addButton;
+    }
+
+    /**
+     * @return the Table used in the implementation. Configure carefully.
+     */
+    public MTable getTable() {
+        return table;
     }
 
     @Override
