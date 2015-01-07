@@ -74,6 +74,7 @@ public class InlineEditableCollection<ET> extends CustomField<Collection> {
         }
     };
     private List<String> visibleProperties;
+    private boolean allowNewItems;
 
     public InlineEditableCollection<ET> withCaption(String caption) {
         setCaption(caption);
@@ -118,9 +119,17 @@ public class InlineEditableCollection<ET> extends CustomField<Collection> {
     }
 
     private void addNextNewElement() {
-        newInstance = createInstance();
-        strategy.addPojo(newInstance);
-        strategy.setPersisted(newInstance, false);
+        if (allowNewItems) {
+            newInstance = createInstance();
+            strategy.addPojo(newInstance);
+            strategy.setPersisted(newInstance, false);
+        }
+    }
+
+    public InlineEditableCollection<ET> setAllowNewElements(
+            boolean allowNewItems) {
+        this.allowNewItems = allowNewItems;
+        return this;
     }
 
     public interface Instantiator<ET> {
@@ -368,6 +377,7 @@ public class InlineEditableCollection<ET> extends CustomField<Collection> {
                 for (Object property : getVisibleProperties()) {
                     Label header = new Label(getPropertyHeader(property.
                             toString()));
+                    header.setWidthUndefined();
                     addComponent(header);
                 }
                 newLine();
