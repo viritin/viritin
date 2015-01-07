@@ -135,7 +135,8 @@ Currently project contains following helpers:
 			* Suitable for editing e.g. JPA ManyToMany mapped field
 			* The field modifies the existing set/list, making if efficent and more compatible with your backend. The standard "multiselect mode" in core Vaadin selects always uses new Set and the value is always Set :-(
 			* Works with both Set and List
-* InlineEditableCollection
+* Element collection fields
+	* Two implemenatations: ElementCollectionField (based on gridlayout) and ElementCollectionTable (based on Table)
 	* A Vaadin field that edits a collection of embedded objects. E.g. OneToMany or ElementCollection annotated collection fields in JPA apps.
 	* Example: Edits a List of Address objects in a Person object in an addressbook app
 * Label extensions
