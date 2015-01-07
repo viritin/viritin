@@ -15,14 +15,19 @@
  */
 package org.vaadin.maddon;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.vaadin.data.Container;
 import com.vaadin.data.Container.ItemSetChangeNotifier;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.AbstractContainer;
-
-import java.util.*;
-
 import org.apache.commons.beanutils.BeanComparator;
 import org.apache.commons.beanutils.DynaBean;
 import org.apache.commons.beanutils.DynaProperty;
@@ -259,15 +264,9 @@ public class ListContainer<T> extends AbstractContainer implements
 
     @Override
     public void sort(Object[] propertyId, boolean[] ascending) {
-        if (propertyId.length == 0) {
-            return;
-        }
-        Comparator c = new NullComparator();
-        if (!ascending[0]) {
-            c = new ReverseComparator(c);
-        }
-        BeanComparator<T> bc = new BeanComparator<T>(propertyId[0].toString(), c);
-        Collections.sort(backingList, bc);
+      Comparator<T> comparator = new PropertyComparator(propertyId, ascending);
+
+      Collections.sort(backingList, comparator);
     }
 
     @Override
@@ -299,6 +298,47 @@ public class ListContainer<T> extends AbstractContainer implements
 
     public void removeListener(Container.ItemSetChangeListener listener) {
         super.removeListener(listener);
+    }
+
+    /**
+     *
+     * Override point. Allows user to use custom comparators based on properties.
+     * @param property
+     * @return Comparator that will compare two objects based on a property
+     */
+    protected Comparator<T> getUnderlyingComparator(Object property) {
+      return new NullComparator();
+    }
+
+    private class PropertyComparator implements Comparator<T> {
+
+      private final Object[] propertyId;
+      private final boolean[] ascending;
+
+      private PropertyComparator(Object[] propertyId, boolean[] ascending) {
+        this.propertyId = propertyId;
+        this.ascending = ascending;
+      }
+
+      @Override
+      public int compare(T o1, T o2) {
+        for (int i = 0; i < propertyId.length; i++) {
+          String currentProperty = propertyId[i].toString();
+          Comparator<T> currentComparator =
+                new BeanComparator<T>(currentProperty, getUnderlyingComparator(currentProperty));
+
+          if(!ascending[i]) {
+            currentComparator = new ReverseComparator(currentComparator);
+          }
+
+          int compare = currentComparator.compare(o1, o2);
+          if (compare != 0) {
+            return compare;
+          }
+        }
+
+        return 0;
+      }
     }
 
     public class DynaBeanItem<T> implements Item {
