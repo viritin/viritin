@@ -4,18 +4,16 @@ import com.vaadin.annotations.Theme;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Notification;
-import com.vaadin.ui.OptionGroup;
-import com.vaadin.ui.themes.ValoTheme;
 import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.maddon.button.MButton;
 import org.vaadin.maddon.fields.EnumSelect;
-import org.vaadin.maddon.fields.InlineEditableCollection;
+import org.vaadin.maddon.fields.AbstractElementCollection;
+import org.vaadin.maddon.fields.ElementCollectionField;
+import org.vaadin.maddon.fields.ElementCollectionTable;
 import org.vaadin.maddon.fields.MTextField;
-import org.vaadin.maddon.fields.MultiSelectTable;
 import org.vaadin.maddon.form.AbstractForm;
 import org.vaadin.maddon.layouts.MVerticalLayout;
 import org.vaadin.maddon.testdomain.Address;
-import org.vaadin.maddon.testdomain.Group;
 import org.vaadin.maddon.testdomain.Person;
 import org.vaadin.maddon.testdomain.Service;
 
@@ -24,22 +22,22 @@ import org.vaadin.maddon.testdomain.Service;
  * @author Matti Tahvonen
  */
 @Theme("valo")
-public class InlineEditableCollections extends AbstractTest {
+public class ElementCollections extends AbstractTest {
 
-    static InlineEditableCollection.ElementAddedListener<Address> addedListener = new InlineEditableCollection.ElementAddedListener<Address>() {
+    static AbstractElementCollection.ElementAddedListener<Address> addedListener = new AbstractElementCollection.ElementAddedListener<Address>() {
 
         @Override
         public void elementAdded(
-                InlineEditableCollection.ElementAddedEvent<Address> e) {
+                AbstractElementCollection.ElementAddedEvent<Address> e) {
             Notification.show("Added row: " + e.getElement());
         }
     };
 
-    static InlineEditableCollection.ElementRemovedListener<Address> removeListener = new InlineEditableCollection.ElementRemovedListener<Address>() {
+    static AbstractElementCollection.ElementRemovedListener<Address> removeListener = new AbstractElementCollection.ElementRemovedListener<Address>() {
 
         @Override
         public void elementRemoved(
-                InlineEditableCollection.ElementRemovedEvent<Address> e) {
+                AbstractElementCollection.ElementRemovedEvent<Address> e) {
             Notification.show("Removed row: " + e.getElement());
         }
     };
@@ -55,18 +53,28 @@ public class InlineEditableCollections extends AbstractTest {
 
     public static class PersonFormManualAddressAddition<Person> extends AbstractForm {
 
-        private final InlineEditableCollection<Address> addresses
-                = new InlineEditableCollection<Address>(Address.class,
+        private final ElementCollectionField<Address> addresses
+                = new ElementCollectionField<Address>(Address.class,
                         AddressRow.class).withCaption("Addressess").
                 setAllowNewElements(false).
+                setAllowRemovingItems(false).
                 addElementAddedListener(addedListener).
                 addElementRemovedListener(removeListener);
+        
         private Button add = new MButton("Add row", new Button.ClickListener() {
 
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 Address a = new Address();
                 addresses.addElement(a);
+            }
+        });
+        private Button remove = new MButton("Remove first", new Button.ClickListener() {
+
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                Address a = (Address) addresses.getValue().iterator().next();
+                addresses.removeElement(a);
             }
         });
 
@@ -79,6 +87,7 @@ public class InlineEditableCollections extends AbstractTest {
             return new MVerticalLayout(
                     addresses,
                     add,
+                    remove,
                     getToolbar()
             );
         }
@@ -87,10 +96,9 @@ public class InlineEditableCollections extends AbstractTest {
 
     public static class PersonForm2<Person> extends AbstractForm {
 
-        private final InlineEditableCollection<Address> addresses
-                = new InlineEditableCollection<Address>(Address.class,
-                        AddressRow.class).setUIStrategy(
-                        InlineEditableCollection.UIStrategy.TABLE).withCaption(
+        private final ElementCollectionTable<Address> addresses
+                = new ElementCollectionTable<Address>(Address.class,
+                        AddressRow.class).withCaption(
                         "Addressess").addElementAddedListener(addedListener).
                 addElementRemovedListener(removeListener);
 
