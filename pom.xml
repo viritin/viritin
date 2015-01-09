@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.peimari</groupId>
-    <artifactId>maddon</artifactId>
+    <groupId>org.vaadin</groupId>
+    <artifactId>viritin</artifactId>
     <version>1.22-SNAPSHOT</version>
-    <name>Maddon</name>
+    <name>Viritin</name>
     <packaging>bundle</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -22,19 +22,19 @@
 
     <organization>
         <name>Matti Tahvonen</name>
-        <url>https://github.com/mstahv/maddon/</url>
+        <url>https://github.com/mstahv/viritin/</url>
     </organization>
     
     <scm>
-        <url>git://github.com/mstahv/maddon.git</url>
-        <connection>scm:git:git://github.com/mstahv/maddon.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com:/mstahv/maddon.git</developerConnection>
+        <url>git://github.com/mstahv/viritin.git</url>
+        <connection>scm:git:git://github.com/mstahv/viritin.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com:/mstahv/viritin.git</developerConnection>
         <tag>Maddon add-on for Vaadin</tag>
     </scm>
 
     <issueManagement>
         <system>GitHub</system>
-        <url>https://github.com/mstahv/maddon/issues</url>
+        <url>https://github.com/mstahv/viritin/issues</url>
     </issueManagement>
     
     <distributionManagement>
@@ -170,7 +170,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Export-Package>org.vaadin.maddon.*</Export-Package>
+                        <Export-Package>org.vaadin.viritin.*</Export-Package>
                     </instructions>
                 </configuration>
                 <executions>

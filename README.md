@@ -1,10 +1,18 @@
-# Maddon - The "commons" library  for Vaadin
+# Viritin - The "commons" library  for Vaadin
 
-This add-on tries to fix a number of small inconveniences that Vaadin users (read: web app developers) face daily. Vaadin is a old and big UI library, so it is no secret there are "some". And even though we can identify these pain points, fixing them isn't straightforward to keep reasonable backwards compatibility.
+*Note, Attention, Alert*, Maddon was recently renamed to Viritin. New Maven coordinates: org.vaadin:viritin:1.22 (or whatever the latest version). After dependency change fixing imports in broken classes should do the thing.
 
-Luckily one can overcome large amount of them with some simple helper classes. Like what various Apache "commons" libraries do to Java, this library tries to do to Vaadin. You should try adding this add-on to your project when the Vaadin API is about to make you mad.
+All large and stable libraries have their inconveniences and missing pieces. This is true for JDK libraries and just as true for Vaadin. Advanced Java users use various apache-commons libraries or Guava to fix these inconveniences in JDK libraries. This library tries to do the same for Vaadin.
 
-The idea is to concentrate on server side Java to improvements to existing APIs, so that throwing this in to an applications or to another add-ons should be as easy as possible. Hopefully one can avoid some of stupid boilerplate code by using this library.
+The idea is to concentrate on server side Java to improvements to existing APIs, so that throwing this in to an applications or to another add-ons should be as easy as possible. Hopefully one can avoid some of stupid boilerplate code by using this library and make you more productive than ever with Vaadin.
+
+So far improvements have been focused on three main categories:
+
+ * Core component extensions that fix wrong defaults and provide more expressive API
+ * Data binding improvements
+ * Essential new components build with server side composition (e.g. DisclosurePanel and fields to handle collections)
+ 
+Some examples of improvements:
 
 E.g. this very common Vaadin code...
 
@@ -157,7 +165,7 @@ Currently project contains following helpers:
 
 Online demo for this add-on hopefully makes no sense. Otherwise this add-on has lost its focus. There are though many demo apps that contain good usage examples. Some of them listed here:
 
- * Add-ons test sources, both [integration tests](https://github.com/mstahv/maddon/blob/master/src/test/java/org/vaadin/maddon/it/EditPerson.java) and [unit tests](https://github.com/mstahv/maddon/tree/master/src/test/java/org/vaadin/maddon) contains some usage examples.
+ * Add-ons test sources, both [integration tests](https://github.com/mstahv/viriting/blob/master/src/test/java/org/vaadin/viritin/it/EditPerson.java) and [unit tests](https://github.com/mstahv/maddon/tree/master/src/test/java/org/vaadin/viritin) contains some usage examples.
  * [Vaadin Java EE application example](https://hub.jazz.net/project/vaadin/vaadin-jpa-app/overview)
  * [Spring Data + Vaadin UI example](https://github.com/mstahv/spring-data-vaadin-crud)
  * Another [Java EE app example](https://github.com/mstahv/vaadin-java-ee-essentials-example/tree/viewmenujpa) - contains JPA usage examples for ManyToMany (MultiSelectTable) and ElementCollection (InlineEditableCollection).
@@ -165,5 +173,5 @@ Online demo for this add-on hopefully makes no sense. Otherwise this add-on has 
 
 ## Download release
 
-Official releases of this add-on are available at Vaadin Directory. For Maven instructions, download and reviews, go to http://vaadin.com/addon/maddon
+Official releases of this add-on are available at Vaadin Directory. For Maven instructions, download and reviews, go to http://vaadin.com/addon/viritin
 
