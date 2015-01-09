@@ -79,7 +79,7 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     private T entity;
     private SavedHandler<T> savedHandler;
     private ResetHandler<T> resetHandler;
-    private boolean eagerValidation;
+    private boolean eagerValidation = true;
 
     public boolean isEagerValidation() {
         return eagerValidation;

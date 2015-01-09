@@ -78,10 +78,6 @@ public class ElementCollections extends AbstractTest {
             }
         });
 
-        public PersonFormManualAddressAddition() {
-            setEagerValidation(true);
-        }
-
         @Override
         protected Component createContent() {
             return new MVerticalLayout(
@@ -101,10 +97,6 @@ public class ElementCollections extends AbstractTest {
                         AddressRow.class).withCaption(
                         "Addressess").addElementAddedListener(addedListener).
                 addElementRemovedListener(removeListener);
-
-        public PersonForm2() {
-            setEagerValidation(true);
-        }
 
         @Override
         protected Component createContent() {

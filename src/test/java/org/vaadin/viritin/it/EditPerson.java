@@ -50,10 +50,6 @@ public class EditPerson extends AbstractTest {
                 withProperties("name")
                 .setOptions(Service.getAvailableGroups());
 
-        public PersonForm() {
-            setEagerValidation(true);
-        }
-
         @Override
         protected Component createContent() {
             return new MVerticalLayout(firstName, addresses, groups,
