@@ -9,7 +9,7 @@ The idea is to concentrate on server side Java to improvements to existing APIs,
 So far improvements have been focused on three main categories:
 
  * Core component extensions that fix wrong defaults and provide more expressive API
- * Data binding improvements
+ * Data binding improvements, better "forms" for both end users and developers
  * Essential new components build with server side composition (e.g. DisclosurePanel and fields to handle collections)
  
 Some examples of improvements:
@@ -77,16 +77,14 @@ Or when using the "intelligent" expand method:
 Becomes...
 
 ```java
-        setContent(
-                new MVerticalLayout(new MHorizontalLayout(c, d).withFullWidth())
-                .expand(
-                        new MHorizontalLayout(menu)
-                        .expand(mainContent)
-                )
-        );
-        // the expand call takes care of adding component and setting sane 
-        // values for layout and the added component
+        setContent(new MVerticalLayout(new MHorizontalLayout(c, d).withFullWidth())
+                .expand(new MHorizontalLayout(menu).expand(mainContent)));
 ```
+
+Note that in the above the expand call does setExpandRation(component, 1), where 1 the value that people use 99% of the time, but it takes care of adding component and setting sane size values for the layout and the added component. 
+
+The example is optimized for the number of lines, but most often you want to uses some line breaks and indentation for better readability. In anyways, the improved API lets you express the layout so that it is much easier to understand the hierarchy of component tree from the code, without adding lots of methods or classes.
+
 
 Using Table to select a row for editor may simplify from ...
 
@@ -207,7 +205,17 @@ Online demo for this add-on hopefully makes no sense. But there are though many 
  * Another [Java EE app example](https://github.com/mstahv/vaadin-java-ee-essentials-example/tree/viewmenujpa) - contains JPA usage examples for ManyToMany (MultiSelectTable) and ElementCollection (InlineEditableCollection).
 
 
-## Download release
+## Download a release
 
 Official releases of this add-on are available at Vaadin Directory. For Maven instructions, download and reviews, go to http://vaadin.com/addon/viritin
+
+## Maddon is now called Viritin
+
+My colleagues teased me enough about the add-on name Maddon. M can mean Matti's add-on, but it also had to dual nature meaning I always made helpers there when APIs in core Vaadin (possibly even written by me) made me mad when using it :-)
+
+Anyways, Viritin is a Finnish word, meaning tuner, and I think it describes the add-on pretty well too. It tunes Vaadin to be on the same frequency with you. English people might pronounce it almost like "wire it in" which also suits for the add-on, as lots of its latest helpers are related to binding your domain model to UI, wiring it in for the actual end user.
+
+The add-on itself has been quite popular already. And there has bee lots of active contributors, thank you! There is now also a viritin organization in the github and I hope to get even more contributions for it in the future.
+
+You can also expect some cool other Vaadin related things to pop up to under the governance of "Viritin organization". That yet to be published helper might change the way you use Vaadin even more than the Viritin add-on itself.
 
