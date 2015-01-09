@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.vaadin</groupId>
     <artifactId>viritin</artifactId>
-    <version>1.22-SNAPSHOT</version>
+    <version>1.22</version>
     <name>Viritin</name>
     <packaging>bundle</packaging>
     <properties>
@@ -22,25 +22,25 @@
 
     <organization>
         <name>Matti Tahvonen</name>
-        <url>https://github.com/mstahv/viritin/</url>
+        <url>https://github.com/viritin/viritin/</url>
     </organization>
     
     <scm>
-        <url>git://github.com/mstahv/viritin.git</url>
-        <connection>scm:git:git://github.com/mstahv/viritin.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com:/mstahv/viritin.git</developerConnection>
+        <url>git://github.com/viritin/viritin.git</url>
+        <connection>scm:git:git://github.com/viritin/viritin.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com:/viritin/viritin.git</developerConnection>
         <tag>Maddon add-on for Vaadin</tag>
     </scm>
 
     <issueManagement>
         <system>GitHub</system>
-        <url>https://github.com/mstahv/viritin/issues</url>
+        <url>https://github.com/viritin/viritin/issues</url>
     </issueManagement>
     
     <distributionManagement>
         <repository>
             <id>v4</id>
-            <url>sftp://v4.tahvonen.fi/home/dev/maven2/</url>
+            <url>sftp://virit.in/home/dev/maven2/</url>
         </repository>
     </distributionManagement>
 
