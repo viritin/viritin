@@ -52,6 +52,42 @@ setContent(new MVerticalLayout().withFullHeight().with(a, b,
         new MHorizontalLayout(c, d).withFullWidth().withMargin(false)));
 ```
 
+Or when using the "intelligent" expand method:
+
+```java
+        VerticalLayout wrapper = new VerticalLayout();
+        wrapper.setMargin(true);
+        wrapper.setSpacing(true);
+        wrapper.setHeight("100%");
+        HorizontalLayout toolbar = new HorizontalLayout(c, d);
+        toolbar.setWidth("100%");
+        toolbar.setMargin(false);
+        toolbar.setSpacing(true);
+        HorizontalLayout wrapper2 = new HorizontalLayout();
+        wrapper2.addComponent(menu);
+        wrapper2.addComponent(mainContent);
+        wrapper2.setSizeFull();
+        mainContent.setSizeFull();
+        wrapper2.setExpandRatio(mainContent, 1);
+        wrapper.addComponents(toolbar, wrapper2);
+        wrapper.setExpandRatio(wrapper2, 1);
+        setContent(wrapper);
+```
+
+Becomes...
+
+```java
+        setContent(
+                new MVerticalLayout(new MHorizontalLayout(c, d).withFullWidth())
+                .expand(
+                        new MHorizontalLayout(menu)
+                        .expand(mainContent)
+                )
+        );
+        // the expand call takes care of adding component and setting sane 
+        // values for layout and the added component
+```
+
 Using Table to select a row for editor may simplify from ...
 
 ```java
@@ -85,6 +121,7 @@ t.addMValueChangeListener(new MValueChangeListener<Entity>() {
     }
 });
 ```
+Note, that in the above, the event actually provides you the value you are interested directly and in with the correct type. Especially for new Vaadin users this is very helpful.
 
 Using Label extensions can make your life both simpler and safer:
 
@@ -101,14 +138,13 @@ If you have a re-usable server side Vaadin "api-hack" that you continuously use 
 
 Also feel free to suggest dependencies to new or possibly already existing add-ons that are similar in nature (pure server side, simple and smallish). This way you'll only need to add one helper dependency to get what you most often want to. If your dependency or addition is not small or simple, we can still consider if it is otherwise high quality (well tested, industry proven). Current dependencies:
 
- * ConfirmDialog
-
+ * ConfirmDialog (used by ConfirmButton in Viritin)
 
 If a helper extends core Vaadin class, the convention is to simply prefix it with "M" letter. Otherwise, lets just use good naming conventions and reasonable sub packages.
 
-## Helpers 
+## List of helpers 
 
-Currently project contains following helpers:
+Currently project contains following helpers (might be slightly outdated):
 
 * BeanBinder, [Vaadin Ticket](http://dev.vaadin.com/ticket/13068)
 	* Reduces the most common usage of BeanFieldGroup into oneliner
@@ -157,15 +193,15 @@ Currently project contains following helpers:
  * A lightweight replacement for BeanItemContainer that uses apache commons-beanutils for introspection. The performance (both memory and CPU) is also superior to the core Vaadin counterpart.
  * Note, that beans are kept in orinal list that developer used to pass beans. Wrap in e.g. ArrayList if you wish to keep original List unmodified.
 * AbstractForm
- * An abstract super class for simple entity editor. Provides save/cancel buttons and interfaces for hooking into them. Does binding with naming convention using BeanBinder when setEntity(T) is called. It is suggested to use the "setEagerValidation(true)" mode as it will make your forms much more UX friendly by default. This makes fields validating while you edit the form, instead of postponing it until the save click.
+ * An abstract super class for simple entity editor. Provides save/cancel buttons and interfaces for hooking into them. Does binding with naming convention using BeanBinder when setEntity(T) is called. It is suggested to use the "setEagerValidation(true)" mode as it will make your forms much more UX friendly by default. This makes fields validating while you edit the form, instead of postponing it until the save click. Since 1.22 this is the default, but can be disabled if eager validation is for some reason not wanted. 
 * DisclosurePanel is a simple panel whose content is hidden by default. Easy method to hide fields that are most often irrelevant for the end user.
 
 
 ## Online demo/usage examples
 
-Online demo for this add-on hopefully makes no sense. Otherwise this add-on has lost its focus. There are though many demo apps that contain good usage examples. Some of them listed here:
+Online demo for this add-on hopefully makes no sense. But there are though many demo apps that contain helpful usage examples. Some of them listed here:
 
- * Add-ons test sources, both [integration tests](https://github.com/mstahv/viriting/blob/master/src/test/java/org/vaadin/viritin/it/EditPerson.java) and [unit tests](https://github.com/mstahv/maddon/tree/master/src/test/java/org/vaadin/viritin) contains some usage examples.
+ * Add-ons own test sources, both [integration tests](https://github.com/mstahv/viriting/blob/master/src/test/java/org/vaadin/viritin/it/EditPerson.java) and [unit tests](https://github.com/mstahv/maddon/tree/master/src/test/java/org/vaadin/viritin) contains some usage examples.
  * [Vaadin Java EE application example](https://hub.jazz.net/project/vaadin/vaadin-jpa-app/overview)
  * [Spring Data + Vaadin UI example](https://github.com/mstahv/spring-data-vaadin-crud)
  * Another [Java EE app example](https://github.com/mstahv/vaadin-java-ee-essentials-example/tree/viewmenujpa) - contains JPA usage examples for ManyToMany (MultiSelectTable) and ElementCollection (InlineEditableCollection).
