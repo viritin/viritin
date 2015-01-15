@@ -162,9 +162,12 @@ public abstract class AbstractElementCollection<ET> extends CustomField<Collecti
     @Override
     public void validate() throws Validator.InvalidValueException {
         super.validate();
-        for (Object o : getValue()) {
-            for (Field f : getFieldGroupFor((ET) o).getFields()) {
-                f.validate();
+        Collection v = getValue();
+        if(v != null) {
+            for (Object o : v) {
+                for (Field f : getFieldGroupFor((ET) o).getFields()) {
+                    f.validate();
+                }
             }
         }
     }
