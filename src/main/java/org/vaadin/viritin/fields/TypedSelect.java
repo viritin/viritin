@@ -15,6 +15,8 @@ import com.vaadin.ui.NativeSelect;
 import com.vaadin.ui.OptionGroup;
 import com.vaadin.ui.TwinColSelect;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import org.vaadin.viritin.ListContainer;
 
 /**
@@ -398,8 +400,21 @@ public class TypedSelect<T> extends CustomComponent implements Field<T> {
             bic.setCollection(options);
         } else {
             bic = new ListContainer<T>(options);
-            getSelect().setContainerDataSource(bic);
         }
+        getSelect().setContainerDataSource(bic);
+        return this;
+    }
+    
+    public final List<T> getOptions() {
+        if(bic == null) {
+            return Collections.EMPTY_LIST;
+        } else {
+            return (List<T>) bic.getItemIds();
+        }
+    }
+    
+    public TypedSelect<T> setNullSelectionAllowed(boolean nullAllowed) {
+        getSelect().setNullSelectionAllowed(nullAllowed);
         return this;
     }
 
@@ -457,6 +472,12 @@ public class TypedSelect<T> extends CustomComponent implements Field<T> {
     public TypedSelect<T> withWidth(String width) {
         setWidth(width);
         return this;
+    }
+
+    public void selectFirst() {
+        if(bic != null && bic.size() > 0) {
+            getSelect().setValue(bic.getIdByIndex(0));
+        }
     }
 
 }

@@ -80,5 +80,10 @@ public class EnumSelect extends TypedSelect {
     public EnumSelect withCaption(String caption) {
         return (EnumSelect) super.withCaption(caption);
     }
+
+    public EnumSelect withNullSelection(boolean allowNullSelection) {
+        getSelect().setNullSelectionAllowed(allowNullSelection);
+        return this;
+    }
     
 }
