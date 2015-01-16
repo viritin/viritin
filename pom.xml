@@ -29,7 +29,6 @@
         <url>git://github.com/viritin/viritin.git</url>
         <connection>scm:git:git://github.com/viritin/viritin.git</connection>
         <developerConnection>scm:git:ssh://git@github.com:/viritin/viritin.git</developerConnection>
-        <tag>Maddon add-on for Vaadin</tag>
     </scm>
 
     <issueManagement>
