@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.vaadin</groupId>
     <artifactId>viritin</artifactId>
-    <version>1.24-SNAPSHOT</version>
+    <version>1.23-SNAPSHOT</version>
     <name>Viritin</name>
     <packaging>bundle</packaging>
     <properties>
@@ -268,7 +268,11 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.14.1</version>
             </plugin>
-            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.1</version>
+            </plugin>
         </plugins>
 
         <!-- This is needed for the sources required by the client-side compiler to be 
