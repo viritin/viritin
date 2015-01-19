@@ -37,9 +37,9 @@ import org.vaadin.viritin.button.MButton;
  *      MTextField zipCode = new MTextField();
  *  }
  *
- *  public static class PersonForm<Person> extends AbstractForm {
- *      private final ElementCollectionField<Address> addresses
- *              = new ElementCollectionField<Address>(Address.class,
+ *  public static class PersonForm&lt;Person&gt; extends AbstractForm {
+ *      private final ElementCollectionField&lt;Address&gt; addresses
+ *              = new ElementCollectionField&lt;Address&gt;(Address.class,
  *                      AddressRow.class).withCaption("Addressess");
  *
  * </code></pre>

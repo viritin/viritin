@@ -201,9 +201,9 @@ public class TypedSelect<T> extends CustomComponent implements Field<T> {
     /**
      * Use setFieldType instead.
      *
-     * @param type
-     * @return
-     * @deprecated
+     * @param type the type of the select to use as implementation 
+     * @return this typed select instance
+     * @deprecated use the setFieldType instead
      */
     @Deprecated
     public TypedSelect setType(Class<T> type) {
@@ -218,8 +218,8 @@ public class TypedSelect<T> extends CustomComponent implements Field<T> {
      * Supported values are: ListSelect, OptionGroup, ComboBox, TwinColSelect
      * and NativeSelect.
      *
-     * @param type
-     * @return
+     * @param type the type of the select to use as implementation 
+     * @return this typed select instance
      */
     public TypedSelect setFieldType(Class<T> type) {
         this.fieldType = type;

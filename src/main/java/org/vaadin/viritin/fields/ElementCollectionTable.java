@@ -35,9 +35,9 @@ import org.vaadin.viritin.layouts.MVerticalLayout;
  *      MTextField zipCode = new MTextField();
  *  }
  *
- *  public static class PersonForm<Person> extends AbstractForm {
- *      private final ElementCollectionTable<Address> addresses
- *              = new ElementCollectionTable<Address>(Address.class,
+ *  public static class PersonForm&lt;Person&gt; extends AbstractForm {
+ *      private final ElementCollectionTable&lt;Address&gt; addresses
+ *              = new ElementCollectionTable&lt;Address&gt;(Address.class,
  *                      AddressRow.class).withCaption("Addressess");
  *
  * </code></pre>

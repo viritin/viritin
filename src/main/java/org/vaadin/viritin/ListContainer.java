@@ -303,7 +303,7 @@ public class ListContainer<T> extends AbstractContainer implements
     /**
      *
      * Override point. Allows user to use custom comparators based on properties.
-     * @param property
+     * @param property the property whose comparator is requested
      * @return Comparator that will compare two objects based on a property
      */
     protected Comparator<T> getUnderlyingComparator(Object property) {
