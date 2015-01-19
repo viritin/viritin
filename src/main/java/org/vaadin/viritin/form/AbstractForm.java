@@ -34,9 +34,11 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     }
 
     protected void lazyInit() {
-        setCompositionRoot(createContent());
-        adjustSaveButtonState();
-        adjustResetButtonState();
+        if (getCompositionRoot() == null) {
+            setCompositionRoot(createContent());
+            adjustSaveButtonState();
+            adjustResetButtonState();
+        }
     }
 
     private MBeanFieldGroup<T> fieldGroup;
@@ -98,6 +100,7 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     }
 
     public MBeanFieldGroup<T> setEntity(T entity) {
+        lazyInit();
         this.entity = entity;
         if (entity != null) {
             if (isBound()) {
