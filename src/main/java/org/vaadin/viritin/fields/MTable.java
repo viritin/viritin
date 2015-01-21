@@ -27,7 +27,7 @@ import java.util.Collection;
  * are always listing POJOs, which is most often the case in modern Java
  * development. Uses ListContainer to bind data due to its superior performance
  * compared to BeanItemContainer.
- * <p/>
+ *
  * Note, that MTable don't support "multiselection mode.
  *
  * @param <T> the type of the POJO listed in this Table.

@@ -22,10 +22,6 @@ import org.vaadin.viritin.testdomain.Service;
 
 import java.util.List;
 
-/**
- *
- * @author Matti Tahvonen
- */
 @Theme("valo")
 public class FilterTablePerson extends AbstractTest {
 
