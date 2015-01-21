@@ -16,11 +16,11 @@
 package org.vaadin.viritin.fields;
 
 import com.vaadin.ui.Table;
+import org.vaadin.viritin.ListContainer;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
-import org.vaadin.viritin.ListContainer;
 
 /**
  * A better typed version of the Table component in Vaadin. Expects that users
@@ -48,7 +48,7 @@ public class MTable<T> extends Table {
      * @param type the type of beans that are listed in this table
      */
     public MTable(Class<T> type) {
-        bic = new ListContainer<T>(type);
+        bic = createContainer(type);
         setContainerDataSource(bic);
     }
 
@@ -59,13 +59,21 @@ public class MTable<T> extends Table {
     public MTable(Collection<T> beans) {
         this();
         if (beans != null) {
-            if (beans instanceof List) {
-                bic = new ListContainer<T>((List<T>) beans);
-            } else {
-                bic = new ListContainer<T>(new ArrayList<T>(beans));
-            }
+            bic = createContainer(beans);
             setContainerDataSource(bic);
         }
+    }
+
+    protected ListContainer<T> createContainer(Class<T> type) {
+        return new ListContainer<T>(type);
+    }
+
+    protected ListContainer<T> createContainer(Collection<T> beans) {
+        return new ListContainer<T>(beans);
+    }
+
+    protected ListContainer<T> getContainer() {
+        return bic;
     }
 
     public MTable<T> withProperties(String... visibleProperties) {
@@ -80,7 +88,7 @@ public class MTable<T> extends Table {
         return this;
     }
 
-    private boolean isContainerInitialized() {
+    protected boolean isContainerInitialized() {
         return bic != null;
     }
 
@@ -119,9 +127,9 @@ public class MTable<T> extends Table {
         fireEvent(new MValueChangeEventImpl(this));
     }
 
-    private void ensureBeanItemContainer(Collection<T> beans) {
+    protected void ensureBeanItemContainer(Collection<T> beans) {
         if (!isContainerInitialized()) {
-            bic = new ListContainer(beans);
+            bic = createContainer(beans);
             if (pendingProperties != null) {
                 setContainerDataSource(bic, Arrays.asList(pendingProperties));
                 pendingProperties = null;
@@ -146,11 +154,12 @@ public class MTable<T> extends Table {
         super.setMultiSelect(multiSelect);
     }
 
-    public void addBeans(T... beans) {
+    public MTable<T> addBeans(T... beans) {
         addBeans(Arrays.asList(beans));
+        return this;
     }
 
-    public MTable addBeans(Collection<T> beans) {
+    public MTable<T> addBeans(Collection<T> beans) {
         if (!beans.isEmpty()) {
             if (isContainerInitialized()) {
                 bic.addAll(beans);
@@ -161,12 +170,12 @@ public class MTable<T> extends Table {
         return this;
     }
 
-    public MTable setBeans(T... beans) {
+    public MTable<T> setBeans(T... beans) {
         setBeans(new ArrayList<T>(Arrays.asList(beans)));
         return this;
     }
 
-    public MTable setBeans(Collection<T> beans) {
+    public MTable<T> setBeans(Collection<T> beans) {
         if (!isContainerInitialized() && !beans.isEmpty()) {
             ensureBeanItemContainer(beans);
         } else if (isContainerInitialized()) {
@@ -206,4 +215,17 @@ public class MTable<T> extends Table {
         return this;
     }
 
+    public static interface SimpleColumnGenerator<T> {
+        public Object generate(T entity);
+    }
+
+    public MTable<T> withGeneratedColumn(String columnId, final SimpleColumnGenerator<T> columnGenerator) {
+        addGeneratedColumn(columnId, new ColumnGenerator() {
+            @Override
+            public Object generateCell(Table source, Object itemId, Object columnId) {
+                return columnGenerator.generate((T) itemId);
+            }
+        });
+        return this;
+    }
 }
