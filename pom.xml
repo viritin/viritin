@@ -132,7 +132,6 @@
             <version>${vaadin.version}</version>
             <scope>test</scope>
         </dependency>
-        
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
@@ -142,7 +141,7 @@
         <dependency>
             <groupId>commons-beanutils</groupId>
             <artifactId>commons-beanutils</artifactId>
-            <version>1.9.1</version>
+            <version>1.9.2</version>
             <type>jar</type>
         </dependency>
         <dependency>
