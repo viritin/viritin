@@ -10,7 +10,7 @@ import com.vaadin.ui.Label;
  * The use case is a non editable value in a form, e.g. an id.
  * <p>
  * The creation of the label text can be controlled via a
- * {@link org.vaadin.viritin.fields.CaptionGenerator<T>}.
+ * {@link org.vaadin.viritin.fields.CaptionGenerator}.
  * 
  * @author Daniel Nordhoff-Vergien
  *
