@@ -4,9 +4,11 @@ import com.vaadin.annotations.Theme;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.themes.ValoTheme;
+
 import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.viritin.fields.EnumSelect;
 import org.vaadin.viritin.fields.ElementCollectionField;
+import org.vaadin.viritin.fields.LabelField;
 import org.vaadin.viritin.fields.MTextField;
 import org.vaadin.viritin.fields.MultiSelectTable;
 import org.vaadin.viritin.form.AbstractForm;
@@ -39,20 +41,24 @@ public class EditPerson extends AbstractTest {
 
         private MTextField firstName = new MTextField("Name");
 
-        private final ElementCollectionField<Address> addresses
-                = new ElementCollectionField<Address>(Address.class,
-                        AddressRow.class).withCaption("Addressess")
+        LabelField<Integer> id = new LabelField<Integer>(Integer.class)
+                .withCaption("ID");
+        private final ElementCollectionField<Address> addresses = new ElementCollectionField<Address>(
+                Address.class, AddressRow.class).withCaption("Addressess")
                 .addElementAddedListener(ElementCollections.addedListener)
-                .addElementRemovedListener(ElementCollections.removeListener)
-                ;
+                .addElementRemovedListener(ElementCollections.removeListener);
 
-        private final MultiSelectTable<Group> groups = new MultiSelectTable<Group>().
-                withProperties("name")
+        private final MultiSelectTable<Group> groups = new MultiSelectTable<Group>()
+                .withProperties("name")
                 .setOptions(Service.getAvailableGroups());
+
+        public PersonForm() {
+            addresses.setReadOnly(true);
+        }
 
         @Override
         protected Component createContent() {
-            return new MVerticalLayout(firstName, addresses, groups,
+            return new MVerticalLayout(id, firstName, addresses, groups,
                     getToolbar());
         }
 
