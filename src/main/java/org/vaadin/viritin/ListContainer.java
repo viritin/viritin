@@ -343,7 +343,7 @@ public class ListContainer<T> extends AbstractContainer implements
 
     public class DynaBeanItem<T> implements Item {
 
-        private Map<Object, DynaProperty> propertyIdToProperty = new HashMap<Object, DynaProperty>();
+        private final Map<Object, DynaProperty> propertyIdToProperty = new HashMap<Object, DynaProperty>();
 
         private class DynaProperty implements Property {
 

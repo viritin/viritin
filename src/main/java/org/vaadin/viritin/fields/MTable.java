@@ -72,7 +72,7 @@ public class MTable<T> extends Table {
      * @param countProvider  the interface via the count of items is detected
      */
     public MTable(LazyList.PagingProvider pageProvider,
-            LazyList.EntityCountProvider countProvider) {
+            LazyList.CountProvider countProvider) {
         this(new LazyList(pageProvider, countProvider, DEFAULT_PAGE_SIZE));
     }
 
@@ -84,7 +84,7 @@ public class MTable<T> extends Table {
      * @param pageSize the page size (aka maxResults) that is used in paging.
      */
     public MTable(LazyList.PagingProvider pageProvider,
-            LazyList.EntityCountProvider countProvider, int pageSize) {
+            LazyList.CountProvider countProvider, int pageSize) {
         this(new LazyList(pageProvider, countProvider, pageSize));
     }
 
@@ -267,7 +267,7 @@ public class MTable<T> extends Table {
     @Override
     public void refreshRowCache() {
         // Explicit support for LazyList
-        if (bic.getItemIds() instanceof LazyList) {
+        if (bic != null && bic.getItemIds() instanceof LazyList) {
             ((LazyList) bic.getItemIds()).reset();
         }
         super.refreshRowCache();

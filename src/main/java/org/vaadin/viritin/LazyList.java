@@ -6,9 +6,10 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * A general purpose helper class to us MTable/ListContainer with service layers
+ * A general purpose helper class to us MTable/ListContainer for service layers
  * (EJBs, Spring Data etc) that provide large amount of data. Makes paged
- * requests to PagingProvider, caches recently used pages in memory. The class
+ * requests to PagingProvider, caches recently used pages in memory and this way
+ * hides away Vaadin Container complexity from you. The class generic helper and
  * is probably useful also other but Vaadin applications as well.
  *
  * @author Matti Tahvonen
@@ -23,7 +24,7 @@ public class LazyList<T> extends AbstractList<T> implements Serializable {
      *
      * @param <T> The type of the objects in the list
      */
-    public interface PagingProvider<T> {
+    public interface PagingProvider<T> extends Serializable {
 
         /**
          * Fetches one "page" of entities form the backend. The amount
@@ -40,7 +41,7 @@ public class LazyList<T> extends AbstractList<T> implements Serializable {
      * interface. Backend call is cached as COUNT queries in databases are
      * commonly heavy.
      */
-    public interface EntityCountProvider {
+    public interface CountProvider extends Serializable {
 
         /**
          * @return the count of entities listed in the LazyList
@@ -54,11 +55,11 @@ public class LazyList<T> extends AbstractList<T> implements Serializable {
      * @param <T> The type of the objects in the list
      */
     public interface EntityProvider<T> extends PagingProvider,
-            EntityCountProvider {
+            CountProvider {
     }
 
     private final PagingProvider pageProvider;
-    private final EntityCountProvider countProvider;
+    private final CountProvider countProvider;
 
     public static final int DEFAULT_PAGE_SIZE = 30;
 
@@ -103,7 +104,7 @@ public class LazyList<T> extends AbstractList<T> implements Serializable {
      * detected.
      */
     public LazyList(PagingProvider pageProvider,
-            EntityCountProvider countProvider) {
+            CountProvider countProvider) {
         this(pageProvider, countProvider, DEFAULT_PAGE_SIZE);
     }
 
@@ -116,7 +117,7 @@ public class LazyList<T> extends AbstractList<T> implements Serializable {
      * @param pageSize the page size that should be used
      */
     public LazyList(PagingProvider pageProvider,
-            EntityCountProvider countProvider, int pageSize) {
+            CountProvider countProvider, int pageSize) {
         this.pageProvider = pageProvider;
         this.countProvider = countProvider;
         this.pageSize = pageSize;
