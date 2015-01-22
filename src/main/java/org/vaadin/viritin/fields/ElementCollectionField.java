@@ -97,6 +97,10 @@ public class ElementCollectionField<ET> extends AbstractElementCollection<ET> {
                         }
                     }).withStyleName(ValoTheme.BUTTON_ICON_ONLY));
         }
+        if(!isAllowEditItems())
+        {
+           fg.setReadOnly(true);
+        }
     }
 
     @Override
