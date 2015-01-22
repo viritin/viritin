@@ -21,14 +21,22 @@ import org.vaadin.viritin.ListContainer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import org.vaadin.viritin.LazyList;
+import static org.vaadin.viritin.LazyList.DEFAULT_PAGE_SIZE;
 
 /**
  * A better typed version of the Table component in Vaadin. Expects that users
  * are always listing POJOs, which is most often the case in modern Java
  * development. Uses ListContainer to bind data due to its superior performance
  * compared to BeanItemContainer.
- *
- * Note, that MTable don't support "multiselection mode.
+ * <p>
+ * Note, that MTable don't support "multiselection mode". It is also very little
+ * tested in "editable mode".
+ * <p>
+ * If your "list" of entities is too large to load into memory, there are also
+ * constructors for typical "service layers". Then paged requests are used to
+ * fetch entities that are visible (or almost visible) in the UI. Behind the
+ * scenes LazyList is used to "wrap" your service into list.
  *
  * @param <T> the type of the POJO listed in this Table.
  */
@@ -54,6 +62,30 @@ public class MTable<T> extends Table {
 
     public MTable(T... beans) {
         this(new ArrayList<T>(Arrays.asList(beans)));
+    }
+
+    /**
+     * A shorthand to create MTable using LazyList. By default page size of
+     * LazyList.DEFAULT_PAGE_SIZE (30) is used.
+     * 
+     * @param pageProvider the interface via entities are fetched
+     * @param countProvider  the interface via the count of items is detected
+     */
+    public MTable(LazyList.PagingProvider pageProvider,
+            LazyList.EntityCountProvider countProvider) {
+        this(new LazyList(pageProvider, countProvider, DEFAULT_PAGE_SIZE));
+    }
+
+    /**
+     * A shorthand to create MTable using LazyList.
+     * 
+     * @param pageProvider the interface via entities are fetched
+     * @param countProvider  the interface via the count of items is detected
+     * @param pageSize the page size (aka maxResults) that is used in paging.
+     */
+    public MTable(LazyList.PagingProvider pageProvider,
+            LazyList.EntityCountProvider countProvider, int pageSize) {
+        this(new LazyList(pageProvider, countProvider, pageSize));
     }
 
     public MTable(Collection<T> beans) {
@@ -216,16 +248,29 @@ public class MTable<T> extends Table {
     }
 
     public static interface SimpleColumnGenerator<T> {
+
         public Object generate(T entity);
     }
 
-    public MTable<T> withGeneratedColumn(String columnId, final SimpleColumnGenerator<T> columnGenerator) {
+    public MTable<T> withGeneratedColumn(String columnId,
+            final SimpleColumnGenerator<T> columnGenerator) {
         addGeneratedColumn(columnId, new ColumnGenerator() {
             @Override
-            public Object generateCell(Table source, Object itemId, Object columnId) {
+            public Object generateCell(Table source, Object itemId,
+                    Object columnId) {
                 return columnGenerator.generate((T) itemId);
             }
         });
         return this;
     }
+
+    @Override
+    public void refreshRowCache() {
+        // Explicit support for LazyList
+        if (bic.getItemIds() instanceof LazyList) {
+            ((LazyList) bic.getItemIds()).reset();
+        }
+        super.refreshRowCache();
+    }
+
 }
