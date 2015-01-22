@@ -140,7 +140,8 @@ public abstract class AbstractElementCollection<ET> extends CustomField<Collecti
     private List<String> visibleProperties;
     private boolean allowNewItems = true;
     private boolean allowRemovingItems = true;
-
+    private boolean allowEditItems = true;
+    
     public boolean isAllowNewItems() {
         return allowNewItems;
     }
@@ -149,6 +150,15 @@ public abstract class AbstractElementCollection<ET> extends CustomField<Collecti
         return allowRemovingItems;
     }
 
+    public boolean isAllowEditItems() {
+        return allowEditItems;
+    }
+    
+    public AbstractElementCollection<ET> setAllowEditItems(boolean allowEditItems) {
+        this.allowEditItems = allowEditItems;
+        return this;
+    }
+    
     public AbstractElementCollection<ET> setAllowRemovingItems(boolean allowRemovingItems) {
         this.allowRemovingItems = allowRemovingItems;
         return this;

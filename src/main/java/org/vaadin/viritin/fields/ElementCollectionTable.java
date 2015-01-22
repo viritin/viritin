@@ -133,6 +133,9 @@ public class ElementCollectionTable<ET> extends AbstractElementCollection<ET> {
                                     Object columnId) {
                                 MBeanFieldGroup<ET> fg = getFieldGroupFor(
                                         (ET) itemId);
+                                if (!isAllowEditItems()) {
+                                    fg.setReadOnly(true);
+                                }
                                 return fg.getField(columnId);
                             }
                         });

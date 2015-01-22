@@ -281,9 +281,9 @@ public class FilterableListContainerTest {
    public void testFirstLast() {
        FilterableListContainer<Person> lc = new FilterableListContainer<Person>(
                new ArrayList<Person>(Arrays.asList(
-                   new Person("1", "1", 1),
-                   new Person("2", "2", 2),
-                   new Person("3", "3", 3)
+                   new Person(0, "1", "1", 1),
+                   new Person(0, "2", "2", 2),
+                   new Person(0, "3", "3", 3)
        )));
 
        lc.addContainerFilter(new Compare.Greater("age", 1));
@@ -301,22 +301,22 @@ public class FilterableListContainerTest {
   public void testMultiLevelSort() throws Exception {
     FilterableListContainer<Person> lc = new FilterableListContainer<Person>(
           new ArrayList<Person>(Arrays.asList(
-                new Person("2", "2", 3),
-                new Person("3", "2", 2),
-                new Person("1", "2", 2),
-                new Person("1", "1", 1),
-                new Person("1", "2", 4)
+                new Person(0, "2", "2", 3),
+                new Person(0, "3", "2", 2),
+                new Person(0, "1", "2", 2),
+                new Person(0, "1", "1", 1),
+                new Person(0, "1", "2", 4)
           )));
 
     lc.sort(new Object[]{"age", "firstName"}, new boolean[]{true, false});
 
     Collection<Person> itemIds = lc.getItemIds();
     assertThat(itemIds, hasItems(
-          new Person("1", "1", 1),
-          new Person("3", "2", 2),
-          new Person("1", "2", 2),
-          new Person("2", "2", 3),
-          new Person("1", "2", 4)
+          new Person(0, "1", "1", 1),
+          new Person(0, "3", "2", 2),
+          new Person(0, "1", "2", 2),
+          new Person(0, "2", "2", 3),
+          new Person(0, "1", "2", 4)
     ));
   }
 }

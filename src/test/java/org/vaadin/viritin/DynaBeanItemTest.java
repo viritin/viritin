@@ -15,7 +15,7 @@ import static org.junit.Assert.*;
 public class DynaBeanItemTest {
     @Test
     public void testReturnedPropertyInstances() {
-        final Person robin = new Person("Dick", "Grayson", 12);
+        final Person robin = new Person(0, "Dick", "Grayson", 12);
         final ListContainer<Person> listContainer =
                 new ListContainer<Person>(
                         Person.class,

@@ -23,7 +23,7 @@ public class TypedSelectUsage {
     
     public static final int MAYBE_TOO_MUCH_FOR_IT = new Date().getYear() - 80;
     MutableObject<Person> selectedValue = new MutableObject();
-    Person me = new Person("Matti", "Tahvonen", MAYBE_TOO_MUCH_FOR_IT);
+    Person me = new Person(0, "Matti", "Tahvonen", MAYBE_TOO_MUCH_FOR_IT);
 
     @Test
     public void testTypedSelect() {
@@ -31,7 +31,7 @@ public class TypedSelectUsage {
         List<Person> options = new ArrayList();
         options.add(me);
         // The other fellow
-        options.add(new Person("Metrin", "Slerba", 69));
+        options.add(new Person(0, "Metrin", "Slerba", 69));
         
         // Core vaadin select usage for a warmup
         ListSelect listSelect = new ListSelect();
