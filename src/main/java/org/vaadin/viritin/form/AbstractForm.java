@@ -12,6 +12,7 @@ import com.vaadin.ui.Window;
 import org.vaadin.viritin.BeanBinder;
 import org.vaadin.viritin.MBeanFieldGroup;
 import org.vaadin.viritin.MBeanFieldGroup.FieldGroupListener;
+import org.vaadin.viritin.button.DeleteButton;
 import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.button.PrimaryButton;
 import org.vaadin.viritin.layouts.MHorizontalLayout;
@@ -78,9 +79,15 @@ public abstract class AbstractForm<T> extends CustomComponent implements
         void onReset(T entity);
     }
 
+    public interface DeleteHandler<T> {
+
+        void onDelete(T entity);
+    }
+
     private T entity;
     private SavedHandler<T> savedHandler;
     private ResetHandler<T> resetHandler;
+    private DeleteHandler<T> deleteHandler;
     private boolean eagerValidation = true;
 
     public boolean isEagerValidation() {
@@ -128,12 +135,20 @@ public abstract class AbstractForm<T> extends CustomComponent implements
         this.resetHandler = resetHandler;
     }
 
+    public void setDeleteHandler(DeleteHandler<T> deleteHandler) {
+        this.deleteHandler = deleteHandler;
+    }
+
     public ResetHandler<T> getResetHandler() {
         return resetHandler;
     }
 
     public SavedHandler<T> getSavedHandler() {
         return savedHandler;
+    }
+
+    public DeleteHandler<T> getDeleteHandler() {
+        return deleteHandler;
     }
 
     public Window openInModalPopup() {
@@ -145,12 +160,13 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     }
 
     /**
-     * @return A default toolbar containing save/cancel buttons
+     * @return A default toolbar containing save/cancel/delete buttons
      */
     public HorizontalLayout getToolbar() {
         return new MHorizontalLayout(
                 getSaveButton(),
-                getResetButton()
+                getResetButton(),
+                getDeleteButton()
         );
     }
 
@@ -201,12 +217,40 @@ public abstract class AbstractForm<T> extends CustomComponent implements
         return saveButton;
     }
 
+    protected Button createDeleteButton() {
+        return new DeleteButton("Delete");
+    }
+
+    private Button deleteButton;
+
+    public void setDeleteButton(final Button deleteButton) {
+        this.deleteButton = deleteButton;
+        deleteButton.addClickListener(new Button.ClickListener() {
+
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                delete(event);
+            }
+        });
+    }
+
+    public Button getDeleteButton() {
+        if (deleteButton == null) {
+            setDeleteButton(createDeleteButton());
+        }
+        return deleteButton;
+    }
+
     protected void save(Button.ClickEvent e) {
-        savedHandler.onSave(entity);
+        savedHandler.onSave(getEntity());
     }
 
     protected void reset(Button.ClickEvent e) {
-        resetHandler.onReset(entity);
+        resetHandler.onReset(getEntity());
+    }
+
+    protected void delete(Button.ClickEvent e) {
+        deleteHandler.onDelete(getEntity());
     }
 
     public void focusFirst() {
