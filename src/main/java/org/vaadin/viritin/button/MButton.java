@@ -69,4 +69,9 @@ public class MButton extends Button {
         return this;
     }
 
+    public MButton withVisible(boolean visible) {
+        setVisible(visible);
+        return this;
+    }
+
 }

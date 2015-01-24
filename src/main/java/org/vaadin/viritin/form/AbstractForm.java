@@ -129,14 +129,17 @@ public abstract class AbstractForm<T> extends CustomComponent implements
 
     public void setSavedHandler(SavedHandler<T> savedHandler) {
         this.savedHandler = savedHandler;
+        getSaveButton().setVisible(this.savedHandler != null);
     }
 
     public void setResetHandler(ResetHandler<T> resetHandler) {
         this.resetHandler = resetHandler;
+        getResetButton().setVisible(this.resetHandler != null);
     }
 
     public void setDeleteHandler(DeleteHandler<T> deleteHandler) {
         this.deleteHandler = deleteHandler;
+        getDeleteButton().setVisible(this.deleteHandler != null);
     }
 
     public ResetHandler<T> getResetHandler() {
@@ -171,7 +174,8 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     }
 
     protected Button createCancelButton() {
-        return new MButton("Cancel");
+        return new MButton("Cancel")
+                .withVisible(false);
     }
     private Button resetButton;
 
@@ -194,7 +198,8 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     }
 
     protected Button createSaveButton() {
-        return new PrimaryButton("Save");
+        return new PrimaryButton("Save")
+                .withVisible(false);
     }
 
     private Button saveButton;
@@ -218,7 +223,8 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     }
 
     protected Button createDeleteButton() {
-        return new DeleteButton("Delete");
+        return new DeleteButton("Delete")
+                .withVisible(false);
     }
 
     private Button deleteButton;
