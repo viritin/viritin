@@ -24,6 +24,8 @@ import org.vaadin.viritin.layouts.MHorizontalLayout;
 public abstract class AbstractForm<T> extends CustomComponent implements
         FieldGroupListener {
 
+    private Window popup;
+
     public AbstractForm() {
         addAttachListener(new AttachListener() {
             @Override
@@ -63,8 +65,8 @@ public abstract class AbstractForm<T> extends CustomComponent implements
 
     protected void adjustResetButtonState() {
         if (isAttached() && isEagerValidation() && isBound()) {
-            boolean beanModified = fieldGroup.isBeanModified();
-            getResetButton().setEnabled(beanModified);
+            boolean modified = fieldGroup.isBeanModified();
+            getResetButton().setEnabled(modified || popup != null);
         }
     }
 
@@ -137,11 +139,20 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     }
 
     public Window openInModalPopup() {
-        Window window = new Window("Edit entry", this);
-        window.setModal(true);
-        UI.getCurrent().addWindow(window);
+        popup = new Window("Edit entry", this);
+        popup.setModal(true);
+        UI.getCurrent().addWindow(popup);
         focusFirst();
-        return window;
+        return popup;
+    }
+
+    /**
+     *
+     * @return the last Popup into which the Form was opened with
+     * #openInModalPopup method or null if the form hasn't been use in window
+     */
+    public Window getPopup() {
+        return popup;
     }
 
     /**
