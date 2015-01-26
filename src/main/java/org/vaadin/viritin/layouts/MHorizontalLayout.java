@@ -4,6 +4,7 @@ import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
 import java.util.Collection;
 
 public class MHorizontalLayout extends HorizontalLayout {
@@ -112,6 +113,17 @@ public class MHorizontalLayout extends HorizontalLayout {
     public MHorizontalLayout withStyleName(String styleName) {
         setStyleName(styleName);
         return this;
+    }
+
+    /**
+     * Adds "spacer" to layout that expands to consume remaining space. If
+     * multiple spacers are added they share equally sized slot. Also tries to 
+     * configure layout for proper settings needed for this kind of usage.
+     *
+     * @return the layout with space added
+     */
+    public MHorizontalLayout space() {
+        return expand(new Label());
     }
 
 }
