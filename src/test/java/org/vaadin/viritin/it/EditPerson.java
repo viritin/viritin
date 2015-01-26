@@ -37,7 +37,7 @@ public class EditPerson extends AbstractTest {
         }
     }
 
-    public static class PersonForm<Person> extends AbstractForm {
+    public static class PersonForm extends AbstractForm<Person> {
 
         private MTextField firstName = new MTextField("Name");
 
@@ -76,6 +76,14 @@ public class EditPerson extends AbstractTest {
             @Override
             public void onSave(Person entity) {
                 Notification.show(entity.toString());
+            }
+        });
+
+        form.setDeleteHandler(new AbstractForm.DeleteHandler<Person>() {
+
+            @Override
+            public void onDelete(Person entity) {
+                Notification.show("Delete: " + entity.toString());
             }
         });
 
