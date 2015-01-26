@@ -22,7 +22,7 @@ import org.vaadin.viritin.button.MButton;
  * <ul>
  * <li>The field is valid when all elements are valid.
  * <li>The field is always non buffered
- * <li>The element type needs to have an empty paremeter constructor or user
+ * <li>The element type needs to have an empty parameter constructor or user
  * must provide an Instantiator.
  * </ul>
  *
@@ -270,6 +270,33 @@ public class ElementCollectionField<ET> extends AbstractElementCollection<ET> {
     public ElementCollectionField<ET> addElementAddedListener(
             ElementAddedListener<ET> listener) {
         super.addElementAddedListener(listener);
+        return this;
+    }
+
+
+    /**
+     * Expands the column with given property id
+     * @param propertyId the id of column that should be expanded in the UI
+     * @return the element collection field
+     */
+    public ElementCollectionField<ET> expand(String... propertyId) {
+        for (String propertyId1 : propertyId) {
+            int index = getVisibleProperties().indexOf(propertyId1);
+            if(index == -1) {
+                throw new IllegalArgumentException("The expanded property must available");
+            }
+            layout.setColumnExpandRatio(index, 1);
+        }
+        if(layout.getWidth() == -1) {
+            layout.setWidth(100, Unit.PERCENTAGE);
+        }
+        // TODO should also make width of elements automatically 100%, both
+        // existing and added, now obsolete config needed for row model
+        return this;
+    }
+
+    public ElementCollectionField<ET> withFullWidth() {
+        setWidth(100, Unit.PERCENTAGE);
         return this;
     }
 
