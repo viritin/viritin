@@ -22,6 +22,10 @@ public class LazyComboBoxUsageSample extends AbstractTest {
     public Component getTestComponent() {
 
         final LazyComboBoxUsage.LazyService service = new LazyComboBoxUsage.LazyService();
+        
+        // This is naturally much cleaner with Java 8, just wire to service layer
+        // using method reference, with older java, better create a class for 
+        // each entity type.
         final LazyComboBox.FilterablePagingProvider filterablePagingProvider = new LazyComboBox.FilterablePagingProvider() {
             
             @Override
@@ -41,7 +45,6 @@ public class LazyComboBoxUsageSample extends AbstractTest {
             
         };
 
-        // This is naturally much cleaner with Java 8
         LazyComboBox<Person> cb = new LazyComboBox(Person.class, filterablePagingProvider, filterableCountProvider)
                 .setCaptionGenerator(new CaptionGenerator<Person>() {
 

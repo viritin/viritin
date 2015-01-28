@@ -14,8 +14,8 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * This class tries to provide a simple lazy loading connection form ComboBox to typical service layers. See Viritin projects
- * tests for example usage.
+ * This class tries to provide a simple lazy loading connection form ComboBox to
+ * typical service layers. See Viritin projects tests for example usage.
  *
  * @author Matti Tahvonen
  */
@@ -51,7 +51,8 @@ public class LazyComboBox<T> extends TypedSelect<T> {
     private LazyList<T> piggybackLazyList;
 
     /**
-     * A shorthand to create MTable using LazyList. By default page size of
+     * Instantiates a memory and CPU efficient ComboBox, typically wired to 
+     * EJB or Spring Data repository. By default page size of
      * LazyList.DEFAULT_PAGE_SIZE (30) is used.
      *
      * @param elementType the type of options in the select
@@ -61,6 +62,22 @@ public class LazyComboBox<T> extends TypedSelect<T> {
     public LazyComboBox(Class<T> elementType,
             final FilterablePagingProvider filterablePageProvider,
             final FilterableCountProvider countProvider) {
+        this(elementType, filterablePageProvider, countProvider,
+                LazyList.DEFAULT_PAGE_SIZE);
+    }
+
+    /**
+     * Instantiates a memory and CPU efficient ComboBox, typically wired to 
+     * EJB or Spring Data repository.
+     *
+     * @param elementType the type of options in the select
+     * @param filterablePageProvider the interface via entities are fetched
+     * @param countProvider the interface via the count of items is detected
+     * @param pageLength the maximum page size to be used with service calls
+     */
+    public LazyComboBox(Class<T> elementType,
+            final FilterablePagingProvider filterablePageProvider,
+            final FilterableCountProvider countProvider, int pageLength) {
         // piggyback to simple paging provider
         piggybackLazyList = new LazyList<T>(new LazyList.PagingProvider() {
 
@@ -75,10 +92,7 @@ public class LazyComboBox<T> extends TypedSelect<T> {
             public int size() {
                 return countProvider.size(getCurrentFilter());
             }
-        }) {
-
-
-        };
+        }, pageLength);
 
         final ComboBox comboBox = new ComboBox() {
             @SuppressWarnings("unchecked")
@@ -91,7 +105,8 @@ public class LazyComboBox<T> extends TypedSelect<T> {
             protected Container.Filter buildFilter(String filterString,
                     FilteringMode filteringMode) {
 
-                if(getValue() != null && getItemCaption(getValue()).equals(filterString)) {
+                if (getValue() != null && getItemCaption(getValue()).equals(
+                        filterString)) {
                     // Yes, the combobox calls filtering with the item caption when opening popup with selection,
                     // ignore that, fall back to ""
                     filterString = "";
@@ -100,13 +115,13 @@ public class LazyComboBox<T> extends TypedSelect<T> {
                 /*
                  * Save for the thinner interface.
                  */
-                if(ObjectUtils.notEqual(currentFilter, filterString)) {
+                if (ObjectUtils.notEqual(currentFilter, filterString)) {
                     currentFilter = filterString;
                     piggybackLazyList.reset();
                 }
                 return super.buildFilter(filterString, filteringMode);
             }
-            
+
             {
                 // This is needed for the lazy loading to work for some reason
                 setItemCaptionMode(ItemCaptionMode.PROPERTY);
@@ -120,7 +135,8 @@ public class LazyComboBox<T> extends TypedSelect<T> {
                 return option.toString();
             }
         });
-        setBic(new DummyFilterableListContainer<T>(elementType, piggybackLazyList));
+        setBic(new DummyFilterableListContainer<T>(elementType,
+                piggybackLazyList));
         comboBox.setContainerDataSource(getBic());
         setSelectInstance(comboBox);
     }
