@@ -41,6 +41,8 @@ public class EditPerson extends AbstractTest {
 
         private MTextField firstName = new MTextField("Name");
 
+        private MTextField age = new MTextField("Age");
+
         LabelField<Integer> id = new LabelField<Integer>(Integer.class)
                 .withCaption("ID");
         private final ElementCollectionField<Address> addresses = new ElementCollectionField<Address>(
@@ -58,7 +60,7 @@ public class EditPerson extends AbstractTest {
 
         @Override
         protected Component createContent() {
-            return new MVerticalLayout(id, firstName, addresses, groups,
+            return new MVerticalLayout(id, firstName, age, addresses, groups,
                     getToolbar());
         }
 
@@ -67,6 +69,18 @@ public class EditPerson extends AbstractTest {
     @Override
     public Component getTestComponent() {
         PersonForm form = new PersonForm();
+
+        form.addValidityChangedListener(new AbstractForm.ValidityChangedListener<Person>() {
+            @Override
+            public void onValidityChanged(AbstractForm.ValidityChangedEvent<Person> event) {
+                if(event.getComponent().isValid()) {
+                    Notification.show("The form is now valid!",
+                            Notification.Type.TRAY_NOTIFICATION);
+                } else {
+                    Notification.show("Invalid values in form, clicking save is disabled!");
+                }
+             }
+        });
 
         Person p = Service.getPerson();
         form.setEntity(p);

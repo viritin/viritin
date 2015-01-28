@@ -16,8 +16,13 @@
 
 package org.vaadin.viritin.testdomain;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.util.ArrayList;
 import java.util.List;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import org.apache.commons.lang3.ObjectUtils;
 
 /**
  *
@@ -27,7 +32,9 @@ public class Person {
     private int id;
     private String firstName;
     private String lastName;
-    private int age;
+    
+    @NotNull
+    private Integer age;
 
     private List<Address> addresses = new ArrayList<Address>();
 
@@ -75,11 +82,11 @@ public class Person {
         this.lastName = lastName;
     }
 
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 
@@ -107,7 +114,7 @@ public class Person {
         if (getClass() != obj.getClass())
             return false;
         Person other = (Person) obj;
-        if (age != other.age)
+        if (ObjectUtils.notEqual(age, other.age))
             return false;
         if (firstName == null) {
             if (other.firstName != null)

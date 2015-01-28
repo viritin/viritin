@@ -1,14 +1,7 @@
 package org.vaadin.viritin.form;
 
-import com.vaadin.ui.AbstractComponentContainer;
-import com.vaadin.ui.AbstractField;
-import com.vaadin.ui.AbstractTextField;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.CustomComponent;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.UI;
-import com.vaadin.ui.Window;
+import com.vaadin.ui.*;
+import com.vaadin.util.ReflectTools;
 import org.vaadin.viritin.BeanBinder;
 import org.vaadin.viritin.MBeanFieldGroup;
 import org.vaadin.viritin.MBeanFieldGroup.FieldGroupListener;
@@ -17,6 +10,8 @@ import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.button.PrimaryButton;
 import org.vaadin.viritin.layouts.MHorizontalLayout;
 
+import java.lang.reflect.Method;
+
 /**
  * Abstract super class for simple editor forms.
  *
@@ -24,6 +19,26 @@ import org.vaadin.viritin.layouts.MHorizontalLayout;
  */
 public abstract class AbstractForm<T> extends CustomComponent implements
         FieldGroupListener {
+    
+    public static class ValidityChangedEvent<T> extends Component.Event {
+        
+        private static final Method method = ReflectTools.findMethod(ValidityChangedListener.class, "onValidityChanged",
+                ValidityChangedEvent.class);
+
+        public ValidityChangedEvent(Component source) {
+            super(source);
+        }
+
+        @Override
+        public AbstractForm<T> getComponent() {
+            return (AbstractForm) super.getComponent();
+        }
+        
+    }
+    
+    public interface ValidityChangedListener<T> {
+        public void onValidityChanged(ValidityChangedEvent<T> event);
+    }
 
     private Window popup;
 
@@ -45,18 +60,33 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     }
 
     private MBeanFieldGroup<T> fieldGroup;
+    
+    /**
+     * The validity checked and cached on last change. Should be pretty much
+     * always up to date due to eager changes. At least after onFieldGroupChange
+     * call.
+     */
+    boolean isValid = false;
 
     @Override
     public void onFieldGroupChange(MBeanFieldGroup beanFieldGroup) {
+        boolean wasValid = isValid;
+        isValid = fieldGroup.isValid();
         adjustSaveButtonState();
         adjustResetButtonState();
+        if(wasValid != isValid) {
+            fireValidityChangedEvent();
+        }
+    }
+    
+    public boolean isValid() {
+        return isValid;
     }
 
     protected void adjustSaveButtonState() {
         if (isAttached() && isEagerValidation() && isBound()) {
             boolean beanModified = fieldGroup.isBeanModified();
-            boolean valid = fieldGroup.isValid();
-            getSaveButton().setEnabled(beanModified && valid);
+            getSaveButton().setEnabled(beanModified && isValid());
         }
     }
 
@@ -69,6 +99,17 @@ public abstract class AbstractForm<T> extends CustomComponent implements
             boolean modified = fieldGroup.isBeanModified();
             getResetButton().setEnabled(modified || popup != null);
         }
+    }
+    
+    public void addValidityChangedListener(ValidityChangedListener<T> listener) {
+        addListener(ValidityChangedEvent.class, listener, ValidityChangedEvent.method);
+    }
+    public void removeValidityChangedListener(ValidityChangedListener<T> listener) {
+        removeListener(ValidityChangedEvent.class, listener, ValidityChangedEvent.method);
+    }
+
+    private void fireValidityChangedEvent() {
+        fireEvent(new ValidityChangedEvent(this));
     }
 
     public interface SavedHandler<T> {
@@ -116,6 +157,7 @@ public abstract class AbstractForm<T> extends CustomComponent implements
                 fieldGroup.unbind();
             }
             fieldGroup = BeanBinder.bind(entity, this);
+            isValid = fieldGroup.isValid();
             if (isEagerValidation()) {
                 fieldGroup.withEagerValidation(this);
                 adjustSaveButtonState();
