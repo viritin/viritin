@@ -15,27 +15,17 @@
  */
 package org.vaadin.viritin;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.vaadin.data.Container;
 import com.vaadin.data.Container.ItemSetChangeNotifier;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.AbstractContainer;
-import org.apache.commons.beanutils.BeanComparator;
-import org.apache.commons.beanutils.DynaBean;
-import org.apache.commons.beanutils.DynaProperty;
-import org.apache.commons.beanutils.WrapDynaBean;
-import org.apache.commons.beanutils.WrapDynaClass;
+import org.apache.commons.beanutils.*;
 import org.apache.commons.collections.comparators.NullComparator;
 import org.apache.commons.collections.comparators.ReverseComparator;
 import org.apache.commons.lang3.ClassUtils;
+
+import java.util.*;
 
 /**
  * A replacement for BeanItemContainer from the core
@@ -104,6 +94,11 @@ public class ListContainer<T> extends AbstractContainer implements
 
     @Override
     public List<T> getItemIds(int startIndex, int numberOfItems) {
+        // Whooo!? Vaadin calls this method with numberOfItems == -1
+        if(numberOfItems < 0) {
+            throw new IllegalArgumentException();
+        }
+
         return getBackingList().subList(startIndex, startIndex + numberOfItems);
     }
 

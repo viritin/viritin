@@ -1,9 +1,7 @@
 package org.vaadin.viritin;
 
 import java.io.Serializable;
-import java.util.AbstractList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * A general purpose helper class to us MTable/ListContainer for service layers
@@ -18,7 +16,6 @@ import java.util.List;
 public class LazyList<T> extends AbstractList<T> implements Serializable {
 
     // Split into subinterfaces for better Java 8 lambda support
-    
     /**
      * Interface via the LazyList communicates with the "backend"
      *
@@ -67,7 +64,7 @@ public class LazyList<T> extends AbstractList<T> implements Serializable {
     private List<T> prevPage;
     private List<T> nextPage;
 
-    private int pageIndex = -1;
+    private int pageIndex = -10;
     private final int pageSize;
 
     /**
@@ -124,8 +121,9 @@ public class LazyList<T> extends AbstractList<T> implements Serializable {
     }
 
     @Override
-    public T get(int i) {
-        int pageIndexForReqest = i / pageSize;
+    public T get(final int index) {
+        final int pageIndexForReqest = index / pageSize;
+        final int indexOnPage = index % pageSize;
 
         // Find page from cache
         List<T> page = null;
@@ -139,28 +137,24 @@ public class LazyList<T> extends AbstractList<T> implements Serializable {
 
         if (page == null) {
             // Page not in cache, change page, move next/prev is feasible
-            if (pageIndexForReqest + 1 == pageIndex) {
-                // goint to next page
+            if (pageIndexForReqest - 1 == pageIndex) {
+                // going to next page
                 prevPage = currentPage;
-                if (nextPage != null) {
-                    currentPage = nextPage;
-                    nextPage = null;
-                } else {
-                    currentPage = null;
-                }
-            } else if (pageIndexForReqest - 1 == pageIndex) {
+                currentPage = nextPage;
+                nextPage = null;
+            } else if (pageIndexForReqest + 1 == pageIndex) {
                 // going to previous page
                 nextPage = currentPage;
-                if (prevPage != null) {
-                    currentPage = prevPage;
-                    prevPage = null;
-                } else {
-                    currentPage = null;
-                }
+                currentPage = prevPage;
+                prevPage = null;
+            } else {
+                currentPage = null;
+                prevPage = null;
+                nextPage = null;
             }
             pageIndex = pageIndexForReqest;
             if (currentPage == null) {
-                currentPage = pageProvider.findEntities(i);
+                currentPage = findEntities(pageIndex * pageSize);
             }
             if (currentPage == null) {
                 return null;
@@ -168,7 +162,12 @@ public class LazyList<T> extends AbstractList<T> implements Serializable {
                 page = currentPage;
             }
         }
-        return page.get(i % pageSize);
+        final T get = page.get(indexOnPage);
+        return get;
+    }
+
+    protected List findEntities(int i) {
+        return pageProvider.findEntities(i);
     }
 
     private Integer cachedSize;
@@ -181,31 +180,68 @@ public class LazyList<T> extends AbstractList<T> implements Serializable {
         return cachedSize;
     }
 
+    private transient WeakHashMap<T,Integer> indexCache ;
+
+    private Map<T, Integer> getIndexCache() {
+        if(indexCache == null) {
+            indexCache = new WeakHashMap<T, Integer>();
+        }
+        return indexCache;
+    }
+
     @Override
     public int indexOf(Object o) {
         // optimize: check the buffers first
-        if (currentPage != null) {
+        Integer indexViaCache = getIndexCache().get(o);
+        if(indexViaCache != null) {
+            return indexViaCache;
+        } else if (currentPage != null) {
             int idx = currentPage.indexOf(o);
             if (idx != -1) {
-                return pageIndex * pageSize + idx;
+                indexViaCache = pageIndex * pageSize + idx;
             }
         }
-        if (prevPage != null) {
+        if (indexViaCache == null && prevPage != null) {
             int idx = prevPage.indexOf(o);
             if (idx != -1) {
-                return (pageIndex - 1) * pageSize + idx;
+                indexViaCache =  (pageIndex - 1) * pageSize + idx;
             }
         }
-        if (nextPage != null) {
+        if (indexViaCache == null && nextPage != null) {
             int idx = nextPage.indexOf(o);
             if (idx != -1) {
-                return (pageIndex + 1) * pageSize + idx;
+                indexViaCache =  (pageIndex + 1) * pageSize + idx;
             }
+        }
+        if(indexViaCache != null) {
+            /*
+             * In some cases (selected value) components like Vaadin combobox calls this, then stuff from elsewhere with indexes and
+             * finally again this method with the same object (possibly on other page). Thus, to avoid heavy iterating,
+             * cache the location.
+             */
+            getIndexCache().put((T) o, indexViaCache);
+            return indexViaCache;
         }
         // fall back to iterating, this will most likely be sloooooow....
         // If your app gets here, consider overwriting this method, and to
         // some optimization at service/db level
         return super.indexOf(o);
+    }
+
+    @Override
+    public boolean contains(Object o) {
+        // Although there would be the indexed version, vaadin sometimes calls this
+        // First check caches, then fall back to sluggish iterator :-(
+        if(getIndexCache().containsKey(o)) {
+            return true;
+        } else if (currentPage != null && currentPage.contains(o)) {
+            return true;
+        } else if (prevPage != null && prevPage.contains(o)) {
+            return true;
+        }  else if (nextPage != null && nextPage.contains(o)) {
+            return true;
+        }
+        return super.contains(o);
     }
 
     @Override
@@ -240,7 +276,11 @@ public class LazyList<T> extends AbstractList<T> implements Serializable {
         currentPage = null;
         prevPage = null;
         nextPage = null;
-        pageIndex = -1;
+        pageIndex = -10;
+        cachedSize = null;
+        if(indexCache != null) {
+            indexCache.clear();
+        }
     }
 
 }
