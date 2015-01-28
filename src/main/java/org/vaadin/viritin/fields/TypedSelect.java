@@ -1,23 +1,16 @@
 package org.vaadin.viritin.fields;
 
-import java.util.Collection;
-
 import com.vaadin.data.Container;
 import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
 import com.vaadin.data.Validator.InvalidValueException;
-import com.vaadin.ui.AbstractSelect;
-import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.CustomComponent;
-import com.vaadin.ui.Field;
-import com.vaadin.ui.ListSelect;
-import com.vaadin.ui.NativeSelect;
-import com.vaadin.ui.OptionGroup;
-import com.vaadin.ui.TwinColSelect;
+import com.vaadin.ui.*;
+import org.vaadin.viritin.ListContainer;
+
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import org.vaadin.viritin.ListContainer;
 
 /**
  * A select implementation with better typed API than in core Vaadin.
@@ -46,6 +39,11 @@ public class TypedSelect<T> extends CustomComponent implements Field<T> {
 
     private Class<T> fieldType;
 
+    /**
+     * The type of element options in the select
+     * 
+     * @param type the type of options in the list
+     */
     public TypedSelect(Class<T> type) {
         this.fieldType = type;
         bic = new ListContainer<T>(type);
@@ -109,50 +107,59 @@ public class TypedSelect<T> extends CustomComponent implements Field<T> {
     public TypedSelect<T> withSelectType(
             Class<? extends AbstractSelect> selectType) {
         if (selectType == ListSelect.class) {
-            select = new ListSelect() {
+            setSelectInstance(new ListSelect() {
                 @SuppressWarnings("unchecked")
                 @Override
                 public String getItemCaption(Object itemId) {
                     return TypedSelect.this.getCaption((T) itemId);
                 }
-            };
+            });
         } else if (selectType == OptionGroup.class) {
-            select = new OptionGroup() {
+            setSelectInstance(new OptionGroup() {
                 @SuppressWarnings("unchecked")
                 @Override
                 public String getItemCaption(Object itemId) {
                     return TypedSelect.this.getCaption((T) itemId);
                 }
-            };
+            });
         } else if (selectType == ComboBox.class) {
-            select = new ComboBox() {
+            setSelectInstance(new ComboBox() {
                 @SuppressWarnings("unchecked")
                 @Override
                 public String getItemCaption(Object itemId) {
                     return TypedSelect.this.getCaption((T) itemId);
                 }
-            };
+            });
         } else if (selectType == TwinColSelect.class) {
-            select = new TwinColSelect() {
+            setSelectInstance(new TwinColSelect() {
                 @SuppressWarnings("unchecked")
                 @Override
                 public String getItemCaption(Object itemId) {
                     return TypedSelect.this.getCaption((T) itemId);
                 }
-            };
+            });
         } else /*if (selectType == null || selectType == NativeSelect.class)*/ {
-            select = new NativeSelect() {
+            setSelectInstance(new NativeSelect() {
                 @SuppressWarnings("unchecked")
                 @Override
                 public String getItemCaption(Object itemId) {
                     return TypedSelect.this.getCaption((T) itemId);
                 }
-            };
+            });
         }
         return this;
     }
+    
+    protected void setSelectInstance(AbstractSelect select) {
+        this.select = select;
+    }
 
-    protected final AbstractSelect getSelect() {
+    /**
+     * 
+     * @return  the backing select instance, overriding this method may be 
+     * hazardous
+     */
+    protected AbstractSelect getSelect() {
         if (select == null) {
             withSelectType(null);
             if (bic != null) {
@@ -199,26 +206,20 @@ public class TypedSelect<T> extends CustomComponent implements Field<T> {
     }
 
     /**
-     * Use setFieldType instead.
+     * Explicitly sets the element type of the select.
      *
-     * @param type the type of the select to use as implementation 
+     * @param type the type of options in the select
      * @return this typed select instance
-     * @deprecated use the setFieldType instead
      */
-    @Deprecated
     public TypedSelect setType(Class<T> type) {
         this.fieldType = type;
         return this;
     }
 
     /**
-     * Sets the Vaadin Select type that should be used as the select
-     * implementation.
+     * Explicitly sets the element type of the select.
      *
-     * Supported values are: ListSelect, OptionGroup, ComboBox, TwinColSelect
-     * and NativeSelect.
-     *
-     * @param type the type of the select to use as implementation 
+     * @param type the type of options in the select
      * @return this typed select instance
      */
     public TypedSelect setFieldType(Class<T> type) {
@@ -479,5 +480,23 @@ public class TypedSelect<T> extends CustomComponent implements Field<T> {
             getSelect().setValue(bic.getIdByIndex(0));
         }
     }
+
+    /**
+     * 
+     * @return gets the ListContainer used by this component
+     */
+    protected ListContainer<T> getBic() {
+        return bic;
+    }
+
+    /**
+     * 
+     * @param listContainer  sets the ListContainer used by this select. For 
+     * extensions only, should be set early or will fail.
+     */
+    protected void setBic(ListContainer<T> listContainer) {
+        bic = listContainer;
+    }
+    
 
 }
