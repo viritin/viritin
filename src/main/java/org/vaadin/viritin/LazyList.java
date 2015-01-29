@@ -58,7 +58,10 @@ public class LazyList<T> extends AbstractList<T> implements Serializable {
     private final PagingProvider pageProvider;
     private final CountProvider countProvider;
 
-    public static final int DEFAULT_PAGE_SIZE = 30;
+    // Vaadin table by default has 15 rows, 2x that to cache up an down
+    // With this setting it is maximum of 2 requests that happens. With
+    // normal scrolling just 0-1 per user interaction
+    public static final int DEFAULT_PAGE_SIZE = 15 + 15*2;
 
     private List<T> currentPage;
     private List<T> prevPage;
