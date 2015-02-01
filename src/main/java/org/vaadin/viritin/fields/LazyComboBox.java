@@ -51,8 +51,8 @@ public class LazyComboBox<T> extends TypedSelect<T> {
     private LazyList<T> piggybackLazyList;
 
     /**
-     * Instantiates a memory and CPU efficient ComboBox, typically wired to 
-     * EJB or Spring Data repository. By default page size of
+     * Instantiates a memory and CPU efficient ComboBox, typically wired to EJB
+     * or Spring Data repository. By default page size of
      * LazyList.DEFAULT_PAGE_SIZE (30) is used.
      *
      * @param elementType the type of options in the select
@@ -67,8 +67,8 @@ public class LazyComboBox<T> extends TypedSelect<T> {
     }
 
     /**
-     * Instantiates a memory and CPU efficient ComboBox, typically wired to 
-     * EJB or Spring Data repository.
+     * Instantiates a memory and CPU efficient ComboBox, typically wired to EJB
+     * or Spring Data repository.
      *
      * @param elementType the type of options in the select
      * @param filterablePageProvider the interface via entities are fetched
@@ -78,6 +78,14 @@ public class LazyComboBox<T> extends TypedSelect<T> {
     public LazyComboBox(Class<T> elementType,
             final FilterablePagingProvider filterablePageProvider,
             final FilterableCountProvider countProvider, int pageLength) {
+        this();
+        initList(elementType, filterablePageProvider, countProvider, pageLength);
+    }
+
+    protected final ComboBox initList(
+            Class<T> elementType,
+            final FilterablePagingProvider filterablePageProvider,
+            final FilterableCountProvider countProvider1, int pageLength) {
         // piggyback to simple paging provider
         piggybackLazyList = new LazyList<T>(new LazyList.PagingProvider() {
 
@@ -86,14 +94,13 @@ public class LazyComboBox<T> extends TypedSelect<T> {
                 return filterablePageProvider.findEntities(firstRow,
                         getCurrentFilter());
             }
-        }, new LazyList.CountProvider() {
-
-            @Override
-            public int size() {
-                return countProvider.size(getCurrentFilter());
-            }
-        }, pageLength);
-
+        },
+                new LazyList.CountProvider() {
+                    @Override
+                    public int size() {
+                        return countProvider1.size(getCurrentFilter());
+                    }
+                }, pageLength);
         final ComboBox comboBox = new ComboBox() {
             @SuppressWarnings("unchecked")
             @Override
@@ -129,16 +136,35 @@ public class LazyComboBox<T> extends TypedSelect<T> {
             }
 
         };
+
+        setBic(new DummyFilterableListContainer<T>(elementType,
+                piggybackLazyList));
+        comboBox.setContainerDataSource(getBic());
+        setSelectInstance(comboBox);
+
+        return comboBox;
+    }
+
+    /**
+     * Instantiates a new LazyCombobox. Be sure to call
+     * preparePiggybackLazyList
+     *
+     */
+    protected LazyComboBox() {
         setCaptionGenerator(new CaptionGenerator<T>() {
             @Override
             public String getCaption(T option) {
                 return option.toString();
             }
         });
-        setBic(new DummyFilterableListContainer<T>(elementType,
-                piggybackLazyList));
-        comboBox.setContainerDataSource(getBic());
-        setSelectInstance(comboBox);
+    }
+    
+    /**
+     * Refreshes entities cached in the lazy backing list.
+     */
+    public void refresh() {
+        piggybackLazyList.reset();
+        markAsDirty();
     }
 
     public String getCurrentFilter() {
