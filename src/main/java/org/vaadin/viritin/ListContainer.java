@@ -266,6 +266,11 @@ public class ListContainer<T> extends AbstractContainer implements
 
     @Override
     public Collection<?> getSortableContainerPropertyIds() {
+        if (backingList instanceof LazyList) {
+            // Explicit support for LazyList, don't support sorting by default
+            // as the sorting should most probably be done at backend call level
+            return Collections.emptySet();
+        }
         ArrayList<String> properties = new ArrayList<String>();
         for (DynaProperty db : getDynaClass().getDynaProperties()) {
             if (db.getType().isPrimitive() || Comparable.class.isAssignableFrom(
