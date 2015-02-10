@@ -190,6 +190,11 @@ Currently project contains following helpers (might be slightly outdated):
 * ListContainer (used by e.g. MTable, but can be used separately as well)
  * A lightweight replacement for BeanItemContainer that uses apache commons-beanutils for introspection. The performance (both memory and CPU) is also superior to the core Vaadin counterpart.
  * Note, that beans are kept in orinal list that developer used to pass beans. Wrap in e.g. ArrayList if you wish to keep original List unmodified.
+* LazyList and SortableLazyList
+ * Together with ListContainer makes memory and query efficient wiring from UI components like Table into your backend dead simple.
+ * MTable supports the wiring directly with constructors, LazyComboBox has custom version that supports filtering done by ComboBox.
+* DowndloadButton
+ * Simplifies creating downloads for dynamically created resources, like PDF reports. Inverts the core Vaadin api to provide output stream for developer into where the content should be written. Also connects download extension to button automatically.
 * AbstractForm
  * An abstract super class for simple entity editor. Provides save/cancel buttons and interfaces for hooking into them. Does binding with naming convention using BeanBinder when setEntity(T) is called. It is suggested to use the "setEagerValidation(true)" mode as it will make your forms much more UX friendly by default. This makes fields validating while you edit the form, instead of postponing it until the save click. Since 1.22 this is the default, but can be disabled if eager validation is for some reason not wanted. 
 * DisclosurePanel is a simple panel whose content is hidden by default. Easy method to hide fields that are most often irrelevant for the end user.
