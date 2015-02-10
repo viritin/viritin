@@ -74,6 +74,10 @@ public class DynaBeanItem<T> implements Item {
         this.bean = bean;
     }
 
+    public T getBean() {
+        return bean;
+    }
+
     private DynaBean getDynaBean() {
         if (db == null) {
             db = new WrapDynaBean(bean);

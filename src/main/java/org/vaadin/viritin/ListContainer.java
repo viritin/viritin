@@ -391,6 +391,10 @@ public class ListContainer<T> extends AbstractContainer implements
             this.bean = bean;
         }
 
+        public T getBean() {
+            return bean;
+        }
+
         private DynaBean getDynaBean() {
             if (db == null) {
                 db = new WrapDynaBean(bean);
