@@ -18,6 +18,7 @@ import java.util.List;
  * typical service layers. See Viritin projects tests for example usage.
  *
  * @author Matti Tahvonen
+ * @param <T> the type of entities listed in the combobox
  */
 public class LazyComboBox<T> extends TypedSelect<T> {
 
