@@ -55,7 +55,7 @@ public class LazyList<T> extends AbstractList<T> implements Serializable {
             CountProvider {
     }
 
-    private final PagingProvider pageProvider;
+    private PagingProvider pageProvider;
     private final CountProvider countProvider;
 
     // Vaadin table by default has 15 rows, 2x that to cache up an down
@@ -69,6 +69,11 @@ public class LazyList<T> extends AbstractList<T> implements Serializable {
 
     private int pageIndex = -10;
     private final int pageSize;
+    
+    protected LazyList(CountProvider countProvider, int pageSize) {
+        this.countProvider = countProvider;
+        this.pageSize = pageSize;
+    }
 
     /**
      * Constructs a new LazyList with given provider and default page size of

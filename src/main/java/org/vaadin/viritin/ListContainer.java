@@ -266,8 +266,10 @@ public class ListContainer<T> extends AbstractContainer implements
 
     @Override
     public Collection<?> getSortableContainerPropertyIds() {
-        if (backingList instanceof LazyList) {
-            // Explicit support for LazyList, don't support sorting by default
+        if(backingList instanceof SortableLazyList) {
+            // Assume SortableLazyList can sort by any Comparable property
+        } else if (backingList instanceof LazyList) {
+            // When using LazyList, don't support sorting by default
             // as the sorting should most probably be done at backend call level
             return Collections.emptySet();
         }

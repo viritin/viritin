@@ -15,14 +15,19 @@
  */
 package org.vaadin.viritin.fields;
 
+import com.vaadin.ui.Component;
 import com.vaadin.ui.Table;
+import com.vaadin.util.ReflectTools;
+import java.lang.reflect.Method;
 import org.vaadin.viritin.ListContainer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import org.vaadin.viritin.LazyList;
 import static org.vaadin.viritin.LazyList.DEFAULT_PAGE_SIZE;
+import org.vaadin.viritin.SortableLazyList;
 
 /**
  * A better typed version of the Table component in Vaadin. Expects that users
@@ -46,6 +51,8 @@ public class MTable<T> extends Table {
     private String[] pendingProperties;
     private String[] pendingHeaders;
 
+    private Collection sortableProperties;
+
     public MTable() {
     }
 
@@ -67,9 +74,9 @@ public class MTable<T> extends Table {
     /**
      * A shorthand to create MTable using LazyList. By default page size of
      * LazyList.DEFAULT_PAGE_SIZE (30) is used.
-     * 
+     *
      * @param pageProvider the interface via entities are fetched
-     * @param countProvider  the interface via the count of items is detected
+     * @param countProvider the interface via the count of items is detected
      */
     public MTable(LazyList.PagingProvider pageProvider,
             LazyList.CountProvider countProvider) {
@@ -78,14 +85,38 @@ public class MTable<T> extends Table {
 
     /**
      * A shorthand to create MTable using LazyList.
-     * 
+     *
      * @param pageProvider the interface via entities are fetched
-     * @param countProvider  the interface via the count of items is detected
+     * @param countProvider the interface via the count of items is detected
      * @param pageSize the page size (aka maxResults) that is used in paging.
      */
     public MTable(LazyList.PagingProvider pageProvider,
             LazyList.CountProvider countProvider, int pageSize) {
         this(new LazyList(pageProvider, countProvider, pageSize));
+    }
+
+    /**
+     * A shorthand to create MTable using SortableLazyList. By default page size
+     * of LazyList.DEFAULT_PAGE_SIZE (30) is used.
+     *
+     * @param pageProvider the interface via entities are fetched
+     * @param countProvider the interface via the count of items is detected
+     */
+    public MTable(SortableLazyList.SortablePagingProvider pageProvider,
+            LazyList.CountProvider countProvider) {
+        this(new SortableLazyList(pageProvider, countProvider, DEFAULT_PAGE_SIZE));
+    }
+
+    /**
+     * A shorthand to create MTable using SortableLazyList.
+     *
+     * @param pageProvider the interface via entities are fetched
+     * @param countProvider the interface via the count of items is detected
+     * @param pageSize the page size (aka maxResults) that is used in paging.
+     */
+    public MTable(SortableLazyList.SortablePagingProvider pageProvider,
+            LazyList.CountProvider countProvider, int pageSize) {
+        this(new SortableLazyList(pageProvider, countProvider, pageSize));
     }
 
     public MTable(Collection<T> beans) {
@@ -136,6 +167,42 @@ public class MTable<T> extends Table {
             }
         }
         return this;
+    }
+
+    /**
+     * Explicitly sets which properties are sortable in the UI.
+     *
+     * @param sortableProperties the collection of property identifiers/names
+     * that should be sortable
+     * @return the MTable instance
+     */
+    public MTable<T> setSortableProperties(Collection sortableProperties) {
+        this.sortableProperties = sortableProperties;
+        return this;
+    }
+
+    /**
+     * Explicitly sets which properties are sortable in the UI.
+     *
+     * @param sortableProperties the collection of property identifiers/names
+     * that should be sortable
+     * @return the MTable instance
+     */
+    public MTable<T> setSortableProperties(String... sortableProperties) {
+        this.sortableProperties = Arrays.asList(sortableProperties);
+        return this;
+    }
+
+    public Collection getSortableProperties() {
+        return sortableProperties;
+    }
+
+    @Override
+    public Collection<?> getSortableContainerPropertyIds() {
+        if (getSortableProperties() != null) {
+            return Collections.unmodifiableCollection(sortableProperties);
+        }
+        return super.getSortableContainerPropertyIds();
     }
 
     public void addMValueChangeListener(MValueChangeListener<T> listener) {
@@ -264,10 +331,133 @@ public class MTable<T> extends Table {
         return this;
     }
 
+    public static class SortEvent extends Component.Event {
+
+        private boolean preventContainerSort = false;
+        private final boolean sortAscending;
+        private final String sortProperty;
+
+        public SortEvent(Component source, boolean sortAscending,
+                String property) {
+            super(source);
+            this.sortAscending = sortAscending;
+            this.sortProperty = property;
+        }
+
+        public String getSortProperty() {
+            return sortProperty;
+        }
+
+        public boolean isSortAscending() {
+            return sortAscending;
+        }
+
+        /**
+         * By calling this method you can prevent the sort call to the container
+         * used by MTable. In this case you most most probably you want to
+         * manually sort the container instead.
+         */
+        public void preventContainerSort() {
+            preventContainerSort = true;
+        }
+
+        public boolean isPreventContainerSort() {
+            return preventContainerSort;
+        }
+
+        private final static Method method = ReflectTools.findMethod(
+                SortListener.class, "onSort",
+                SortEvent.class);
+
+    }
+
+    /**
+     * A listener that can be used to track when user sorts table on a column.
+     *
+     * Via the event user can also prevent the "container sort" done by the
+     * Table and implement own sorting logic instead (e.g. get a sorted list of
+     * entities from the backend).
+     *
+     */
+    public interface SortListener {
+
+        public void onSort(SortEvent event);
+
+    }
+
+    public MTable addSortListener(SortListener listener) {
+        addListener(SortEvent.class, listener, SortEvent.method);
+        return this;
+    }
+
+    public MTable removeSortListener(SortListener listener) {
+        removeListener(SortEvent.class, listener, SortEvent.method);
+        return this;
+    }
+
+    private boolean isSorting = false;
+
+    @Override
+    public void sort(Object[] propertyId, boolean[] ascending) throws UnsupportedOperationException {
+        if (isSorting) {
+            // hack to avoid recursion
+            return;
+        }
+
+        boolean refreshingPreviouslyEnabled = disableContentRefreshing();
+        boolean defaultTableSortingMethod = false;
+        try {
+            isSorting = true;
+
+            // create sort event and fire it, allow user to prevent default
+            // operation
+            final boolean sortAscending = ascending != null && ascending.length > 0 ? ascending[0] : true;
+            final String sortProperty = propertyId != null && propertyId.length > 0 ? propertyId[0].
+                    toString() : null;
+
+            final SortEvent sortEvent = new SortEvent(this, sortAscending,
+                    sortProperty);
+            fireEvent(sortEvent);
+
+            if (!sortEvent.isPreventContainerSort()) {
+                // if not prevented, do sorting
+                if (bic != null && bic.getItemIds() instanceof SortableLazyList) {
+                    // Explicit support for SortableLazyList, set sort parameters
+                    // it uses to backend services and clear internal buffers
+                    SortableLazyList<T> sll = (SortableLazyList) bic.
+                            getItemIds();
+                    if (ascending == null || ascending.length == 0) {
+                        sll.sort(true, null);
+                    } else {
+                        sll.sort(ascending[0], propertyId[0].toString());
+                    }
+                    resetPageBuffer();
+                } else {
+                    super.sort(propertyId, ascending);
+                    defaultTableSortingMethod = true;
+                }
+            }
+            if (!defaultTableSortingMethod) {
+                // Ensure the values used in UI are set as this method is public
+                // and can be called by both UI event and app logic
+                setSortAscending(sortAscending);
+                setSortContainerPropertyId(sortProperty);
+
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            isSorting = false;
+            if (refreshingPreviouslyEnabled) {
+                enableContentRefreshing(true);
+            }
+        }
+    }
+
     /**
      * Clears caches in case the Table is backed by a LazyList implementation.
-     * Also resets "pageBuffer" used by table. If you know you have changes
-     * in the listing, you can call this method to ensure the UI gets updated.
+     * Also resets "pageBuffer" used by table. If you know you have changes in
+     * the listing, you can call this method to ensure the UI gets updated.
      */
     public void resetLazyList() {
         if (bic != null && bic.getItemIds() instanceof LazyList) {
