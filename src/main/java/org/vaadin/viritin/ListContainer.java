@@ -109,7 +109,9 @@ public class ListContainer<T> extends AbstractContainer implements
 
     @Override
     public Item addItemAt(int index, Object newItemId) throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        backingList.add(index, (T) newItemId);
+        fireItemSetChange();
+        return getItem(newItemId);
     }
 
     @Override
