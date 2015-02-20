@@ -17,13 +17,17 @@ package org.vaadin.viritin;
 
 import com.vaadin.data.Property;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
-import com.vaadin.event.FieldEvents;
+import com.vaadin.event.*;
+import com.vaadin.event.FieldEvents.TextChangeNotifier;
 import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.Field;
+
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.validation.constraints.NotNull;
+
 import org.vaadin.viritin.fields.MTextField;
 
 /**
@@ -149,6 +153,9 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
             if (field instanceof MTextField) {
                 final MTextField abstractTextField = (MTextField) field;
                 abstractTextField.setEagerValidation(true);
+            }
+            if (field instanceof TextChangeNotifier) {
+                final TextChangeNotifier abstractTextField = (TextChangeNotifier) field;
                 abstractTextField.addTextChangeListener(this);
             }
         }
