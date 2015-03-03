@@ -115,6 +115,10 @@ public class FilterableListContainer<T> extends ListContainer<T> implements
         return isFiltered() ? filteredItems : super.getBackingList();
     }
 
+    public List<T> getUnfilteredItemIds() {
+      return super.getBackingList();
+    }
+
     @Override
     public T getIdByIndex(int index) {
         return getBackingList().get(index);
