@@ -17,7 +17,7 @@ import org.vaadin.viritin.ListContainer;
 
 /**
  * A Table that can be used as a field to modify List&gt;YourDomainObject&lt; or
- * List&gt;YourDomainObject&lt; typed fields in your domain model.
+ * Set&gt;YourDomainObject&lt; typed fields in your domain model.
  * <p>
  * The field supports only non buffered mode. Also, the field tries to keep the
  * original collection and just modify its content. This helps e.g. some ORM
