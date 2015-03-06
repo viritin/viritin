@@ -11,6 +11,8 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.themes.ValoTheme;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.vaadin.viritin.MBeanFieldGroup;
 import org.vaadin.viritin.button.MButton;
 
@@ -85,6 +87,11 @@ public class ElementCollectionField<ET> extends AbstractElementCollection<ET> {
         MBeanFieldGroup<ET> fg = getFieldGroupFor(v);
         for (Object property : getVisibleProperties()) {
             Component c = fg.getField(property);
+            if (c == null) {
+                c = new Label("");
+                Logger.getLogger(ElementCollectionField.class.getName())
+                        .log(Level.WARNING, "No editor field for{0}", property);
+            }
             layout.addComponent(c);
             layout.setComponentAlignment(c, Alignment.MIDDLE_LEFT);
         }
@@ -97,9 +104,8 @@ public class ElementCollectionField<ET> extends AbstractElementCollection<ET> {
                         }
                     }).withStyleName(ValoTheme.BUTTON_ICON_ONLY));
         }
-        if(!isAllowEditItems())
-        {
-           fg.setReadOnly(true);
+        if (!isAllowEditItems()) {
+            fg.setReadOnly(true);
         }
     }
 
@@ -159,6 +165,11 @@ public class ElementCollectionField<ET> extends AbstractElementCollection<ET> {
             }
             inited = true;
         }
+    }
+
+    public ElementCollectionField<ET> withEditorInstantiator(Instantiator instantiator) {
+        setEditorInstantiator(instantiator);
+        return this;
     }
 
     @Override
@@ -273,21 +284,22 @@ public class ElementCollectionField<ET> extends AbstractElementCollection<ET> {
         return this;
     }
 
-
     /**
      * Expands the column with given property id
+     *
      * @param propertyId the id of column that should be expanded in the UI
      * @return the element collection field
      */
     public ElementCollectionField<ET> expand(String... propertyId) {
         for (String propertyId1 : propertyId) {
             int index = getVisibleProperties().indexOf(propertyId1);
-            if(index == -1) {
-                throw new IllegalArgumentException("The expanded property must available");
+            if (index == -1) {
+                throw new IllegalArgumentException(
+                        "The expanded property must available");
             }
             layout.setColumnExpandRatio(index, 1);
         }
-        if(layout.getWidth() == -1) {
+        if (layout.getWidth() == -1) {
             layout.setWidth(100, Unit.PERCENTAGE);
         }
         // TODO should also make width of elements automatically 100%, both

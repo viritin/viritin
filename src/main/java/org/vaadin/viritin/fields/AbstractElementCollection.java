@@ -261,6 +261,15 @@ public abstract class AbstractElementCollection<ET> extends CustomField<Collecti
         }
     }
 
+    public Instantiator<?> getEditorInstantiator() {
+        return editorInstantiator;
+    }
+
+    public void setEditorInstantiator(
+            Instantiator<?> editorInstantiator) {
+        this.editorInstantiator = editorInstantiator;
+    }
+
     private final Map<ET, MBeanFieldGroup<ET>> pojoToEditor = new HashMap<ET, MBeanFieldGroup<ET>>();
 
     protected final MBeanFieldGroup<ET> getFieldGroupFor(ET pojo) {

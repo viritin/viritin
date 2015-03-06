@@ -286,4 +286,10 @@ public class ElementCollectionTable<ET> extends AbstractElementCollection<ET> {
         return this;
     }
 
+    public ElementCollectionTable<ET> withEditorInstantiator(
+            Instantiator instantiator) {
+        setEditorInstantiator(instantiator);
+        return this;
+    }
+
 }
