@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import org.apache.commons.lang3.StringUtils;
 import org.vaadin.viritin.LazyList;
 import static org.vaadin.viritin.LazyList.DEFAULT_PAGE_SIZE;
 import org.vaadin.viritin.SortableLazyList;
@@ -147,6 +148,16 @@ public class MTable<T> extends Table {
             for (String string : visibleProperties) {
                 addContainerProperty(string, String.class, "");
             }
+        }
+        for (String visibleProperty : visibleProperties) {
+            String[] parts = StringUtils.splitByCharacterTypeCamelCase(
+                    visibleProperty);
+            parts[0] = StringUtils.capitalize(parts[0]);
+            for(int i = 1; i < parts.length; i++) {
+                parts[i] = parts[i].toLowerCase();
+            }
+            String saneCaption = StringUtils.join(parts, " ");
+            setColumnHeader(visibleProperty, saneCaption);
         }
         return this;
     }
