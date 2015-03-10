@@ -19,9 +19,9 @@ import java.lang.reflect.Method;
  */
 public abstract class AbstractForm<T> extends CustomComponent implements
         FieldGroupListener {
-    
+
     public static class ValidityChangedEvent<T> extends Component.Event {
-        
+
         private static final Method method = ReflectTools.findMethod(ValidityChangedListener.class, "onValidityChanged",
                 ValidityChangedEvent.class);
 
@@ -33,9 +33,9 @@ public abstract class AbstractForm<T> extends CustomComponent implements
         public AbstractForm<T> getComponent() {
             return (AbstractForm) super.getComponent();
         }
-        
+
     }
-    
+
     public interface ValidityChangedListener<T> {
         public void onValidityChanged(ValidityChangedEvent<T> event);
     }
@@ -60,7 +60,7 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     }
 
     private MBeanFieldGroup<T> fieldGroup;
-    
+
     /**
      * The validity checked and cached on last change. Should be pretty much
      * always up to date due to eager changes. At least after onFieldGroupChange
@@ -74,11 +74,11 @@ public abstract class AbstractForm<T> extends CustomComponent implements
         isValid = fieldGroup.isValid();
         adjustSaveButtonState();
         adjustResetButtonState();
-        if(wasValid != isValid) {
+        if (wasValid != isValid) {
             fireValidityChangedEvent();
         }
     }
-    
+
     public boolean isValid() {
         return isValid;
     }
@@ -100,7 +100,7 @@ public abstract class AbstractForm<T> extends CustomComponent implements
             getResetButton().setEnabled(modified || popup != null);
         }
     }
-    
+
     public void addValidityChangedListener(ValidityChangedListener<T> listener) {
         addListener(ValidityChangedEvent.class, listener, ValidityChangedEvent.method);
     }
@@ -168,6 +168,26 @@ public abstract class AbstractForm<T> extends CustomComponent implements
         } else {
             setVisible(false);
             return null;
+        }
+    }
+
+    /**
+     * Sets the given object to be a handler for saved,reset,deleted, based on
+     * what it happens to implement.
+     *
+     * @param handler the handler to be set as saved/reset/delete handler
+     */
+    public void setHandler(Object handler) {
+        if (handler != null) {
+            if (handler instanceof SavedHandler) {
+                setSavedHandler((SavedHandler<T>) handler);
+            }
+            if (handler instanceof ResetHandler) {
+                setResetHandler((ResetHandler) handler);
+            }
+            if (handler instanceof DeleteHandler) {
+                setDeleteHandler((DeleteHandler) handler);
+            }
         }
     }
 
