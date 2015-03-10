@@ -31,7 +31,8 @@ public class SortingWithCollections extends AbstractTest {
             public void onSort(final MTable.SortEvent event) {
                 // Skip default Vaadin proprietary container level sorting
                 event.preventContainerSort();
-                // Use std JDK API
+                // Use std JDK API, alternatively you could fetch a new sorted
+                // list from your backend here and replace content
                 Collections.sort(listOfPersons, new Comparator<Person>(){
 
                     @Override
