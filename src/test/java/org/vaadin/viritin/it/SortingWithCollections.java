@@ -24,6 +24,10 @@ public class SortingWithCollections extends AbstractTest {
         final List<Person> listOfPersons = Service.getListOfPersons(100);
         
         final MTable<Person> table = new MTable(listOfPersons);
+
+        // If the underlaying "property" is not sortable by default, you can 
+        // explicitly make it sortable via UI
+        // table.setSortableProperties("foo", "bar",...);
         
         table.addSortListener(new MTable.SortListener() {
 
