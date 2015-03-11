@@ -261,9 +261,13 @@ public class ListContainer<T> extends AbstractContainer implements
 
     @Override
     public void sort(Object[] propertyId, boolean[] ascending) {
-      Comparator<T> comparator = new PropertyComparator(propertyId, ascending);
+        // Grid in 7.4 may call this method with empty sorting instructions...
+        if (propertyId.length > 0) {
+            Comparator<T> comparator = new PropertyComparator(propertyId,
+                    ascending);
 
       Collections.sort(backingList, comparator);
+    }
     }
 
     @Override
