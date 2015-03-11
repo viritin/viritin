@@ -26,6 +26,8 @@ import org.apache.commons.collections.comparators.ReverseComparator;
 import org.apache.commons.lang3.ClassUtils;
 
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A replacement for BeanItemContainer from the core
@@ -95,7 +97,7 @@ public class ListContainer<T> extends AbstractContainer implements
     @Override
     public List<T> getItemIds(int startIndex, int numberOfItems) {
         // Whooo!? Vaadin calls this method with numberOfItems == -1
-        if(numberOfItems < 0) {
+        if (numberOfItems < 0) {
             throw new IllegalArgumentException();
         }
 
@@ -117,7 +119,7 @@ public class ListContainer<T> extends AbstractContainer implements
     @Override
     public T nextItemId(Object itemId) {
         int i = getBackingList().indexOf(itemId) + 1;
-        if(getBackingList().size() == i) {
+        if (getBackingList().size() == i) {
             return null;
         }
         return getBackingList().get(i);
@@ -125,8 +127,8 @@ public class ListContainer<T> extends AbstractContainer implements
 
     @Override
     public T prevItemId(Object itemId) {
-        int i = getBackingList().indexOf(itemId) -1;
-        if(i < 0) {
+        int i = getBackingList().indexOf(itemId) - 1;
+        if (i < 0) {
             return null;
         }
         return getBackingList().get(i);
@@ -134,7 +136,7 @@ public class ListContainer<T> extends AbstractContainer implements
 
     @Override
     public T firstItemId() {
-        return (getBackingList().isEmpty())? null : getBackingList().get(0);
+        return (getBackingList().isEmpty()) ? null : getBackingList().get(0);
     }
 
     @Override
@@ -175,7 +177,14 @@ public class ListContainer<T> extends AbstractContainer implements
         ArrayList<String> properties = new ArrayList<String>();
         if (getDynaClass() != null) {
             for (DynaProperty db : getDynaClass().getDynaProperties()) {
-                properties.add(db.getName());
+                if (db.getType() != null) {
+                    properties.add(db.getName());
+                } else {
+                    // type may be null in some cases
+                    Logger.getLogger(ListContainer.class.getName()).log(
+                            Level.FINE, "Type not detected for property {0}",
+                            db.getName());
+                }
             }
             properties.remove("class");
         }
@@ -195,7 +204,7 @@ public class ListContainer<T> extends AbstractContainer implements
     @Override
     public Class<?> getType(Object propertyId) {
         final Class<?> type = getDynaClass().getDynaProperty(propertyId.toString()).getType();
-        if(type.isPrimitive()) {
+        if (type.isPrimitive()) {
             // Vaadin can't handle primitive types in _all_ places, so use
             // wrappers instead. FieldGroup works, but e.g. Table in _editable_
             // mode fails for some reason
@@ -266,13 +275,13 @@ public class ListContainer<T> extends AbstractContainer implements
             Comparator<T> comparator = new PropertyComparator(propertyId,
                     ascending);
 
-      Collections.sort(backingList, comparator);
-    }
+            Collections.sort(backingList, comparator);
+        }
     }
 
     @Override
     public Collection<?> getSortableContainerPropertyIds() {
-        if(backingList instanceof SortableLazyList) {
+        if (backingList instanceof SortableLazyList) {
             // Assume SortableLazyList can sort by any Comparable property
         } else if (backingList instanceof LazyList) {
             // When using LazyList, don't support sorting by default
@@ -280,13 +289,14 @@ public class ListContainer<T> extends AbstractContainer implements
             return Collections.emptySet();
         }
         ArrayList<String> properties = new ArrayList<String>();
-        for (DynaProperty db : getDynaClass().getDynaProperties()) {
-            if (db.getType().isPrimitive() || Comparable.class.isAssignableFrom(
-                    db.getType())) {
+        for (Object a : getContainerPropertyIds()) {
+            DynaProperty db = getDynaClass().getDynaProperty(a.toString());
+            if (db != null && db.getType() != null && (db.getType().
+                    isPrimitive() || Comparable.class.isAssignableFrom(
+                            db.getType()))) {
                 properties.add(db.getName());
             }
         }
-        properties.remove("class");
         return properties;
     }
 
@@ -315,38 +325,38 @@ public class ListContainer<T> extends AbstractContainer implements
      * @return Comparator that will compare two objects based on a property
      */
     protected Comparator<T> getUnderlyingComparator(Object property) {
-      return new NullComparator();
+        return new NullComparator();
     }
 
     private class PropertyComparator implements Comparator<T> {
 
-      private final Object[] propertyId;
-      private final boolean[] ascending;
+        private final Object[] propertyId;
+        private final boolean[] ascending;
 
-      private PropertyComparator(Object[] propertyId, boolean[] ascending) {
-        this.propertyId = propertyId;
-        this.ascending = ascending;
-      }
+        private PropertyComparator(Object[] propertyId, boolean[] ascending) {
+            this.propertyId = propertyId;
+            this.ascending = ascending;
+        }
 
-      @Override
-      public int compare(T o1, T o2) {
-        for (int i = 0; i < propertyId.length; i++) {
-          String currentProperty = propertyId[i].toString();
+        @Override
+        public int compare(T o1, T o2) {
+            for (int i = 0; i < propertyId.length; i++) {
+                String currentProperty = propertyId[i].toString();
           Comparator<T> currentComparator =
                 new BeanComparator<T>(currentProperty, getUnderlyingComparator(currentProperty));
 
-          if(!ascending[i]) {
-            currentComparator = new ReverseComparator(currentComparator);
-          }
+                if (!ascending[i]) {
+                    currentComparator = new ReverseComparator(currentComparator);
+                }
 
-          int compare = currentComparator.compare(o1, o2);
-          if (compare != 0) {
-            return compare;
-          }
+                int compare = currentComparator.compare(o1, o2);
+                if (compare != 0) {
+                    return compare;
+                }
+            }
+
+            return 0;
         }
-
-        return 0;
-      }
     }
 
     public class DynaBeanItem<T> implements Item {
