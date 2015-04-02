@@ -41,7 +41,7 @@ public class TypedSelect<T> extends CustomComponent implements Field<T> {
 
     /**
      * The type of element options in the select
-     * 
+     *
      * @param type the type of options in the list
      */
     public TypedSelect(Class<T> type) {
@@ -149,14 +149,14 @@ public class TypedSelect<T> extends CustomComponent implements Field<T> {
         }
         return this;
     }
-    
+
     protected void setSelectInstance(AbstractSelect select) {
         this.select = select;
     }
 
     /**
-     * 
-     * @return  the backing select instance, overriding this method may be 
+     *
+     * @return the backing select instance, overriding this method may be
      * hazardous
      */
     protected AbstractSelect getSelect() {
@@ -167,6 +167,20 @@ public class TypedSelect<T> extends CustomComponent implements Field<T> {
             }
         }
         return select;
+    }
+
+    /**
+     * Sets the input prompt used by the TypedSelect, in case the backing
+     * instance supports inputprompt (read: is ComboBox).
+     *
+     * @param inputPrompt the input prompt
+     * @return this TypedSelect instance
+     */
+    public TypedSelect<T> setInputPrompt(String inputPrompt) {
+        if (getSelect() instanceof ComboBox) {
+            ((ComboBox) getSelect()).setInputPrompt(inputPrompt);
+        }
+        return this;
     }
 
     protected String getCaption(T option) {
@@ -405,15 +419,15 @@ public class TypedSelect<T> extends CustomComponent implements Field<T> {
         getSelect().setContainerDataSource(bic);
         return this;
     }
-    
+
     public final List<T> getOptions() {
-        if(bic == null) {
+        if (bic == null) {
             return Collections.EMPTY_LIST;
         } else {
             return (List<T>) bic.getItemIds();
         }
     }
-    
+
     public TypedSelect<T> setNullSelectionAllowed(boolean nullAllowed) {
         getSelect().setNullSelectionAllowed(nullAllowed);
         return this;
@@ -476,13 +490,13 @@ public class TypedSelect<T> extends CustomComponent implements Field<T> {
     }
 
     public void selectFirst() {
-        if(bic != null && bic.size() > 0) {
+        if (bic != null && bic.size() > 0) {
             getSelect().setValue(bic.getIdByIndex(0));
         }
     }
 
     /**
-     * 
+     *
      * @return gets the ListContainer used by this component
      */
     protected ListContainer<T> getBic() {
@@ -490,13 +504,12 @@ public class TypedSelect<T> extends CustomComponent implements Field<T> {
     }
 
     /**
-     * 
-     * @param listContainer  sets the ListContainer used by this select. For 
+     *
+     * @param listContainer sets the ListContainer used by this select. For
      * extensions only, should be set early or will fail.
      */
     protected void setBic(ListContainer<T> listContainer) {
         bic = listContainer;
     }
-    
 
 }
