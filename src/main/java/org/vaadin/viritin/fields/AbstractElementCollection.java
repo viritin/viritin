@@ -5,8 +5,10 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomField;
 import com.vaadin.ui.DefaultFieldFactory;
 import com.vaadin.ui.Field;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
 import com.vaadin.util.ReflectTools;
+import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,6 +17,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.vaadin.viritin.BeanBinder;
 import org.vaadin.viritin.MBeanFieldGroup;
 import org.vaadin.viritin.MBeanFieldGroup.FieldGroupListener;
@@ -269,20 +273,71 @@ public abstract class AbstractElementCollection<ET> extends CustomField<Collecti
             Instantiator<?> editorInstantiator) {
         this.editorInstantiator = editorInstantiator;
     }
+    
+    private class EditorStuff implements Serializable {
+        MBeanFieldGroup<ET> bfg;
+        Object editor;
 
-    private final Map<ET, MBeanFieldGroup<ET>> pojoToEditor = new HashMap<ET, MBeanFieldGroup<ET>>();
+        private EditorStuff(MBeanFieldGroup editor, Object o) {
+            this.bfg = editor;
+            this.editor = o;
+        }
+    }
+
+    private final Map<ET, EditorStuff> pojoToEditor = new HashMap<ET, EditorStuff>();
 
     protected final MBeanFieldGroup<ET> getFieldGroupFor(ET pojo) {
-        MBeanFieldGroup editor = pojoToEditor.get(pojo);
-        if (editor == null) {
+        EditorStuff es = pojoToEditor.get(pojo);
+        if (es == null) {
             Object o = createEditorInstance();
-            editor = BeanBinder.bind(pojo, o).withEagerValidation(
+            MBeanFieldGroup bfg = BeanBinder.bind(pojo, o).withEagerValidation(
                     fieldGroupListener);
+            es = new EditorStuff(bfg, o);
             // TODO listen for all changes for proper modified/validity changes
-            pojoToEditor.put(pojo, editor);
+            pojoToEditor.put(pojo, es);
         }
-        return editor;
+        return es.bfg;
     }
+    
+    protected final Component getComponentFor(ET pojo, String property) {
+        EditorStuff editorsstuff = pojoToEditor.get(pojo);
+        if (editorsstuff == null) {
+            Object o = null;
+            o = createEditorInstance();
+            MBeanFieldGroup bfg = BeanBinder.bind(pojo, o).withEagerValidation(
+                    fieldGroupListener);
+            editorsstuff = new EditorStuff(bfg, o);
+            // TODO listen for all changes for proper modified/validity changes
+            pojoToEditor.put(pojo, editorsstuff);
+        }
+        Component c = editorsstuff.bfg.getField(property);
+        if(c == null) {
+            try {
+                // property that is not a property editor field but custom UI "column"
+                java.lang.reflect.Field f = editorType.getDeclaredField(property);
+                f.setAccessible(true);
+                c = (Component) f.get(editorsstuff.editor);
+            } catch (NoSuchFieldException ex) {
+                Logger.getLogger(AbstractElementCollection.class.getName()).
+                        log(Level.SEVERE, null, ex);
+            } catch (SecurityException ex) {
+                Logger.getLogger(AbstractElementCollection.class.getName()).
+                        log(Level.SEVERE, null, ex);
+            } catch (IllegalArgumentException ex) {
+                Logger.getLogger(AbstractElementCollection.class.getName()).
+                        log(Level.SEVERE, null, ex);
+            } catch (IllegalAccessException ex) {
+                Logger.getLogger(AbstractElementCollection.class.getName()).
+                        log(Level.SEVERE, null, ex);
+            }
+            if(c == null) {
+                c = new Label("");
+            }
+        }
+        
+        return c;
+    }
+
 
     public void addElement(ET instance) {
         getAndEnsureValue().add(instance);
