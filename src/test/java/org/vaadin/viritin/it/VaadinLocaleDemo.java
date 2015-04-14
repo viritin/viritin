@@ -3,6 +3,8 @@ package org.vaadin.viritin.it;
 import java.util.*;
 
 import org.vaadin.addonhelpers.AbstractTest;
+import org.vaadin.viritin.components.LocaleSelect;
+import org.vaadin.viritin.fields.*;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.vaadin.viritin.util.VaadinLocale;
 
@@ -19,32 +21,33 @@ import com.vaadin.ui.*;
  */
 @Theme("valo")
 public class VaadinLocaleDemo extends AbstractTest {
-    private VaadinLocale vaadinLocale;
-    private ComboBox languageComboBox = new ComboBox();
+    private VaadinLocale vaadinLocale = new VaadinLocale(Locale.ENGLISH,
+            Locale.GERMAN, new Locale("de", "DE"), new Locale("da"));
+    private LocaleSelect localeSelect = (LocaleSelect) new LocaleSelect()
+            .withSelectType(ComboBox.class);;
     private DateField dateField = new DateField();
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
-        vaadinLocale = new VaadinLocale(vaadinRequest, Locale.ENGLISH,
-                Locale.GERMAN);
         super.init(vaadinRequest);
+        vaadinLocale.setVaadinRequest(vaadinRequest);
+        localeSelect.setOptions(vaadinLocale.getSupportedLocales());
+        localeSelect.setValue(vaadinLocale.getLocale());
     }
 
     @Override
     public Component getTestComponent() {
         dateField.setValue(new Date());
-        languageComboBox.setImmediate(true);
-        languageComboBox.addItems(vaadinLocale.getSupportedLocales().toArray());
-        languageComboBox.setValue(vaadinLocale.getLocale());
-        languageComboBox.setId("language-selection");
-        languageComboBox.addValueChangeListener(new ValueChangeListener() {
-
-            @Override
-            public void valueChange(ValueChangeEvent event) {
-                vaadinLocale.setLocale((Locale) languageComboBox.getValue());
-            }
-        });
-        return new MVerticalLayout(languageComboBox, dateField);
+        localeSelect.setValue(getLocale());
+        localeSelect.setId("language-selection");
+        localeSelect
+                .addMValueChangeListener(new MValueChangeListener<Locale>() {
+                    @Override
+                    public void valueChange(MValueChangeEvent<Locale> event) {
+                        vaadinLocale.setLocale(event.getValue());
+                    }
+                });
+        return new MVerticalLayout(localeSelect, dateField);
     }
 
     @Override
@@ -52,7 +55,7 @@ public class VaadinLocaleDemo extends AbstractTest {
         super.setLocale(locale);
         ResourceBundle resourceBundle = ResourceBundle.getBundle(
                 "VaadinLocaleDemo", locale);
-        this.languageComboBox.setCaption(resourceBundle.getString("language"));
+        this.localeSelect.setCaption(resourceBundle.getString("language"));
         dateField.setCaption(resourceBundle.getString("date"));
     }
 

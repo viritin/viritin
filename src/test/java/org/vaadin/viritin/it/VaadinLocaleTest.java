@@ -2,6 +2,7 @@ package org.vaadin.viritin.it;
 
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
+
 import java.net.MalformedURLException;
 import java.util.*;
 
@@ -11,7 +12,8 @@ import org.junit.runners.*;
 import org.junit.runners.Parameterized.Parameters;
 import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.*;
-import org.vaadin.addonhelpers.automated.AbstractWebDriverCase;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.vaadin.addonhelpers.automated.*;
 import org.vaadin.addonhelpers.components.VaadinComboBox;
 
 @RunWith(Parameterized.class)
@@ -20,8 +22,8 @@ public class VaadinLocaleTest extends AbstractWebDriverCase {
 
     @Parameters
     public static Collection languages() {
-        return Arrays.asList(new Object[][] { { "en-us", "en" },
-                { "de", "de" }, { "fi", "en" } });
+        return Arrays.asList(new Object[][] { { "en-us", "English" },
+                { "de", "Deutsch" }, { "fi", "English" } });
 
     }
 
@@ -38,6 +40,8 @@ public class VaadinLocaleTest extends AbstractWebDriverCase {
         driver.navigate().to(
                 "http://localhost:5678/"
                         + VaadinLocaleDemo.class.getCanonicalName());
+        new WebDriverWait(driver, 30).until(VaadinConditions
+                .ajaxCallsCompleted());
 
         VaadinComboBox languageSelectionBox = new VaadinComboBox(
                 driver.findElement(By.id("language-selection")));

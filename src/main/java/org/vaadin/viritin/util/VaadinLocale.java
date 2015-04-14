@@ -24,7 +24,18 @@ import com.vaadin.ui.UI;
 public class VaadinLocale {
     private static final String LOCALE_SESSION_ATTRIBUTE = "org.vaadin.viritin.selectedLocale";
     private final List<Locale> supportedLocales = new ArrayList<Locale>();
-    private final Locale bestLocaleByAcceptHeader;
+    private Locale bestLocaleByAcceptHeader;
+
+    public VaadinLocale(Locale... supportedLocales) {
+        if (supportedLocales == null || supportedLocales.length == 0) {
+            throw new IllegalArgumentException(
+                    "At least one locale must be supported");
+        }
+
+        for (Locale locale : supportedLocales) {
+            this.supportedLocales.add(locale);
+        }
+    }
 
     /**
      * Instantiates a new VaadinLocale object
@@ -39,16 +50,14 @@ public class VaadinLocale {
      *             if there is no locale.
      */
     public VaadinLocale(VaadinRequest vaadinRequest, Locale... supportedLocales) {
+        this(supportedLocales);
+        setVaadinRequest(vaadinRequest);
+        updateVaadinLocale();
+    }
+
+    public void setVaadinRequest(VaadinRequest vaadinRequest) {
         if (vaadinRequest == null) {
             throw new IllegalArgumentException("VaadinRequest is needed!");
-        }
-        if (supportedLocales == null || supportedLocales.length == 0) {
-            throw new IllegalArgumentException(
-                    "At least one locale must be supported");
-        }
-
-        for (Locale locale : supportedLocales) {
-            this.supportedLocales.add(locale);
         }
 
         String languages = vaadinRequest.getHeader("Accept-Language");
@@ -56,7 +65,6 @@ public class VaadinLocale {
                 .parse(languages);
         bestLocaleByAcceptHeader = Locale.lookup(priorityList,
                 this.supportedLocales);
-        updateVaadinLocale();
     }
 
     public void setLocale(Locale locale) {
