@@ -1,0 +1,106 @@
+package org.vaadin.viritin.util;
+
+import java.util.*;
+import java.util.Locale.LanguageRange;
+
+import com.vaadin.server.*;
+import com.vaadin.ui.UI;
+
+/**
+ * This class handles the locale for a vaadin application. It negotiates the
+ * locale based on
+ * <ol>
+ * <li>a selected locale via {@link #setLocale(Locale)}</li>
+ * <li>the best fitting one by the Accept-Lanuage Header</li>
+ * <li>the first one from the supported ones</li>
+ * </ol>
+ * After a locale has been selected a call of
+ * {@link com.vaadin.ui.AbstractComponent#setLocale(Locale)} is triggered. You
+ * can update your strings there.
+ * 
+ * @author Daniel Nordhoff-Vergien
+ *
+ */
+public class VaadinLocale {
+    private static final String LOCALE_SESSION_ATTRIBUTE = "org.vaadin.viritin.selectedLocale";
+    private final List<Locale> supportedLocales = new ArrayList<Locale>();
+    private final Locale bestLocaleByAcceptHeader;
+
+    /**
+     * Instantiates a new VaadinLocale object
+     * 
+     * @param vaadinRequest
+     * @param supportedLocales
+     *            At least one Locale which the application supports. The first
+     *            locale is the default locale, if negotiation fails.
+     * 
+     * 
+     * @throws IllegalArgumentException
+     *             if there is no locale.
+     */
+    public VaadinLocale(VaadinRequest vaadinRequest, Locale... supportedLocales) {
+        if (vaadinRequest == null) {
+            throw new IllegalArgumentException("VaadinRequest is needed!");
+        }
+        if (supportedLocales == null || supportedLocales.length == 0) {
+            throw new IllegalArgumentException(
+                    "At least one locale must be supported");
+        }
+
+        for (Locale locale : supportedLocales) {
+            this.supportedLocales.add(locale);
+        }
+
+        String languages = vaadinRequest.getHeader("Accept-Language");
+        List<LanguageRange> priorityList = Locale.LanguageRange
+                .parse(languages);
+        bestLocaleByAcceptHeader = Locale.lookup(priorityList,
+                this.supportedLocales);
+        updateVaadinLocale();
+    }
+
+    public void setLocale(Locale locale) {
+        if (locale != null && !supportedLocales.contains(locale)) {
+            throw new IllegalArgumentException("Locale " + locale
+                    + " is not supported.");
+        }
+        if (locale == null) {
+            VaadinSession.getCurrent().setAttribute(LOCALE_SESSION_ATTRIBUTE,
+                    null);
+        } else {
+            VaadinSession.getCurrent().setAttribute(LOCALE_SESSION_ATTRIBUTE,
+                    locale.toLanguageTag());
+        }
+        updateVaadinLocale();
+    }
+
+    public void unsetLocale() {
+        setLocale(null);
+    }
+
+    private void updateVaadinLocale() {
+        Locale locale = getLocale();
+        UI.getCurrent().setLocale(locale);
+        VaadinSession.getCurrent().setLocale(locale);
+    }
+
+    public Locale getLocale() {
+        String locale = (String) VaadinSession.getCurrent().getAttribute(
+                LOCALE_SESSION_ATTRIBUTE);
+        if (locale != null) {
+            return Locale.forLanguageTag(locale);
+        } else if (bestLocaleByAcceptHeader != null) {
+            return bestLocaleByAcceptHeader;
+        } else {
+            return supportedLocales.get(0);
+        }
+    }
+
+    public Locale getBestLocaleByAcceptHeader() {
+        return bestLocaleByAcceptHeader;
+    }
+
+    public List<Locale> getSupportedLocales() {
+        return new ArrayList<Locale>(supportedLocales);
+    }
+}
