@@ -6,6 +6,8 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.themes.ValoTheme;
 
 import org.vaadin.addonhelpers.AbstractTest;
+import org.vaadin.viritin.fields.AbstractCaptionGenerator;
+import org.vaadin.viritin.fields.CaptionGenerator;
 import org.vaadin.viritin.fields.EnumSelect;
 import org.vaadin.viritin.fields.ElementCollectionField;
 import org.vaadin.viritin.fields.LabelField;
@@ -27,13 +29,22 @@ public class EditPerson extends AbstractTest {
 
     public static class AddressRow {
 
-        EnumSelect type = (EnumSelect) new EnumSelect();
+        EnumSelect<Address.AddressType> type = new EnumSelect<Address.AddressType>();
         MTextField street = new MTextField().withInputPrompt("street");
         MTextField city = new MTextField().withInputPrompt("city");
         MTextField zipCode = new MTextField().withInputPrompt("zip");
 
         {
             type.setStyleName(ValoTheme.OPTIONGROUP_HORIZONTAL);
+            // If you don't want toString presentation of your enums,
+            // you can do whatwever you want here
+            type.setCaptionGenerator(new CaptionGenerator<Address.AddressType>() {
+
+                @Override
+                public String getCaption(Address.AddressType option) {
+                    return option.toString().toLowerCase();
+                }
+            });
         }
     }
 

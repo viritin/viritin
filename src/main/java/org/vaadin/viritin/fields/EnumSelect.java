@@ -6,7 +6,7 @@ import com.vaadin.data.Validator;
 import com.vaadin.ui.NativeSelect;
 import java.util.Collection;
 
-public class EnumSelect extends TypedSelect {
+public class EnumSelect<T> extends TypedSelect<T> {
 
     public EnumSelect() {
         setFieldType(NativeSelect.class);
@@ -20,7 +20,7 @@ public class EnumSelect extends TypedSelect {
     @Override
     public void setPropertyDataSource(Property newDataSource) {
         if (newDataSource != null) {
-            Class<?> type = newDataSource.getType();
+            Class<T> type = newDataSource.getType();
             setOptions(type.getEnumConstants());
         }
         super.setPropertyDataSource(newDataSource);
@@ -29,11 +29,6 @@ public class EnumSelect extends TypedSelect {
     @Override
     public EnumSelect setBeans(Collection options) {
         return (EnumSelect) super.setBeans(options);
-    }
-
-    @Override
-    public EnumSelect setCaptionGenerator(CaptionGenerator captionGenerator) {
-        return (EnumSelect) super.setCaptionGenerator(captionGenerator);
     }
 
     @Override

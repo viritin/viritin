@@ -47,6 +47,10 @@ import org.vaadin.viritin.button.MButton;
  * </code></pre>
  *
  * <p>
+ * Components in row model class don't need to match properties in the edited
+ * entity. So you can add "custom columns" just by introducing them in 
+ * your editor row.
+ * <p>
  * By default the field always contains an empty instance to create new rows. If
  * instances are added with some other method (or UI shouldn't add them at all),
  * you can configure this with setAllowNewItems. Deletions can be configured
@@ -88,7 +92,7 @@ public class ElementCollectionField<ET> extends AbstractElementCollection<ET> {
         for (Object property : getVisibleProperties()) {
             Component c = fg.getField(property);
             if (c == null) {
-                c = new Label("");
+                c = getComponentFor(v, property.toString());
                 Logger.getLogger(ElementCollectionField.class.getName())
                         .log(Level.WARNING, "No editor field for{0}", property);
             }

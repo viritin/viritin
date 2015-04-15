@@ -2,6 +2,7 @@ package org.vaadin.viritin.fields;
 
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.themes.ValoTheme;
@@ -136,7 +137,12 @@ public class ElementCollectionTable<ET> extends AbstractElementCollection<ET> {
                                 if (!isAllowEditItems()) {
                                     fg.setReadOnly(true);
                                 }
-                                return fg.getField(columnId);
+                                Component component = fg.getField(columnId);
+                                if(component == null) {
+                                    getComponentFor((ET) itemId,
+                                            columnId.toString());
+                                }
+                                return component;
                             }
                         });
 
