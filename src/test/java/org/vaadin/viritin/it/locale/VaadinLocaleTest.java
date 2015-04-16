@@ -1,4 +1,4 @@
-package org.vaadin.viritin.it;
+package org.vaadin.viritin.it.locale;
 
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;

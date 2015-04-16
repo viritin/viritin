@@ -1,4 +1,4 @@
-package org.vaadin.viritin.it;
+package org.vaadin.viritin.it.locale;
 
 import java.util.*;
 
@@ -9,16 +9,18 @@ import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.vaadin.viritin.util.VaadinLocale;
 
 import com.vaadin.annotations.Theme;
-import com.vaadin.data.Property.ValueChangeEvent;
-import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.*;
+import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Button.ClickListener;
 
 /**
+ * Demo for the {@link VaadinLocale} class.
  * 
  * @author Daniel Nordhoff-Vergien
  *
  */
+@SuppressWarnings("serial")
 @Theme("valo")
 public class VaadinLocaleDemo extends AbstractTest {
     private VaadinLocale vaadinLocale = new VaadinLocale(Locale.ENGLISH,
@@ -32,7 +34,6 @@ public class VaadinLocaleDemo extends AbstractTest {
         super.init(vaadinRequest);
         vaadinLocale.setVaadinRequest(vaadinRequest);
         localeSelect.setOptions(vaadinLocale.getSupportedLocales());
-        localeSelect.setValue(vaadinLocale.getLocale());
     }
 
     @Override
@@ -47,14 +48,28 @@ public class VaadinLocaleDemo extends AbstractTest {
                         vaadinLocale.setLocale(event.getValue());
                     }
                 });
-        return new MVerticalLayout(localeSelect, dateField);
+        Button addNewComponent = new Button("Create new component");
+
+        final MVerticalLayout layout = new MVerticalLayout(localeSelect,
+                dateField, new VaadinLocaleDemoComponent(), addNewComponent);
+        addNewComponent.addClickListener(new ClickListener() {
+            @Override
+            public void buttonClick(ClickEvent event) {
+                layout.add(new VaadinLocaleDemoComponent());
+            }
+        });
+        return layout;
     }
 
     @Override
     public void setLocale(Locale locale) {
         super.setLocale(locale);
+        updateStrings();
+    }
+
+    private void updateStrings() {
         ResourceBundle resourceBundle = ResourceBundle.getBundle(
-                "VaadinLocaleDemo", locale);
+                "VaadinLocaleDemo", getLocale());
         this.localeSelect.setCaption(resourceBundle.getString("language"));
         dateField.setCaption(resourceBundle.getString("date"));
     }

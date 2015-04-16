@@ -4,7 +4,7 @@ import java.util.*;
 import java.util.Locale.LanguageRange;
 
 import com.vaadin.server.*;
-import com.vaadin.ui.UI;
+import com.vaadin.ui.*;
 
 /**
  * This class handles the locale for a vaadin application. It negotiates the
@@ -15,8 +15,9 @@ import com.vaadin.ui.UI;
  * <li>the first one from the supported ones</li>
  * </ol>
  * After a locale has been selected a call of
- * {@link com.vaadin.ui.AbstractComponent#setLocale(Locale)} is triggered. You
- * can update your strings there.
+ * {@link com.vaadin.ui.AbstractComponent#setLocale(Locale)} on all components
+ * in the current {@link com.vaadin.ui.UI} is triggered. You can update your
+ * strings there.
  * 
  * @author Daniel Nordhoff-Vergien
  *
@@ -90,6 +91,24 @@ public class VaadinLocale {
         Locale locale = getLocale();
         UI.getCurrent().setLocale(locale);
         VaadinSession.getCurrent().setLocale(locale);
+        recursiveSetLocale();
+    }
+
+    private void recursiveSetLocale() {
+        Stack<Component> stack = new Stack<Component>();
+        stack.push(UI.getCurrent());
+        while (!stack.isEmpty()) {
+            Component component = stack.pop();
+            if (component instanceof HasComponents) {
+                for (Iterator<Component> i = ((HasComponents) component)
+                        .iterator(); i.hasNext();)
+                    stack.add(i.next());
+            }
+            if (component instanceof AbstractComponent) {
+                AbstractComponent abstractComponent = (AbstractComponent) component;
+                abstractComponent.setLocale(UI.getCurrent().getLocale());
+            }
+        }
     }
 
     public Locale getLocale() {
