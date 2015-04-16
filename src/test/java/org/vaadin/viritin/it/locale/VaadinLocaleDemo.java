@@ -11,9 +11,12 @@ import org.vaadin.viritin.util.VaadinLocale;
 import com.vaadin.annotations.Theme;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.*;
+import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Button.ClickListener;
 
 /**
  * Demo for the {@link VaadinLocale} class.
+ * 
  * @author Daniel Nordhoff-Vergien
  *
  */
@@ -30,7 +33,7 @@ public class VaadinLocaleDemo extends AbstractTest {
     protected void init(VaadinRequest vaadinRequest) {
         super.init(vaadinRequest);
         vaadinLocale.setVaadinRequest(vaadinRequest);
-        localeSelect.setOptions(vaadinLocale.getSupportedLocales());     
+        localeSelect.setOptions(vaadinLocale.getSupportedLocales());
     }
 
     @Override
@@ -45,7 +48,17 @@ public class VaadinLocaleDemo extends AbstractTest {
                         vaadinLocale.setLocale(event.getValue());
                     }
                 });
-        return new MVerticalLayout(localeSelect, dateField);
+        Button addNewComponent = new Button("Create new component");
+
+        final MVerticalLayout layout = new MVerticalLayout(localeSelect,
+                dateField, new VaadinLocaleDemoComponent(), addNewComponent);
+        addNewComponent.addClickListener(new ClickListener() {
+            @Override
+            public void buttonClick(ClickEvent event) {
+                layout.add(new VaadinLocaleDemoComponent());
+            }
+        });
+        return layout;
     }
 
     @Override
