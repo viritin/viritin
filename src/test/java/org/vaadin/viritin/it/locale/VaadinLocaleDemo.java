@@ -34,12 +34,12 @@ public class VaadinLocaleDemo extends AbstractTest {
         super.init(vaadinRequest);
         vaadinLocale.setVaadinRequest(vaadinRequest);
         localeSelect.setOptions(vaadinLocale.getSupportedLocales());
+        localeSelect.setValue(getLocale());
     }
 
     @Override
     public Component getTestComponent() {
         dateField.setValue(new Date());
-        localeSelect.setValue(getLocale());
         localeSelect.setId("language-selection");
         localeSelect
                 .addMValueChangeListener(new MValueChangeListener<Locale>() {

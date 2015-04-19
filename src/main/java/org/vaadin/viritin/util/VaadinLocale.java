@@ -23,15 +23,36 @@ import com.vaadin.ui.*;
  *
  */
 public class VaadinLocale {
+    public interface LocaleNegotiationStrategey {
+
+        /**
+         * Returns the best fitting supported locale depending on the http
+         * language accept header.
+         * 
+         * @param supportedLocales
+         * @param vaadinRequest
+         * @return the best fitting supported locale
+         */
+        public Locale negotiate(List<Locale> supportedLocales,
+                VaadinRequest vaadinRequest);
+    }
+
     private static final String LOCALE_SESSION_ATTRIBUTE = "org.vaadin.viritin.selectedLocale";
     private final List<Locale> supportedLocales = new ArrayList<Locale>();
     private Locale bestLocaleByAcceptHeader;
+    private final LocaleNegotiationStrategey localeNegotiationStrategey;
 
-    public VaadinLocale(Locale... supportedLocales) {
+    public VaadinLocale(LocaleNegotiationStrategey localeNegotiationStrategey,
+            Locale... supportedLocales) {
         if (supportedLocales == null || supportedLocales.length == 0) {
             throw new IllegalArgumentException(
                     "At least one locale must be supported");
         }
+        if (localeNegotiationStrategey == null) {
+            throw new IllegalArgumentException(
+                    "localeNegotiatinStrategy may not be null!");
+        }
+        this.localeNegotiationStrategey = localeNegotiationStrategey;
 
         for (Locale locale : supportedLocales) {
             this.supportedLocales.add(locale);
@@ -41,6 +62,7 @@ public class VaadinLocale {
     /**
      * Instantiates a new VaadinLocale object
      * 
+     * @param localeNegotiationStrategey
      * @param vaadinRequest
      * @param supportedLocales
      *            At least one Locale which the application supports. The first
@@ -50,22 +72,29 @@ public class VaadinLocale {
      * @throws IllegalArgumentException
      *             if there is no locale.
      */
-    public VaadinLocale(VaadinRequest vaadinRequest, Locale... supportedLocales) {
-        this(supportedLocales);
+    public VaadinLocale(LocaleNegotiationStrategey localeNegotiationStrategey,
+            VaadinRequest vaadinRequest, Locale... supportedLocales) {
+        this(localeNegotiationStrategey, supportedLocales);
         setVaadinRequest(vaadinRequest);
         updateVaadinLocale();
+    }
+
+    /**
+     * Creates a new instance with the {@link Java8LocaleNegotiationStrategy}.
+     * 
+     * @param supportedLocales
+     */
+    public VaadinLocale(Locale... supportedLocales) {
+        this(new Java8LocaleNegotiationStrategy(), supportedLocales);
     }
 
     public void setVaadinRequest(VaadinRequest vaadinRequest) {
         if (vaadinRequest == null) {
             throw new IllegalArgumentException("VaadinRequest is needed!");
         }
-
-        String languages = vaadinRequest.getHeader("Accept-Language");
-        List<LanguageRange> priorityList = Locale.LanguageRange
-                .parse(languages);
-        bestLocaleByAcceptHeader = Locale.lookup(priorityList,
-                this.supportedLocales);
+        bestLocaleByAcceptHeader = localeNegotiationStrategey.negotiate(
+                supportedLocales, vaadinRequest);
+        updateVaadinLocale();
     }
 
     public void setLocale(Locale locale) {
