@@ -125,7 +125,7 @@ public class VaadinLocale {
 
     private void recursiveSetLocale() {
         Stack<Component> stack = new Stack<Component>();
-        stack.push(UI.getCurrent());
+        stack.addAll(VaadinSession.getCurrent().getUIs());
         while (!stack.isEmpty()) {
             Component component = stack.pop();
             if (component instanceof HasComponents) {
