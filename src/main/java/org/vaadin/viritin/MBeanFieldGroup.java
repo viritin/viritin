@@ -27,6 +27,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.validation.constraints.NotNull;
+import org.vaadin.viritin.fields.MPasswordField;
 
 import org.vaadin.viritin.fields.MTextField;
 
@@ -154,6 +155,12 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
                 final MTextField abstractTextField = (MTextField) field;
                 abstractTextField.setEagerValidation(true);
             }
+            // TODO DRY, create interface eagervalidateable, or just push Vaadin
+            // core team to get this done
+            if (field instanceof MPasswordField) {
+                final MPasswordField abstractPwField = (MPasswordField) field;
+                abstractPwField.setEagerValidation(true);
+            }
             if (field instanceof TextChangeNotifier) {
                 final TextChangeNotifier abstractTextField = (TextChangeNotifier) field;
                 abstractTextField.addTextChangeListener(this);
@@ -169,11 +176,11 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
         // wrap in array list to avoid CME
         for (Field<?> field : new ArrayList<Field<?>>(getFields())) {
             field.removeValueChangeListener(this);
-            if (field instanceof MTextField) {
-                final MTextField abstractTextField = (MTextField) field;
-                abstractTextField.setEagerValidation(true);
+            if (field instanceof TextChangeNotifier) {
+                final TextChangeNotifier abstractTextField = (TextChangeNotifier) field;
                 abstractTextField.removeTextChangeListener(this);
             }
+
             unbind(field);
         }
 
