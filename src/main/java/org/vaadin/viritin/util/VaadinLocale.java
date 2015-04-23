@@ -1,6 +1,5 @@
 package org.vaadin.viritin.util;
 
-import com.sun.org.apache.bcel.internal.generic.LoadClass;
 import java.util.*;
 
 import com.vaadin.server.*;
