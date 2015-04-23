@@ -97,21 +97,12 @@ public class MTextField extends TextField {
         return lastKnownTextChangeValue;
     }
 
-    @Override
-    public void addValueChangeListener(ValueChangeListener listener) {
-        super.addValueChangeListener(listener);
-        // Remove once 7.2 is out
-        setImmediate(true);
-    }
-
     public MTextField withConversionError(String message) {
-        setImmediate(true);
         setConversionError(message);
         return this;
     }
 
     public MTextField withConverter(Converter<String, ?> converter) {
-        setImmediate(true);
         setConverter(converter);
         return this;
     }
@@ -132,7 +123,6 @@ public class MTextField extends TextField {
     }
 
     public MTextField withValidator(Validator validator) {
-        setImmediate(true);
         addValidator(validator);
         return this;
     }
