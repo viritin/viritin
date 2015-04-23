@@ -433,8 +433,6 @@ public abstract class AbstractElementCollection<ET> extends CustomField<Collecti
 
     abstract protected Layout getLayout();
 
-    abstract protected void clear();
-
     abstract protected void onElementAdded();
 
 }

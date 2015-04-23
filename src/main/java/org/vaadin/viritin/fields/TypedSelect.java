@@ -512,4 +512,14 @@ public class TypedSelect<T> extends CustomComponent implements Field<T> {
         bic = listContainer;
     }
 
+    @Override
+    public boolean isEmpty() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void clear() {
+        setValue(null);
+    }
+
 }

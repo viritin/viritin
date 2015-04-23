@@ -2,9 +2,8 @@ package org.vaadin.viritin.util;
 
 import com.vaadin.ui.JavaScript;
 import com.vaadin.ui.JavaScriptFunction;
+import elemental.json.JsonArray;
 import java.util.UUID;
-import org.json.JSONArray;
-import org.json.JSONException;
 
 /**
  * A helper that provides access to browser cookies.
@@ -32,7 +31,7 @@ public class BrowserCookie {
         JavaScript.getCurrent().addFunction(callbackid, new JavaScriptFunction() {
 
             @Override
-            public void call(JSONArray arguments) throws JSONException {
+            public void call(JsonArray arguments) {
                 JavaScript.getCurrent().removeFunction(callbackid);
                 if(arguments.length() == 0) {
                     callback.onValueDetected(null);
