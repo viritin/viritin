@@ -24,9 +24,9 @@ import com.vaadin.ui.Button.ClickListener;
 @Theme("valo")
 public class VaadinLocaleDemo extends AbstractTest {
     private VaadinLocale vaadinLocale = new VaadinLocale(Locale.ENGLISH,
-            Locale.GERMAN, new Locale("de", "DE"), new Locale("da"));
+            Locale.GERMAN, new Locale("de", "DE"), new Locale("da"), new Locale("fi"));
     private LocaleSelect localeSelect = (LocaleSelect) new LocaleSelect()
-            .withSelectType(ComboBox.class);;
+            .withSelectType(ComboBox.class);
     private DateField dateField = new DateField();
 
     @Override

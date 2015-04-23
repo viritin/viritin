@@ -1,7 +1,7 @@
 package org.vaadin.viritin.util;
 
+import com.sun.org.apache.bcel.internal.generic.LoadClass;
 import java.util.*;
-import java.util.Locale.LanguageRange;
 
 import com.vaadin.server.*;
 import com.vaadin.ui.*;
@@ -18,11 +18,12 @@ import com.vaadin.ui.*;
  * {@link com.vaadin.ui.AbstractComponent#setLocale(Locale)} on all components
  * in the current {@link com.vaadin.ui.UI} is triggered. You can update your
  * strings there.
- * 
+ *
  * @author Daniel Nordhoff-Vergien
  *
  */
 public class VaadinLocale {
+
     private static final String LOCALE_SESSION_ATTRIBUTE = "org.vaadin.viritin.selectedLocale";
     private final List<Locale> supportedLocales = new ArrayList<Locale>();
     private Locale bestLocaleByAcceptHeader;
@@ -40,15 +41,13 @@ public class VaadinLocale {
 
     /**
      * Instantiates a new VaadinLocale object
-     * 
+     *
      * @param vaadinRequest
-     * @param supportedLocales
-     *            At least one Locale which the application supports. The first
-     *            locale is the default locale, if negotiation fails.
-     * 
-     * 
-     * @throws IllegalArgumentException
-     *             if there is no locale.
+     * @param supportedLocales At least one Locale which the application
+     * supports. The first locale is the default locale, if negotiation fails.
+     *
+     *
+     * @throws IllegalArgumentException if there is no locale.
      */
     public VaadinLocale(VaadinRequest vaadinRequest, Locale... supportedLocales) {
         this(supportedLocales);
@@ -62,10 +61,30 @@ public class VaadinLocale {
         }
 
         String languages = vaadinRequest.getHeader("Accept-Language");
-        List<LanguageRange> priorityList = Locale.LanguageRange
-                .parse(languages);
-        bestLocaleByAcceptHeader = Locale.lookup(priorityList,
-                this.supportedLocales);
+        ArrayList<Locale> preferredArray = new ArrayList<Locale>(supportedLocales);
+        if (languages != null) {
+            final String[] priorityList = languages.split(",");
+
+            Collections.sort(preferredArray, new Comparator<Locale>() {
+
+                @Override
+                public int compare(Locale o1, Locale o2) {
+                    int pos1 = supportedLocales.size(), pos2 = supportedLocales.
+                            size();
+                    for (int i = 0; i < priorityList.length; i++) {
+                        String lang = priorityList[i].split("_")[0].trim();
+                        if (lang.equals(o1.getLanguage())) {
+                            pos1 = i;
+                        }
+                        if (lang.equals(o2.getLanguage())) {
+                            pos2 = i;
+                        }
+                    }
+                    return pos1 - pos2;
+                }
+            });
+        }
+        bestLocaleByAcceptHeader = preferredArray.get(0);
     }
 
     public void setLocale(Locale locale) {
@@ -101,8 +120,9 @@ public class VaadinLocale {
             Component component = stack.pop();
             if (component instanceof HasComponents) {
                 for (Iterator<Component> i = ((HasComponents) component)
-                        .iterator(); i.hasNext();)
+                        .iterator(); i.hasNext();) {
                     stack.add(i.next());
+                }
             }
             if (component instanceof AbstractComponent) {
                 AbstractComponent abstractComponent = (AbstractComponent) component;
