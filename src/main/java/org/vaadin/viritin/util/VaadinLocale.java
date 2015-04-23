@@ -71,7 +71,7 @@ public class VaadinLocale {
                     int pos1 = supportedLocales.size(), pos2 = supportedLocales.
                             size();
                     for (int i = 0; i < priorityList.length; i++) {
-                        String lang = priorityList[i].split("_")[0].trim();
+                        String lang = priorityList[i].split("[_;-]")[0].trim();
                         if (lang.equals(o1.getLanguage())) {
                             pos1 = i;
                         }

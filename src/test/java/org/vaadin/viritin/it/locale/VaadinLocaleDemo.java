@@ -39,7 +39,9 @@ public class VaadinLocaleDemo extends AbstractTest {
     @Override
     public Component getTestComponent() {
         dateField.setValue(new Date());
-        localeSelect.setValue(getLocale());
+        final Locale locale = getLocale();
+        localeSelect.setOptions(vaadinLocale.getSupportedLocales());
+        localeSelect.setValue(locale);
         localeSelect.setId("language-selection");
         localeSelect
                 .addMValueChangeListener(new MValueChangeListener<Locale>() {
