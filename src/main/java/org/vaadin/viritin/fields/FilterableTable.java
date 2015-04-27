@@ -151,6 +151,7 @@ public class FilterableTable<T> extends MTable<T> {
         return (FilterableTable<T>) super.expand(propertiesToExpand);
     }
 
+    @Override
     public FilterableTable<T> withGeneratedColumn(String columnId, final SimpleColumnGenerator<T> columnGenerator) {
         return (FilterableTable<T>) super.withGeneratedColumn(columnId, columnGenerator);
     }

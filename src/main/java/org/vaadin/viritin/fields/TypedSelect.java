@@ -474,7 +474,6 @@ public class TypedSelect<T> extends CustomComponent implements Field<T> {
     }
 
     public TypedSelect<T> withValidator(Validator validator) {
-        setImmediate(true);
         addValidator(validator);
         return this;
     }
@@ -510,6 +509,16 @@ public class TypedSelect<T> extends CustomComponent implements Field<T> {
      */
     protected void setBic(ListContainer<T> listContainer) {
         bic = listContainer;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void clear() {
+        setValue(null);
     }
 
 }

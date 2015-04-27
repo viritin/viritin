@@ -3,12 +3,12 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.vaadin</groupId>
     <artifactId>viritin</artifactId>
-    <version>1.32-SNAPSHOT</version>
+    <version>1.33-SNAPSHOT</version>
     <name>Viritin</name>
     <packaging>bundle</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <vaadin.version>7.3.9</vaadin.version>
+        <vaadin.version>7.4.4</vaadin.version>
         <vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
 
         <!-- ZIP Manifest fields -->

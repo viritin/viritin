@@ -40,8 +40,9 @@ public class VaadinLocaleDemoComponent extends CustomComponent {
      * Method in which strings are updated depending on the current locale
      */
     private void updateStrings() {
+        // lang part only
         ResourceBundle resourceBundle = ResourceBundle.getBundle(
-                "VaadinLocaleDemo", getLocale());
+                "VaadinLocaleDemo", getLocale(), VaadinLocaleDemoComponent.class.getClassLoader());
         dateField.setCaption(resourceBundle.getString("date"));
     }
 }

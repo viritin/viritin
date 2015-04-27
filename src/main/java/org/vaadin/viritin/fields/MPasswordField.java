@@ -22,22 +22,22 @@ import com.vaadin.event.FieldEvents.TextChangeEvent;
 import com.vaadin.server.AbstractErrorMessage;
 import com.vaadin.server.CompositeErrorMessage;
 import com.vaadin.server.ErrorMessage;
-import com.vaadin.ui.TextField;
+import com.vaadin.ui.PasswordField;
 import java.util.EventObject;
 
 /**
- * A an extension to basic Vaadin TextField. Uses the only sane default for
+ * A an extension to basic Vaadin PasswordField. Uses the only sane default for
  * "nullRepresentation" (""), adds support for "eager validation" (~ validate
  * while typing) and adds some fluent APIs.
  */
-public class MTextField extends TextField {
+public class MPasswordField extends PasswordField {
 
     private boolean eagerValidation = false;
     private boolean eagerValidationStatus;
     private String lastKnownTextChangeValue;
     private Validator.InvalidValueException eagerValidationError;
 
-    public MTextField() {
+    public MPasswordField() {
         configureMaddonStuff();
     }
 
@@ -45,22 +45,22 @@ public class MTextField extends TextField {
         setNullRepresentation("");
     }
 
-    public MTextField(String caption) {
+    public MPasswordField(String caption) {
         super(caption);
         configureMaddonStuff();
     }
 
-    public MTextField(Property dataSource) {
+    public MPasswordField(Property dataSource) {
         super(dataSource);
         configureMaddonStuff();
     }
 
-    public MTextField(String caption, Property dataSource) {
+    public MPasswordField(String caption, Property dataSource) {
         super(caption, dataSource);
         configureMaddonStuff();
     }
 
-    public MTextField(String caption, String value) {
+    public MPasswordField(String caption, String value) {
         super(caption, value);
     }
 
@@ -97,47 +97,47 @@ public class MTextField extends TextField {
         return lastKnownTextChangeValue;
     }
 
-    public MTextField withConversionError(String message) {
+    public MPasswordField withConversionError(String message) {
         setConversionError(message);
         return this;
     }
 
-    public MTextField withConverter(Converter<String, ?> converter) {
+    public MPasswordField withConverter(Converter<String, ?> converter) {
         setConverter(converter);
         return this;
     }
 
-    public MTextField withFullWidth() {
+    public MPasswordField withFullWidth() {
         setWidth("100%");
         return this;
     }
 
-    public MTextField withInputPrompt(String inputPrompt) {
+    public MPasswordField withInputPrompt(String inputPrompt) {
         setInputPrompt(inputPrompt);
         return this;
     }
 
-    public MTextField withReadOnly(boolean readOnly) {
+    public MPasswordField withReadOnly(boolean readOnly) {
         setReadOnly(readOnly);
         return this;
     }
 
-    public MTextField withValidator(Validator validator) {
+    public MPasswordField withValidator(Validator validator) {
         addValidator(validator);
         return this;
     }
 
-    public MTextField withWidth(float width, Unit unit) {
+    public MPasswordField withWidth(float width, Unit unit) {
         setWidth(width, unit);
         return this;
     }
 
-    public MTextField withWidth(String width) {
+    public MPasswordField withWidth(String width) {
         setWidth(width);
         return this;
     }
 
-    public MTextField withNullRepresentation(String nullRepresentation) {
+    public MPasswordField withNullRepresentation(String nullRepresentation) {
         setNullRepresentation(nullRepresentation);
         return this;
     }

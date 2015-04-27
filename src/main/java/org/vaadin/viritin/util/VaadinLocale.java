@@ -1,7 +1,6 @@
 package org.vaadin.viritin.util;
 
 import java.util.*;
-import java.util.Locale.LanguageRange;
 
 import com.vaadin.server.*;
 import com.vaadin.ui.*;
@@ -80,12 +79,12 @@ public class VaadinLocale {
     }
 
     /**
-     * Creates a new instance with the {@link Java8LocaleNegotiationStrategy}.
+     * Creates a new instance with the {@link Java7LocaleNegotiationStrategy}.
      * 
      * @param supportedLocales
      */
     public VaadinLocale(Locale... supportedLocales) {
-        this(new Java8LocaleNegotiationStrategy(), supportedLocales);
+        this(new Java7LocaleNegotiationStrategy(), supportedLocales);
     }
 
     public void setVaadinRequest(VaadinRequest vaadinRequest) {
@@ -130,8 +129,9 @@ public class VaadinLocale {
             Component component = stack.pop();
             if (component instanceof HasComponents) {
                 for (Iterator<Component> i = ((HasComponents) component)
-                        .iterator(); i.hasNext();)
+                        .iterator(); i.hasNext();) {
                     stack.add(i.next());
+                }
             }
             if (component instanceof AbstractComponent) {
                 AbstractComponent abstractComponent = (AbstractComponent) component;
