@@ -221,6 +221,8 @@ public class MTable<T> extends Table {
                 MValueChangeEventImpl.VALUE_CHANGE_METHOD);
         // implicitly consider the table should be selectable
         setSelectable(true);
+	// Needed as client side checks only for "real value change listener"
+        setImmediate(true);
     }
 
     public void removeMValueChangeListener(MValueChangeListener<T> listener) {
