@@ -156,7 +156,7 @@ public abstract class AbstractForm<T> extends CustomComponent implements
             if (isBound()) {
                 fieldGroup.unbind();
             }
-            fieldGroup = BeanBinder.bind(entity, this);
+            fieldGroup = bindEntity(entity);
             isValid = fieldGroup.isValid();
             if (isEagerValidation()) {
                 fieldGroup.withEagerValidation(this);
@@ -169,6 +169,16 @@ public abstract class AbstractForm<T> extends CustomComponent implements
             setVisible(false);
             return null;
         }
+    }
+
+    /**
+     * Creates a field group, configures the fields, binds the entity to those fields
+     *
+     * @param entity The entity to bind
+     * @return the fieldGroup created
+     */
+    protected MBeanFieldGroup<T> bindEntity(T entity) {
+        return BeanBinder.bind(entity, this);
     }
 
     /**
