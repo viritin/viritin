@@ -1,14 +1,13 @@
 package org.vaadin.viritin.fields;
 
 import com.vaadin.server.FontAwesome;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.Layout;
-import com.vaadin.ui.Table;
+import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
+
 import java.util.ArrayList;
 import java.util.IdentityHashMap;
 import java.util.List;
+
 import org.vaadin.viritin.MBeanFieldGroup;
 import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.layouts.MVerticalLayout;
@@ -176,6 +175,10 @@ public class ElementCollectionTable<ET> extends AbstractElementCollection<ET> {
                             }
                         });
                 table.setColumnHeader("__ACTIONS", "");
+                for (Object property : getVisibleProperties()) {
+                    table.setColumnHeader(property, getPropertyHeader(property.
+                            toString()));
+                }
                 cols.add("__ACTIONS");
             }
 
