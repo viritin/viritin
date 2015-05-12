@@ -131,7 +131,7 @@ public class ElementCollections extends AbstractTest {
                 = new ElementCollectionTable<Address>(Address.class,
                         AddressRow.class).withCaption(
                         "Addressess").addElementAddedListener(addedListener).
-                addElementRemovedListener(removeListener).setPropertyHeader("type", "ABC").setPropertyHeader("city", "CITY");
+                addElementRemovedListener(removeListener).setPropertyHeader("zipCode", "Postal code");
 
         @Override
         protected Component createContent() {
