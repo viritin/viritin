@@ -474,6 +474,7 @@ public class TypedSelect<T> extends CustomComponent implements Field<T> {
     }
 
     public TypedSelect<T> withValidator(Validator validator) {
+        setImmediate(true);
         addValidator(validator);
         return this;
     }

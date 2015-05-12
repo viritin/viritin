@@ -123,6 +123,7 @@ public class MTextField extends TextField {
     }
 
     public MTextField withValidator(Validator validator) {
+        setImmediate(true);
         addValidator(validator);
         return this;
     }
