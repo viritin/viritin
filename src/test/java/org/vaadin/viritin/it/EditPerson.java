@@ -1,12 +1,12 @@
 package org.vaadin.viritin.it;
 
 import com.vaadin.annotations.Theme;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.themes.ValoTheme;
 
 import org.vaadin.addonhelpers.AbstractTest;
-import org.vaadin.viritin.fields.AbstractCaptionGenerator;
 import org.vaadin.viritin.fields.CaptionGenerator;
 import org.vaadin.viritin.fields.EnumSelect;
 import org.vaadin.viritin.fields.ElementCollectionField;
@@ -38,13 +38,14 @@ public class EditPerson extends AbstractTest {
             type.setStyleName(ValoTheme.OPTIONGROUP_HORIZONTAL);
             // If you don't want toString presentation of your enums,
             // you can do whatwever you want here
-            type.setCaptionGenerator(new CaptionGenerator<Address.AddressType>() {
+            type.setCaptionGenerator(
+                    new CaptionGenerator<Address.AddressType>() {
 
-                @Override
-                public String getCaption(Address.AddressType option) {
-                    return option.toString().toLowerCase();
-                }
-            });
+                        @Override
+                        public String getCaption(Address.AddressType option) {
+                            return option.toString().toLowerCase();
+                        }
+                    });
         }
     }
 
@@ -61,8 +62,8 @@ public class EditPerson extends AbstractTest {
                 .addElementAddedListener(ElementCollections.addedListener)
                 .addElementRemovedListener(ElementCollections.removeListener);
 
-        private final MultiSelectTable<Group> groups = new MultiSelectTable<Group>()
-                .withProperties("name")
+        private final MultiSelectTable<Group> groups = new MultiSelectTable<Group>().
+                withProperties("name")
                 .setOptions(Service.getAvailableGroups());
 
         public PersonForm() {
@@ -81,17 +82,20 @@ public class EditPerson extends AbstractTest {
     public Component getTestComponent() {
         PersonForm form = new PersonForm();
 
-        form.addValidityChangedListener(new AbstractForm.ValidityChangedListener<Person>() {
-            @Override
-            public void onValidityChanged(AbstractForm.ValidityChangedEvent<Person> event) {
-                if(event.getComponent().isValid()) {
-                    Notification.show("The form is now valid!",
-                            Notification.Type.TRAY_NOTIFICATION);
-                } else {
-                    Notification.show("Invalid values in form, clicking save is disabled!");
-                }
-             }
-        });
+        form.addValidityChangedListener(
+                new AbstractForm.ValidityChangedListener<Person>() {
+                    @Override
+                    public void onValidityChanged(
+                            AbstractForm.ValidityChangedEvent<Person> event) {
+                                if (event.getComponent().isValid()) {
+                                    Notification.show("The form is now valid!",
+                                            Notification.Type.TRAY_NOTIFICATION);
+                                } else {
+                                    Notification.show(
+                                            "Invalid values in form, clicking save is disabled!");
+                                }
+                            }
+                });
 
         Person p = Service.getPerson();
         form.setEntity(p);
@@ -112,7 +116,45 @@ public class EditPerson extends AbstractTest {
             }
         });
 
-        return form;
+        Button openInPopup = new Button("Open in popup");
+        openInPopup.addClickListener(new Button.ClickListener() {
+
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                final PersonForm form = new PersonForm();
+
+                Person p = Service.getPerson();
+                form.setEntity(p);
+
+                form.setSavedHandler(new AbstractForm.SavedHandler<Person>() {
+
+                    @Override
+                    public void onSave(Person entity) {
+                        Notification.show(entity.toString());
+                    }
+                });
+
+                form.setDeleteHandler(new AbstractForm.DeleteHandler<Person>() {
+
+                    @Override
+                    public void onDelete(Person entity) {
+                        Notification.show("Delete: " + entity.toString());
+                    }
+                });
+                form.setResetHandler(new AbstractForm.ResetHandler<Person>() {
+
+                    @Override
+                    public void onReset(Person entity) {
+                        Notification.show("Nothing done");
+                        form.getPopup().close();
+                    }
+                });
+                form.openInModalPopup();
+
+            }
+        });
+
+        return new MVerticalLayout(form, openInPopup);
     }
 
 }

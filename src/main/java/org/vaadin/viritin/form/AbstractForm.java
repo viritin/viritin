@@ -96,6 +96,12 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     }
 
     protected void adjustResetButtonState() {
+        if(popup != null && popup.getParent() != null) {
+            // Assume cancel button in a form opened to a popup also closes
+            // it, allows closing via cancel button by default
+            getResetButton().setEnabled(true);
+            return;
+        }
         if (isEagerValidation() && isBound()) {
             boolean modified = fieldGroup.isBeanModified();
             getResetButton().setEnabled(modified || popup != null);
