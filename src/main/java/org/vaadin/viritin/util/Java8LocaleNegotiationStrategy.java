@@ -1,7 +1,7 @@
 package org.vaadin.viritin.util;
 
+import java.lang.reflect.Method;
 import java.util.*;
-import java.util.Locale.LanguageRange;
 
 import org.vaadin.viritin.util.VaadinLocale.LocaleNegotiationStrategey;
 
@@ -21,8 +21,20 @@ public class Java8LocaleNegotiationStrategy implements
     public Locale negotiate(List<Locale> supportedLocales,
             VaadinRequest vaadinRequest) {
         String languages = vaadinRequest.getHeader("Accept-Language");
-        List<LanguageRange> priorityList = Locale.LanguageRange
-                .parse(languages);
-        return Locale.lookup(priorityList, supportedLocales);
+        try {
+            // Use reflection here, so the code compiles with jdk 1.7
+            Class<?> languageRange = Class
+                    .forName("java.util.Locale$LanguageRange");
+            Method parse = languageRange.getMethod("parse", String.class);
+            Object priorityList = parse.invoke(null, languages);
+            Method lookup = Locale.class.getMethod("lookup", List.class,
+                    Collection.class);
+            return (Locale) lookup.invoke(null, priorityList, supportedLocales);
+        } catch (Exception e) {
+            throw new RuntimeException(
+                    "Java8LocaleNegotiontionStrategy need java 1.8 or newer.",
+                    e);
+        }
+
     }
 }
