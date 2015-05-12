@@ -17,21 +17,41 @@ import com.vaadin.ui.*;
  * {@link com.vaadin.ui.AbstractComponent#setLocale(Locale)} on all components
  * in the current {@link com.vaadin.ui.UI} is triggered. You can update your
  * strings there.
- *
+ * 
  * @author Daniel Nordhoff-Vergien
  *
  */
 public class VaadinLocale {
+    public interface LocaleNegotiationStrategey {
+
+        /**
+         * Returns the best fitting supported locale depending on the http
+         * language accept header.
+         * 
+         * @param supportedLocales
+         * @param vaadinRequest
+         * @return the best fitting supported locale
+         */
+        public Locale negotiate(List<Locale> supportedLocales,
+                VaadinRequest vaadinRequest);
+    }
 
     private static final String LOCALE_SESSION_ATTRIBUTE = "org.vaadin.viritin.selectedLocale";
     private final List<Locale> supportedLocales = new ArrayList<Locale>();
     private Locale bestLocaleByAcceptHeader;
+    private final LocaleNegotiationStrategey localeNegotiationStrategey;
 
-    public VaadinLocale(Locale... supportedLocales) {
+    public VaadinLocale(LocaleNegotiationStrategey localeNegotiationStrategey,
+            Locale... supportedLocales) {
         if (supportedLocales == null || supportedLocales.length == 0) {
             throw new IllegalArgumentException(
                     "At least one locale must be supported");
         }
+        if (localeNegotiationStrategey == null) {
+            throw new IllegalArgumentException(
+                    "localeNegotiatinStrategy may not be null!");
+        }
+        this.localeNegotiationStrategey = localeNegotiationStrategey;
 
         for (Locale locale : supportedLocales) {
             this.supportedLocales.add(locale);
@@ -40,50 +60,40 @@ public class VaadinLocale {
 
     /**
      * Instantiates a new VaadinLocale object
-     *
+     * 
+     * @param localeNegotiationStrategey
      * @param vaadinRequest
-     * @param supportedLocales At least one Locale which the application
-     * supports. The first locale is the default locale, if negotiation fails.
-     *
-     *
-     * @throws IllegalArgumentException if there is no locale.
+     * @param supportedLocales
+     *            At least one Locale which the application supports. The first
+     *            locale is the default locale, if negotiation fails.
+     * 
+     * 
+     * @throws IllegalArgumentException
+     *             if there is no locale.
      */
-    public VaadinLocale(VaadinRequest vaadinRequest, Locale... supportedLocales) {
-        this(supportedLocales);
+    public VaadinLocale(LocaleNegotiationStrategey localeNegotiationStrategey,
+            VaadinRequest vaadinRequest, Locale... supportedLocales) {
+        this(localeNegotiationStrategey, supportedLocales);
         setVaadinRequest(vaadinRequest);
         updateVaadinLocale();
+    }
+
+    /**
+     * Creates a new instance with the {@link Java7LocaleNegotiationStrategy}.
+     * 
+     * @param supportedLocales
+     */
+    public VaadinLocale(Locale... supportedLocales) {
+        this(new Java7LocaleNegotiationStrategy(), supportedLocales);
     }
 
     public void setVaadinRequest(VaadinRequest vaadinRequest) {
         if (vaadinRequest == null) {
             throw new IllegalArgumentException("VaadinRequest is needed!");
         }
-
-        String languages = vaadinRequest.getHeader("Accept-Language");
-        ArrayList<Locale> preferredArray = new ArrayList<Locale>(supportedLocales);
-        if (languages != null) {
-            final String[] priorityList = languages.split(",");
-
-            Collections.sort(preferredArray, new Comparator<Locale>() {
-
-                @Override
-                public int compare(Locale o1, Locale o2) {
-                    int pos1 = supportedLocales.size(), pos2 = supportedLocales.
-                            size();
-                    for (int i = 0; i < priorityList.length; i++) {
-                        String lang = priorityList[i].split("[_;-]")[0].trim();
-                        if (lang.equals(o1.getLanguage())) {
-                            pos1 = i;
-                        }
-                        if (lang.equals(o2.getLanguage())) {
-                            pos2 = i;
-                        }
-                    }
-                    return pos1 - pos2;
-                }
-            });
-        }
-        bestLocaleByAcceptHeader = preferredArray.get(0);
+        bestLocaleByAcceptHeader = localeNegotiationStrategey.negotiate(
+                supportedLocales, vaadinRequest);
+        updateVaadinLocale();
     }
 
     public void setLocale(Locale locale) {
@@ -114,7 +124,7 @@ public class VaadinLocale {
 
     private void recursiveSetLocale() {
         Stack<Component> stack = new Stack<Component>();
-        stack.push(UI.getCurrent());
+        stack.addAll(VaadinSession.getCurrent().getUIs());
         while (!stack.isEmpty()) {
             Component component = stack.pop();
             if (component instanceof HasComponents) {
