@@ -47,6 +47,7 @@ public abstract class AbstractForm<T> extends CustomComponent implements
             @Override
             public void attach(AttachEvent event) {
                 lazyInit();
+                adjustResetButtonState();
             }
         });
     }
