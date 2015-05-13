@@ -174,15 +174,15 @@ public class ElementCollectionTable<ET> extends AbstractElementCollection<ET> {
                                 return b;
                             }
                         });
-                table.setColumnHeader("__ACTIONS", "");
-                for (Object property : getVisibleProperties()) {
-                    table.setColumnHeader(property, getPropertyHeader(property.
-                            toString()));
-                }
+                table.setColumnHeader("__ACTIONS", "");                
                 cols.add("__ACTIONS");
             }
-
+            
             table.setVisibleColumns(cols.toArray());
+            for (Object property : getVisibleProperties()) {
+                table.setColumnHeader(property, getPropertyHeader(property.
+                        toString()));
+            }
             layout.expand(table);
             if (isAllowNewItems()) {
                 layout.addComponent(addButton);
