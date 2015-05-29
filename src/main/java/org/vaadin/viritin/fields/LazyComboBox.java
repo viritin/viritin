@@ -142,6 +142,7 @@ public class LazyComboBox<T> extends TypedSelect<T> {
                 piggybackLazyList));
         comboBox.setContainerDataSource(getBic());
         setSelectInstance(comboBox);
+//        comboBox.setScrollToSelectedItem(false);
 
         return comboBox;
     }

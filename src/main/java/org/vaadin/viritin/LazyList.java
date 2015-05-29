@@ -230,6 +230,7 @@ public class LazyList<T> extends AbstractList<T> implements Serializable {
             getIndexCache().put((T) o, indexViaCache);
             return indexViaCache;
         }
+        System.err.println("FAIL!! SLOW!!!");
         // fall back to iterating, this will most likely be sloooooow....
         // If your app gets here, consider overwriting this method, and to
         // some optimization at service/db level
