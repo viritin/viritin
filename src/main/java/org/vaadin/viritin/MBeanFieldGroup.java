@@ -16,13 +16,19 @@
 package org.vaadin.viritin;
 
 import com.vaadin.data.Property;
+import com.vaadin.data.Validator;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.event.*;
 import com.vaadin.event.FieldEvents.TextChangeNotifier;
+import com.vaadin.server.AbstractErrorMessage;
 import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.Field;
+import java.io.Serializable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -96,12 +102,106 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
 
     }
 
+    /**
+      * EXPERIMENTAL: The cross field validation support is still experimental
+     * and its API is likely to change.
+    *
+     * A validator executed against the edited bean. Developer can do any
+     * validation within the validate method, but typically this type of
+     * validation are used for e.g. cross field validation which is not possible
+     * with BeanValidation support in Vaadin.
+     *
+     * @param <T> the bean type to be validated.
+     *
+     */
+    public interface MValidator<T> extends Serializable {
+
+        /**
+         *
+         * @param value the bean to be validated
+         * @throws Validator.InvalidValueException
+         */
+        public void validate(T value) throws Validator.InvalidValueException;
+
+    }
+
     @Override
     public void valueChange(Property.ValueChangeEvent event) {
         setBeanModified(true);
         if (listener != null) {
             listener.onFieldGroupChange(this);
         }
+    }
+
+    private LinkedHashMap<MValidator<T>, Collection<String>> mValidators = new LinkedHashMap<MValidator<T>, Collection<String>>();
+
+    /**
+     * EXPERIMENTAL: The cross field validation support is still experimental
+     * and its API is likely to change.
+     * 
+     * @param validator a validator that validates the whole bean making cross
+     * field validation much simpler
+     * @param properties the properties that this validator affects and on which
+     * a possible error message is shown.
+     * @return this FieldGroup
+     */
+    public MBeanFieldGroup<T> addValidator(MValidator<T> validator,
+            String... properties) {
+        mValidators.put(validator, Arrays.asList(properties));
+        return this;
+    }
+
+    public MBeanFieldGroup<T> removeValidator(MValidator<T> validator) {
+        mValidators.remove(validator);
+        return this;
+    }
+
+    /**
+     * Removes all MValidators added the MFieldGroup
+     *
+     * @return the instance
+     */
+    public MBeanFieldGroup<T> clearValidators() {
+        mValidators.clear();
+        return this;
+    }
+
+    @Override
+    public boolean isValid() {
+        // clear all errors
+        for (Field f : getFields()) {
+            if (f instanceof AbstractComponent) {
+                AbstractComponent abstractField = (AbstractComponent) f;
+                abstractField.setComponentError(null);
+            }
+        }
+        // first check standard property level validators
+        final boolean propertiesValid = super.isValid();
+        if (propertiesValid) {
+            // then crossfield(/bean level) validators 
+            for (MValidator<T> v : mValidators.keySet()) {
+                try {
+                    v.validate(getItemDataSource().getBean());
+                } catch (Validator.InvalidValueException e) {
+                    Collection<String> properties = mValidators.get(v);
+                    for (String p : properties) {
+                        Field<?> field = getField(p);
+                        if (field instanceof AbstractComponent) {
+                            AbstractComponent abstractField = (AbstractComponent) field;
+                            abstractField.setComponentError(
+                                    AbstractErrorMessage.
+                                    getErrorMessageForException(e));
+                        }
+                    }
+                    // TODO what to do if developer didn't specify any properties
+                    // to which validato was bound to? Create a bean level
+                    // error message that could be used by e.g. AbstractForm?
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
     }
 
     @Override
