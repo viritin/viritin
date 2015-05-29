@@ -11,6 +11,10 @@ import org.vaadin.viritin.button.PrimaryButton;
 import org.vaadin.viritin.layouts.MHorizontalLayout;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Abstract super class for simple editor forms.
@@ -22,7 +26,8 @@ public abstract class AbstractForm<T> extends CustomComponent implements
 
     public static class ValidityChangedEvent<T> extends Component.Event {
 
-        private static final Method method = ReflectTools.findMethod(ValidityChangedListener.class, "onValidityChanged",
+        private static final Method method = ReflectTools.findMethod(
+                ValidityChangedListener.class, "onValidityChanged",
                 ValidityChangedEvent.class);
 
         public ValidityChangedEvent(Component source) {
@@ -37,6 +42,7 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     }
 
     public interface ValidityChangedListener<T> {
+
         public void onValidityChanged(ValidityChangedEvent<T> event);
     }
 
@@ -59,7 +65,7 @@ public abstract class AbstractForm<T> extends CustomComponent implements
             adjustResetButtonState();
         }
     }
-    
+
     private MBeanFieldGroup<T> fieldGroup;
 
     /**
@@ -96,7 +102,7 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     }
 
     protected void adjustResetButtonState() {
-        if(popup != null && popup.getParent() != null) {
+        if (popup != null && popup.getParent() != null) {
             // Assume cancel button in a form opened to a popup also closes
             // it, allows closing via cancel button by default
             getResetButton().setEnabled(true);
@@ -109,10 +115,14 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     }
 
     public void addValidityChangedListener(ValidityChangedListener<T> listener) {
-        addListener(ValidityChangedEvent.class, listener, ValidityChangedEvent.method);
+        addListener(ValidityChangedEvent.class, listener,
+                ValidityChangedEvent.method);
     }
-    public void removeValidityChangedListener(ValidityChangedListener<T> listener) {
-        removeListener(ValidityChangedEvent.class, listener, ValidityChangedEvent.method);
+
+    public void removeValidityChangedListener(
+            ValidityChangedListener<T> listener) {
+        removeListener(ValidityChangedEvent.class, listener,
+                ValidityChangedEvent.method);
     }
 
     private void fireValidityChangedEvent() {
@@ -164,6 +174,13 @@ public abstract class AbstractForm<T> extends CustomComponent implements
                 fieldGroup.unbind();
             }
             fieldGroup = bindEntity(entity);
+            
+            for (Map.Entry<MBeanFieldGroup.MValidator<T>, Collection<String>> e : mValidators.
+                    entrySet()) {
+                fieldGroup.addValidator(e.getKey(), e.getValue().toArray(new String[e.getValue().size()]));
+            }
+
+
             isValid = fieldGroup.isValid();
             if (isEagerValidation()) {
                 fieldGroup.withEagerValidation(this);
@@ -179,7 +196,8 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     }
 
     /**
-     * Creates a field group, configures the fields, binds the entity to those fields
+     * Creates a field group, configures the fields, binds the entity to those
+     * fields
      *
      * @param entity The entity to bind
      * @return the fieldGroup created
@@ -413,6 +431,53 @@ public abstract class AbstractForm<T> extends CustomComponent implements
 
     public T getEntity() {
         return entity;
+    }
+
+    private LinkedHashMap<MBeanFieldGroup.MValidator<T>, Collection<String>> mValidators = new LinkedHashMap<MBeanFieldGroup.MValidator<T>, Collection<String>>();
+
+    /**
+     * EXPERIMENTAL: The cross field validation support is still experimental
+     * and its API is likely to change.
+     *
+     * @param validator a validator that validates the whole bean making cross
+     * field validation much simpler
+     * @param properties the properties that this validator affects and on which
+     * a possible error message is shown.
+     * @return this FieldGroup
+     */
+    public AbstractForm<T> addValidator(
+            MBeanFieldGroup.MValidator<T> validator,
+            String... properties) {
+        mValidators.put(validator, Arrays.asList(properties));
+        if (getFieldGroup() != null) {
+            getFieldGroup().addValidator(validator, properties);
+        }
+        return this;
+    }
+
+    public AbstractForm<T> removeValidator(
+            MBeanFieldGroup.MValidator<T> validator) {
+        Collection<String> remove = mValidators.remove(validator);
+        if (remove != null) {
+            if (getFieldGroup() != null) {
+                getFieldGroup().addValidator(validator, remove.toArray(
+                        new String[remove.size()]));
+            }
+        }
+        return this;
+    }
+
+    /**
+     * Removes all MValidators added the MFieldGroup
+     *
+     * @return the instance
+     */
+    public AbstractForm<T> clearValidators() {
+        mValidators.clear();
+        if (getFieldGroup() != null) {
+            getFieldGroup().clear();
+        }
+        return this;
     }
 
 }
