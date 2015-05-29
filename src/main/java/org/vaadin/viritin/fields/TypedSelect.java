@@ -522,4 +522,16 @@ public class TypedSelect<T> extends CustomComponent implements Field<T> {
         setValue(null);
     }
 
+    @Override
+    public void setReadOnly(boolean readOnly) {
+        super.setReadOnly(readOnly);
+        getSelect().setReadOnly(readOnly);
+    }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
+        getSelect().setEnabled(enabled);
+    }
+
 }

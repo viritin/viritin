@@ -1,6 +1,7 @@
 package org.vaadin.viritin.it;
 
 import com.vaadin.annotations.Theme;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Notification;
 import org.vaadin.addonhelpers.AbstractTest;
@@ -45,7 +46,7 @@ public class LazyComboBoxUsageSample extends AbstractTest {
             
         };
 
-        LazyComboBox<Person> cb = new LazyComboBox(Person.class, filterablePagingProvider, filterableCountProvider)
+        final LazyComboBox<Person> cb = new LazyComboBox(Person.class, filterablePagingProvider, filterableCountProvider)
                 .setCaptionGenerator(new CaptionGenerator<Person>() {
 
                     @Override
@@ -63,8 +64,17 @@ public class LazyComboBoxUsageSample extends AbstractTest {
                 Notification.show("Selected value :" + event.getValue());
             }
         });
+        
+        Button toggle = new Button("Toggle readonly");
+        toggle.addClickListener(new Button.ClickListener() {
 
-        return new MVerticalLayout(cb);
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                cb.setReadOnly(!cb.isReadOnly());
+            }
+        });
+
+        return new MVerticalLayout(cb, toggle);
     }
 
 }
