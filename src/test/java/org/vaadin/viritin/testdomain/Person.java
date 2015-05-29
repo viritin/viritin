@@ -16,8 +16,6 @@
 
 package org.vaadin.viritin.testdomain;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.NotNull;
@@ -30,6 +28,9 @@ import org.apache.commons.lang3.ObjectUtils;
  */
 public class Person {
     private int id;
+
+    @NotNull
+    @Size(min = 3, max = 15)
     private String firstName;
     private String lastName;
     
