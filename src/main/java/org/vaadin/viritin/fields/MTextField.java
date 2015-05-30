@@ -200,12 +200,33 @@ public class MTextField extends TextField {
             if (!wasvalid) {
                 markAsDirty();
             }
+            // Also eagerly pass content to backing bean to make top level 
+            // navigation eager, but do not listen the value back in value change
+            // event
+            if(getPropertyDataSource() != null) {
+                skipValueChangeEvent = true;
+                getPropertyDataSource().setValue(getLastKnownTextContent());
+                skipValueChangeEvent = false;
+            }
         } catch (Validator.InvalidValueException e) {
             eagerValidationError = e;
             eagerValidationStatus = false;
             markAsDirty();
         }
     }
+    
+    private boolean skipValueChangeEvent = false;
+
+    @Override
+    public void valueChange(Property.ValueChangeEvent event) {
+        if(!skipValueChangeEvent) {
+            super.valueChange(event);
+        } else {
+            skipValueChangeEvent = false;
+        }
+    }
+    
+    
 
     @Override
     public boolean isValid() {

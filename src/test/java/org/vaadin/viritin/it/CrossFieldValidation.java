@@ -7,7 +7,10 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.themes.ValoTheme;
+import java.util.Collection;
 import java.util.Date;
+import javax.validation.ConstraintViolation;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -18,6 +21,7 @@ import org.vaadin.viritin.fields.MDateField;
 import org.vaadin.viritin.fields.MTextField;
 import org.vaadin.viritin.form.AbstractForm;
 import org.vaadin.viritin.label.Header;
+import org.vaadin.viritin.label.RichText;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 
 /**
@@ -27,6 +31,9 @@ import org.vaadin.viritin.layouts.MVerticalLayout;
 @Theme("valo")
 public class CrossFieldValidation extends AbstractTest {
 
+    @FieldMatch.List({
+        @FieldMatch(first = "email", second = "verifyEmail", message = "Emails must match")
+    })
     public static class Reservation {
 
         @NotNull(message = "Comment is required")
@@ -39,6 +46,28 @@ public class CrossFieldValidation extends AbstractTest {
 
         @NotNull
         private Date end;
+
+        @NotNull
+        private String email;
+
+        @NotNull
+        private String verifyEmail;
+
+        public String getEmail() {
+            return email;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
+
+        public String getVerifyEmail() {
+            return verifyEmail;
+        }
+
+        public void setVerifyEmail(String verifyEmail) {
+            this.verifyEmail = verifyEmail;
+        }
 
         public String getComment() {
             return comment;
@@ -64,16 +93,23 @@ public class CrossFieldValidation extends AbstractTest {
             this.end = end;
         }
 
+        @Override
+        public String toString() {
+            return "Reservation{" + "comment=" + comment + ", start=" + start + ", end=" + end + ", email=" + email + ", verifyEmail=" + verifyEmail + '}';
+        }
+
     }
 
     public static class ReservationForm extends AbstractForm<Reservation> {
 
         private MTextField comment = new MTextField("Comment");
-
         private DateField start = new MDateField("Start")
                 .withResolution(Resolution.MINUTE);
         private DateField end = new MDateField("End")
                 .withResolution(Resolution.MINUTE);
+        private MTextField email = new MTextField("Email");
+        private MTextField verifyEmail = new MTextField("Verify email");
+        private RichText errors = new RichText();
 
         public ReservationForm() {
             // In this test using via AbstractForm but can be used with raw
@@ -91,17 +127,40 @@ public class CrossFieldValidation extends AbstractTest {
                                         "End time cannot be before start time!");
                             }
                         }
-                    },
+                    }
                     // configure the properties/fields where the error should be displayed.
-                    "start", "end"
+                    // if your provide none, the error will be available in
+                    // getFieldGroup().getBeanLevelValidationErrors()
+                    //,"start", "end"
             );
+        }
+
+        @Override
+        public void onFieldGroupChange(MBeanFieldGroup beanFieldGroup) {
+            super.onFieldGroupChange(beanFieldGroup);
+
+            // TODO consider a simpler better way to display top level JSR303 annotations
+            // configurable built-in feature to AbstractField or something
+            errors.setVisible(false);
+            StringBuilder sb = new StringBuilder();
+            Collection<String> errorMessages = getFieldGroup().getBeanLevelValidationErrors();
+            if (!errorMessages.isEmpty()) {
+                for (String e : errorMessages) {
+                    sb.append(e);
+                    sb.append("<br/>");
+                }
+                errors.setValue(sb.toString());
+                errors.setStyleName(ValoTheme.LABEL_FAILURE);
+                errors.setVisible(true);
+            }
         }
 
         @Override
         protected Component createContent() {
             return new MVerticalLayout(new Header("Edit reservation"), comment,
-                    start, end,
+                    start, end, email, verifyEmail,
                     //getFieldGroup().getValidationStatusDisplay(),
+                    errors,
                     getToolbar());
         }
 
@@ -142,13 +201,15 @@ public class CrossFieldValidation extends AbstractTest {
             }
         });
         form.setEntity(new Reservation());
-        
-        Button button = new Button("Show fields that should be filled, but not touched yet");
+
+        Button button = new Button(
+                "Show fields that should be filled, but not touched yet");
         button.addClickListener(new Button.ClickListener() {
 
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                Notification.show(form.getFieldGroup().getFieldsWithInitiallyDisabledValidation().toString());
+                Notification.show(form.getFieldGroup().
+                        getFieldsWithInitiallyDisabledValidation().toString());
             }
         });
 

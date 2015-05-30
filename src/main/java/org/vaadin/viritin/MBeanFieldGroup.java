@@ -18,9 +18,11 @@ package org.vaadin.viritin;
 import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
+import com.vaadin.data.validator.BeanValidator;
 import com.vaadin.event.*;
 import com.vaadin.event.FieldEvents.TextChangeNotifier;
 import com.vaadin.server.AbstractErrorMessage;
+import com.vaadin.server.CompositeErrorMessage;
 import com.vaadin.server.ErrorMessage;
 import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.AbstractField;
@@ -34,10 +36,14 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.ValidatorFactory;
 
 import javax.validation.constraints.NotNull;
 import org.vaadin.viritin.fields.MPasswordField;
@@ -54,6 +60,7 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
         Property.ValueChangeListener, FieldEvents.TextChangeListener {
 
     protected final Class nonHiddenBeanType;
+    private Set<ConstraintViolation<T>> constraintViolations;
 
     /**
      * Configures fields for some better defaults, like property fields
@@ -135,6 +142,50 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
                 }
             }
         }
+    }
+
+    /**
+     * @return constraint violations found in last top level JSR303 validation.
+     */
+    public Set<ConstraintViolation<T>> getConstraintViolations() {
+        return constraintViolations;
+    }
+    
+    public Collection<String> getBeanLevelValidationErrors() {
+        Collection<String> errors = new ArrayList<String>();
+        if(getConstraintViolations() != null) {
+            for (ConstraintViolation<T> constraintViolation : getConstraintViolations()) {
+                errors.add(constraintViolation.getMessage());
+            }
+        }
+        for (Map.Entry<ErrorMessage, AbstractComponent> e : mValidationErrors.
+                entrySet()) {
+            AbstractComponent value = e.getValue();
+            if(value == null) {
+                errors.add(e.getKey().getFormattedHtmlMessage());
+            }
+        }
+        return errors;
+    }
+
+    // For JSR303 validation at class level
+    private static ValidatorFactory factory;
+    private transient javax.validation.Validator javaxBeanValidator;
+
+    protected boolean jsr303ValidateBean(T bean) {
+        if (factory == null) {
+            factory = Validation.buildDefaultValidatorFactory();
+        }
+        if (javaxBeanValidator == null) {
+            javaxBeanValidator = factory.getValidator();
+        }
+        Set<ConstraintViolation<T>> constraintViolations = javaxBeanValidator.
+                validate(bean);
+        if (constraintViolations.isEmpty()) {
+            return true;
+        }
+        this.constraintViolations = constraintViolations;
+        return false;
     }
 
     public interface FieldGroupListener<T> {
@@ -222,10 +273,10 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
     private Map<ErrorMessage, AbstractComponent> mValidationErrors = new HashMap<ErrorMessage, AbstractComponent>();
 
     private void clearMValidationErrors() {
-
-        for (AbstractComponent value : mValidationErrors.
-                values()) {
-            value.setComponentError(null);
+        for (AbstractComponent value : mValidationErrors.values()) {
+            if (value != null) {
+                value.setComponentError(null);
+            }
         }
         mValidationErrors.clear();
     }
@@ -234,6 +285,8 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
     public boolean isValid() {
         // clear all MValidation errors
         clearMValidationErrors();
+        constraintViolations = null;
+
         // first check standard property level validators
         final boolean propertiesValid = super.isValid();
         if (propertiesValid) {
@@ -243,23 +296,26 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
                     v.validate(getItemDataSource().getBean());
                 } catch (Validator.InvalidValueException e) {
                     Collection<String> properties = mValidators.get(v);
-                    for (String p : properties) {
-                        Field<?> field = getField(p);
-                        if (field instanceof AbstractComponent) {
-                            AbstractComponent abstractField = (AbstractComponent) field;
-                            final ErrorMessage em = AbstractErrorMessage.
-                                    getErrorMessageForException(e);
-                            mValidationErrors.put(em, abstractField);
-                            abstractField.setComponentError(em);
+                    if (!properties.isEmpty()) {
+                        for (String p : properties) {
+                        final ErrorMessage em = AbstractErrorMessage.
+                                getErrorMessageForException(e);
+                            Field<?> field = getField(p);
+                            if (field instanceof AbstractComponent) {
+                                AbstractComponent abstractField = (AbstractComponent) field;
+                                mValidationErrors.put(em, abstractField);
+                                abstractField.setComponentError(em);
+                            }
                         }
+                    } else {
+                        final ErrorMessage em = AbstractErrorMessage.
+                                getErrorMessageForException(e);
+                        mValidationErrors.put(em, null);
                     }
-                    // TODO what to do if developer didn't specify any properties
-                    // to which validato was bound to? Create a bean level
-                    // error message that could be used by e.g. AbstractForm?
                     return false;
                 }
             }
-            return true;
+            return jsr303ValidateBean(getItemDataSource().getBean());
         }
         return false;
     }
