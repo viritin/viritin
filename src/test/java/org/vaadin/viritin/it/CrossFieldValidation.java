@@ -3,12 +3,12 @@ package org.vaadin.viritin.it;
 import com.vaadin.annotations.Theme;
 import com.vaadin.data.Validator;
 import com.vaadin.shared.ui.datefield.Resolution;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.Notification;
 import java.util.Date;
 import javax.validation.constraints.Future;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -30,10 +30,11 @@ public class CrossFieldValidation extends AbstractTest {
     public static class Reservation {
 
         @NotNull(message = "Comment is required")
-        @Size(min = 3, max = 40, message = "Comment must be longer than 3 and less than 40 characters")
+        @Size(min = 4, max = 15, message = "Comment must be longer than 3 and less than 15 characters")
         private String comment;
 
         @NotNull
+        @Future
         private Date start;
 
         @NotNull
@@ -108,7 +109,7 @@ public class CrossFieldValidation extends AbstractTest {
 
     @Override
     public Component getTestComponent() {
-        ReservationForm form = new ReservationForm();
+        final ReservationForm form = new ReservationForm();
 
         form.addValidityChangedListener(
                 new AbstractForm.ValidityChangedListener<Reservation>() {
@@ -141,10 +142,17 @@ public class CrossFieldValidation extends AbstractTest {
             }
         });
         form.setEntity(new Reservation());
-        form.start.setValidationVisible(false);
-        form.end.setValidationVisible(false);
+        
+        Button button = new Button("Show fields that should be filled, but not touched yet");
+        button.addClickListener(new Button.ClickListener() {
 
-        return new MVerticalLayout(form);
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                Notification.show(form.getFieldGroup().getFieldsWithInitiallyDisabledValidation().toString());
+            }
+        });
+
+        return new MVerticalLayout(form, button);
     }
 
 }

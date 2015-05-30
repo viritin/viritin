@@ -24,6 +24,7 @@ import java.util.Map;
 public abstract class AbstractForm<T> extends CustomComponent implements
         FieldGroupListener {
 
+
     public static class ValidityChangedEvent<T> extends Component.Event {
 
         private static final Method method = ReflectTools.findMethod(
@@ -174,12 +175,12 @@ public abstract class AbstractForm<T> extends CustomComponent implements
                 fieldGroup.unbind();
             }
             fieldGroup = bindEntity(entity);
-            
+
             for (Map.Entry<MBeanFieldGroup.MValidator<T>, Collection<String>> e : mValidators.
                     entrySet()) {
-                fieldGroup.addValidator(e.getKey(), e.getValue().toArray(new String[e.getValue().size()]));
+                fieldGroup.addValidator(e.getKey(), e.getValue().toArray(
+                        new String[e.getValue().size()]));
             }
-
 
             isValid = fieldGroup.isValid();
             if (isEagerValidation()) {
@@ -187,6 +188,7 @@ public abstract class AbstractForm<T> extends CustomComponent implements
                 adjustSaveButtonState();
                 adjustResetButtonState();
             }
+            fieldGroup.hideInitialEmpyFieldValidationErrors();
             setVisible(true);
             return fieldGroup;
         } else {
@@ -433,7 +435,8 @@ public abstract class AbstractForm<T> extends CustomComponent implements
         return entity;
     }
 
-    private LinkedHashMap<MBeanFieldGroup.MValidator<T>, Collection<String>> mValidators = new LinkedHashMap<MBeanFieldGroup.MValidator<T>, Collection<String>>();
+    private final LinkedHashMap<MBeanFieldGroup.MValidator<T>, Collection<String>> mValidators 
+            = new LinkedHashMap<MBeanFieldGroup.MValidator<T>, Collection<String>>();
 
     /**
      * EXPERIMENTAL: The cross field validation support is still experimental

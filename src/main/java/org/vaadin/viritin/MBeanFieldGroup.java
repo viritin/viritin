@@ -21,14 +21,21 @@ import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.event.*;
 import com.vaadin.event.FieldEvents.TextChangeNotifier;
 import com.vaadin.server.AbstractErrorMessage;
+import com.vaadin.server.ErrorMessage;
 import com.vaadin.ui.AbstractComponent;
+import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.Field;
 import java.io.Serializable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -96,6 +103,40 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
         }
     }
 
+    private final Set<String> fieldsWithInitiallyDisabledValidation = new HashSet<String>();
+
+    public Set<String> getFieldsWithInitiallyDisabledValidation() {
+        return Collections.
+                unmodifiableSet(fieldsWithInitiallyDisabledValidation);
+    }
+
+    /**
+     * This method hides validation errors on a required fields until the field
+     * has been changed for the first time. Does pretty much the same as old
+     * Vaadin Form did with its validationVisibleOnCommit, but eagerly per
+     * field.
+     * <p>
+     * Fields that hide validation errors this way are available in
+     * getFieldsWithIntiallyDisabledValidation() so they can be emphasized in
+     * UI.
+     */
+    public void hideInitialEmpyFieldValidationErrors() {
+        fieldsWithInitiallyDisabledValidation.clear();
+        for (Field f : getFields()) {
+            if (f instanceof AbstractField) {
+                final AbstractField abstractField = (AbstractField) f;
+                if (abstractField.getErrorMessage() != null && abstractField.
+                        isRequired() && abstractField.
+                        isEmpty() && abstractField.isValidationVisible()) {
+                    final String propertyId = getPropertyId(abstractField).
+                            toString();
+                    abstractField.setValidationVisible(false);
+                    fieldsWithInitiallyDisabledValidation.add(propertyId);
+                }
+            }
+        }
+    }
+
     public interface FieldGroupListener<T> {
 
         public void onFieldGroupChange(MBeanFieldGroup<T> beanFieldGroup);
@@ -103,9 +144,9 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
     }
 
     /**
-      * EXPERIMENTAL: The cross field validation support is still experimental
+     * EXPERIMENTAL: The cross field validation support is still experimental
      * and its API is likely to change.
-    *
+     *
      * A validator executed against the edited bean. Developer can do any
      * validation within the validate method, but typically this type of
      * validation are used for e.g. cross field validation which is not possible
@@ -127,6 +168,18 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
 
     @Override
     public void valueChange(Property.ValueChangeEvent event) {
+        if (event != null) {
+            Property property = event.getProperty();
+            if (property instanceof AbstractField) {
+                AbstractField abstractField = (AbstractField) property;
+                String propertyId = getPropertyId(abstractField).toString();
+                boolean wasHiddenValidation = fieldsWithInitiallyDisabledValidation.
+                        remove(propertyId);
+                if (wasHiddenValidation) {
+                    abstractField.setValidationVisible(true);
+                }
+            }
+        }
         setBeanModified(true);
         if (listener != null) {
             listener.onFieldGroupChange(this);
@@ -138,7 +191,7 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
     /**
      * EXPERIMENTAL: The cross field validation support is still experimental
      * and its API is likely to change.
-     * 
+     *
      * @param validator a validator that validates the whole bean making cross
      * field validation much simpler
      * @param properties the properties that this validator affects and on which
@@ -166,15 +219,21 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
         return this;
     }
 
+    private Map<ErrorMessage, AbstractComponent> mValidationErrors = new HashMap<ErrorMessage, AbstractComponent>();
+
+    private void clearMValidationErrors() {
+
+        for (AbstractComponent value : mValidationErrors.
+                values()) {
+            value.setComponentError(null);
+        }
+        mValidationErrors.clear();
+    }
+
     @Override
     public boolean isValid() {
-        // clear all errors
-        for (Field f : getFields()) {
-            if (f instanceof AbstractComponent) {
-                AbstractComponent abstractField = (AbstractComponent) f;
-                abstractField.setComponentError(null);
-            }
-        }
+        // clear all MValidation errors
+        clearMValidationErrors();
         // first check standard property level validators
         final boolean propertiesValid = super.isValid();
         if (propertiesValid) {
@@ -188,9 +247,10 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
                         Field<?> field = getField(p);
                         if (field instanceof AbstractComponent) {
                             AbstractComponent abstractField = (AbstractComponent) field;
-                            abstractField.setComponentError(
-                                    AbstractErrorMessage.
-                                    getErrorMessageForException(e));
+                            final ErrorMessage em = AbstractErrorMessage.
+                                    getErrorMessageForException(e);
+                            mValidationErrors.put(em, abstractField);
+                            abstractField.setComponentError(em);
                         }
                     }
                     // TODO what to do if developer didn't specify any properties
@@ -283,6 +343,7 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
 
             unbind(field);
         }
+        fieldsWithInitiallyDisabledValidation.clear();
 
     }
 
