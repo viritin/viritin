@@ -29,7 +29,7 @@ import java.util.List;
  * @author mstahv
  * @param <T> the type of selects value
  */
-public class TypedSelect<T> extends CustomComponent implements Field<T> {
+public class TypedSelect<T> extends CustomField {
 
     private CaptionGenerator<T> captionGenerator;
 
@@ -166,6 +166,7 @@ public class TypedSelect<T> extends CustomComponent implements Field<T> {
                 select.setContainerDataSource(bic);
             }
         }
+        ensurePiggybackListener();
         return select;
     }
 
@@ -188,12 +189,6 @@ public class TypedSelect<T> extends CustomComponent implements Field<T> {
             return captionGenerator.getCaption(option);
         }
         return option.toString();
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public T getValue() {
-        return (T) getSelect().getValue();
     }
 
     @Override
@@ -242,28 +237,34 @@ public class TypedSelect<T> extends CustomComponent implements Field<T> {
     }
 
     @Override
-    public boolean isInvalidCommitted() {
-        return getSelect().isInvalidCommitted();
-    }
-
-    @Override
     public void setInvalidCommitted(boolean isCommitted) {
+        super.setInvalidCommitted(isCommitted);
         getSelect().setInvalidCommitted(isCommitted);
     }
 
     @Override
     public void commit() throws SourceException, InvalidValueException {
         getSelect().commit();
+        super.commit();
     }
 
     @Override
     public void discard() throws SourceException {
         getSelect().discard();
+        super.discard();
     }
 
+    /**
+     * Buffering probably doesn't work correctly for this field, but in general
+     * you should never use buffering either.
+     * https://vaadin.com/web/matti/blog/-/blogs/3-pro-tips-for-vaadin-developers
+     *
+     * @param buffered
+     */
     @Override
     public void setBuffered(boolean buffered) {
         getSelect().setBuffered(buffered);
+        super.setBuffered(buffered);
     }
 
     @Override
@@ -272,102 +273,22 @@ public class TypedSelect<T> extends CustomComponent implements Field<T> {
     }
 
     @Override
-    public boolean isModified() {
-        return getSelect().isModified();
-    }
-
-    @Override
-    public void addValidator(Validator validator) {
-        getSelect().addValidator(validator);
-    }
-
-    @Override
-    public void removeValidator(Validator validator) {
-        getSelect().removeValidator(validator);
-    }
-
-    @Override
-    public void removeAllValidators() {
-        getSelect().removeAllValidators();
-    }
-
-    @Override
-    public Collection<Validator> getValidators() {
-        return getSelect().getValidators();
-    }
-
-    @Override
-    public boolean isValid() {
-        return getSelect().isValid();
-    }
-
-    @Override
-    public void validate() throws InvalidValueException {
-        getSelect().validate();
-    }
-
-    @Override
-    public boolean isInvalidAllowed() {
-        return getSelect().isInvalidAllowed();
-    }
-
-    @Override
-    public void setInvalidAllowed(boolean invalidValueAllowed)
-            throws UnsupportedOperationException {
-        getSelect().setInvalidAllowed(invalidValueAllowed);
-    }
-
-    @Override
-    public void setValue(T newValue) throws ReadOnlyException {
+    protected void setInternalValue(Object newValue) {
+        super.setInternalValue(newValue);
         getSelect().setValue(newValue);
     }
-
+    
     public TypedSelect<T> addMValueChangeListener(
             MValueChangeListener<T> listener) {
         addListener(MValueChangeEvent.class, listener,
                 MValueChangeEventImpl.VALUE_CHANGE_METHOD);
-        ensurePiggybackListener();
         return this;
     }
 
-    public void removeMValueChangeListener(MValueChangeListener<T> listener) {
+    public TypedSelect<T> removeMValueChangeListener(MValueChangeListener<T> listener) {
         removeListener(MValueChangeEvent.class, listener,
                 MValueChangeEventImpl.VALUE_CHANGE_METHOD);
-    }
-
-    @Override
-    public void addValueChangeListener(ValueChangeListener listener) {
-        getSelect().addValueChangeListener(listener);
-    }
-
-    @Override
-    public void addListener(ValueChangeListener listener) {
-        getSelect().addValueChangeListener(listener);
-    }
-
-    @Override
-    public void removeValueChangeListener(ValueChangeListener listener) {
-        getSelect().removeValueChangeListener(listener);
-    }
-
-    @Override
-    public void removeListener(ValueChangeListener listener) {
-        getSelect().removeValueChangeListener(listener);
-    }
-
-    @Override
-    public void valueChange(com.vaadin.data.Property.ValueChangeEvent event) {
-        getSelect().valueChange(event);
-    }
-
-    @Override
-    public void setPropertyDataSource(Property newDataSource) {
-        getSelect().setPropertyDataSource(newDataSource);
-    }
-
-    @Override
-    public Property getPropertyDataSource() {
-        return getSelect().getPropertyDataSource();
+        return this;
     }
 
     @Override
@@ -378,26 +299,6 @@ public class TypedSelect<T> extends CustomComponent implements Field<T> {
     @Override
     public void setTabIndex(int tabIndex) {
         getSelect().setTabIndex(tabIndex);
-    }
-
-    @Override
-    public boolean isRequired() {
-        return getSelect().isRequired();
-    }
-
-    @Override
-    public void setRequired(boolean required) {
-        getSelect().setRequired(required);
-    }
-
-    @Override
-    public void setRequiredError(String requiredMessage) {
-        getSelect().setRequiredError(requiredMessage);
-    }
-
-    @Override
-    public String getRequiredError() {
-        return getSelect().getRequiredError();
     }
 
     public CaptionGenerator<T> getCaptionGenerator() {
@@ -439,11 +340,8 @@ public class TypedSelect<T> extends CustomComponent implements Field<T> {
 
     @Override
     public void attach() {
-        if (getCompositionRoot() == null) {
-            setCompositionRoot(getSelect());
-            if (bic != null && getSelect().getContainerDataSource() != bic) {
-                getSelect().setContainerDataSource(bic);
-            }
+        if (bic != null && getSelect().getContainerDataSource() != bic) {
+            getSelect().setContainerDataSource(bic);
         }
         super.attach();
     }
@@ -456,6 +354,7 @@ public class TypedSelect<T> extends CustomComponent implements Field<T> {
 
                 @Override
                 public void valueChange(Property.ValueChangeEvent event) {
+                    setValue(event.getProperty().getValue());
                     fireEvent(new MValueChangeEventImpl<T>(TypedSelect.this));
                 }
             };
@@ -513,16 +412,6 @@ public class TypedSelect<T> extends CustomComponent implements Field<T> {
     }
 
     @Override
-    public boolean isEmpty() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void clear() {
-        setValue(null);
-    }
-
-    @Override
     public void setReadOnly(boolean readOnly) {
         super.setReadOnly(readOnly);
         getSelect().setReadOnly(readOnly);
@@ -532,6 +421,11 @@ public class TypedSelect<T> extends CustomComponent implements Field<T> {
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
         getSelect().setEnabled(enabled);
+    }
+
+    @Override
+    protected Component initContent() {
+        return getSelect();
     }
 
 }

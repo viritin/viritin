@@ -9,7 +9,7 @@ import java.util.Collection;
 public class EnumSelect<T> extends TypedSelect<T> {
 
     public EnumSelect() {
-        setFieldType(NativeSelect.class);
+        withSelectType(NativeSelect.class);
         setWidthUndefined();
     }
 

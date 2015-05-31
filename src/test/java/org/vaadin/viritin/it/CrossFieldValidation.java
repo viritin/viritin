@@ -10,13 +10,13 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.themes.ValoTheme;
 import java.util.Collection;
 import java.util.Date;
-import javax.validation.ConstraintViolation;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.viritin.MBeanFieldGroup;
+import org.vaadin.viritin.fields.EnumSelect;
 import org.vaadin.viritin.fields.MDateField;
 import org.vaadin.viritin.fields.MTextField;
 import org.vaadin.viritin.form.AbstractForm;
@@ -30,6 +30,10 @@ import org.vaadin.viritin.layouts.MVerticalLayout;
  */
 @Theme("valo")
 public class CrossFieldValidation extends AbstractTest {
+    
+    public enum TestEnum {
+        FOO,BAR
+    }
 
     @FieldMatch.List({
         @FieldMatch(first = "email", second = "verifyEmail", message = "Emails must match")
@@ -52,6 +56,17 @@ public class CrossFieldValidation extends AbstractTest {
 
         @NotNull
         private String verifyEmail;
+        
+        @NotNull
+        private TestEnum testEnum;
+
+        public TestEnum getTestEnum() {
+            return testEnum;
+        }
+
+        public void setTestEnum(TestEnum testEnum) {
+            this.testEnum = testEnum;
+        }
 
         public String getEmail() {
             return email;
@@ -109,6 +124,7 @@ public class CrossFieldValidation extends AbstractTest {
                 .withResolution(Resolution.MINUTE);
         private MTextField email = new MTextField("Email");
         private MTextField verifyEmail = new MTextField("Verify email");
+        private EnumSelect testEnum = new EnumSelect("Test enum");
         private RichText errors = new RichText();
 
         public ReservationForm() {
@@ -131,7 +147,7 @@ public class CrossFieldValidation extends AbstractTest {
                     // configure the properties/fields where the error should be displayed.
                     // if your provide none, the error will be available in
                     // getFieldGroup().getBeanLevelValidationErrors()
-                    //,"start", "end"
+                    ,"start", "end"
             );
         }
 
@@ -158,7 +174,7 @@ public class CrossFieldValidation extends AbstractTest {
         @Override
         protected Component createContent() {
             return new MVerticalLayout(new Header("Edit reservation"), comment,
-                    start, end, email, verifyEmail,
+                    start, end, email, verifyEmail, testEnum,
                     //getFieldGroup().getValidationStatusDisplay(),
                     errors,
                     getToolbar());

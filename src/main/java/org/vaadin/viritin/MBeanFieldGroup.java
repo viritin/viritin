@@ -221,15 +221,20 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
     public void valueChange(Property.ValueChangeEvent event) {
         if (event != null) {
             Property property = event.getProperty();
-            if (property instanceof AbstractField) {
-                AbstractField abstractField = (AbstractField) property;
+            if (property instanceof Field) {
+                Field abstractField = (Field) property;
                 Object propertyId = getPropertyId(abstractField);
                 if(propertyId != null) {
                     boolean wasHiddenValidation = fieldsWithInitiallyDisabledValidation.
                             remove(propertyId.toString());
                     if (wasHiddenValidation) {
-                        abstractField.setValidationVisible(true);
+                        if (abstractField instanceof AbstractField) {
+                            AbstractField abstractField1 = (AbstractField) abstractField;
+                            abstractField1.setValidationVisible(true);
+                        }
                     }
+                } else {
+                    Logger.getLogger(getClass().getName()).warning("Property id for field was not found.");
                 }
             }
         }
