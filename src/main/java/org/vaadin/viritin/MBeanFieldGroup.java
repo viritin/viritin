@@ -24,10 +24,13 @@ import com.vaadin.event.FieldEvents.TextChangeNotifier;
 import com.vaadin.server.AbstractErrorMessage;
 import com.vaadin.server.CompositeErrorMessage;
 import com.vaadin.server.ErrorMessage;
+import com.vaadin.server.UserError;
 import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.AbstractField;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.Field;
 import java.io.Serializable;
+import java.lang.annotation.Annotation;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,6 +38,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,7 +64,8 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
         Property.ValueChangeListener, FieldEvents.TextChangeListener {
 
     protected final Class nonHiddenBeanType;
-    private Set<ConstraintViolation<T>> constraintViolations;
+    private Set<ConstraintViolation<T>> jsr303beanLevelViolations;
+    private Set<Validator.InvalidValueException> beanLevelViolations;
 
     /**
      * Configures fields for some better defaults, like property fields
@@ -148,21 +153,33 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
      * @return constraint violations found in last top level JSR303 validation.
      */
     public Set<ConstraintViolation<T>> getConstraintViolations() {
-        return constraintViolations;
+        return jsr303beanLevelViolations;
     }
-    
+
+    /**
+     * @return constraint violations by MValidator's found in last top level
+     * validation .
+     */
+    public Set<Validator.InvalidValueException> getBasicConstraintViolations() {
+        return beanLevelViolations;
+    }
+
+    /**
+     * A helper method that returns "bean level" validation errors, i.e. errors
+     * that are not tied to a specific property/field.
+     *
+     * @return error messages from "bean level validation"
+     */
     public Collection<String> getBeanLevelValidationErrors() {
         Collection<String> errors = new ArrayList<String>();
-        if(getConstraintViolations() != null) {
+        if (getConstraintViolations() != null) {
             for (ConstraintViolation<T> constraintViolation : getConstraintViolations()) {
                 errors.add(constraintViolation.getMessage());
             }
         }
-        for (Map.Entry<ErrorMessage, AbstractComponent> e : mValidationErrors.
-                entrySet()) {
-            AbstractComponent value = e.getValue();
-            if(value == null) {
-                errors.add(e.getKey().getFormattedHtmlMessage());
+        if (getBasicConstraintViolations() != null) {
+            for (Validator.InvalidValueException cv : getBasicConstraintViolations()) {
+                errors.add(cv.getMessage());
             }
         }
         return errors;
@@ -173,18 +190,43 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
     private transient javax.validation.Validator javaxBeanValidator;
 
     protected boolean jsr303ValidateBean(T bean) {
-        if (factory == null) {
-            factory = Validation.buildDefaultValidatorFactory();
+        try {
+            if (factory == null) {
+                factory = Validation.buildDefaultValidatorFactory();
+            }
+            if (javaxBeanValidator == null) {
+                javaxBeanValidator = factory.getValidator();
+            }
+        } catch (Throwable t) {
+            // This may happen without JSR303 validation framework
+            Logger.getLogger(getClass().getName()).fine(
+                    "JSR303 validation failed");
+            return true;
         }
-        if (javaxBeanValidator == null) {
-            javaxBeanValidator = factory.getValidator();
-        }
-        Set<ConstraintViolation<T>> constraintViolations = javaxBeanValidator.
-                validate(bean);
+
+        Set<ConstraintViolation<T>> constraintViolations = new HashSet(
+                javaxBeanValidator.validate(bean));
         if (constraintViolations.isEmpty()) {
             return true;
         }
-        this.constraintViolations = constraintViolations;
+        Iterator<ConstraintViolation<T>> iterator = constraintViolations.
+                iterator();
+        while (iterator.hasNext()) {
+            ConstraintViolation<T> constraintViolation = iterator.next();
+            Class<? extends Annotation> annotationType = constraintViolation.
+                    getConstraintDescriptor().getAnnotation().
+                    annotationType();
+            AbstractComponent errortarget = validatorToErrorTarget.get(
+                    annotationType);
+            if (errortarget != null) {
+                // user has declared a target component for this constraint
+                errortarget.setComponentError(new UserError(
+                        constraintViolation.getMessage()));
+                iterator.remove();
+            }
+            // else leave as "bean level error"
+        }
+        this.jsr303beanLevelViolations = constraintViolations;
         return false;
     }
 
@@ -224,7 +266,7 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
             if (property instanceof Field) {
                 Field abstractField = (Field) property;
                 Object propertyId = getPropertyId(abstractField);
-                if(propertyId != null) {
+                if (propertyId != null) {
                     boolean wasHiddenValidation = fieldsWithInitiallyDisabledValidation.
                             remove(propertyId.toString());
                     if (wasHiddenValidation) {
@@ -234,7 +276,8 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
                         }
                     }
                 } else {
-                    Logger.getLogger(getClass().getName()).warning("Property id for field was not found.");
+                    Logger.getLogger(getClass().getName()).warning(
+                            "Property id for field was not found.");
                 }
             }
         }
@@ -244,7 +287,7 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
         }
     }
 
-    private LinkedHashMap<MValidator<T>, Collection<String>> mValidators = new LinkedHashMap<MValidator<T>, Collection<String>>();
+    private LinkedHashMap<MValidator<T>, Collection<AbstractComponent>> mValidators = new LinkedHashMap<MValidator<T>, Collection<AbstractComponent>>();
 
     /**
      * EXPERIMENTAL: The cross field validation support is still experimental
@@ -252,13 +295,13 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
      *
      * @param validator a validator that validates the whole bean making cross
      * field validation much simpler
-     * @param properties the properties that this validator affects and on which
+     * @param fields the ui fields that this validator affects and on which
      * a possible error message is shown.
      * @return this FieldGroup
      */
     public MBeanFieldGroup<T> addValidator(MValidator<T> validator,
-            String... properties) {
-        mValidators.put(validator, Arrays.asList(properties));
+            AbstractComponent... fields) {
+        mValidators.put(validator, Arrays.asList(fields));
         return this;
     }
 
@@ -277,7 +320,23 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
         return this;
     }
 
-    private Map<ErrorMessage, AbstractComponent> mValidationErrors = new HashMap<ErrorMessage, AbstractComponent>();
+    private final Map<ErrorMessage, AbstractComponent> mValidationErrors = new HashMap<ErrorMessage, AbstractComponent>();
+
+    private final Map<Class, AbstractComponent> validatorToErrorTarget = new HashMap<Class, AbstractComponent>();
+
+    /**
+     * Sets the "validation error target", the component on which validation
+     * errors are shown, for given validator type.
+     *
+     * @param validatorType
+     * @param component
+     * @return the MBeanFieldGroup instance
+     */
+    public MBeanFieldGroup<T> setValidationErrorTarget(Class validatorType,
+            AbstractComponent component) {
+        validatorToErrorTarget.put(validatorType, component);
+        return this;
+    }
 
     private void clearMValidationErrors() {
         for (AbstractComponent value : mValidationErrors.values()) {
@@ -286,43 +345,57 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
             }
         }
         mValidationErrors.clear();
+        for (AbstractComponent ac : validatorToErrorTarget.values()) {
+            ac.setComponentError(null);
+        }
     }
 
     @Override
     public boolean isValid() {
         // clear all MValidation errors
         clearMValidationErrors();
-        constraintViolations = null;
+        jsr303beanLevelViolations = null;
+        beanLevelViolations = null;
 
         // first check standard property level validators
         final boolean propertiesValid = super.isValid();
+        // then crossfield(/bean level) validators, execute them all although
+        // with per field validation Vaadin checks only until the first failed one
         if (propertiesValid) {
-            // then crossfield(/bean level) validators 
+            boolean ok = true;
             for (MValidator<T> v : mValidators.keySet()) {
                 try {
                     v.validate(getItemDataSource().getBean());
                 } catch (Validator.InvalidValueException e) {
-                    Collection<String> properties = mValidators.get(v);
+                    Collection<AbstractComponent> properties = mValidators.get(v);
                     if (!properties.isEmpty()) {
-                        for (String p : properties) {
-                        final ErrorMessage em = AbstractErrorMessage.
-                                getErrorMessageForException(e);
-                            Field<?> field = getField(p);
-                            if (field instanceof AbstractComponent) {
-                                AbstractComponent abstractField = (AbstractComponent) field;
-                                mValidationErrors.put(em, abstractField);
-                                abstractField.setComponentError(em);
-                            }
+                        for (AbstractComponent field : properties) {
+                            final ErrorMessage em = AbstractErrorMessage.
+                                    getErrorMessageForException(e);
+                                mValidationErrors.put(em, field);
+                                field.setComponentError(em);
                         }
                     } else {
                         final ErrorMessage em = AbstractErrorMessage.
                                 getErrorMessageForException(e);
-                        mValidationErrors.put(em, null);
+                        AbstractComponent target = validatorToErrorTarget.get(v.
+                                getClass());
+                        if (target != null) {
+                            target.setComponentError(em);
+                        } else {
+                            // no specific "target component" for validation error
+                            // leave as bean level error
+                            if (beanLevelViolations == null) {
+                                beanLevelViolations = new HashSet<Validator.InvalidValueException>();
+                            }
+                            beanLevelViolations.add(e);
+                            mValidationErrors.put(em, null);
+                        }
                     }
-                    return false;
+                    ok = false;
                 }
             }
-            return jsr303ValidateBean(getItemDataSource().getBean());
+            return jsr303ValidateBean(getItemDataSource().getBean()) && ok;
         }
         return false;
     }

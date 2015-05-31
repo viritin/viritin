@@ -13,8 +13,10 @@ import org.vaadin.viritin.layouts.MHorizontalLayout;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import org.vaadin.viritin.fields.MTextField;
 
 /**
  * Abstract super class for simple editor forms.
@@ -23,7 +25,6 @@ import java.util.Map;
  */
 public abstract class AbstractForm<T> extends CustomComponent implements
         FieldGroupListener {
-
 
     public static class ValidityChangedEvent<T> extends Component.Event {
 
@@ -176,10 +177,13 @@ public abstract class AbstractForm<T> extends CustomComponent implements
             }
             fieldGroup = bindEntity(entity);
 
-            for (Map.Entry<MBeanFieldGroup.MValidator<T>, Collection<String>> e : mValidators.
+            for (Map.Entry<MBeanFieldGroup.MValidator<T>, Collection<AbstractComponent>> e : mValidators.
                     entrySet()) {
                 fieldGroup.addValidator(e.getKey(), e.getValue().toArray(
-                        new String[e.getValue().size()]));
+                        new AbstractComponent[e.getValue().size()]));
+            }
+            for (Map.Entry<Class, AbstractComponent> e : validatorToErrorTarget.entrySet()) {
+                fieldGroup.setValidationErrorTarget(e.getKey(), e.getValue());
             }
 
             isValid = fieldGroup.isValid();
@@ -441,8 +445,18 @@ public abstract class AbstractForm<T> extends CustomComponent implements
         return entity;
     }
 
-    private final LinkedHashMap<MBeanFieldGroup.MValidator<T>, Collection<String>> mValidators 
-            = new LinkedHashMap<MBeanFieldGroup.MValidator<T>, Collection<String>>();
+    private final LinkedHashMap<MBeanFieldGroup.MValidator<T>, Collection<AbstractComponent>> mValidators
+            = new LinkedHashMap<MBeanFieldGroup.MValidator<T>, Collection<AbstractComponent>>();
+
+    private final Map<Class, AbstractComponent> validatorToErrorTarget = new LinkedHashMap<Class, AbstractComponent>();
+
+    public void setValidationErrorTarget(Class aClass,
+            AbstractComponent errorTarget) {
+        validatorToErrorTarget.put(aClass, errorTarget);
+        if (getFieldGroup() != null) {
+            getFieldGroup().setValidationErrorTarget(aClass, errorTarget);
+        }
+    }
 
     /**
      * EXPERIMENTAL: The cross field validation support is still experimental
@@ -450,27 +464,26 @@ public abstract class AbstractForm<T> extends CustomComponent implements
      *
      * @param validator a validator that validates the whole bean making cross
      * field validation much simpler
-     * @param properties the properties that this validator affects and on which
-     * a possible error message is shown.
+     * @param fields the ui fields that this validator affects and on which a
+     * possible error message is shown.
      * @return this FieldGroup
      */
     public AbstractForm<T> addValidator(
             MBeanFieldGroup.MValidator<T> validator,
-            String... properties) {
-        mValidators.put(validator, Arrays.asList(properties));
+            AbstractComponent... fields) {
+        mValidators.put(validator, Arrays.asList(fields));
         if (getFieldGroup() != null) {
-            getFieldGroup().addValidator(validator, properties);
+            getFieldGroup().addValidator(validator, fields);
         }
         return this;
     }
 
     public AbstractForm<T> removeValidator(
             MBeanFieldGroup.MValidator<T> validator) {
-        Collection<String> remove = mValidators.remove(validator);
+        Collection<AbstractComponent> remove = mValidators.remove(validator);
         if (remove != null) {
             if (getFieldGroup() != null) {
-                getFieldGroup().addValidator(validator, remove.toArray(
-                        new String[remove.size()]));
+                getFieldGroup().removeValidator(validator);
             }
         }
         return this;

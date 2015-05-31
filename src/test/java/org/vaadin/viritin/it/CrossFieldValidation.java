@@ -3,6 +3,7 @@ package org.vaadin.viritin.it;
 import com.vaadin.annotations.Theme;
 import com.vaadin.data.Validator;
 import com.vaadin.shared.ui.datefield.Resolution;
+import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.DateField;
@@ -10,6 +11,8 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.themes.ValoTheme;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -30,9 +33,10 @@ import org.vaadin.viritin.layouts.MVerticalLayout;
  */
 @Theme("valo")
 public class CrossFieldValidation extends AbstractTest {
-    
+
     public enum TestEnum {
-        FOO,BAR
+
+        FOO, BAR
     }
 
     @FieldMatch.List({
@@ -56,9 +60,9 @@ public class CrossFieldValidation extends AbstractTest {
 
         @NotNull
         private String verifyEmail;
-        
+
         @NotNull
-        private TestEnum testEnum;
+        private TestEnum testEnum = TestEnum.FOO;
 
         public TestEnum getTestEnum() {
             return testEnum;
@@ -130,25 +134,23 @@ public class CrossFieldValidation extends AbstractTest {
         public ReservationForm() {
             // In this test using via AbstractForm but can be used with raw
             // MBeanFieldGroup as well
-            addValidator(
-                    new MBeanFieldGroup.MValidator<Reservation>() {
-
-                        @Override
-                        public void validate(Reservation value) throws Validator.InvalidValueException {
-                            // No null checks needed as this is not reached unless 
-                            // field validators pass (which has @NotNull in this case
-                            if (value.getStart().getTime() > value.getEnd().
-                            getTime()) {
-                                throw new Validator.InvalidValueException(
-                                        "End time cannot be before start time!");
-                            }
-                        }
-                    }
-                    // configure the properties/fields where the error should be displayed.
-                    // if your provide none, the error will be available in
-                    // getFieldGroup().getBeanLevelValidationErrors()
-                    ,"start", "end"
+            addValidator(new MValidatorImpl()
+            // configure the properties/fields where the error should be displayed.
+            // if your provide none, the error will be available in
+            // getFieldGroup().getBeanLevelValidationErrors()
+            //,start, end
             );
+
+            /* cross field validations, both MValidator types and JSR303 validators,
+             * can also be configured to report the error to a specific component */
+
+            /* This puts MValidatorImpl errors (date check) to comment, just for fun ;-) */
+            // setValidationErrorTarget(MValidatorImpl.class, comment);
+            
+            /* Makes the FieldMatch validation violation (configured here to check to 
+             * email fields) to be shown on verifyEmail ui component.
+             */
+            // setValidationErrorTarget(FieldMatch.class, verifyEmail);
         }
 
         @Override
@@ -159,7 +161,8 @@ public class CrossFieldValidation extends AbstractTest {
             // configurable built-in feature to AbstractField or something
             errors.setVisible(false);
             StringBuilder sb = new StringBuilder();
-            Collection<String> errorMessages = getFieldGroup().getBeanLevelValidationErrors();
+            Collection<String> errorMessages = getFieldGroup().
+                    getBeanLevelValidationErrors();
             if (!errorMessages.isEmpty()) {
                 for (String e : errorMessages) {
                     sb.append(e);
@@ -173,13 +176,36 @@ public class CrossFieldValidation extends AbstractTest {
 
         @Override
         protected Component createContent() {
+
             return new MVerticalLayout(new Header("Edit reservation"), comment,
-                    start, end, email, verifyEmail, testEnum,
+                    testEnum,
+                    start, end, email, verifyEmail,
                     //getFieldGroup().getValidationStatusDisplay(),
                     errors,
-                    getToolbar());
+                    getToolbar()).withMargin(false);
         }
 
+        public static class MValidatorImpl implements
+                MBeanFieldGroup.MValidator<Reservation> {
+
+            @Override
+            public void validate(Reservation value) throws Validator.InvalidValueException {
+                // No null checks needed as this is not reached unless
+                // field validators pass (which has @NotNull in this case
+                if (value.getStart().getTime() > value.getEnd().
+                        getTime()) {
+                    throw new Validator.InvalidValueException(
+                            "End time cannot be before start time!");
+                }
+            }
+        }
+
+    }
+
+    @Override
+    protected void setup() {
+        super.setup();
+        content.setHeightUndefined();
     }
 
     @Override
