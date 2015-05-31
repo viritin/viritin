@@ -223,11 +223,13 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
             Property property = event.getProperty();
             if (property instanceof AbstractField) {
                 AbstractField abstractField = (AbstractField) property;
-                String propertyId = getPropertyId(abstractField).toString();
-                boolean wasHiddenValidation = fieldsWithInitiallyDisabledValidation.
-                        remove(propertyId);
-                if (wasHiddenValidation) {
-                    abstractField.setValidationVisible(true);
+                Object propertyId = getPropertyId(abstractField);
+                if(propertyId != null) {
+                    boolean wasHiddenValidation = fieldsWithInitiallyDisabledValidation.
+                            remove(propertyId.toString());
+                    if (wasHiddenValidation) {
+                        abstractField.setValidationVisible(true);
+                    }
                 }
             }
         }
