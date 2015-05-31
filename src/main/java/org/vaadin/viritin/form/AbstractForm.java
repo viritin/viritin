@@ -359,10 +359,16 @@ public abstract class AbstractForm<T> extends CustomComponent implements
 
     protected void save(Button.ClickEvent e) {
         savedHandler.onSave(getEntity());
+        getFieldGroup().setBeanModified(false);
+        adjustResetButtonState();
+        adjustSaveButtonState();
     }
 
     protected void reset(Button.ClickEvent e) {
         resetHandler.onReset(getEntity());
+        getFieldGroup().setBeanModified(false);
+        adjustResetButtonState();
+        adjustSaveButtonState();
     }
 
     protected void delete(Button.ClickEvent e) {
