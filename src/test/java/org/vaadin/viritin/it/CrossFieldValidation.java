@@ -129,7 +129,6 @@ public class CrossFieldValidation extends AbstractTest {
         private MTextField email = new MTextField("Email");
         private MTextField verifyEmail = new MTextField("Verify email");
         private EnumSelect testEnum = new EnumSelect("Test enum");
-        private RichText errors = new RichText();
 
         public ReservationForm() {
             // In this test using via AbstractForm but can be used with raw
@@ -146,32 +145,10 @@ public class CrossFieldValidation extends AbstractTest {
 
             /* This puts MValidatorImpl errors (date check) to comment, just for fun ;-) */
             // setValidationErrorTarget(MValidatorImpl.class, comment);
-            
             /* Makes the FieldMatch validation violation (configured here to check to 
              * email fields) to be shown on verifyEmail ui component.
              */
             // setValidationErrorTarget(FieldMatch.class, verifyEmail);
-        }
-
-        @Override
-        public void onFieldGroupChange(MBeanFieldGroup beanFieldGroup) {
-            super.onFieldGroupChange(beanFieldGroup);
-
-            // TODO consider a simpler better way to display top level JSR303 annotations
-            // configurable built-in feature to AbstractField or something
-            errors.setVisible(false);
-            StringBuilder sb = new StringBuilder();
-            Collection<String> errorMessages = getFieldGroup().
-                    getBeanLevelValidationErrors();
-            if (!errorMessages.isEmpty()) {
-                for (String e : errorMessages) {
-                    sb.append(e);
-                    sb.append("<br/>");
-                }
-                errors.setValue(sb.toString());
-                errors.setStyleName(ValoTheme.LABEL_FAILURE);
-                errors.setVisible(true);
-            }
         }
 
         @Override
@@ -180,8 +157,7 @@ public class CrossFieldValidation extends AbstractTest {
             return new MVerticalLayout(new Header("Edit reservation"), comment,
                     testEnum,
                     start, end, email, verifyEmail,
-                    //getFieldGroup().getValidationStatusDisplay(),
-                    errors,
+                    getConstraintViolationsDisplay(),
                     getToolbar()).withMargin(false);
         }
 

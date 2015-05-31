@@ -1,6 +1,7 @@
 package org.vaadin.viritin.form;
 
 import com.vaadin.ui.*;
+import com.vaadin.ui.themes.ValoTheme;
 import com.vaadin.util.ReflectTools;
 import org.vaadin.viritin.BeanBinder;
 import org.vaadin.viritin.MBeanFieldGroup;
@@ -16,7 +17,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.validation.ConstraintViolation;
 import org.vaadin.viritin.fields.MTextField;
+import org.vaadin.viritin.label.RichText;
 
 /**
  * Abstract super class for simple editor forms.
@@ -77,6 +80,8 @@ public abstract class AbstractForm<T> extends CustomComponent implements
      */
     boolean isValid = false;
 
+    private RichText beanLevelViolations;
+
     @Override
     public void onFieldGroupChange(MBeanFieldGroup beanFieldGroup) {
         boolean wasValid = isValid;
@@ -86,6 +91,35 @@ public abstract class AbstractForm<T> extends CustomComponent implements
         if (wasValid != isValid) {
             fireValidityChangedEvent();
         }
+        updateConstraintViolationsDisplay();
+    }
+
+    protected void updateConstraintViolationsDisplay() {
+        if (beanLevelViolations != null) {
+            Collection<String> errorMessages = getFieldGroup().
+                    getBeanLevelValidationErrors();
+            if (!errorMessages.isEmpty()) {
+                StringBuilder sb = new StringBuilder();
+                for (String e : errorMessages) {
+                    sb.append(e);
+                    sb.append("<br/>");
+                }
+                beanLevelViolations.setValue(sb.toString());
+                beanLevelViolations.setVisible(true);
+            } else {
+                beanLevelViolations.setVisible(false);
+                beanLevelViolations.setValue("");
+            }
+        }
+    }
+
+    public Component getConstraintViolationsDisplay() {
+        if (beanLevelViolations == null) {
+            beanLevelViolations = new RichText();
+            beanLevelViolations.setVisible(false);
+            beanLevelViolations.setStyleName(ValoTheme.LABEL_FAILURE);
+        }
+        return beanLevelViolations;
     }
 
     public boolean isValid() {
@@ -182,7 +216,8 @@ public abstract class AbstractForm<T> extends CustomComponent implements
                 fieldGroup.addValidator(e.getKey(), e.getValue().toArray(
                         new AbstractComponent[e.getValue().size()]));
             }
-            for (Map.Entry<Class, AbstractComponent> e : validatorToErrorTarget.entrySet()) {
+            for (Map.Entry<Class, AbstractComponent> e : validatorToErrorTarget.
+                    entrySet()) {
                 fieldGroup.setValidationErrorTarget(e.getKey(), e.getValue());
             }
 
