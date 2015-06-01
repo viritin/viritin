@@ -72,7 +72,9 @@ public class TypedSelect<T> extends CustomField {
      */
     @Override
     public void setWidth(float width, Unit unit) {
-        getSelect().setWidth(width, unit);
+        if(select != null) {
+            select.setWidth(width,unit);
+        }
         super.setWidth(width, unit);
     }
 
@@ -151,6 +153,9 @@ public class TypedSelect<T> extends CustomField {
     }
 
     protected void setSelectInstance(AbstractSelect select) {
+        if(this.select != null) {
+            piggyBackListener = null;
+        }
         this.select = select;
     }
 
@@ -202,13 +207,17 @@ public class TypedSelect<T> extends CustomField {
 
     @SuppressWarnings("unchecked")
     @Override
-    public Class<T> getType() {
+    public Class getType() {
 
         if (fieldType == null) {
             try {
                 fieldType = (Class<T>) ((Container.Sortable) select
                         .getContainerDataSource()).firstItemId().getClass();
             } catch (Exception e) {
+                // If field type isn't set or can't be detected just report
+                // Object, should be fine in most cases (vaadin will just
+                // assign value without conversion.
+                return Object.class;
             }
         }
         return fieldType;
@@ -360,6 +369,11 @@ public class TypedSelect<T> extends CustomField {
             };
             getSelect().addValueChangeListener(piggyBackListener);
         }
+    }
+
+    @Override
+    public T getValue() {
+        return (T) super.getValue();
     }
 
     public TypedSelect<T> withFullWidth() {
