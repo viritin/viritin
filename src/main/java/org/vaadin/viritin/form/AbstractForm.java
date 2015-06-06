@@ -14,11 +14,9 @@ import org.vaadin.viritin.layouts.MHorizontalLayout;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import javax.validation.ConstraintViolation;
-import org.vaadin.viritin.fields.MTextField;
+import javax.validation.groups.Default;
 import org.vaadin.viritin.label.RichText;
 
 /**
@@ -210,6 +208,7 @@ public abstract class AbstractForm<T> extends CustomComponent implements
                 fieldGroup.unbind();
             }
             fieldGroup = bindEntity(entity);
+            fieldGroup.setValidationGroups(getValidationGroups());
 
             for (Map.Entry<MBeanFieldGroup.MValidator<T>, Collection<AbstractComponent>> e : mValidators.
                     entrySet()) {
@@ -484,6 +483,32 @@ public abstract class AbstractForm<T> extends CustomComponent implements
             = new LinkedHashMap<MBeanFieldGroup.MValidator<T>, Collection<AbstractComponent>>();
 
     private final Map<Class, AbstractComponent> validatorToErrorTarget = new LinkedHashMap<Class, AbstractComponent>();
+
+    private Class<?>[] validationGroups;
+
+    /**
+     * @return the JSR 303 bean validation groups that should be
+     * used to validate the bean
+     */
+    public Class<?>[] getValidationGroups() {
+        if (validationGroups == null) {
+            return new Class<?>[]{Default.class};
+        }
+        return validationGroups;
+    }
+
+    /**
+     * @param validationGroups the JSR 303 bean validation groups that should be
+     * used to validate the bean. Note, that groups currently only affect 
+     * cross-field/bean-level validation.
+     */
+    public void setValidationGroups(
+            Class<?>... validationGroups) {
+        this.validationGroups = validationGroups;
+        if(getFieldGroup() != null) {
+            getFieldGroup().setValidationGroups(validationGroups);
+        }
+    }
 
     public void setValidationErrorTarget(Class aClass,
             AbstractComponent errorTarget) {

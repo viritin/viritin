@@ -3,16 +3,11 @@ package org.vaadin.viritin.it;
 import com.vaadin.annotations.Theme;
 import com.vaadin.data.Validator;
 import com.vaadin.shared.ui.datefield.Resolution;
-import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.Notification;
-import com.vaadin.ui.themes.ValoTheme;
-import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -24,7 +19,6 @@ import org.vaadin.viritin.fields.MDateField;
 import org.vaadin.viritin.fields.MTextField;
 import org.vaadin.viritin.form.AbstractForm;
 import org.vaadin.viritin.label.Header;
-import org.vaadin.viritin.label.RichText;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 
 /**
@@ -33,6 +27,10 @@ import org.vaadin.viritin.layouts.MVerticalLayout;
  */
 @Theme("valo")
 public class CrossFieldValidation extends AbstractTest {
+    
+    public static interface CustomGroup {
+        
+    }
 
     public enum TestEnum {
 
@@ -40,8 +38,11 @@ public class CrossFieldValidation extends AbstractTest {
     }
 
     @FieldMatch.List({
-        @FieldMatch(first = "email", second = "verifyEmail", message = "Emails must match")
-    })
+        @FieldMatch(first = "email", second = "verifyEmail", message = "Emails must match"
+                , groups = CustomGroup.class
+        )
+    }
+    )
     public static class Reservation {
 
         @NotNull(message = "Comment is required")
@@ -149,6 +150,9 @@ public class CrossFieldValidation extends AbstractTest {
              * email fields) to be shown on verifyEmail ui component.
              */
             // setValidationErrorTarget(FieldMatch.class, verifyEmail);
+            
+            /* Bean level JSR303 validators supports validation groups. */
+            // setValidationGroups(CustomGroup.class);
         }
 
         @Override

@@ -50,6 +50,7 @@ import javax.validation.Validation;
 import javax.validation.ValidatorFactory;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.groups.Default;
 import org.vaadin.viritin.fields.MPasswordField;
 
 import org.vaadin.viritin.fields.MTextField;
@@ -188,6 +189,24 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
     // For JSR303 validation at class level
     private static ValidatorFactory factory;
     private transient javax.validation.Validator javaxBeanValidator;
+    private Class<?>[] validationGroups;
+
+    public Class<?>[] getValidationGroups() {
+        if (validationGroups == null) {
+            return new Class<?>[]{Default.class};
+        }
+        return validationGroups;
+    }
+
+    /**
+     * @param validationGroups the JSR 303 bean validation groups that should be
+     * used to validate the bean. Note, that groups currently only affect
+     * cross-field/bean-level validation.
+     */
+    public void setValidationGroups(
+            Class<?>... validationGroups) {
+        this.validationGroups = validationGroups;
+    }
 
     protected boolean jsr303ValidateBean(T bean) {
         try {
@@ -205,7 +224,7 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
         }
 
         Set<ConstraintViolation<T>> constraintViolations = new HashSet(
-                javaxBeanValidator.validate(bean));
+                javaxBeanValidator.validate(bean, getValidationGroups()));
         if (constraintViolations.isEmpty()) {
             return true;
         }
@@ -295,8 +314,8 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
      *
      * @param validator a validator that validates the whole bean making cross
      * field validation much simpler
-     * @param fields the ui fields that this validator affects and on which
-     * a possible error message is shown.
+     * @param fields the ui fields that this validator affects and on which a
+     * possible error message is shown.
      * @return this FieldGroup
      */
     public MBeanFieldGroup<T> addValidator(MValidator<T> validator,
@@ -367,13 +386,14 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
                 try {
                     v.validate(getItemDataSource().getBean());
                 } catch (Validator.InvalidValueException e) {
-                    Collection<AbstractComponent> properties = mValidators.get(v);
+                    Collection<AbstractComponent> properties = mValidators.
+                            get(v);
                     if (!properties.isEmpty()) {
                         for (AbstractComponent field : properties) {
                             final ErrorMessage em = AbstractErrorMessage.
                                     getErrorMessageForException(e);
-                                mValidationErrors.put(em, field);
-                                field.setComponentError(em);
+                            mValidationErrors.put(em, field);
+                            field.setComponentError(em);
                         }
                     } else {
                         final ErrorMessage em = AbstractErrorMessage.
