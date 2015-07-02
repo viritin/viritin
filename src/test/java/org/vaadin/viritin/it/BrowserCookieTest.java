@@ -5,18 +5,8 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
-import com.vaadin.ui.themes.ValoTheme;
 import org.vaadin.addonhelpers.AbstractTest;
-import org.vaadin.viritin.fields.EnumSelect;
-import org.vaadin.viritin.fields.ElementCollectionField;
-import org.vaadin.viritin.fields.MTextField;
-import org.vaadin.viritin.fields.MultiSelectTable;
-import org.vaadin.viritin.form.AbstractForm;
 import org.vaadin.viritin.layouts.MVerticalLayout;
-import org.vaadin.viritin.testdomain.Address;
-import org.vaadin.viritin.testdomain.Group;
-import org.vaadin.viritin.testdomain.Person;
-import org.vaadin.viritin.testdomain.Service;
 import org.vaadin.viritin.util.BrowserCookie;
 
 /**
