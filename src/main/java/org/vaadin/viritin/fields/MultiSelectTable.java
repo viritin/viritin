@@ -235,15 +235,25 @@ public class MultiSelectTable<ET> extends CustomField<Collection> {
     }
 
     /**
-     * @return the underlaying table implementation. Protected as one should
-     * expect odd behavior if it configured in unsupported manner.
+     * @deprecated use getTable() instead.
      */
-    protected Table getUndelayingTable() {
+    @Deprecated
+    protected Table getUnderlayingTable() {
+        return table;
+    }
+
+    
+    /**
+     * @return the underlaying table implementation. Note that the component 
+     * heavily relies on some features so changing some of the configuration 
+     * options in Table is unsafe.
+     */
+    public Table getTable() {
         return table;
     }
 
     public MultiSelectTable<ET> withColumnHeaderMode(Table.ColumnHeaderMode mode) {
-        getUndelayingTable().setColumnHeaderMode(mode);
+        getUnderlayingTable().setColumnHeaderMode(mode);
         return this;
     }
 
@@ -276,6 +286,10 @@ public class MultiSelectTable<ET> extends CustomField<Collection> {
             table.setColumnExpandRatio(property, 1);
         }
         return this;
+    }
+
+    public void withRowHeaderMode(Table.RowHeaderMode rowHeaderMode) {
+        getUnderlayingTable().setRowHeaderMode(rowHeaderMode);
     }
 
 }
