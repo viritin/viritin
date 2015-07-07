@@ -55,6 +55,11 @@ public class LazyComboBoxUsageSample extends AbstractTest {
                         getLastName();
                     }
                 });
+        
+        // Use following to verify ComboBox don't need to loop the whole DB
+        // This shouldn't cause extra queries to backend, even with 7.5
+        Person selection = service.findPersons("99", 0, 1).get(0);
+        cb.setValue(selection);
 
         cb.addMValueChangeListener(new MValueChangeListener<Person>() {
 
