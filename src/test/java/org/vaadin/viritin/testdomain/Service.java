@@ -33,7 +33,7 @@ public class Service {
         for (int i = 0; i < total; i++) {
             Person p = new Person();
             p.setId(i+1);
-            p.setFirstName("Fist" + i);
+            p.setFirstName("First" + i);
             p.setLastName("Lastname" + i);
             p.setAge(r.nextInt(100));
             l.add(p);

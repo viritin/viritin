@@ -3,6 +3,7 @@ package org.vaadin.viritin.fields;
 import com.vaadin.data.Container;
 import com.vaadin.data.Container.Filterable;
 import com.vaadin.data.util.filter.UnsupportedFilterException;
+import com.vaadin.shared.Version;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.ComboBox;
 import org.apache.commons.lang3.ObjectUtils;
@@ -141,6 +142,12 @@ public class LazyComboBox<T> extends TypedSelect<T> {
         setBic(new DummyFilterableListContainer<T>(elementType,
                 piggybackLazyList));
         comboBox.setContainerDataSource(getBic());
+        if(Version.getMajorVersion() >= 7  && Version.getMinorVersion() >= 5 ) {
+            // broken in earler Vaadin versions, so skip otherwise
+            // Set to false for much better performance if selection is in
+            // large index
+            comboBox.setScrollToSelectedItem(false);
+        }
         setSelectInstance(comboBox);
 
         return comboBox;
@@ -205,6 +212,14 @@ public class LazyComboBox<T> extends TypedSelect<T> {
         public Collection<Filter> getContainerFilters() {
             // Why?
             return null;
+        }
+
+        @Override
+        public boolean containsId(Object itemId) {
+            // Vaadin is pretty eager to do "sanity checks", which is not good
+            // for performance. This may cause a full DB seek, so just fake
+            // that all values are there. 
+            return true;
         }
 
     }

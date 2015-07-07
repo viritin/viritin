@@ -52,8 +52,7 @@ public class LazyComboBoxUsageSample extends AbstractTest {
                     @Override
                     public String getCaption(Person option) {
                         return option.getFirstName() + " " + option.
-                        getLastName()
-                        + option.getAddresses();
+                        getLastName();
                     }
                 });
 
