@@ -1,5 +1,6 @@
 package org.vaadin.viritin.layouts;
 
+import com.vaadin.server.Resource;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.FormLayout;
@@ -45,6 +46,12 @@ public class MFormLayout extends FormLayout {
 
     public MFormLayout withStyleName(String styleName) {
         setStyleName(styleName);
+        return this;
+    }
+    
+    
+    public MFormLayout withIcon(Resource icon) {
+        setIcon(icon);
         return this;
     }
 

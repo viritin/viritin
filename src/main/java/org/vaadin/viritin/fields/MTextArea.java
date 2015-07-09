@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.vaadin.viritin.fields;
 
 import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
+import com.vaadin.server.Resource;
 import com.vaadin.ui.TextArea;
 
 /**
@@ -55,36 +55,44 @@ public class MTextArea extends TextArea {
     }
 
     public MTextArea withRows(int rows) {
-    	setRows(rows);
-    	return this;
+        setRows(rows);
+        return this;
     }
-    
+
     public MTextArea withFullWidth() {
-    	setWidth("100%");
-    	return this;
+        setWidth("100%");
+        return this;
     }
-    
 
     public MTextArea withValidator(Validator validator) {
-    	setImmediate(true);
-    	addValidator(validator);
-    	return this;
+        setImmediate(true);
+        addValidator(validator);
+        return this;
     }
-
 
     public MTextArea withWidth(String width) {
         setWidth(width);
         return this;
     }
-    
+
     public MTextArea withWordwrap(boolean wordwrap) {
-    	setWordwrap(wordwrap);
-    	return this;
+        setWordwrap(wordwrap);
+        return this;
     }
-    
+
     public MTextArea withNullRepresentation(String nullRepresentation) {
         setNullRepresentation(nullRepresentation);
         return this;
     }
-    
+
+    public MTextArea withStyleName(String styleName) {
+        setStyleName(styleName);
+        return this;
+    }
+
+    public MTextArea withIcon(Resource icon) {
+        setIcon(icon);
+        return this;
+    }
+
 }

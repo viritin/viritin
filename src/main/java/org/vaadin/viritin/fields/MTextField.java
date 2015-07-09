@@ -23,10 +23,9 @@ import com.vaadin.event.FieldEvents.TextChangeEvent;
 import com.vaadin.server.AbstractErrorMessage;
 import com.vaadin.server.CompositeErrorMessage;
 import com.vaadin.server.ErrorMessage;
+import com.vaadin.server.Resource;
 import com.vaadin.ui.TextField;
 import java.util.EventObject;
-import java.util.Locale;
-import java.util.Map;
 
 /**
  * A an extension to basic Vaadin TextField. Uses the only sane default for
@@ -146,6 +145,16 @@ public class MTextField extends TextField {
         return this;
     }
 
+    public MTextField withStyleName(String styleName) {
+        setStyleName(styleName);
+        return this;
+    }
+
+    public MTextField withIcon(Resource icon) {
+        setIcon(icon);
+        return this;
+    }
+
     @Override
     public ErrorMessage getErrorMessage() {
 
@@ -206,9 +215,11 @@ public class MTextField extends TextField {
             // Also eagerly pass content to backing bean to make top level 
             // navigation eager, but do not listen the value back in value change
             // event
-            if(getPropertyDataSource() != null) {
+            if (getPropertyDataSource() != null) {
                 skipValueChangeEvent = true;
-                Object convertedValue = ConverterUtil.convertToModel(getLastKnownTextContent(), getPropertyDataSource().getType(), getConverter(),
+                Object convertedValue = ConverterUtil.convertToModel(
+                        getLastKnownTextContent(), getPropertyDataSource().
+                        getType(), getConverter(),
                         getLocale());
                 getPropertyDataSource().setValue(convertedValue);
                 skipValueChangeEvent = false;
@@ -219,19 +230,17 @@ public class MTextField extends TextField {
             markAsDirty();
         }
     }
-    
+
     private boolean skipValueChangeEvent = false;
 
     @Override
     public void valueChange(Property.ValueChangeEvent event) {
-        if(!skipValueChangeEvent) {
+        if (!skipValueChangeEvent) {
             super.valueChange(event);
         } else {
             skipValueChangeEvent = false;
         }
     }
-    
-    
 
     @Override
     public boolean isValid() {

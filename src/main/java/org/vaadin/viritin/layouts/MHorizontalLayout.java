@@ -1,5 +1,6 @@
 package org.vaadin.viritin.layouts;
 
+import com.vaadin.server.Resource;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
@@ -53,6 +54,11 @@ public class MHorizontalLayout extends HorizontalLayout {
         return this;
     }
 
+    public MHorizontalLayout withIcon(Resource icon) {
+        setIcon(icon);
+        return this;
+    }
+    
     public MHorizontalLayout withFullHeight() {
         setHeight("100%");
         return this;
@@ -117,7 +123,7 @@ public class MHorizontalLayout extends HorizontalLayout {
 
     /**
      * Adds "spacer" to layout that expands to consume remaining space. If
-     * multiple spacers are added they share equally sized slot. Also tries to 
+     * multiple spacers are added they share equally sized slot. Also tries to
      * configure layout for proper settings needed for this kind of usage.
      *
      * @return the layout with space added

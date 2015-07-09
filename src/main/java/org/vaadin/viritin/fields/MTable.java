@@ -15,6 +15,7 @@
  */
 package org.vaadin.viritin.fields;
 
+import com.vaadin.server.Resource;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Table;
 import com.vaadin.util.ReflectTools;
@@ -153,7 +154,7 @@ public class MTable<T> extends Table {
             String[] parts = StringUtils.splitByCharacterTypeCamelCase(
                     visibleProperty);
             parts[0] = StringUtils.capitalize(parts[0]);
-            for(int i = 1; i < parts.length; i++) {
+            for (int i = 1; i < parts.length; i++) {
                 parts[i] = parts[i].toLowerCase();
             }
             String saneCaption = StringUtils.join(parts, " ");
@@ -221,7 +222,7 @@ public class MTable<T> extends Table {
                 MValueChangeEventImpl.VALUE_CHANGE_METHOD);
         // implicitly consider the table should be selectable
         setSelectable(true);
-	// Needed as client side checks only for "real value change listener"
+        // Needed as client side checks only for "real value change listener"
         setImmediate(true);
     }
 
@@ -315,6 +316,16 @@ public class MTable<T> extends Table {
 
     public MTable<T> withCaption(String caption) {
         setCaption(caption);
+        return this;
+    }
+
+    public MTable<T> withStyleName(String styleName) {
+        setStyleName(styleName);
+        return this;
+    }
+
+    public MTable<T> withIcon(Resource icon) {
+        setIcon(icon);
         return this;
     }
 

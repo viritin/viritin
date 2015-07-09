@@ -1,5 +1,6 @@
 package org.vaadin.viritin.layouts;
 
+import com.vaadin.server.Resource;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
@@ -111,6 +112,11 @@ public class MVerticalLayout extends VerticalLayout {
 
     public MVerticalLayout withStyleName(String styleName) {
         setStyleName(styleName);
+        return this;
+    }
+    
+    public MVerticalLayout withIcon(Resource icon) {
+        setIcon(icon);
         return this;
     }
 

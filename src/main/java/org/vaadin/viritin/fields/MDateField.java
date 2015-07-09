@@ -1,4 +1,3 @@
-
 package org.vaadin.viritin.fields;
 
 import com.vaadin.data.Property;
@@ -31,17 +30,20 @@ public class MDateField extends DateField {
     public MDateField(String caption, Date value) {
         super(caption, value);
     }
-    
+
     public MDateField withIcon(Resource icon) {
         setIcon(icon);
         return this;
     }
-    
+
     public MDateField withResolution(Resolution resolution) {
         setResolution(resolution);
         return this;
     }
-    
-    
+
+    public MDateField withStyleName(String styleName) {
+        setStyleName(styleName);
+        return this;
+    }
 
 }

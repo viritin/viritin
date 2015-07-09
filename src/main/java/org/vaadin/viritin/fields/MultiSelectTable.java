@@ -1,6 +1,7 @@
 package org.vaadin.viritin.fields;
 
 import com.vaadin.data.util.converter.Converter;
+import com.vaadin.server.Resource;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomField;
 import com.vaadin.ui.Table;
@@ -278,6 +279,16 @@ public class MultiSelectTable<ET> extends CustomField<Collection> {
 
     public MultiSelectTable<ET> withCaption(String caption) {
         setCaption(caption);
+        return this;
+    }
+
+    public MultiSelectTable<ET> withStyleName(String styleName) {
+        setStyleName(styleName);
+        return this;
+    }
+
+    public MultiSelectTable<ET> withIcon(Resource icon) {
+        setIcon(icon);
         return this;
     }
 

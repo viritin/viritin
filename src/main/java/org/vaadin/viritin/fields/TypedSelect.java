@@ -4,6 +4,7 @@ import com.vaadin.data.Container;
 import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
 import com.vaadin.data.Validator.InvalidValueException;
+import com.vaadin.server.Resource;
 import com.vaadin.ui.*;
 import org.vaadin.viritin.ListContainer;
 
@@ -72,8 +73,8 @@ public class TypedSelect<T> extends CustomField {
      */
     @Override
     public void setWidth(float width, Unit unit) {
-        if(select != null) {
-            select.setWidth(width,unit);
+        if (select != null) {
+            select.setWidth(width, unit);
         }
         super.setWidth(width, unit);
     }
@@ -153,7 +154,7 @@ public class TypedSelect<T> extends CustomField {
     }
 
     protected void setSelectInstance(AbstractSelect select) {
-        if(this.select != null) {
+        if (this.select != null) {
             piggyBackListener = null;
         }
         this.select = select;
@@ -286,7 +287,7 @@ public class TypedSelect<T> extends CustomField {
         super.setInternalValue(newValue);
         getSelect().setValue(newValue);
     }
-    
+
     public TypedSelect<T> addMValueChangeListener(
             MValueChangeListener<T> listener) {
         addListener(MValueChangeEvent.class, listener,
@@ -294,7 +295,8 @@ public class TypedSelect<T> extends CustomField {
         return this;
     }
 
-    public TypedSelect<T> removeMValueChangeListener(MValueChangeListener<T> listener) {
+    public TypedSelect<T> removeMValueChangeListener(
+            MValueChangeListener<T> listener) {
         removeListener(MValueChangeEvent.class, listener,
                 MValueChangeEventImpl.VALUE_CHANGE_METHOD);
         return this;
@@ -399,6 +401,16 @@ public class TypedSelect<T> extends CustomField {
 
     public TypedSelect<T> withWidth(String width) {
         setWidth(width);
+        return this;
+    }
+
+    public TypedSelect<T> withStyleName(String styleName) {
+        setStyleName(styleName);
+        return this;
+    }
+
+    public TypedSelect<T> withIcon(Resource icon) {
+        setIcon(icon);
         return this;
     }
 

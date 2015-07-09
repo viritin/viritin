@@ -1,5 +1,6 @@
 package org.vaadin.viritin.layouts;
 
+import com.vaadin.server.Resource;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
@@ -83,4 +84,8 @@ public class MGridLayout extends GridLayout {
         return this;
     }
 
+    public MGridLayout withIcon(Resource icon) {
+        setIcon(icon);
+        return this;
+    }
 }
