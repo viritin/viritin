@@ -20,6 +20,7 @@ import com.vaadin.data.Container.ItemSetChangeNotifier;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.AbstractContainer;
+import java.lang.ref.WeakReference;
 import org.apache.commons.beanutils.*;
 import org.apache.commons.collections.comparators.NullComparator;
 import org.apache.commons.collections.comparators.ReverseComparator;
@@ -163,13 +164,41 @@ public class ListContainer<T> extends AbstractContainer implements
     public Item addItemAfter(Object previousItemId, Object newItemId) throws UnsupportedOperationException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+    
+    private boolean cacheItems = true;
+
+    public boolean isCacheItems() {
+        return cacheItems;
+    }
+
+    public void setCacheItems(boolean cacheItems) {
+        this.cacheItems = cacheItems;
+    }
+    
+    private WeakHashMap<T,WeakReference<DynaBeanItem<T>>> cache;
 
     @Override
     public Item getItem(Object itemId) {
         if (itemId == null) {
             return null;
         }
-        return new DynaBeanItem<T>((T) itemId);
+        final T bean = (T) itemId;
+        if(cacheItems) {
+            if(cache == null) {
+                cache = new WeakHashMap<T, WeakReference<DynaBeanItem<T>>>();
+            }
+            DynaBeanItem<T> dbi = null;
+            WeakReference<DynaBeanItem<T>> wr = cache.get(bean);
+            if(wr != null) {
+                dbi = wr.get();
+            }
+            if(dbi == null) {
+                dbi = new DynaBeanItem<T>(bean);
+                cache.put(bean, new WeakReference<DynaBeanItem<T>>(dbi));
+            }
+            return dbi;
+        }
+        return new DynaBeanItem<T>(bean);
     }
 
     @Override
@@ -405,6 +434,7 @@ public class ListContainer<T> extends AbstractContainer implements
 
         public DynaBeanItem(T bean) {
             this.bean = bean;
+//            Logger.getAnonymousLogger().log(Level.SEVERE, "DynaBeanItem,{0}", bean);
         }
 
         public T getBean() {
