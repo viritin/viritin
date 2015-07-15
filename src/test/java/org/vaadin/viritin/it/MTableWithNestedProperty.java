@@ -45,8 +45,9 @@ public class MTableWithNestedProperty extends AbstractTest {
                 .withProperties(
                         "id",
                         "property",
-                        "numbers[2]", // third object from collection in field "integers"
                         "detail.property", // "property" field from object in "detail" field
+                        "numbers[2]", // third object from collection in field "integers"
+                        "stringToInteger(foo)", // Integer with key "foo" from map stringToInteger
                         "detailList[1].detail2.property",
                         "detailList[1].moreDetails[1].property"
                 )
