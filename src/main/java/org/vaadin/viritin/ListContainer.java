@@ -20,6 +20,10 @@ import com.vaadin.data.Container.ItemSetChangeNotifier;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.AbstractContainer;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import org.apache.commons.beanutils.*;
 import org.apache.commons.collections.comparators.NullComparator;
 import org.apache.commons.collections.comparators.ReverseComparator;
@@ -28,6 +32,8 @@ import org.apache.commons.lang3.ClassUtils;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.beanutils.expression.DefaultResolver;
+import org.apache.commons.beanutils.expression.Resolver;
 
 /**
  * A replacement for BeanItemContainer from the core
@@ -42,6 +48,7 @@ public class ListContainer<T> extends AbstractContainer implements
         Container.Indexed, Container.Sortable, ItemSetChangeNotifier {
 
     private List<T> backingList;
+    private List<String> properties;
 
     public ListContainer(Collection<T> backingList) {
         setCollection(backingList);
@@ -74,8 +81,14 @@ public class ListContainer<T> extends AbstractContainer implements
 
     private WrapDynaClass getDynaClass() {
         if (dynaClass == null && !backingList.isEmpty()) {
-            dynaClass = WrapDynaClass.createDynaClass(backingList.get(0).
-                    getClass());
+            return getDynaClass(backingList.get(0));
+        }
+        return dynaClass;
+    }
+
+    private WrapDynaClass getDynaClass(Object reference) {
+        if (dynaClass == null && reference != null) {
+            dynaClass = WrapDynaClass.createDynaClass(reference.getClass());
         }
         return dynaClass;
     }
@@ -141,7 +154,8 @@ public class ListContainer<T> extends AbstractContainer implements
 
     @Override
     public T lastItemId() {
-        return getBackingList().isEmpty()? null : getBackingList().get(getBackingList().size() - 1);
+        return getBackingList().isEmpty() ? null : getBackingList().get(
+                getBackingList().size() - 1);
     }
 
     @Override
@@ -174,21 +188,25 @@ public class ListContainer<T> extends AbstractContainer implements
 
     @Override
     public Collection<String> getContainerPropertyIds() {
-        ArrayList<String> properties = new ArrayList<String>();
-        if (getDynaClass() != null) {
-            for (DynaProperty db : getDynaClass().getDynaProperties()) {
-                if (db.getType() != null) {
-                    properties.add(db.getName());
-                } else {
-                    // type may be null in some cases
-                    Logger.getLogger(ListContainer.class.getName()).log(
-                            Level.FINE, "Type not detected for property {0}",
-                            db.getName());
+        if (properties == null) {
+            ArrayList<String> props = new ArrayList<String>();
+            if (getDynaClass() != null) {
+                for (DynaProperty db : getDynaClass().getDynaProperties()) {
+                    if (db.getType() != null) {
+                        props.add(db.getName());
+                    } else {
+                        // type may be null in some cases
+                        Logger.getLogger(ListContainer.class.getName()).log(
+                                Level.FINE, "Type not detected for property {0}",
+                                db.getName());
+                    }
                 }
+                props.remove("class");
+                properties = props;
             }
-            properties.remove("class");
         }
         return properties;
+
     }
 
     @Override
@@ -203,14 +221,68 @@ public class ListContainer<T> extends AbstractContainer implements
 
     @Override
     public Class<?> getType(Object propertyId) {
-        final Class<?> type = getDynaClass().getDynaProperty(propertyId.toString()).getType();
-        if (type.isPrimitive()) {
-            // Vaadin can't handle primitive types in _all_ places, so use
-            // wrappers instead. FieldGroup works, but e.g. Table in _editable_
-            // mode fails for some reason
-            return ClassUtils.primitiveToWrapper(type);
+        final String pName = propertyId.toString();
+        try {
+            final DynaProperty dynaProperty = getDynaClass().getDynaProperty(
+                    pName);
+            final Class<?> type = dynaProperty.getType();
+            if (type.isPrimitive()) {
+                // Vaadin can't handle primitive types in _all_ places, so use
+                // wrappers instead. FieldGroup works, but e.g. Table in _editable_
+                // mode fails for some reason
+                return ClassUtils.primitiveToWrapper(type);
+            }
+            return type;
+        } catch (Exception e) {
+            // If type can't be found via dynaClass, it is most likely 
+            // nested/indexed/mapped property
+            try {
+                return getNestedPropertyType(getDynaClass(), pName);
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
         }
+    }
+
+    private static Resolver resolver = new DefaultResolver();
+
+    public static Class getNestedPropertyType(DynaClass bean, String name)
+            throws IllegalAccessException, InvocationTargetException,
+            NoSuchMethodException, ClassNotFoundException, NoSuchFieldException {
+        // Resolve nested references
+        while (resolver.hasNested(name)) {
+            String next = resolver.next(name);
+            if (resolver.isIndexed(next) || resolver.isMapped(next)) {
+                String property = resolver.getProperty(next);
+                Class<?> clazz = Class.forName(bean.getName());
+                Class<?> detectTypeParameter = detectTypeParameter(clazz,
+                        property, resolver.isIndexed(name) ? 0 : 1);
+                bean = WrapDynaClass.createDynaClass(detectTypeParameter);
+                return getNestedPropertyType(bean, resolver.remove(name));
+            }
+            DynaProperty db = bean.getDynaProperty(next);
+            bean = WrapDynaClass.createDynaClass(db.getType());
+            name = resolver.remove(name);
+        }
+        if (resolver.isMapped(name) || resolver.isIndexed(name)) {
+            String property = resolver.getProperty(name);
+            Class<?> clazz = Class.forName(bean.getName());
+            return detectTypeParameter(clazz, property,
+                    resolver.isIndexed(name) ? 0 : 1);
+        }
+        Class<?> type = bean.getDynaProperty(name).getType();
         return type;
+    }
+
+    private static Class<?> detectTypeParameter(Class clazz, String name,
+            int idx) throws NoSuchFieldException {
+        Field declaredField = clazz.getDeclaredField(name);
+        Type genericType = declaredField.getGenericType();
+        if (genericType instanceof ParameterizedType) {
+            ParameterizedType parameterizedType = (ParameterizedType) genericType;
+            return (Class<?>) parameterizedType.getActualTypeArguments()[idx];
+        }
+        return Object.class;
     }
 
     @Override
@@ -288,16 +360,16 @@ public class ListContainer<T> extends AbstractContainer implements
             // as the sorting should most probably be done at backend call level
             return Collections.emptySet();
         }
-        ArrayList<String> properties = new ArrayList<String>();
+        final ArrayList<String> props = new ArrayList<String>();
         for (Object a : getContainerPropertyIds()) {
             DynaProperty db = getDynaClass().getDynaProperty(a.toString());
             if (db != null && db.getType() != null && (db.getType().
                     isPrimitive() || Comparable.class.isAssignableFrom(
                             db.getType()))) {
-                properties.add(db.getName());
+                props.add(db.getName());
             }
         }
-        return properties;
+        return props;
     }
 
     public void addItemSetChangeListener(
@@ -320,12 +392,24 @@ public class ListContainer<T> extends AbstractContainer implements
 
     /**
      *
-     * Override point. Allows user to use custom comparators based on properties.
+     * Override point. Allows user to use custom comparators based on
+     * properties.
+     *
      * @param property the property whose comparator is requested
      * @return Comparator that will compare two objects based on a property
      */
     protected Comparator<T> getUnderlyingComparator(Object property) {
         return new NullComparator();
+    }
+
+    /**
+     * Explicitly sets the property ids that should be reported by this
+     * container. Allows e.g. usage of "nested properties".
+     *
+     * @param properties the properties reported by this container
+     */
+    public void setContainerPropertyIds(String... properties) {
+        this.properties = Arrays.asList(properties);
     }
 
     private class PropertyComparator implements Comparator<T> {
@@ -342,8 +426,9 @@ public class ListContainer<T> extends AbstractContainer implements
         public int compare(T o1, T o2) {
             for (int i = 0; i < propertyId.length; i++) {
                 String currentProperty = propertyId[i].toString();
-          Comparator<T> currentComparator =
-                new BeanComparator<T>(currentProperty, getUnderlyingComparator(currentProperty));
+                Comparator<T> currentComparator
+                        = new BeanComparator<T>(currentProperty,
+                                getUnderlyingComparator(currentProperty));
 
                 if (!ascending[i]) {
                     currentComparator = new ReverseComparator(currentComparator);
@@ -373,12 +458,24 @@ public class ListContainer<T> extends AbstractContainer implements
 
             @Override
             public Object getValue() {
-                return getDynaBean().get(propertyName);
+                try {
+                    return getDynaBean().get(propertyName);
+                } catch (Exception e) {
+                    try {
+                        return PropertyUtils.getProperty(bean, propertyName);
+                    } catch (Exception ex) {
+                        throw new RuntimeException(ex);
+                    }
+                }
             }
 
             @Override
             public void setValue(Object newValue) throws Property.ReadOnlyException {
-                getDynaBean().set(propertyName, newValue);
+                try {
+                    PropertyUtils.setProperty(bean, propertyName, newValue);
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
+                }
             }
 
             @Override
@@ -399,7 +496,7 @@ public class ListContainer<T> extends AbstractContainer implements
 
         }
 
-        private T bean;
+        private final T bean;
 
         private transient DynaBean db;
 
@@ -413,7 +510,7 @@ public class ListContainer<T> extends AbstractContainer implements
 
         private DynaBean getDynaBean() {
             if (db == null) {
-                db = new WrapDynaBean(bean);
+                db = new WrapDynaBean(bean, getDynaClass(bean));
             }
             return db;
         }

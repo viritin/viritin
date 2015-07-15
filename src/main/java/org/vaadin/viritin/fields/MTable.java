@@ -143,6 +143,7 @@ public class MTable<T> extends Table {
 
     public MTable<T> withProperties(String... visibleProperties) {
         if (isContainerInitialized()) {
+            bic.setContainerPropertyIds(visibleProperties);
             setVisibleColumns((Object[]) visibleProperties);
         } else {
             pendingProperties = visibleProperties;
@@ -242,11 +243,10 @@ public class MTable<T> extends Table {
         if (!isContainerInitialized()) {
             bic = createContainer(beans);
             if (pendingProperties != null) {
-                setContainerDataSource(bic, Arrays.asList(pendingProperties));
+                bic.setContainerPropertyIds(pendingProperties);
                 pendingProperties = null;
-            } else {
-                setContainerDataSource(bic);
             }
+            setContainerDataSource(bic);
             if (pendingHeaders != null) {
                 setColumnHeaders(pendingHeaders);
                 pendingHeaders = null;

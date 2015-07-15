@@ -7,7 +7,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.commons.beanutils.DynaBean;
+import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.beanutils.WrapDynaBean;
+import org.apache.commons.beanutils.expression.DefaultResolver;
+import org.apache.commons.lang3.ClassUtils;
 
 /**
  * A standalone version of the DynaBeanItem originally introduced in
@@ -16,7 +19,7 @@ import org.apache.commons.beanutils.WrapDynaBean;
  *
  * TODO check if this could be used in ListContainer without performance
  * drawbacks.
- * 
+ *
  * TODO check if some staff could be abstracted away
  *
  * @author Matti Tahvonen
@@ -39,7 +42,15 @@ public class DynaBeanItem<T> implements Item {
 
         @Override
         public Object getValue() {
-            return getDynaBean().get(propertyName);
+            try {
+                return getDynaBean().get(propertyName);
+            } catch (Exception e) {
+                try {
+                    return PropertyUtils.getProperty(bean, propertyName);
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
         }
 
         @Override
@@ -49,8 +60,30 @@ public class DynaBeanItem<T> implements Item {
 
         @Override
         public Class getType() {
-            return getDynaBean().getDynaClass().getDynaProperty(propertyName).
-                    getType();
+            try {
+                final org.apache.commons.beanutils.DynaProperty dynaProperty = getDynaBean().
+                        getDynaClass().
+                        getDynaProperty(
+                                propertyName);
+                final Class<?> type = dynaProperty.getType();
+                if (type.isPrimitive()) {
+                    // Vaadin can't handle primitive types in _all_ places, so use
+                    // wrappers instead. FieldGroup works, but e.g. Table in _editable_
+                    // mode fails for some reason
+                    return ClassUtils.primitiveToWrapper(type);
+                }
+                return type;
+            } catch (Exception e) {
+                // If type can't be found via dynaClass, it is most likely 
+                // nested/indexed/mapped property
+                try {
+                    return org.vaadin.viritin.ListContainer.
+                            getNestedPropertyType(getDynaBean().getDynaClass(),
+                                    propertyName);
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
         }
 
         @Override
@@ -87,14 +120,20 @@ public class DynaBeanItem<T> implements Item {
 
     @Override
     public Property getItemProperty(Object id) {
-        if (getDynaBean().getDynaClass().getDynaProperty(id.toString()) == null) {
-            // Lazy query container detects some debug properties via 
-            // Item!! 
-            return null;
+        final String propertyName = id.toString();
+        if (getDynaBean().getDynaClass().getDynaProperty(propertyName) == null) {
+            DefaultResolver defaultResolver = new DefaultResolver();
+            if (!(defaultResolver.hasNested(propertyName) || defaultResolver.
+                    isIndexed(propertyName) || defaultResolver.hasNested(
+                    propertyName))) {
+                // Lazy query container detects some debug properties via 
+                // Item!! 
+                return null;
+            }
         }
         DynaProperty prop = propertyIdToProperty.get(id);
         if (prop == null) {
-            prop = new DynaProperty(id.toString());
+            prop = new DynaProperty(propertyName);
             propertyIdToProperty.put(id, prop);
         }
         return prop;

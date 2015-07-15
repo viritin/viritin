@@ -20,13 +20,13 @@ import org.vaadin.viritin.testdomain.Service;
  * the execution time shouldn't radically grow during development and shouldn't
  * be radically longer than with other in memory containers.
  * 
- * Running the test couple of times to "warm-up" JIT.
+ * Running the test couple of times to "warm-up" JIT. Increase the loop count
+ * if you want to see if JIT still affects more.
  * 
- * Results (update if these changes dramatically):
+ * Results fastest times (update if these changes dramatically):
  * 
+ * Version 1.35-SNAPSHOT: LC 148ms, BIC 160ms, 2.3Gz i7 1st gen retina macbook 
  * 
- * Note, BIC from core seems to aid dramatically from JIT, unlike ListContainer.
- * With Warm JIT, BIT is even faster than ListContainer!?
  *
  */
 public class ListContainerLoopPerformanceTest {
@@ -40,7 +40,6 @@ public class ListContainerLoopPerformanceTest {
             System.gc();
             Thread.sleep(200);
             loopAllEntitiesAndProperties();
-            System.gc();
             System.gc();
             Thread.sleep(200);
             System.gc();
