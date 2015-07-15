@@ -1,5 +1,6 @@
 package org.vaadin.viritin.layouts;
 
+import com.vaadin.server.Resource;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
 
@@ -34,6 +35,11 @@ public class MCssLayout extends CssLayout {
 
     public MCssLayout withStyleName(String styleName) {
         setStyleName(styleName);
+        return this;
+    }
+
+    public MCssLayout withIcon(Resource icon) {
+        setIcon(icon);
         return this;
     }
 }
