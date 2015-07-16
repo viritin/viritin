@@ -15,21 +15,17 @@
  */
 package org.vaadin.viritin;
 
-import org.vaadin.viritin.ListContainer;
 import org.vaadin.viritin.testdomain.Person;
-import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.data.util.BeanItemContainer;
-import com.vaadin.ui.Table;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryUsage;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-import java.util.logging.Logger;
 import junit.framework.Assert;
+import org.junit.Ignore;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -39,7 +35,7 @@ import org.vaadin.viritin.testdomain.Service;
 /**
  *
  */
-public class DynaBeanBasedContainer {
+public class DynaBeanBasedContainerTest {
 
     Random r = new Random(0);
 
@@ -143,6 +139,7 @@ public class DynaBeanBasedContainer {
     }
 
     @Test
+    @Ignore(value = "We know BeanItemContainer uses lots of memory and is slow, uncomment to verify possible fixes from core.")
     public void testMemoryUsageStd() {
         System.out.println("\n Testing BeanItemContainer from core Vaadin");
 

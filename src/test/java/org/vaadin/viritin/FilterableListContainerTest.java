@@ -15,8 +15,6 @@
  */
 package org.vaadin.viritin;
 
-import org.vaadin.viritin.ListContainer;
-import org.vaadin.viritin.FilterableListContainer;
 import org.vaadin.viritin.testdomain.Person;
 import com.vaadin.data.Container;
 import com.vaadin.data.Container.Filter;
@@ -33,14 +31,13 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
-import java.util.logging.Logger;
 import junit.framework.Assert;
 import org.apache.commons.lang3.mutable.MutableBoolean;
 
 import org.junit.Test;
-import org.junit.matchers.JUnitMatchers;
 
 import static org.junit.Assert.*;
+import org.junit.Ignore;
 import static org.junit.matchers.JUnitMatchers.hasItems;
 
 /**
@@ -95,79 +92,11 @@ public class FilterableListContainerTest {
         Assert.assertTrue(fired.booleanValue());
         Assert.assertEquals(listOfPersons.size(), container.size());
     }
-
+    
     @Test
-    public void testMemoryUsage() {
-        System.out.println("\n Testing Filterable List container from Maddon");
-
-        long initial = reportMemoryUsage();
-
-        long ms = System.currentTimeMillis();
-        ListContainer<Person> lc = new ListContainer<Person>(persons);
+    public void testFilterableListContainerPerformance() {
         System.out.println(
-                "After creation (took " + (System.currentTimeMillis() - ms) + ")");
-        long after = reportMemoryUsage();
-        System.err.println("Delta (bytes)" + (after - initial));
-
-        ms = System.currentTimeMillis();
-        for (int i = 0; i < amount; i++) {
-            Item item = lc.getItem(persons.get(i));
-            String str;
-            str = item.getItemProperty("firstName").toString();
-        }
-
-        System.out.println(
-                "After loop (took " + (System.currentTimeMillis() - ms) + ")");
-        after = reportMemoryUsage();
-        System.err.println("Delta (bytes)" + (after - initial));
-
-        // call to avoid GC:n the whole container
-        lc.getItemIds();
-        System.out.println("After GC");
-        after = reportMemoryUsage();
-        System.err.println("Delta (bytes)" + (after - initial));
-
-    }
-
-    @Test
-    public void testMemoryUsageStd() {
-        System.out.println("\n Testing BeanItemContainer from core Vaadin");
-
-        long initial = reportMemoryUsage();
-
-        long ms = System.currentTimeMillis();
-        BeanItemContainer<Person> lc = new BeanItemContainer<Person>(
-                Person.class, persons);
-        System.out.println(
-                "After creation (took " + (System.currentTimeMillis() - ms) + ")");
-        long after = reportMemoryUsage();
-        System.err.println("Delta (bytes)" + (after - initial));
-
-        ms = System.currentTimeMillis();
-        for (int i = 0; i < amount; i++) {
-            Item item = lc.getItem(persons.get(i));
-            String str;
-            str = item.getItemProperty("firstName").toString();
-        }
-
-        System.out.println(
-                "After loop (took " + (System.currentTimeMillis() - ms) + ")");
-        after = reportMemoryUsage();
-        System.err.println("Delta (bytes)" + (after - initial));
-
-        // call to avoid GC:n the whole container
-        lc.getItemIds();
-
-        System.out.println("After GC");
-        after = reportMemoryUsage();
-        System.err.println("Delta (bytes)" + (after - initial));
-
-    }
-
-    @Test
-    public void testFilterMaddon() {
-        System.out.println(
-                "\n Testing FilterableListContainer from Maddon (with Filter)");
+                "\n Testing FilterableListContainer from Viritin (with Filter)");
 
         long initial = reportMemoryUsage();
 
@@ -186,6 +115,7 @@ public class FilterableListContainerTest {
     }
 
     @Test
+    @Ignore(value = "we know BeanItemContainer filtering is veeery slow, re-activate to investigate possible enhancements in the core.")
     public void testFilterStd() {
         System.out.println(
                 "\n Testing BeanItemContainer from core Vaadin (with Filter)");
