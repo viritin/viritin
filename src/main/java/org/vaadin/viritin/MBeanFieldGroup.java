@@ -272,7 +272,7 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
         /**
          *
          * @param value the bean to be validated
-         * @throws Validator.InvalidValueException
+         * @throws Validator.InvalidValueException if value is not valid
          */
         public void validate(T value) throws Validator.InvalidValueException;
 
@@ -347,8 +347,8 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
      * Sets the "validation error target", the component on which validation
      * errors are shown, for given validator type.
      *
-     * @param validatorType
-     * @param component
+     * @param validatorType the class of the validator whose errors should be targeted
+     * @param component the component on which the errors should be displayed on
      * @return the MBeanFieldGroup instance
      */
     public MBeanFieldGroup<T> setValidationErrorTarget(Class validatorType,

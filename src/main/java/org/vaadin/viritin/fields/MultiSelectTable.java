@@ -236,6 +236,7 @@ public class MultiSelectTable<ET> extends CustomField<Collection> {
     }
 
     /**
+     * @return the underlaying Table
      * @deprecated use getTable() instead.
      */
     @Deprecated

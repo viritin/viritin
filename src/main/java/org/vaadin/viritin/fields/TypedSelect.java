@@ -269,7 +269,7 @@ public class TypedSelect<T> extends CustomField {
      * you should never use buffering either.
      * https://vaadin.com/web/matti/blog/-/blogs/3-pro-tips-for-vaadin-developers
      *
-     * @param buffered
+     * @param buffered true if buffering should be on
      */
     @Override
     public void setBuffered(boolean buffered) {

@@ -72,7 +72,7 @@ public class DownloadButton extends MButton {
      * By default just spans a new raw thread to get the input. For strict Java
      * EE fellows, this might not suite, so override and use executor service.
      *
-     * @param out
+     * @param out the output stream where the output is targeted
      */
     protected void writeResponce(final PipedOutputStream out) {
         new Thread() {

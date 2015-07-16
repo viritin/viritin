@@ -17,19 +17,20 @@ import com.vaadin.ui.*;
  * {@link com.vaadin.ui.AbstractComponent#setLocale(Locale)} on all components
  * in the current {@link com.vaadin.ui.UI} is triggered. You can update your
  * strings there.
- * 
+ *
  * @author Daniel Nordhoff-Vergien
  *
  */
 public class VaadinLocale {
+
     public interface LocaleNegotiationStrategey {
 
         /**
          * Returns the best fitting supported locale depending on the http
          * language accept header.
-         * 
-         * @param supportedLocales
-         * @param vaadinRequest
+         *
+         * @param supportedLocales the list of supported locales
+         * @param vaadinRequest the current VaadinRequest
          * @return the best fitting supported locale
          */
         public Locale negotiate(List<Locale> supportedLocales,
@@ -60,16 +61,15 @@ public class VaadinLocale {
 
     /**
      * Instantiates a new VaadinLocale object
-     * 
-     * @param localeNegotiationStrategey
-     * @param vaadinRequest
-     * @param supportedLocales
-     *            At least one Locale which the application supports. The first
-     *            locale is the default locale, if negotiation fails.
-     * 
-     * 
-     * @throws IllegalArgumentException
-     *             if there is no locale.
+     *
+     * @param localeNegotiationStrategey the localeNegotiationStrategey the
+     * should be used to detect the most suitable locale
+     * @param vaadinRequest the current vaadinRequest, for detection 
+     * @param supportedLocales At least one Locale which the application
+     * supports. The first locale is the default locale, if negotiation fails.
+     *
+     *
+     * @throws IllegalArgumentException if there is no locale.
      */
     public VaadinLocale(LocaleNegotiationStrategey localeNegotiationStrategey,
             VaadinRequest vaadinRequest, Locale... supportedLocales) {
@@ -80,8 +80,8 @@ public class VaadinLocale {
 
     /**
      * Creates a new instance with the {@link Java7LocaleNegotiationStrategy}.
-     * 
-     * @param supportedLocales
+     *
+     * @param supportedLocales the list of supported locales
      */
     public VaadinLocale(Locale... supportedLocales) {
         this(new Java7LocaleNegotiationStrategy(), supportedLocales);

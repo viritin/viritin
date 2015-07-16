@@ -23,7 +23,7 @@ import org.apache.commons.lang3.ClassUtils;
  * TODO check if some staff could be abstracted away
  *
  * @author Matti Tahvonen
- * @param <T>
+ * @param <T> the type of the bean wrapped by the item
  */
 public class DynaBeanItem<T> implements Item {
 

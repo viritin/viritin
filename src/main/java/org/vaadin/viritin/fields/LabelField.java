@@ -83,7 +83,7 @@ public class LabelField<T> extends CustomField<T> {
     /**
      * Sets the CaptionGenerator for creating the label value.
      * 
-     * @param captionGenerator
+     * @param captionGenerator the caption generator used to format the displayed property
      */
     public void setCaptionGenerator(CaptionGenerator<T> captionGenerator) {
         this.captionGenerator = captionGenerator;
