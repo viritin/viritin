@@ -189,8 +189,8 @@ public class ListContainer<T> extends AbstractContainer implements
     @Override
     public Collection<String> getContainerPropertyIds() {
         if (properties == null) {
-            ArrayList<String> props = new ArrayList<String>();
             if (getDynaClass() != null) {
+                ArrayList<String> props = new ArrayList<String>();
                 for (DynaProperty db : getDynaClass().getDynaProperties()) {
                     if (db.getType() != null) {
                         props.add(db.getName());
@@ -203,6 +203,8 @@ public class ListContainer<T> extends AbstractContainer implements
                 }
                 props.remove("class");
                 properties = props;
+            } else {
+                return Collections.EMPTY_LIST;
             }
         }
         return properties;
