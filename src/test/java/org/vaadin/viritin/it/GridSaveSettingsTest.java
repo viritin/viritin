@@ -35,6 +35,7 @@ public class GridSaveSettingsTest extends AbstractTest {
 		table.setContainerDataSource(ds);
 		makeGridColumnsHideable(table);
 		makeGridOrderable(table);
+		table.setColumnReorderingAllowed(true);
 		table.attachSaveSettings("personsGrid");
 		layout.addComponent(info);
 		layout.addComponent(table);

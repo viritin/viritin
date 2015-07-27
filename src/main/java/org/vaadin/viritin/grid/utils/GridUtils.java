@@ -14,6 +14,7 @@ import com.vaadin.data.sort.SortOrder;
 import com.vaadin.shared.data.sort.SortDirection;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.Grid.Column;
+import com.vaadin.ui.Grid.ColumnReorderEvent;
 
 /**
  * Use this class to save grid hidden columns to cookies.
@@ -26,6 +27,8 @@ public class GridUtils {
 	private static final String SEMI_COLOMN_DELIMITER = ";";
 	private final String HIDDEN_SETTINGS_NAME;
 	private final String SORT_ORDER_SETTINGS_NAME;
+	private final String COLUMNS_ORDER_SETTINGS_NAME;
+	private List<String> columnsOrder=new ArrayList<String>();
 	private Grid grid;
 	/**
 	 * Set specified grid to save hidden columns in cookies.
@@ -40,6 +43,7 @@ public class GridUtils {
 		this.grid=grid;
 		HIDDEN_SETTINGS_NAME=cookieName+"hiddenCols";
 		SORT_ORDER_SETTINGS_NAME=cookieName+"sortOrder";
+		COLUMNS_ORDER_SETTINGS_NAME=cookieName+"columnOrder";
 		loadSettings();
 		grid.addColumnVisibilityChangeListener(e->{
 			saveHidden();
@@ -47,12 +51,39 @@ public class GridUtils {
 		grid.addSortListener(e->{
 			saveSortOrder();
 		});
+		grid.addColumnReorderListener(e->{
+			saveColumnOrder(e);
+		});
+	}
+	private void saveColumnOrder(ColumnReorderEvent e) {
+		//Number of columns not more than 1000, hopefully :)
+		//This operation don't need to be fast, that's why were recreate the cookie value
+		//every time.
+		Optional<String> value = grid.getColumns().stream()
+				.map(a -> a.getPropertyId().toString())
+				.reduce((a, b) -> a + COLOMN_DELIMITER + b);
+		String cookieValue = value.isPresent() ? value.get() : "";
+		BrowserCookie.setCookie(COLUMNS_ORDER_SETTINGS_NAME, cookieValue);
 	}
 	private void loadSettings() {
 		loadHidden();
 		loadSortOrder();
+		loadColumnOrder();
 	}
 
+	private void loadColumnOrder() {
+		Callback saveFunc=new Callback() {
+			@Override
+			public void onValueDetected(String value) {
+				if(value!=null) {
+					String[] columnsOrder=value.split(COLOMN_DELIMITER);
+					grid.setColumnOrder(columnsOrder);
+				}
+			}
+		};
+		BrowserCookie.detectCookieValue(COLUMNS_ORDER_SETTINGS_NAME, saveFunc);	
+		
+	}
 	private void loadSortOrder() {
 		Callback saveFunc=new Callback() {
 			@Override
