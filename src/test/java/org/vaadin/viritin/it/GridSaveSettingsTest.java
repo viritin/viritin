@@ -7,6 +7,7 @@ import org.vaadin.viritin.testdomain.Person;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Grid;
+import com.vaadin.ui.Grid.Column;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 
@@ -47,8 +48,8 @@ public class GridSaveSettingsTest extends AbstractTest {
 		
 	}
 	private void makeGridColumnsHideable(Grid grid) {
-		grid.getColumns().forEach(c->{
-			c.setHidable(true);
-		});
+        for(Column c : grid.getColumns()) {
+            c.setHidable(true);
+        }
 	}
 }
