@@ -295,6 +295,27 @@ public class MTable<T> extends Table {
         return this;
     }
 
+
+    /**
+     * Sets both {@link MTable#withFullWidth()} and {@link MTable#withFullHeight()}.
+     * Also, it will scan the {@link MTable#getContainerPropertyIds()} and expand the first one by default.
+     * Useful for those tables that have a primary column on the left (like a name) and value columns to the right.
+     * 
+     * @return {@link MTable}
+     */
+    public MTable<T> withFullExpansion() {
+        boolean finished = false;
+        for (Object propertyId : getContainerPropertyIds()) {
+            if (finished) break;
+            expand(propertyId.toString());
+            finished = true;
+        }
+
+        withFullHeight();
+        return withFullWidth();
+    }
+
+
     public MTable<T> withFullWidth() {
         setWidth(100, Unit.PERCENTAGE);
         return this;
