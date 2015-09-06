@@ -35,7 +35,7 @@ public class SortableLazyList<T> extends LazyList implements Serializable {
     public interface SortablePagingProvider<T> extends Serializable {
 
         /**
-         * Fetches one "page" of entities form the backend. The amount
+         * Fetches one "page" of entities from the backend. The amount
          * "maxResults" should match with the value configured for the LazyList
          *
          * @param firstRow the index of first row that should be fetched
