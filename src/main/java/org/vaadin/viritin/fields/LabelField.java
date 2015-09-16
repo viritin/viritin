@@ -3,6 +3,7 @@ package org.vaadin.viritin.fields;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomField;
 import com.vaadin.ui.Label;
+import org.vaadin.viritin.label.RichText;
 
 /**
  * A field which represents the value always in a label, so it is not editable.
@@ -40,7 +41,7 @@ public class LabelField<T> extends CustomField<T> {
     }
 
     private CaptionGenerator<T> captionGenerator = new ToStringCaptionGenerator<T>();
-    private Label label = new Label();
+    private Label label = new RichText();
 
     public LabelField(Class<T> type) {
         super();
@@ -88,4 +89,13 @@ public class LabelField<T> extends CustomField<T> {
     public void setCaptionGenerator(CaptionGenerator<T> captionGenerator) {
         this.captionGenerator = captionGenerator;
     }
+
+    public void setLabel(Label label) {
+        this.label = label;
+    }
+
+    public Label getLabel() {
+        return label;
+    }
+    
 }
