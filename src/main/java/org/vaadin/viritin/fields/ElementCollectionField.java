@@ -48,8 +48,8 @@ import org.vaadin.viritin.button.MButton;
  *
  * <p>
  * Components in row model class don't need to match properties in the edited
- * entity. So you can add "custom columns" just by introducing them in 
- * your editor row.
+ * entity. So you can add "custom columns" just by introducing them in your
+ * editor row.
  * <p>
  * By default the field always contains an empty instance to create new rows. If
  * instances are added with some other method (or UI shouldn't add them at all),
@@ -102,11 +102,11 @@ public class ElementCollectionField<ET> extends AbstractElementCollection<ET> {
         if (isAllowRemovingItems()) {
             layout.addComponent(new MButton(FontAwesome.TRASH_O).withListener(
                     new Button.ClickListener() {
-                        @Override
-                        public void buttonClick(Button.ClickEvent event) {
-                            removeElement(v);
-                        }
-                    }).withStyleName(ValoTheme.BUTTON_ICON_ONLY));
+                @Override
+                public void buttonClick(Button.ClickEvent event) {
+                    removeElement(v);
+                }
+            }).withStyleName(ValoTheme.BUTTON_ICON_ONLY));
         }
         if (!isAllowEditItems()) {
             fg.setReadOnly(true);
@@ -129,24 +129,27 @@ public class ElementCollectionField<ET> extends AbstractElementCollection<ET> {
     @Override
     public void setPersisted(ET v, boolean persisted) {
         int row = items.indexOf(v) + 1;
-        Button c = (Button) layout.getComponent(getVisibleProperties().size(),
-                row);
-        if (persisted) {
-            c.setDescription(getDeleteElementDescription());
-        } else {
-            for (int i = 0; i < getVisibleProperties().size(); i++) {
-                try {
-                    AbstractField f = (AbstractField) (Field) layout.
-                            getComponent(i,
-                                    row);
-                    f.setValidationVisible(false);
-                } catch (Exception e) {
+        if (isAllowRemovingItems()) {
+            Button c = (Button) layout.getComponent(getVisibleProperties().
+                    size(),
+                    row);
+            if (persisted) {
+                c.setDescription(getDeleteElementDescription());
+            } else {
+                for (int i = 0; i < getVisibleProperties().size(); i++) {
+                    try {
+                        AbstractField f = (AbstractField) (Field) layout.
+                                getComponent(i,
+                                        row);
+                        f.setValidationVisible(false);
+                    } catch (Exception e) {
 
+                    }
                 }
+                c.setDescription(getDisabledDeleteElementDescription());
             }
-            c.setDescription(getDisabledDeleteElementDescription());
+            c.setEnabled(persisted);
         }
-        c.setEnabled(persisted);
     }
 
     private void ensureInited() {
@@ -171,7 +174,8 @@ public class ElementCollectionField<ET> extends AbstractElementCollection<ET> {
         }
     }
 
-    public ElementCollectionField<ET> withEditorInstantiator(Instantiator instantiator) {
+    public ElementCollectionField<ET> withEditorInstantiator(
+            Instantiator instantiator) {
         setEditorInstantiator(instantiator);
         return this;
     }
