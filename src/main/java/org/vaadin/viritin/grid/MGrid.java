@@ -33,5 +33,29 @@ public class MGrid<T> extends Grid {
         setContainerDataSource(new ListContainer(Arrays.asList(rows)));
         return this;
     }
+
+    @Override
+    public T getSelectedRow() throws IllegalStateException {
+        return (T) super.getSelectedRow();
+    }
+
+    /**
+     * 
+     * @param entity the entity (row) to be selected.
+     * @return <code>true</code> if the selection state changed,
+     *         <code>false</code> if the itemId already was selected
+     */
+    public boolean selectRow(T entity) {
+        return select(entity);
+    }
+
+    /**
+     * @deprecated use the typed selectRow instead
+     */
+    @Deprecated
+    @Override
+    public boolean select(Object itemId) throws IllegalArgumentException, IllegalStateException {
+        return super.select(itemId);
+    }
     
 }

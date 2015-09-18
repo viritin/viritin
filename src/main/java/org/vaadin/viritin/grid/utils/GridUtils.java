@@ -46,6 +46,7 @@ public class GridUtils {
         SORT_ORDER_SETTINGS_NAME = cookieName + "sortOrder";
         COLUMNS_ORDER_SETTINGS_NAME = cookieName + "columnOrder";
         loadSettings();
+        
         grid.addColumnVisibilityChangeListener(
                 new Grid.ColumnVisibilityChangeListener() {
 
@@ -55,6 +56,7 @@ public class GridUtils {
                 saveHidden();
             }
         });
+        
         grid.addSortListener(new SortEvent.SortListener() {
 
             @Override
