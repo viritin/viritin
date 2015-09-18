@@ -6,7 +6,7 @@ package org.vaadin.viritin.fields;
  * 
  * @author Daniel Nordhoff-Vergien
  *
- * @param <T>
+ * @param <T> the type of the object for which caption is to be generated
  */
 public abstract class AbstractCaptionGenerator<T> implements
         CaptionGenerator<T> {
