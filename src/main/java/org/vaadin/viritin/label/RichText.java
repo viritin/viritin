@@ -28,7 +28,8 @@ import org.markdown4j.Markdown4jProcessor;
  * XSS safe rich text label with either Markdown syntax or raw html (sanitized
  * with Jsoup).
  *
- * By default jsoups Whitelist.relaxed is used for sanitizing.
+ * By default jsoups Whitelist.relaxed is used for sanitizing. This can be
+ * overridden by returning custom whitelist with getWhitelist method.
  */
 public class RichText extends Label {
 
@@ -73,7 +74,7 @@ public class RichText extends Label {
     /**
      * Only replaces all new line characters with &lt;br /&gt;, but no Markdown
      * processing.
-     * 
+     *
      * @param text the text value to be displayed
      * @return the object itself for further configuration
      */
@@ -82,17 +83,17 @@ public class RichText extends Label {
     }
 
     public Whitelist getWhitelist() {
-        if(whitelist == null) {
+        if (whitelist == null) {
             return Whitelist.relaxed();
         }
         return whitelist;
     }
 
     /**
-     * 
+     *
      * @param whitelist the whitelist used for sanitizing the rich text content
      * @return the object itself for further configuration
-     * @deprecated Whitelist is not serializable. Override getWhitelist instead 
+     * @deprecated Whitelist is not serializable. Override getWhitelist instead
      * if you need to support serialiazation
      */
     @Deprecated
