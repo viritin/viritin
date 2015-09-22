@@ -48,6 +48,10 @@ public class LabelField<T> extends CustomField<T> {
         this.type = type;
     }
 
+    public LabelField() {
+        this.type = (Class<T>) String.class;
+    }
+
     public LabelField<T> withCaption(String caption) {
         setCaption(caption);
         return this;
