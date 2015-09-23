@@ -6,6 +6,8 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import org.vaadin.viritin.MSize;
+
 import java.util.Collection;
 
 public class MHorizontalLayout extends HorizontalLayout {
@@ -39,6 +41,11 @@ public class MHorizontalLayout extends HorizontalLayout {
         return this;
     }
 
+    public MHorizontalLayout withIcon(Resource icon) {
+        setIcon(icon);
+        return this;
+    }
+
     public MHorizontalLayout withWidth(String width) {
         setWidth(width);
         return this;
@@ -54,13 +61,14 @@ public class MHorizontalLayout extends HorizontalLayout {
         return this;
     }
 
-    public MHorizontalLayout withIcon(Resource icon) {
-        setIcon(icon);
-        return this;
-    }
-    
     public MHorizontalLayout withFullHeight() {
         setHeight("100%");
+        return this;
+    }
+
+    public MHorizontalLayout withSize(MSize size) {
+        setWidth(size.getWidth(), size.getWidthUnit());
+        setHeight(size.getHeight(), size.getHeightUnit());
         return this;
     }
 

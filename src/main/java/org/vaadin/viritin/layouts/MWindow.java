@@ -2,6 +2,7 @@ package org.vaadin.viritin.layouts;
 
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Window;
+import org.vaadin.viritin.MSize;
 
 public class MWindow extends Window {
 
@@ -62,4 +63,9 @@ public class MWindow extends Window {
         return this;
     }
 
+    public MWindow withSize(MSize size) {
+        setWidth(size.getWidth(), size.getWidthUnit());
+        setHeight(size.getHeight(), size.getHeightUnit());
+        return this;
+    }
 }
