@@ -4,6 +4,7 @@ import org.vaadin.viritin.grid.utils.GridUtils;
 
 import com.vaadin.ui.Grid;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import org.vaadin.viritin.ListContainer;
 
@@ -57,5 +58,12 @@ public class MGrid<T> extends Grid {
     public boolean select(Object itemId) throws IllegalArgumentException, IllegalStateException {
         return super.select(itemId);
     }
+
+    public Collection<T> getSelectedRowsWithType() {
+        // Maybe this is more complicated than it should be :-)
+        return (Collection<T>) super.getSelectedRows();
+    }
+    
+    
     
 }
