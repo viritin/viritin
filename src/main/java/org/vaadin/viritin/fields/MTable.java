@@ -15,10 +15,16 @@
  */
 package org.vaadin.viritin.fields;
 
+import com.vaadin.data.Item;
+import com.vaadin.event.ItemClickEvent;
+import com.vaadin.event.ItemClickEvent.ItemClickListener;
+import com.vaadin.event.MouseEvents;
 import com.vaadin.server.Resource;
+import com.vaadin.shared.MouseEventDetails;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Table;
 import com.vaadin.util.ReflectTools;
+import java.io.Serializable;
 import java.lang.reflect.Method;
 import org.vaadin.viritin.ListContainer;
 
@@ -26,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.EventObject;
 import org.apache.commons.lang3.StringUtils;
 import org.vaadin.viritin.LazyList;
 import static org.vaadin.viritin.LazyList.DEFAULT_PAGE_SIZE;
@@ -336,6 +343,19 @@ public class MTable<T> extends Table {
         return this;
     }
 
+    private ItemClickListener itemClickPiggyback;
+    private void ensureTypedItemClickPiggybackListener() {
+        if(itemClickPiggyback == null) {
+            itemClickPiggyback = new ItemClickListener() {
+                @Override
+                public void itemClick(ItemClickEvent event) {
+                    fireEvent(new RowClickEvent<T>(event));
+                }
+            };
+            addItemClickListener(itemClickPiggyback);
+        }
+    }
+
     public static interface SimpleColumnGenerator<T> {
 
         public Object generate(T entity);
@@ -474,6 +494,121 @@ public class MTable<T> extends Table {
                 enableContentRefreshing(true);
             }
         }
+    }
+
+    /**
+     * A version of ItemClickEvent that is properly typed and named.
+     * 
+     * @param <T> 
+     */
+    public static class RowClickEvent<T> extends MouseEvents.ClickEvent {
+
+        public static final Method TYPED_ITEM_CLICK_METHOD;
+
+        static {
+            try {
+                TYPED_ITEM_CLICK_METHOD = RowClickListener.class.getDeclaredMethod("rowClick", new Class[]{RowClickEvent.class});
+            } catch (final java.lang.NoSuchMethodException e) {
+                // This should never happen
+                throw new java.lang.RuntimeException();
+            }
+        }
+
+        private final ItemClickEvent orig;
+
+        public RowClickEvent(ItemClickEvent orig) {
+            super(orig.getComponent(), null);
+            this.orig = orig;
+        }
+
+        /**
+         * @return the entity(~row) that was clicked.
+         */
+        public T getEntity() {
+            return (T) orig.getItemId();
+        }
+        
+        /**
+         * @return the entity(~row) that was clicked.
+         */
+        public T getRow() {
+            return getEntity();
+        }
+
+        /**
+         * @return the identifier of the column on which the row click happened.
+         */
+        public String getColumnId() {
+            return orig.getPropertyId().toString();
+        }
+
+        @Override
+        public MouseEventDetails.MouseButton getButton() {
+            return orig.getButton();
+        }
+
+        @Override
+        public int getClientX() {
+            return orig.getClientX();
+        }
+
+        @Override
+        public int getClientY() {
+            return orig.getClientY();
+        }
+
+        @Override
+        public int getRelativeX() {
+            return orig.getRelativeX();
+        }
+
+        @Override
+        public int getRelativeY() {
+            return orig.getRelativeY();
+        }
+
+        @Override
+        public boolean isAltKey() {
+            return orig.isAltKey();
+        }
+
+        @Override
+        public boolean isCtrlKey() {
+            return orig.isCtrlKey();
+        }
+
+        @Override
+        public boolean isDoubleClick() {
+            return orig.isDoubleClick();
+        }
+
+        @Override
+        public boolean isMetaKey() {
+            return orig.isMetaKey();
+        }
+
+        @Override
+        public boolean isShiftKey() {
+            return orig.isShiftKey();
+        }
+
+    }
+
+    /**
+     * A better typed version of ItemClickEvent.
+     * @param <T> the type of entities listed in the table
+     */
+    public interface RowClickListener<T> extends Serializable {
+        public void rowClick(RowClickEvent<T> event);
+    }
+    
+    public void addRowClickListener(RowClickListener<T> listener) {
+        ensureTypedItemClickPiggybackListener();
+        addListener(RowClickEvent.class, listener, RowClickEvent.TYPED_ITEM_CLICK_METHOD);
+    }
+    
+    public void removeRowClickListener(RowClickListener<T> listener) {
+        removeListener(RowClickEvent.class, listener, RowClickEvent.TYPED_ITEM_CLICK_METHOD);
     }
 
     /**
