@@ -4,6 +4,7 @@ import com.vaadin.server.Resource;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.FormLayout;
+import org.vaadin.viritin.MSize;
 
 public class MFormLayout extends FormLayout {
 
@@ -44,12 +45,18 @@ public class MFormLayout extends FormLayout {
         return this;
     }
 
+    public MFormLayout withSize(MSize size) {
+        setWidth(size.getWidth(), size.getWidthUnit());
+        setHeight(size.getHeight(), size.getHeightUnit());
+        return this;
+    }
+
     public MFormLayout withStyleName(String styleName) {
         setStyleName(styleName);
         return this;
     }
-    
-    
+
+
     public MFormLayout withIcon(Resource icon) {
         setIcon(icon);
         return this;

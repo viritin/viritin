@@ -5,6 +5,8 @@ import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.GridLayout;
+import org.vaadin.viritin.MSize;
+
 import java.util.Collection;
 
 public class MGridLayout extends GridLayout {
@@ -56,6 +58,12 @@ public class MGridLayout extends GridLayout {
 
     public MGridLayout withFullHeight() {
         setHeight("100%");
+        return this;
+    }
+
+    public MGridLayout withSize(MSize size) {
+        setWidth(size.getWidth(), size.getWidthUnit());
+        setHeight(size.getHeight(), size.getHeightUnit());
         return this;
     }
 

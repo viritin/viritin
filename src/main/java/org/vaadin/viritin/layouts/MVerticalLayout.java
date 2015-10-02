@@ -5,6 +5,8 @@ import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.VerticalLayout;
+import org.vaadin.viritin.MSize;
+
 import java.util.Collection;
 
 public class MVerticalLayout extends VerticalLayout {
@@ -56,6 +58,12 @@ public class MVerticalLayout extends VerticalLayout {
 
     public MVerticalLayout withFullHeight() {
         setHeight("100%");
+        return this;
+    }
+
+    public MVerticalLayout withSize(MSize size) {
+        setWidth(size.getWidth(), size.getWidthUnit());
+        setHeight(size.getHeight(), size.getHeightUnit());
         return this;
     }
 
@@ -114,7 +122,7 @@ public class MVerticalLayout extends VerticalLayout {
         setStyleName(styleName);
         return this;
     }
-    
+
     public MVerticalLayout withIcon(Resource icon) {
         setIcon(icon);
         return this;
