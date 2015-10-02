@@ -50,7 +50,8 @@ public class MTableWithRowClickListener extends AbstractTest {
                         "detailList[1].detail2.property",
                         "detailList[1].moreDetails[1].property"
                 )
-                .withHeight("300px");
+                .withHeight("300px")
+                .expandFirstColumn();
         table.refreshRowCache();
         
         final Form form = new Form();
