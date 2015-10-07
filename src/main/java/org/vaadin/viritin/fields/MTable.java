@@ -312,7 +312,7 @@ public class MTable<T> extends Table {
      */
     public MTable<T> expandFirstColumn() {
         expand(getContainerPropertyIds().iterator().next().toString());
-        if(getWidth() == -1) {
+        if (getWidth() == -1) {
             return withFullWidth();
         }
         return this;
@@ -361,7 +361,7 @@ public class MTable<T> extends Table {
 
     private ItemClickListener itemClickPiggyback;
     private void ensureTypedItemClickPiggybackListener() {
-        if(itemClickPiggyback == null) {
+        if (itemClickPiggyback == null) {
             itemClickPiggyback = new ItemClickListener() {
                 @Override
                 public void itemClick(ItemClickEvent event) {
@@ -514,8 +514,8 @@ public class MTable<T> extends Table {
 
     /**
      * A version of ItemClickEvent that is properly typed and named.
-     * 
-     * @param <T> 
+     *
+     * @param <T>
      */
     public static class RowClickEvent<T> extends MouseEvents.ClickEvent {
 
@@ -543,7 +543,7 @@ public class MTable<T> extends Table {
         public T getEntity() {
             return (T) orig.getItemId();
         }
-        
+
         /**
          * @return the entity(~row) that was clicked.
          */
@@ -617,12 +617,12 @@ public class MTable<T> extends Table {
     public interface RowClickListener<T> extends Serializable {
         public void rowClick(RowClickEvent<T> event);
     }
-    
+
     public void addRowClickListener(RowClickListener<T> listener) {
         ensureTypedItemClickPiggybackListener();
         addListener(RowClickEvent.class, listener, RowClickEvent.TYPED_ITEM_CLICK_METHOD);
     }
-    
+
     public void removeRowClickListener(RowClickListener<T> listener) {
         removeListener(RowClickEvent.class, listener, RowClickEvent.TYPED_ITEM_CLICK_METHOD);
     }
@@ -637,6 +637,18 @@ public class MTable<T> extends Table {
             ((LazyList) bic.getItemIds()).reset();
         }
         resetPageBuffer();
+    }
+
+    /**
+     * Sets the row of given entity as selected. This is practically a better
+     * typed version for select(Object) and setValue(Object) methods.
+     *
+     * @param entity the entity whose row should be selected
+     * @return the MTable instance
+     */
+    public MTable<T> setSelected(T entity) {
+        setValue(entity);
+        return this;
     }
 
 }
