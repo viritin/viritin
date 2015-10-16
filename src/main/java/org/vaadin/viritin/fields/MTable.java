@@ -136,6 +136,60 @@ public class MTable<T> extends Table {
         }
     }
 
+    /**
+     * Makes the table lazy load its content with given strategy.
+     *
+     * @param pageProvider the interface via entities are fetched
+     * @param countProvider the interface via the count of items is detected
+     * @return this MTable object
+     */
+    public MTable<T> lazyLoadFrom(LazyList.PagingProvider pageProvider,
+            LazyList.CountProvider countProvider) {
+        setBeans(new LazyList(pageProvider, countProvider, DEFAULT_PAGE_SIZE));
+        return this;
+    }
+
+    /**
+     * Makes the table lazy load its content with given strategy.
+     *
+     * @param pageProvider the interface via entities are fetched
+     * @param countProvider the interface via the count of items is detected
+     * @param pageSize the page size (aka maxResults) that is used in paging.
+     * @return this MTable object
+     */
+    public MTable<T> lazyLoadFrom(LazyList.PagingProvider pageProvider,
+            LazyList.CountProvider countProvider, int pageSize) {
+        setBeans(new LazyList(pageProvider, countProvider, pageSize));
+        return this;
+    }
+
+    /**
+     * Makes the table lazy load its content with given strategy.
+     *
+     * @param pageProvider the interface via entities are fetched
+     * @param countProvider the interface via the count of items is detected
+     * @return this MTable object
+     */
+    public MTable<T> lazyLoadFrom(SortableLazyList.SortablePagingProvider pageProvider,
+            LazyList.CountProvider countProvider) {
+        setBeans(new SortableLazyList(pageProvider, countProvider, DEFAULT_PAGE_SIZE));
+        return this;
+    }
+
+    /**
+     * Makes the table lazy load its content with given strategy.
+     *
+     * @param pageProvider the interface via entities are fetched
+     * @param countProvider the interface via the count of items is detected
+     * @param pageSize the page size (aka maxResults) that is used in paging.
+     * @return this MTable object
+     */
+    public MTable<T> lazyLoadFrom(SortableLazyList.SortablePagingProvider pageProvider,
+            LazyList.CountProvider countProvider, int pageSize) {
+        setBeans(new SortableLazyList(pageProvider, countProvider, pageSize));
+        return this;
+    }
+
     protected ListContainer<T> createContainer(Class<T> type) {
         return new ListContainer<T>(type);
     }

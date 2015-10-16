@@ -38,8 +38,25 @@ public class MTableLazyLoadingEmptyList extends AbstractTest {
                 }
         ).withProperties("firstName", "lastName", "email");
 
-//        MTable<Person> mTable = new MTable<Person>(Person.class);
         mTable.withFullWidth().withHeight("300px");
+        
+        // Alternative way, with explicitly defined bean type
+//        mTable = new MTable<Person>(Person.class).lazyLoadFrom(
+//                new LazyList.PagingProvider<Person>() {
+//                    
+//                    @Override
+//                    public List<Person> findEntities(int firstRow) {
+//                        return backingList.subList(firstRow, 0);
+//                    }
+//                },
+//                new LazyList.CountProvider() {
+//                    
+//                    @Override
+//                    public int size() {
+//                        return 0;
+//                    }
+//                }
+//        );
         
         return mTable;
     }
