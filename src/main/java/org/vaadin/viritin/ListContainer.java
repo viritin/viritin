@@ -251,6 +251,11 @@ public class ListContainer<T> extends AbstractContainer implements
     public static Class getNestedPropertyType(DynaClass bean, String name)
             throws IllegalAccessException, InvocationTargetException,
             NoSuchMethodException, ClassNotFoundException, NoSuchFieldException {
+        if(bean == null) {
+            // The type is not properly initilized yet, just leave it as generic
+            // Object
+            return Object.class;
+        }
         // Resolve nested references
         while (resolver.hasNested(name)) {
             String next = resolver.next(name);
