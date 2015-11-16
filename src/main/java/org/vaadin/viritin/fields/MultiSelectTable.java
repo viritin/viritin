@@ -2,6 +2,7 @@ package org.vaadin.viritin.fields;
 
 import com.vaadin.data.util.converter.Converter;
 import com.vaadin.server.Resource;
+import com.vaadin.shared.ui.MultiSelectMode;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomField;
 import com.vaadin.ui.Table;
@@ -74,7 +75,14 @@ public class MultiSelectTable<ET> extends CustomField<Collection> {
         }
 
     };
+    private Class<ET> optionType;
 
+    public MultiSelectTable(Class<ET> optionType) {
+        this();
+        table.setContainerDataSource(new ListContainer(optionType));
+        this.optionType = optionType;
+    }
+    
     public MultiSelectTable(String caption) {
         this();
         setCaption(caption);
@@ -180,9 +188,9 @@ public class MultiSelectTable<ET> extends CustomField<Collection> {
      */
     public MultiSelectTable<ET> setOptions(ET... list) {
         if (visProps == null) {
-            table.setContainerDataSource(new ListContainer(Arrays.asList(list)));
+            table.setContainerDataSource(new ListContainer(optionType, Arrays.asList(list)));
         } else {
-            table.setContainerDataSource(new ListContainer(Arrays.asList(list)), Arrays.asList(
+            table.setContainerDataSource(new ListContainer(optionType, Arrays.asList(list)), Arrays.asList(
                     visProps));
         }
         if(pendingHeaders != null) {

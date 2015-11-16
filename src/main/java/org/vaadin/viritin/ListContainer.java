@@ -55,7 +55,9 @@ public class ListContainer<T> extends AbstractContainer implements
     }
 
     public ListContainer(Class<T> type, Collection<T> backingList) {
-        dynaClass = WrapDynaClass.createDynaClass(type);
+        if(type != null) {
+            dynaClass = WrapDynaClass.createDynaClass(type);
+        }
         setCollection(backingList);
     }
 
