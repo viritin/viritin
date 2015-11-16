@@ -304,4 +304,9 @@ public class MultiSelectTable<ET> extends CustomField<Collection> {
         getUnderlayingTable().setRowHeaderMode(rowHeaderMode);
     }
 
+    public MultiSelectTable<ET> setMultiSelectMode(MultiSelectMode mode) {
+        getTable().setMultiSelectMode(mode);
+        return this;
+    }
+
 }
