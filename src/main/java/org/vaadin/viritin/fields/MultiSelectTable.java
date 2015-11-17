@@ -1,5 +1,6 @@
 package org.vaadin.viritin.fields;
 
+import com.vaadin.data.Property;
 import com.vaadin.data.util.converter.Converter;
 import com.vaadin.server.Resource;
 import com.vaadin.shared.ui.MultiSelectMode;
@@ -57,19 +58,22 @@ public class MultiSelectTable<ET> extends CustomField<Collection> {
 
         @Override
         protected void setValue(Object newValue, boolean repaintIsNotNeeded) throws ReadOnlyException {
-            Set oldvalue = (Set) getValue();
+            Set<ET> oldvalue = (Set<ET>) getValue();
             super.setValue(newValue, repaintIsNotNeeded);
             if (clientSideChange) {
                 // TODO add strategies for maintaining the order in case of List
                 // e.g. same as listing, selection order ...
-                Collection collection = getEditedCollection();
                 Set newvalue = (Set) getValue();
-                Set orphaned = new HashSet(oldvalue);
+                Set<ET> orphaned = new HashSet<ET>(oldvalue);
                 orphaned.removeAll(newvalue);
-                collection.removeAll(orphaned);
-                Set newValues = new LinkedHashSet(newvalue);
+                removeRelation(orphaned);
+                allRemovedRelations.addAll(orphaned);
+                allAddedRelations.removeAll(orphaned);
+                Set<ET> newValues = new LinkedHashSet<ET>(newvalue);
                 newValues.removeAll(oldvalue);
-                collection.addAll(newValues);
+                addRelation(newValues);
+                allAddedRelations.addAll(newValues);
+                allRemovedRelations.removeAll(newValues);
                 MultiSelectTable.this.fireValueChange(true);
             }
         }
@@ -77,21 +81,101 @@ public class MultiSelectTable<ET> extends CustomField<Collection> {
     };
     private Class<ET> optionType;
 
+    private Set<ET> allAddedRelations = new HashSet<ET>();
+    private Set<ET> allRemovedRelations = new HashSet<ET>();
+
     public MultiSelectTable(Class<ET> optionType) {
         this();
         table.setContainerDataSource(new ListContainer(optionType));
         this.optionType = optionType;
     }
-    
+
     public MultiSelectTable(String caption) {
         this();
         setCaption(caption);
     }
 
-    private Collection<ET> getEditedCollection() {
+    /**
+     * Adds given options to the modified collection. The default implementation
+     * simply uses java.util.Collection APIs to maintain the edited collection.
+     * If the underlying data model needs some some custom maintenance, e.g. a
+     * bi-directional many-to-many relation in JPA, you can add your own logic
+     * by overriding this method.
+     *
+     * @param newValues the new objects to be added to the collection.
+     */
+    protected void addRelation(Set<ET> newValues) {
+        getEditedCollection().addAll(newValues);
+    }
+
+    /**
+     * Removes given options from the modified collection. The default
+     * implementation simply uses java.util.Collection APIs to maintain the
+     * edited collection. If the underlying data model needs some some custom
+     * maintenance, e.g. a bi-directional many-to-many relation in JPA, you can
+     * add your own logic by overriding this method.
+     *
+     * @param orphaned the new objects to be removed from the collection.
+     */
+    protected void removeRelation(Set<ET> orphaned) {
+        getEditedCollection().removeAll(orphaned);
+    }
+
+    /**
+     * @return all objects that are added to the edited collection. The added
+     * relations are calculated since last call to setPropertyDataSource method
+     * (when the modified property/collection is set by e.g. FieldGroup) or
+     * explicit call to clearModifiedRelations().
+     */
+    public Set<ET> getAllAddedRelations() {
+        return allAddedRelations;
+    }
+
+    /**
+     * @return all objects that are removed from the edited collection. The
+     * deleted relations are calculated since last call to setPropertyDataSource
+     * method (when the modified property/collection is set by e.g. FieldGroup)
+     * or explicit call to clearModifiedRelations().
+     */
+    public Set<ET> getAllRemovedRelations() {
+        return allRemovedRelations;
+    }
+
+    /**
+     * @return all objects that are either added or removed to/from the edited
+     * collection. The objects are calculated since last call to
+     * setPropertyDataSource method (when the modified property/collection is
+     * set by e.g. FieldGroup) or explicit call to clearModifiedRelations().
+     */
+    public Set<ET> getAllModifiedRelations() {
+        HashSet<ET> all = new HashSet<ET>(allAddedRelations);
+        all.addAll(allRemovedRelations);
+        return all;
+    }
+
+    @Override
+    public void setPropertyDataSource(Property newDataSource) {
+        clearModifiedRelations();
+        super.setPropertyDataSource(newDataSource);
+    }
+
+    /**
+     * Clears the fields that track the elements that are added or removed to
+     * the modified collection. This method is automatically called when a new
+     * property is assigned to this field.
+     */
+    public void clearModifiedRelations() {
+        allAddedRelations.clear();
+        allRemovedRelations.clear();
+    }
+
+    /**
+     * @return the collection being edited by this field.
+     */
+    protected Collection<ET> getEditedCollection() {
         Collection c = getValue();
         if (c == null) {
-            if(getPropertyDataSource() == null) {
+            if (getPropertyDataSource() == null) {
                 // this should never happen :-)
                 return new HashSet();
             }
@@ -174,7 +258,7 @@ public class MultiSelectTable<ET> extends CustomField<Collection> {
             table.setContainerDataSource(new ListContainer(list), Arrays.asList(
                     visProps));
         }
-        if(pendingHeaders != null) {
+        if (pendingHeaders != null) {
             table.setColumnHeaders(pendingHeaders);
         }
         return this;
@@ -188,12 +272,14 @@ public class MultiSelectTable<ET> extends CustomField<Collection> {
      */
     public MultiSelectTable<ET> setOptions(ET... list) {
         if (visProps == null) {
-            table.setContainerDataSource(new ListContainer(optionType, Arrays.asList(list)));
+            table.setContainerDataSource(new ListContainer(optionType, Arrays.
+                    asList(list)));
         } else {
-            table.setContainerDataSource(new ListContainer(optionType, Arrays.asList(list)), Arrays.asList(
+            table.setContainerDataSource(new ListContainer(optionType, Arrays.
+                    asList(list)), Arrays.asList(
                     visProps));
         }
-        if(pendingHeaders != null) {
+        if (pendingHeaders != null) {
             table.setColumnHeaders(pendingHeaders);
         }
         return this;
@@ -252,10 +338,9 @@ public class MultiSelectTable<ET> extends CustomField<Collection> {
         return table;
     }
 
-    
     /**
-     * @return the underlaying table implementation. Note that the component 
-     * heavily relies on some features so changing some of the configuration 
+     * @return the underlaying table implementation. Note that the component
+     * heavily relies on some features so changing some of the configuration
      * options in Table is unsafe.
      */
     public Table getTable() {
