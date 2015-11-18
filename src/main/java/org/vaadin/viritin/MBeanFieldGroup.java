@@ -77,25 +77,35 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
         for (Object property : getBoundPropertyIds()) {
             final Field<?> field = getField(property);
 
-            // Make @NotNull annotated fields "required"
             try {
-                java.lang.reflect.Field declaredField = findDeclaredField(
-                        property, nonHiddenBeanType);
-                final NotNull notNullAnnotation = declaredField.getAnnotation(
-                        NotNull.class);
-                if (notNullAnnotation != null) {
-                    field.setRequired(true);
-                    if (notNullAnnotation.message() != null) {
-                        getField(property).setRequiredError(notNullAnnotation.
-                                message());
+
+                // Make @NotNull annotated fields "required"
+                try {
+                    java.lang.reflect.Field declaredField = findDeclaredField(
+                            property, nonHiddenBeanType);
+                    final NotNull notNullAnnotation = declaredField.
+                            getAnnotation(
+                                    NotNull.class);
+                    if (notNullAnnotation != null) {
+                        field.setRequired(true);
+                        if (notNullAnnotation.message() != null) {
+                            getField(property).setRequiredError(
+                                    notNullAnnotation.
+                                    message());
+                        }
                     }
+                } catch (NoSuchFieldException ex) {
+                    Logger.getLogger(MBeanFieldGroup.class.getName()).
+                            log(Level.FINE, null, ex);
+                } catch (SecurityException ex) {
+                    Logger.getLogger(MBeanFieldGroup.class.getName()).
+                            log(Level.SEVERE, null, ex);
                 }
-            } catch (NoSuchFieldException ex) {
-                Logger.getLogger(MBeanFieldGroup.class.getName()).
-                        log(Level.FINE, null, ex);
-            } catch (SecurityException ex) {
-                Logger.getLogger(MBeanFieldGroup.class.getName()).
-                        log(Level.SEVERE, null, ex);
+            } catch (Throwable e) {
+                if (e instanceof java.lang.ClassNotFoundException) {
+                    Logger.getLogger(MBeanFieldGroup.class.getName()).
+                            log(Level.FINE, "Validation API not available.");
+                }
             }
         }
     }
@@ -347,7 +357,8 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
      * Sets the "validation error target", the component on which validation
      * errors are shown, for given validator type.
      *
-     * @param validatorType the class of the validator whose errors should be targeted
+     * @param validatorType the class of the validator whose errors should be
+     * targeted
      * @param component the component on which the errors should be displayed on
      * @return the MBeanFieldGroup instance
      */
