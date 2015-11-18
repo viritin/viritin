@@ -1,5 +1,9 @@
 package org.vaadin.viritin.grid;
 
+import com.vaadin.data.Item;
+import com.vaadin.data.RpcDataProviderExtension;
+import com.vaadin.data.fieldgroup.FieldGroup;
+import com.vaadin.server.Extension;
 import org.vaadin.viritin.grid.utils.GridUtils;
 
 import com.vaadin.ui.Grid;
@@ -28,7 +32,7 @@ public class MGrid<T> extends Grid {
     public MGrid(Class<T> typeOfRows) {
         setContainerDataSource(new ListContainer(typeOfRows));
     }
-    
+
     /**
      * Creates a new instance of MGrid with given list of rows.
      *
@@ -63,8 +67,8 @@ public class MGrid<T> extends Grid {
     }
 
     /**
-     * A shorthand to create an MGrid using SortableLazyList. By default page size
-     * of LazyList.DEFAULT_PAGE_SIZE (30) is used.
+     * A shorthand to create an MGrid using SortableLazyList. By default page
+     * size of LazyList.DEFAULT_PAGE_SIZE (30) is used.
      *
      * @param pageProvider the interface via entities are fetched
      * @param countProvider the interface via the count of items is detected
@@ -134,6 +138,67 @@ public class MGrid<T> extends Grid {
     public Collection<T> getSelectedRowsWithType() {
         // Maybe this is more complicated than it should be :-)
         return (Collection<T>) super.getSelectedRows();
+    }
+
+    public MGrid<T> withProperties(String... propertyIds) {
+        setColumns((Object[]) propertyIds);
+        return this;
+    }
+
+    private FieldGroup.CommitHandler reloadDataEfficientlyAfterEditor;
+
+    @Override
+    public void setEditorEnabled(boolean isEnabled) throws IllegalStateException {
+        super.setEditorEnabled(isEnabled);
+        ensureRowRefreshListener(isEnabled);
+
+    }
+
+    protected void ensureRowRefreshListener(boolean isEnabled) {
+        if (isEnabled && reloadDataEfficientlyAfterEditor == null) {
+            reloadDataEfficientlyAfterEditor = new FieldGroup.CommitHandler() {
+                @Override
+                public void preCommit(FieldGroup.CommitEvent commitEvent) throws FieldGroup.CommitException {
+                }
+
+                @Override
+                public void postCommit(FieldGroup.CommitEvent commitEvent) throws FieldGroup.CommitException {
+                    Item itemDataSource = commitEvent.getFieldBinder().
+                            getItemDataSource();
+                    if (itemDataSource instanceof ListContainer.DynaBeanItem) {
+                        ListContainer.DynaBeanItem dynaBeanItem = (ListContainer.DynaBeanItem) itemDataSource;
+                        T bean = (T) dynaBeanItem.getBean();
+                        refreshRow(bean);
+                    }
+                }
+
+            };
+            getEditorFieldGroup().addCommitHandler(
+                    reloadDataEfficientlyAfterEditor);
+        }
+    }
+
+    /**
+     * Manually forces refresh of the row that represents given entity.
+     * ListContainer backing MGrid/MTable don't support property change
+     * listeners (to save memory and CPU cycles). In some case with Grid, if you
+     * know only certain row(s) are changed, you can make a smaller client side
+     * change by refreshing rows with this method, instead of refreshing the 
+     * whole Grid (e.g. by re-assigning the bean list).
+     * <p>
+     * This method is automatically called if you use "editor row".
+     *
+     * @param bean the bean whose row should be refreshed.
+     */
+    public void refreshRow(T bean) {
+        Collection<Extension> extensions = getExtensions();
+        for (Extension extension : extensions) {
+            if (extension instanceof RpcDataProviderExtension) {
+                RpcDataProviderExtension rpcDataProviderExtension = (RpcDataProviderExtension) extension;
+                rpcDataProviderExtension.updateRowData(bean);
+                break;
+            }
+        }
     }
 
 }
