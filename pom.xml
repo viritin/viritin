@@ -149,7 +149,14 @@
             <version>1.4</version>
             <scope>test</scope>
         </dependency>
-        
+        <!-- To support websocket commmunication for tests, to be kept in sync 
+             with addon-test-helper jetty dependency. -->
+        <dependency>
+            <groupId>org.eclipse.jetty.websocket</groupId>
+            <artifactId>websocket-server</artifactId>
+            <version>9.2.6.v20141205</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-client-compiled</artifactId>
@@ -176,6 +183,12 @@
         <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-themes</artifactId>
+            <version>${vaadin.version}</version>
+            <scope>test</scope>
+        </dependency>        
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-push</artifactId>
             <version>${vaadin.version}</version>
             <scope>test</scope>
         </dependency>        
