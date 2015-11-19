@@ -55,7 +55,7 @@ public class ListContainer<T> extends AbstractContainer implements
     }
 
     public ListContainer(Class<T> type, Collection<T> backingList) {
-        if(type != null) {
+        if (type != null) {
             dynaClass = WrapDynaClass.createDynaClass(type);
         }
         setCollection(backingList);
@@ -253,7 +253,7 @@ public class ListContainer<T> extends AbstractContainer implements
     public static Class getNestedPropertyType(DynaClass bean, String name)
             throws IllegalAccessException, InvocationTargetException,
             NoSuchMethodException, ClassNotFoundException, NoSuchFieldException {
-        if(bean == null) {
+        if (bean == null) {
             // The type is not properly initilized yet, just leave it as generic
             // Object
             return Object.class;
@@ -280,6 +280,12 @@ public class ListContainer<T> extends AbstractContainer implements
                     resolver.isIndexed(name) ? 0 : 1);
         }
         Class<?> type = bean.getDynaProperty(name).getType();
+        if (type.isPrimitive() == true) {
+            // Vaadin can't handle primitive types in _all_ places, so use
+            // wrappers instead. FieldGroup works, but e.g. Table in _editable_
+            // mode fails for some reason
+            return ClassUtils.primitiveToWrapper(type);
+        }
         return type;
     }
 
