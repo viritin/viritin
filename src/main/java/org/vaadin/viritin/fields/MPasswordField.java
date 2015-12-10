@@ -22,6 +22,7 @@ import com.vaadin.event.FieldEvents.TextChangeEvent;
 import com.vaadin.server.AbstractErrorMessage;
 import com.vaadin.server.CompositeErrorMessage;
 import com.vaadin.server.ErrorMessage;
+import com.vaadin.server.Resource;
 import com.vaadin.ui.PasswordField;
 import java.util.EventObject;
 
@@ -139,6 +140,21 @@ public class MPasswordField extends PasswordField {
 
     public MPasswordField withNullRepresentation(String nullRepresentation) {
         setNullRepresentation(nullRepresentation);
+        return this;
+    }
+
+    public MPasswordField withIcon(Resource icon) {
+        setIcon(icon);
+        return this;
+    }
+
+    public MPasswordField withRequired(boolean required) {
+        setRequired(required);
+        return this;
+    }
+    
+    public MPasswordField withRequiredError(String requiredError) {
+        setRequiredError(requiredError);
         return this;
     }
 

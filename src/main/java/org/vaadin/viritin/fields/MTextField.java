@@ -154,6 +154,16 @@ public class MTextField extends TextField {
         setIcon(icon);
         return this;
     }
+    
+    public MTextField withRequired(boolean required) {
+        setRequired(required);
+        return this;
+    }
+    
+    public MTextField withRequiredError(String requiredError) {
+        setRequiredError(requiredError);
+        return this;
+    }
 
     @Override
     public ErrorMessage getErrorMessage() {
