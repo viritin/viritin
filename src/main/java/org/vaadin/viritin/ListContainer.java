@@ -526,7 +526,13 @@ public class ListContainer<T> extends AbstractContainer implements
 
         private DynaBean getDynaBean() {
             if (db == null) {
-                db = new WrapDynaBean(bean, getDynaClass(bean));
+                try {
+                    db = new WrapDynaBean(bean, getDynaClass(bean));
+                } catch(Throwable e) {
+                    // Older version of beanutils is somehow available by the 
+                    // classloader! Probably tomee
+                    db  = new WrapDynaBean(bean);
+                }
             }
             return db;
         }
