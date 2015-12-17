@@ -87,7 +87,7 @@ public class MTable<T> extends Table {
      * @param pageProvider the interface via entities are fetched
      * @param countProvider the interface via the count of items is detected
      */
-    public MTable(LazyList.PagingProvider pageProvider,
+    public MTable(LazyList.PagingProvider<T> pageProvider,
             LazyList.CountProvider countProvider) {
         this(new LazyList(pageProvider, countProvider, DEFAULT_PAGE_SIZE));
     }
@@ -99,7 +99,7 @@ public class MTable<T> extends Table {
      * @param countProvider the interface via the count of items is detected
      * @param pageSize the page size (aka maxResults) that is used in paging.
      */
-    public MTable(LazyList.PagingProvider pageProvider,
+    public MTable(LazyList.PagingProvider<T> pageProvider,
             LazyList.CountProvider countProvider, int pageSize) {
         this(new LazyList(pageProvider, countProvider, pageSize));
     }
@@ -111,7 +111,7 @@ public class MTable<T> extends Table {
      * @param pageProvider the interface via entities are fetched
      * @param countProvider the interface via the count of items is detected
      */
-    public MTable(SortableLazyList.SortablePagingProvider pageProvider,
+    public MTable(SortableLazyList.SortablePagingProvider<T> pageProvider,
             LazyList.CountProvider countProvider) {
         this(new SortableLazyList(pageProvider, countProvider, DEFAULT_PAGE_SIZE));
     }
@@ -123,7 +123,7 @@ public class MTable<T> extends Table {
      * @param countProvider the interface via the count of items is detected
      * @param pageSize the page size (aka maxResults) that is used in paging.
      */
-    public MTable(SortableLazyList.SortablePagingProvider pageProvider,
+    public MTable(SortableLazyList.SortablePagingProvider<T> pageProvider,
             LazyList.CountProvider countProvider, int pageSize) {
         this(new SortableLazyList(pageProvider, countProvider, pageSize));
     }
@@ -143,7 +143,7 @@ public class MTable<T> extends Table {
      * @param countProvider the interface via the count of items is detected
      * @return this MTable object
      */
-    public MTable<T> lazyLoadFrom(LazyList.PagingProvider pageProvider,
+    public MTable<T> lazyLoadFrom(LazyList.PagingProvider<T> pageProvider,
             LazyList.CountProvider countProvider) {
         setBeans(new LazyList(pageProvider, countProvider, DEFAULT_PAGE_SIZE));
         return this;
@@ -157,7 +157,7 @@ public class MTable<T> extends Table {
      * @param pageSize the page size (aka maxResults) that is used in paging.
      * @return this MTable object
      */
-    public MTable<T> lazyLoadFrom(LazyList.PagingProvider pageProvider,
+    public MTable<T> lazyLoadFrom(LazyList.PagingProvider<T> pageProvider,
             LazyList.CountProvider countProvider, int pageSize) {
         setBeans(new LazyList(pageProvider, countProvider, pageSize));
         return this;
@@ -170,7 +170,7 @@ public class MTable<T> extends Table {
      * @param countProvider the interface via the count of items is detected
      * @return this MTable object
      */
-    public MTable<T> lazyLoadFrom(SortableLazyList.SortablePagingProvider pageProvider,
+    public MTable<T> lazyLoadFrom(SortableLazyList.SortablePagingProvider<T> pageProvider,
             LazyList.CountProvider countProvider) {
         setBeans(new SortableLazyList(pageProvider, countProvider, DEFAULT_PAGE_SIZE));
         return this;
@@ -184,7 +184,7 @@ public class MTable<T> extends Table {
      * @param pageSize the page size (aka maxResults) that is used in paging.
      * @return this MTable object
      */
-    public MTable<T> lazyLoadFrom(SortableLazyList.SortablePagingProvider pageProvider,
+    public MTable<T> lazyLoadFrom(SortableLazyList.SortablePagingProvider<T> pageProvider,
             LazyList.CountProvider countProvider, int pageSize) {
         setBeans(new SortableLazyList(pageProvider, countProvider, pageSize));
         return this;
