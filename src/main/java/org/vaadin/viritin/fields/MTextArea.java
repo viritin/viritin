@@ -95,4 +95,13 @@ public class MTextArea extends TextArea {
         return this;
     }
 
+    public MTextArea withRequired(boolean required) {
+        setRequired(required);
+        return this;
+    }
+    
+    public MTextArea withRequiredError(String requiredError) {
+        setRequiredError(requiredError);
+        return this;
+    }
 }

@@ -84,6 +84,13 @@ public class TypedSelect<T> extends CustomField {
         getSelect().addStyleName(style);
         super.addStyleName(style);
     }
+    
+    
+    @Override
+    public void removeStyleName(String style) {
+    	getSelect().removeStyleName(style);
+    	super.removeStyleName(style);
+    }
 
     @Override
     public void setStyleName(String style) {

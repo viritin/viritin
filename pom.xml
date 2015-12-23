@@ -3,12 +3,12 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.vaadin</groupId>
     <artifactId>viritin</artifactId>
-    <version>1.37-SNAPSHOT</version>
+    <version>1.40-SNAPSHOT</version>
     <name>Viritin</name>
     <packaging>bundle</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <vaadin.version>7.5.1</vaadin.version>
+        <vaadin.version>7.5.6</vaadin.version>
         <vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
 
         <!-- ZIP Manifest fields -->
@@ -29,7 +29,7 @@
         <url>git://github.com/viritin/viritin.git</url>
         <connection>scm:git:git://github.com/viritin/viritin.git</connection>
         <developerConnection>scm:git:ssh://git@github.com:/viritin/viritin.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>viritin-1.37</tag>
     </scm>
 
     <issueManagement>
@@ -119,7 +119,7 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.3.2</version>
+            <version>3.4</version>
             <type>jar</type>
         </dependency>
         <dependency>
@@ -149,7 +149,14 @@
             <version>1.4</version>
             <scope>test</scope>
         </dependency>
-        
+        <!-- To support websocket commmunication for tests, to be kept in sync 
+             with addon-test-helper jetty dependency. -->
+        <dependency>
+            <groupId>org.eclipse.jetty.websocket</groupId>
+            <artifactId>websocket-server</artifactId>
+            <version>9.2.6.v20141205</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-client-compiled</artifactId>
@@ -176,6 +183,12 @@
         <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-themes</artifactId>
+            <version>${vaadin.version}</version>
+            <scope>test</scope>
+        </dependency>        
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-push</artifactId>
             <version>${vaadin.version}</version>
             <scope>test</scope>
         </dependency>        

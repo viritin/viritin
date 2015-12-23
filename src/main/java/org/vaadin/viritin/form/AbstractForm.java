@@ -208,7 +208,11 @@ public abstract class AbstractForm<T> extends CustomComponent implements
                 fieldGroup.unbind();
             }
             fieldGroup = bindEntity(entity);
-            fieldGroup.setValidationGroups(getValidationGroups());
+            try {
+                fieldGroup.setValidationGroups(getValidationGroups());
+            } catch (Throwable e) {
+                // Probably no Validation API available
+            }
 
             for (Map.Entry<MBeanFieldGroup.MValidator<T>, Collection<AbstractComponent>> e : mValidators.
                     entrySet()) {

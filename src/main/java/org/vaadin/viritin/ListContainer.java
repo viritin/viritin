@@ -55,7 +55,9 @@ public class ListContainer<T> extends AbstractContainer implements
     }
 
     public ListContainer(Class<T> type, Collection<T> backingList) {
-        dynaClass = WrapDynaClass.createDynaClass(type);
+        if (type != null) {
+            dynaClass = WrapDynaClass.createDynaClass(type);
+        }
         setCollection(backingList);
     }
 
@@ -251,6 +253,11 @@ public class ListContainer<T> extends AbstractContainer implements
     public static Class getNestedPropertyType(DynaClass bean, String name)
             throws IllegalAccessException, InvocationTargetException,
             NoSuchMethodException, ClassNotFoundException, NoSuchFieldException {
+        if (bean == null) {
+            // The type is not properly initilized yet, just leave it as generic
+            // Object
+            return Object.class;
+        }
         // Resolve nested references
         while (resolver.hasNested(name)) {
             String next = resolver.next(name);
@@ -273,6 +280,12 @@ public class ListContainer<T> extends AbstractContainer implements
                     resolver.isIndexed(name) ? 0 : 1);
         }
         Class<?> type = bean.getDynaProperty(name).getType();
+        if (type.isPrimitive() == true) {
+            // Vaadin can't handle primitive types in _all_ places, so use
+            // wrappers instead. FieldGroup works, but e.g. Table in _editable_
+            // mode fails for some reason
+            return ClassUtils.primitiveToWrapper(type);
+        }
         return type;
     }
 
@@ -513,7 +526,13 @@ public class ListContainer<T> extends AbstractContainer implements
 
         private DynaBean getDynaBean() {
             if (db == null) {
-                db = new WrapDynaBean(bean, getDynaClass(bean));
+                try {
+                    db = new WrapDynaBean(bean, getDynaClass(bean));
+                } catch(Throwable e) {
+                    // Older version of beanutils is somehow available by the 
+                    // classloader! Probably tomee
+                    db  = new WrapDynaBean(bean);
+                }
             }
             return db;
         }

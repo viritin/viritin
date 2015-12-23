@@ -16,7 +16,9 @@
 package org.vaadin.viritin.button;
 
 import com.vaadin.server.Resource;
+import com.vaadin.shared.MouseEventDetails;
 import com.vaadin.ui.Button;
+import java.util.LinkedHashSet;
 
 /**
  * An extension to basic Vaadin button that adds some handy constructors and
@@ -63,7 +65,7 @@ public class MButton extends Button {
         setCaption(caption);
         return this;
     }
-    
+
     public MButton withDescription(String description) {
         setDescription(description);
         return this;
@@ -71,6 +73,44 @@ public class MButton extends Button {
 
     public MButton withVisible(boolean visible) {
         setVisible(visible);
+        return this;
+    }
+
+    /**
+     * A parameterless version of ClickListener to make it easier to use method
+     * references.
+     */
+    public interface MClickListener {
+
+        void onClick();
+    }
+
+    @Override
+    protected void fireClick(MouseEventDetails details) {
+        super.fireClick(details);
+        if (mClickListeners != null) {
+            final MClickListener[] array = mClickListeners.toArray(
+                    new MClickListener[mClickListeners.size()]);
+            for (MClickListener l : array) {
+                l.onClick();
+            }
+        }
+    }
+
+    private LinkedHashSet<MClickListener> mClickListeners;
+
+    public MButton addClickListener(MClickListener listener) {
+        if (mClickListeners == null) {
+            mClickListeners = new LinkedHashSet<MClickListener>();
+        }
+        mClickListeners.add(listener);
+        return this;
+    }
+
+    public MButton removeClickListener(MClickListener listener) {
+        if (mClickListeners != null) {
+            mClickListeners.remove(listener);
+        }
         return this;
     }
 

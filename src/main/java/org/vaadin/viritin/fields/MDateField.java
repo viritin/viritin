@@ -45,5 +45,15 @@ public class MDateField extends DateField {
         setStyleName(styleName);
         return this;
     }
+    
+    public MDateField withRequired(boolean required) {
+        setRequired(required);
+        return this;
+    }
+    
+    public MDateField withRequiredError(String requiredError) {
+        setRequiredError(requiredError);
+        return this;
+    }
 
 }

@@ -15,10 +15,16 @@
  */
 package org.vaadin.viritin.fields;
 
+import com.vaadin.data.Item;
+import com.vaadin.event.ItemClickEvent;
+import com.vaadin.event.ItemClickEvent.ItemClickListener;
+import com.vaadin.event.MouseEvents;
 import com.vaadin.server.Resource;
+import com.vaadin.shared.MouseEventDetails;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Table;
 import com.vaadin.util.ReflectTools;
+import java.io.Serializable;
 import java.lang.reflect.Method;
 import org.vaadin.viritin.ListContainer;
 
@@ -26,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.EventObject;
 import org.apache.commons.lang3.StringUtils;
 import org.vaadin.viritin.LazyList;
 import static org.vaadin.viritin.LazyList.DEFAULT_PAGE_SIZE;
@@ -80,7 +87,7 @@ public class MTable<T> extends Table {
      * @param pageProvider the interface via entities are fetched
      * @param countProvider the interface via the count of items is detected
      */
-    public MTable(LazyList.PagingProvider pageProvider,
+    public MTable(LazyList.PagingProvider<T> pageProvider,
             LazyList.CountProvider countProvider) {
         this(new LazyList(pageProvider, countProvider, DEFAULT_PAGE_SIZE));
     }
@@ -92,7 +99,7 @@ public class MTable<T> extends Table {
      * @param countProvider the interface via the count of items is detected
      * @param pageSize the page size (aka maxResults) that is used in paging.
      */
-    public MTable(LazyList.PagingProvider pageProvider,
+    public MTable(LazyList.PagingProvider<T> pageProvider,
             LazyList.CountProvider countProvider, int pageSize) {
         this(new LazyList(pageProvider, countProvider, pageSize));
     }
@@ -104,7 +111,7 @@ public class MTable<T> extends Table {
      * @param pageProvider the interface via entities are fetched
      * @param countProvider the interface via the count of items is detected
      */
-    public MTable(SortableLazyList.SortablePagingProvider pageProvider,
+    public MTable(SortableLazyList.SortablePagingProvider<T> pageProvider,
             LazyList.CountProvider countProvider) {
         this(new SortableLazyList(pageProvider, countProvider, DEFAULT_PAGE_SIZE));
     }
@@ -116,7 +123,7 @@ public class MTable<T> extends Table {
      * @param countProvider the interface via the count of items is detected
      * @param pageSize the page size (aka maxResults) that is used in paging.
      */
-    public MTable(SortableLazyList.SortablePagingProvider pageProvider,
+    public MTable(SortableLazyList.SortablePagingProvider<T> pageProvider,
             LazyList.CountProvider countProvider, int pageSize) {
         this(new SortableLazyList(pageProvider, countProvider, pageSize));
     }
@@ -127,6 +134,60 @@ public class MTable<T> extends Table {
             bic = createContainer(beans);
             setContainerDataSource(bic);
         }
+    }
+
+    /**
+     * Makes the table lazy load its content with given strategy.
+     *
+     * @param pageProvider the interface via entities are fetched
+     * @param countProvider the interface via the count of items is detected
+     * @return this MTable object
+     */
+    public MTable<T> lazyLoadFrom(LazyList.PagingProvider<T> pageProvider,
+            LazyList.CountProvider countProvider) {
+        setBeans(new LazyList(pageProvider, countProvider, DEFAULT_PAGE_SIZE));
+        return this;
+    }
+
+    /**
+     * Makes the table lazy load its content with given strategy.
+     *
+     * @param pageProvider the interface via entities are fetched
+     * @param countProvider the interface via the count of items is detected
+     * @param pageSize the page size (aka maxResults) that is used in paging.
+     * @return this MTable object
+     */
+    public MTable<T> lazyLoadFrom(LazyList.PagingProvider<T> pageProvider,
+            LazyList.CountProvider countProvider, int pageSize) {
+        setBeans(new LazyList(pageProvider, countProvider, pageSize));
+        return this;
+    }
+
+    /**
+     * Makes the table lazy load its content with given strategy.
+     *
+     * @param pageProvider the interface via entities are fetched
+     * @param countProvider the interface via the count of items is detected
+     * @return this MTable object
+     */
+    public MTable<T> lazyLoadFrom(SortableLazyList.SortablePagingProvider<T> pageProvider,
+            LazyList.CountProvider countProvider) {
+        setBeans(new SortableLazyList(pageProvider, countProvider, DEFAULT_PAGE_SIZE));
+        return this;
+    }
+
+    /**
+     * Makes the table lazy load its content with given strategy.
+     *
+     * @param pageProvider the interface via entities are fetched
+     * @param countProvider the interface via the count of items is detected
+     * @param pageSize the page size (aka maxResults) that is used in paging.
+     * @return this MTable object
+     */
+    public MTable<T> lazyLoadFrom(SortableLazyList.SortablePagingProvider<T> pageProvider,
+            LazyList.CountProvider countProvider, int pageSize) {
+        setBeans(new SortableLazyList(pageProvider, countProvider, pageSize));
+        return this;
     }
 
     protected ListContainer<T> createContainer(Class<T> type) {
@@ -295,6 +356,22 @@ public class MTable<T> extends Table {
         return this;
     }
 
+
+    /**
+     * Makes the first column of the table a primary column, for which all
+     * space left out from other columns is given. The method also makes sure
+     * the Table has a width defined (otherwise the setting makes no sense).
+     *     * 
+     * @return {@link MTable}
+     */
+    public MTable<T> expandFirstColumn() {
+        expand(getContainerPropertyIds().iterator().next().toString());
+        if (getWidth() == -1) {
+            return withFullWidth();
+        }
+        return this;
+    }
+
     public MTable<T> withFullWidth() {
         setWidth(100, Unit.PERCENTAGE);
         return this;
@@ -334,6 +411,19 @@ public class MTable<T> extends Table {
             setColumnExpandRatio(property, 1);
         }
         return this;
+    }
+
+    private ItemClickListener itemClickPiggyback;
+    private void ensureTypedItemClickPiggybackListener() {
+        if (itemClickPiggyback == null) {
+            itemClickPiggyback = new ItemClickListener() {
+                @Override
+                public void itemClick(ItemClickEvent event) {
+                    fireEvent(new RowClickEvent<T>(event));
+                }
+            };
+            addItemClickListener(itemClickPiggyback);
+        }
     }
 
     public static interface SimpleColumnGenerator<T> {
@@ -477,6 +567,121 @@ public class MTable<T> extends Table {
     }
 
     /**
+     * A version of ItemClickEvent that is properly typed and named.
+     *
+     * @param <T>
+     */
+    public static class RowClickEvent<T> extends MouseEvents.ClickEvent {
+
+        public static final Method TYPED_ITEM_CLICK_METHOD;
+
+        static {
+            try {
+                TYPED_ITEM_CLICK_METHOD = RowClickListener.class.getDeclaredMethod("rowClick", new Class[]{RowClickEvent.class});
+            } catch (final java.lang.NoSuchMethodException e) {
+                // This should never happen
+                throw new java.lang.RuntimeException();
+            }
+        }
+
+        private final ItemClickEvent orig;
+
+        public RowClickEvent(ItemClickEvent orig) {
+            super(orig.getComponent(), null);
+            this.orig = orig;
+        }
+
+        /**
+         * @return the entity(~row) that was clicked.
+         */
+        public T getEntity() {
+            return (T) orig.getItemId();
+        }
+
+        /**
+         * @return the entity(~row) that was clicked.
+         */
+        public T getRow() {
+            return getEntity();
+        }
+
+        /**
+         * @return the identifier of the column on which the row click happened.
+         */
+        public String getColumnId() {
+            return orig.getPropertyId().toString();
+        }
+
+        @Override
+        public MouseEventDetails.MouseButton getButton() {
+            return orig.getButton();
+        }
+
+        @Override
+        public int getClientX() {
+            return orig.getClientX();
+        }
+
+        @Override
+        public int getClientY() {
+            return orig.getClientY();
+        }
+
+        @Override
+        public int getRelativeX() {
+            return orig.getRelativeX();
+        }
+
+        @Override
+        public int getRelativeY() {
+            return orig.getRelativeY();
+        }
+
+        @Override
+        public boolean isAltKey() {
+            return orig.isAltKey();
+        }
+
+        @Override
+        public boolean isCtrlKey() {
+            return orig.isCtrlKey();
+        }
+
+        @Override
+        public boolean isDoubleClick() {
+            return orig.isDoubleClick();
+        }
+
+        @Override
+        public boolean isMetaKey() {
+            return orig.isMetaKey();
+        }
+
+        @Override
+        public boolean isShiftKey() {
+            return orig.isShiftKey();
+        }
+
+    }
+
+    /**
+     * A better typed version of ItemClickEvent.
+     * @param <T> the type of entities listed in the table
+     */
+    public interface RowClickListener<T> extends Serializable {
+        public void rowClick(RowClickEvent<T> event);
+    }
+
+    public void addRowClickListener(RowClickListener<T> listener) {
+        ensureTypedItemClickPiggybackListener();
+        addListener(RowClickEvent.class, listener, RowClickEvent.TYPED_ITEM_CLICK_METHOD);
+    }
+
+    public void removeRowClickListener(RowClickListener<T> listener) {
+        removeListener(RowClickEvent.class, listener, RowClickEvent.TYPED_ITEM_CLICK_METHOD);
+    }
+
+    /**
      * Clears caches in case the Table is backed by a LazyList implementation.
      * Also resets "pageBuffer" used by table. If you know you have changes in
      * the listing, you can call this method to ensure the UI gets updated.
@@ -486,6 +691,18 @@ public class MTable<T> extends Table {
             ((LazyList) bic.getItemIds()).reset();
         }
         resetPageBuffer();
+    }
+
+    /**
+     * Sets the row of given entity as selected. This is practically a better
+     * typed version for select(Object) and setValue(Object) methods.
+     *
+     * @param entity the entity whose row should be selected
+     * @return the MTable instance
+     */
+    public MTable<T> setSelected(T entity) {
+        setValue(entity);
+        return this;
     }
 
 }
