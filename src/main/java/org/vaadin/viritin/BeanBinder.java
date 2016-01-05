@@ -21,9 +21,14 @@ package org.vaadin.viritin;
  */
 public class BeanBinder {
 
-    public static <T> MBeanFieldGroup<T> bind(T bean, Object objectWithMemberFields) {
+    public static <T> MBeanFieldGroup<T> bind(T bean, Object objectWithMemberFields, String... nestedProperties) {
         MBeanFieldGroup<T> beanFieldGroup = new MBeanFieldGroup<T>((Class<T>) bean.getClass());
         beanFieldGroup.setItemDataSource(bean);
+        if(nestedProperties != null) {
+            for (String nestedPropertyId : nestedProperties) {
+                beanFieldGroup.getItemDataSource().addNestedProperty(nestedPropertyId);
+            }
+        }
         beanFieldGroup.setBuffered(false);
         beanFieldGroup.bindMemberFields(objectWithMemberFields);
         beanFieldGroup.configureMaddonDefaults();

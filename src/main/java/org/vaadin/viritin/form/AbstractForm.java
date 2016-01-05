@@ -247,7 +247,17 @@ public abstract class AbstractForm<T> extends CustomComponent implements
      * @return the fieldGroup created
      */
     protected MBeanFieldGroup<T> bindEntity(T entity) {
-        return BeanBinder.bind(entity, this);
+        return BeanBinder.bind(entity, this, getNestedProperties());
+    }
+    
+    private String[] nestedProperties;
+
+    public String[] getNestedProperties() {
+        return nestedProperties;
+    }
+
+    public void setNestedProperties(String... nestedProperties) {
+        this.nestedProperties = nestedProperties;
     }
 
     /**
