@@ -1,15 +1,18 @@
 package org.vaadin.viritin.grid;
 
 import com.vaadin.data.Item;
-import com.vaadin.data.RpcDataProviderExtension;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.server.Extension;
 import org.vaadin.viritin.grid.utils.GridUtils;
 
 import com.vaadin.ui.Grid;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.vaadin.viritin.LazyList;
 import static org.vaadin.viritin.LazyList.DEFAULT_PAGE_SIZE;
 import org.vaadin.viritin.ListContainer;
@@ -193,10 +196,28 @@ public class MGrid<T> extends Grid {
     public void refreshRow(T bean) {
         Collection<Extension> extensions = getExtensions();
         for (Extension extension : extensions) {
-            if (extension instanceof RpcDataProviderExtension) {
-                RpcDataProviderExtension rpcDataProviderExtension = (RpcDataProviderExtension) extension;
-                rpcDataProviderExtension.updateRowData(bean);
-                break;
+            // Calling with reflection for 7.6-7.5 compatibility
+            if(extension.getClass().getName().contains("RpcDataProviderExtension")) {
+                try {
+                    Method method = extension.getClass().getMethod("updateRowData", Object.class);
+                    method.invoke(extension, bean);
+                    break;
+                } catch (NoSuchMethodException ex) {
+                    Logger.getLogger(MGrid.class.getName()).
+                            log(Level.SEVERE, null, ex);
+                } catch (SecurityException ex) {
+                    Logger.getLogger(MGrid.class.getName()).
+                            log(Level.SEVERE, null, ex);
+                } catch (IllegalAccessException ex) {
+                    Logger.getLogger(MGrid.class.getName()).
+                            log(Level.SEVERE, null, ex);
+                } catch (IllegalArgumentException ex) {
+                    Logger.getLogger(MGrid.class.getName()).
+                            log(Level.SEVERE, null, ex);
+                } catch (InvocationTargetException ex) {
+                    Logger.getLogger(MGrid.class.getName()).
+                            log(Level.SEVERE, null, ex);
+                }
             }
         }
     }
