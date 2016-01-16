@@ -20,6 +20,7 @@ import com.vaadin.data.Container.ItemSetChangeNotifier;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.AbstractContainer;
+import com.vaadin.ui.Grid;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
@@ -357,13 +358,22 @@ public class ListContainer<T> extends AbstractContainer implements
 
     @Override
     public void sort(Object[] propertyId, boolean[] ascending) {
+
         // Grid in 7.4 may call this method with empty sorting instructions...
         if (propertyId.length > 0) {
-            Comparator<T> comparator = new PropertyComparator(propertyId,
-                    ascending);
+            if (backingList instanceof SortableLazyList) {
+                // using with MGrid may end up here
+                SortableLazyList sll = (SortableLazyList) backingList;
+                sll.setSortProperty(propertyId[0].toString());
+                sll.setSortAscending(ascending[0]);
+                sll.reset();
+            } else {
+                Comparator<T> comparator = new PropertyComparator(propertyId,
+                        ascending);
 
-            Collections.sort(backingList, comparator);
-            fireItemSetChange();
+                Collections.sort(backingList, comparator);
+                fireItemSetChange();
+            }
         }
     }
 
@@ -528,10 +538,10 @@ public class ListContainer<T> extends AbstractContainer implements
             if (db == null) {
                 try {
                     db = new WrapDynaBean(bean, getDynaClass(bean));
-                } catch(Throwable e) {
+                } catch (Throwable e) {
                     // Older version of beanutils is somehow available by the 
                     // classloader! Probably tomee
-                    db  = new WrapDynaBean(bean);
+                    db = new WrapDynaBean(bean);
                 }
             }
             return db;

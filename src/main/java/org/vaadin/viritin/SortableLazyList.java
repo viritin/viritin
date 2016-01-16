@@ -22,7 +22,7 @@ public class SortableLazyList<T> extends LazyList implements Serializable {
         // TODO resetting size at this point is actually obsolete?
         reset();
     }
-
+    
     private boolean sortAscending = true;
     private String sortProperty;
 

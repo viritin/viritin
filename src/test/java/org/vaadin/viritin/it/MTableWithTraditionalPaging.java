@@ -23,6 +23,9 @@ import org.vaadin.viritin.testdomain.Service;
 @Theme("valo")
 public class MTableWithTraditionalPaging extends AbstractTest {
 
+    /**
+     * A quickly drafted version of pagination bar.
+     */
     public static class PaginationBar extends MHorizontalLayout {
 
         private ClickListener handler = new Button.ClickListener() {

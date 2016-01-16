@@ -2,6 +2,7 @@ package org.vaadin.viritin.grid;
 
 import com.vaadin.data.Item;
 import com.vaadin.data.fieldgroup.FieldGroup;
+import com.vaadin.event.SortEvent;
 import com.vaadin.server.Extension;
 import org.vaadin.viritin.grid.utils.GridUtils;
 
@@ -78,7 +79,7 @@ public class MGrid<T> extends Grid {
      */
     public MGrid(SortableLazyList.SortablePagingProvider<T> pageProvider,
             LazyList.CountProvider countProvider) {
-        this(new SortableLazyList(pageProvider, countProvider, DEFAULT_PAGE_SIZE));
+        this(pageProvider, countProvider, DEFAULT_PAGE_SIZE);
     }
 
     /**
@@ -91,6 +92,12 @@ public class MGrid<T> extends Grid {
     public MGrid(SortableLazyList.SortablePagingProvider<T> pageProvider,
             LazyList.CountProvider countProvider, int pageSize) {
         this(new SortableLazyList(pageProvider, countProvider, pageSize));
+        addSortListener(new SortEvent.SortListener() {
+            @Override
+            public void sort(SortEvent event) {
+                refreshRows();
+            }
+        });
     }
 
     /**
@@ -186,7 +193,7 @@ public class MGrid<T> extends Grid {
      * ListContainer backing MGrid/MTable don't support property change
      * listeners (to save memory and CPU cycles). In some case with Grid, if you
      * know only certain row(s) are changed, you can make a smaller client side
-     * change by refreshing rows with this method, instead of refreshing the 
+     * change by refreshing rows with this method, instead of refreshing the
      * whole Grid (e.g. by re-assigning the bean list).
      * <p>
      * This method is automatically called if you use "editor row".
@@ -197,10 +204,49 @@ public class MGrid<T> extends Grid {
         Collection<Extension> extensions = getExtensions();
         for (Extension extension : extensions) {
             // Calling with reflection for 7.6-7.5 compatibility
-            if(extension.getClass().getName().contains("RpcDataProviderExtension")) {
+            if (extension.getClass().getName().contains(
+                    "RpcDataProviderExtension")) {
                 try {
-                    Method method = extension.getClass().getMethod("updateRowData", Object.class);
+                    Method method = extension.getClass().getMethod(
+                            "updateRowData", Object.class);
                     method.invoke(extension, bean);
+                    break;
+                } catch (NoSuchMethodException ex) {
+                    Logger.getLogger(MGrid.class.getName()).
+                            log(Level.SEVERE, null, ex);
+                } catch (SecurityException ex) {
+                    Logger.getLogger(MGrid.class.getName()).
+                            log(Level.SEVERE, null, ex);
+                } catch (IllegalAccessException ex) {
+                    Logger.getLogger(MGrid.class.getName()).
+                            log(Level.SEVERE, null, ex);
+                } catch (IllegalArgumentException ex) {
+                    Logger.getLogger(MGrid.class.getName()).
+                            log(Level.SEVERE, null, ex);
+                } catch (InvocationTargetException ex) {
+                    Logger.getLogger(MGrid.class.getName()).
+                            log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
+
+    /**
+     * Manually forces refresh of all visible rows.
+     * ListContainer backing MGrid/MTable don't support property change
+     * listeners (to save memory and CPU cycles). This method explicitly 
+     * forces Grid's row cache invalidation. 
+     */
+    public void refreshRows() {
+        Collection<Extension> extensions = getExtensions();
+        for (Extension extension : extensions) {
+            // Calling with reflection for 7.6-7.5 compatibility
+            if (extension.getClass().getName().contains(
+                    "RpcDataProviderExtension")) {
+                try {
+                    Method method = extension.getClass().getMethod(
+                            "refreshCache");
+                    method.invoke(extension);
                     break;
                 } catch (NoSuchMethodException ex) {
                     Logger.getLogger(MGrid.class.getName()).
