@@ -489,7 +489,13 @@ public class ListContainer<T> extends AbstractContainer implements
                 } catch (Exception e) {
                     try {
                         return PropertyUtils.getProperty(bean, propertyName);
-                    } catch (Exception ex) {
+                    } catch (NestedNullException ex) {
+                        return null;
+                    } catch (IllegalAccessException ex) {
+                        throw new RuntimeException(ex);
+                    } catch (InvocationTargetException ex) {
+                        throw new RuntimeException(ex);
+                    } catch (NoSuchMethodException ex) {
                         throw new RuntimeException(ex);
                     }
                 }

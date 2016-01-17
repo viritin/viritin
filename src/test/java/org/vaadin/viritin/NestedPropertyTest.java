@@ -282,7 +282,14 @@ public class NestedPropertyTest {
     public static List<Entity> getEntities(int n) {
         ArrayList<Entity> arrayList = new ArrayList<Entity>();
         for (int i = 0; i < n; i++) {
-            arrayList.add(new Entity());
+            final Entity entity = new Entity();
+            if(i==1) {
+                entity.getDetail().property = null;
+            }
+            if(i==2) {
+                entity.setDetail(null);
+            }
+            arrayList.add(entity);
         }
         return arrayList;
     }
