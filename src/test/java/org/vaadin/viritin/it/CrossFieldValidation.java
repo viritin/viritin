@@ -8,6 +8,7 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.Notification;
 import java.util.Date;
+import java.util.Locale;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -38,7 +39,7 @@ public class CrossFieldValidation extends AbstractTest {
     }
 
     @FieldMatch.List({
-        @FieldMatch(first = "email", second = "verifyEmail", message = "Emails must match"
+        @FieldMatch(first = "email", second = "verifyEmail", message = "{YourMsgKey}"
                 , groups = CustomGroup.class
         )
     }
@@ -152,7 +153,8 @@ public class CrossFieldValidation extends AbstractTest {
             // setValidationErrorTarget(FieldMatch.class, verifyEmail);
             
             /* Bean level JSR303 validators supports validation groups. */
-            // setValidationGroups(CustomGroup.class);
+            setValidationGroups(CustomGroup.class);
+            setLocale(new Locale("fi"));
         }
 
         @Override

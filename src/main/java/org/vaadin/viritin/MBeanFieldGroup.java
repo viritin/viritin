@@ -18,16 +18,13 @@ package org.vaadin.viritin;
 import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
-import com.vaadin.data.validator.BeanValidator;
 import com.vaadin.event.*;
 import com.vaadin.event.FieldEvents.TextChangeNotifier;
 import com.vaadin.server.AbstractErrorMessage;
-import com.vaadin.server.CompositeErrorMessage;
 import com.vaadin.server.ErrorMessage;
 import com.vaadin.server.UserError;
 import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.AbstractField;
-import com.vaadin.ui.Component;
 import com.vaadin.ui.Field;
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
@@ -40,17 +37,20 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.validation.ConstraintViolation;
+import javax.validation.MessageInterpolator;
 import javax.validation.Validation;
+import javax.validation.ValidationException;
 import javax.validation.ValidatorFactory;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.groups.Default;
+import javax.validation.metadata.ConstraintDescriptor;
 import org.vaadin.viritin.fields.MPasswordField;
 
 import org.vaadin.viritin.fields.MTextField;
@@ -184,8 +184,29 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
     public Collection<String> getBeanLevelValidationErrors() {
         Collection<String> errors = new ArrayList<String>();
         if (getConstraintViolations() != null) {
-            for (ConstraintViolation<T> constraintViolation : getConstraintViolations()) {
-                errors.add(constraintViolation.getMessage());
+            for (final ConstraintViolation<T> constraintViolation : getConstraintViolations()) {
+                final MessageInterpolator.Context context = new MessageInterpolator.Context() {
+                    @Override
+                    public ConstraintDescriptor<?> getConstraintDescriptor() {
+                        return constraintViolation.getConstraintDescriptor();
+                    }
+
+                    @Override
+                    public Object getValidatedValue() {
+                        return constraintViolation.getInvalidValue();
+                    }
+
+                    @Override
+                    public <T> T unwrap(Class<T> type) {
+                        throw new ValidationException();
+                    }
+                };
+                
+                final String msg = factory
+                        .getMessageInterpolator().interpolate(
+                                constraintViolation.getMessageTemplate(),
+                                context, getLocale());
+                errors.add(msg);
             }
         }
         if (getBasicConstraintViolations() != null) {
@@ -257,6 +278,11 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
         }
         this.jsr303beanLevelViolations = constraintViolations;
         return false;
+    }
+
+    private Locale getLocale() {
+        Field<?> firstField = getFields().iterator().next();
+        return firstField.getLocale();
     }
 
     public interface FieldGroupListener<T> {
