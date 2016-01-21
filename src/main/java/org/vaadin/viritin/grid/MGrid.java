@@ -112,7 +112,12 @@ public class MGrid<T> extends Grid {
     }
 
     public MGrid<T> setRows(List<T> rows) {
-        setContainerDataSource(new ListContainer(rows));
+        if (getContainerDataSource() instanceof ListContainer) {
+            ListContainer<T> listContainer = (ListContainer<T>) getContainerDataSource();
+            listContainer.setCollection(rows);
+        } else {
+            setContainerDataSource(new ListContainer(rows));
+        }
         return this;
     }
 
@@ -266,6 +271,60 @@ public class MGrid<T> extends Grid {
                 }
             }
         }
+    }
+    
+        /**
+     * Makes the table lazy load its content with given strategy.
+     *
+     * @param pageProvider the interface via entities are fetched
+     * @param countProvider the interface via the count of items is detected
+     * @return this MTable object
+     */
+    public MGrid<T> lazyLoadFrom(LazyList.PagingProvider<T> pageProvider,
+            LazyList.CountProvider countProvider) {
+        setRows(new LazyList(pageProvider, countProvider, DEFAULT_PAGE_SIZE));
+        return this;
+    }
+
+    /**
+     * Makes the table lazy load its content with given strategy.
+     *
+     * @param pageProvider the interface via entities are fetched
+     * @param countProvider the interface via the count of items is detected
+     * @param pageSize the page size (aka maxResults) that is used in paging.
+     * @return this MTable object
+     */
+    public MGrid<T> lazyLoadFrom(LazyList.PagingProvider<T> pageProvider,
+            LazyList.CountProvider countProvider, int pageSize) {
+        setRows(new LazyList(pageProvider, countProvider, pageSize));
+        return this;
+    }
+
+    /**
+     * Makes the table lazy load its content with given strategy.
+     *
+     * @param pageProvider the interface via entities are fetched
+     * @param countProvider the interface via the count of items is detected
+     * @return this MTable object
+     */
+    public MGrid<T> lazyLoadFrom(SortableLazyList.SortablePagingProvider<T> pageProvider,
+            LazyList.CountProvider countProvider) {
+        setRows(new SortableLazyList(pageProvider, countProvider, DEFAULT_PAGE_SIZE));
+        return this;
+    }
+
+    /**
+     * Makes the table lazy load its content with given strategy.
+     *
+     * @param pageProvider the interface via entities are fetched
+     * @param countProvider the interface via the count of items is detected
+     * @param pageSize the page size (aka maxResults) that is used in paging.
+     * @return this MTable object
+     */
+    public MGrid<T> lazyLoadFrom(SortableLazyList.SortablePagingProvider<T> pageProvider,
+            LazyList.CountProvider countProvider, int pageSize) {
+        setRows(new SortableLazyList(pageProvider, countProvider, pageSize));
+        return this;
     }
 
 }
