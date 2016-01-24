@@ -1,6 +1,8 @@
 package org.vaadin.viritin.fields;
 
-public interface CaptionGenerator<T> {
+import java.io.Serializable;
+
+public interface CaptionGenerator<T> extends Serializable {
 	
 	public String getCaption(T option);
 	
