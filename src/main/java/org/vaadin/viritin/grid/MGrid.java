@@ -3,6 +3,7 @@ package org.vaadin.viritin.grid;
 import com.vaadin.data.Item;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.event.SortEvent;
+import com.vaadin.event.SortEvent.SortListener;
 import com.vaadin.server.Extension;
 import org.vaadin.viritin.grid.utils.GridUtils;
 
@@ -92,12 +93,21 @@ public class MGrid<T> extends Grid {
     public MGrid(SortableLazyList.SortablePagingProvider<T> pageProvider,
             LazyList.CountProvider countProvider, int pageSize) {
         this(new SortableLazyList(pageProvider, countProvider, pageSize));
-        addSortListener(new SortEvent.SortListener() {
-            @Override
-            public void sort(SortEvent event) {
-                refreshRows();
-            }
-        });
+        ensureSortListener();
+    }
+
+    private SortListener sortListener;
+
+    private void ensureSortListener() {
+        if (sortListener == null) {
+            sortListener = new SortEvent.SortListener() {
+                @Override
+                public void sort(SortEvent event) {
+                    refreshRows();
+                }
+            };
+            addSortListener(sortListener);
+        }
     }
 
     /**
@@ -237,10 +247,9 @@ public class MGrid<T> extends Grid {
     }
 
     /**
-     * Manually forces refresh of all visible rows.
-     * ListContainer backing MGrid/MTable don't support property change
-     * listeners (to save memory and CPU cycles). This method explicitly 
-     * forces Grid's row cache invalidation. 
+     * Manually forces refresh of all visible rows. ListContainer backing
+     * MGrid/MTable don't support property change listeners (to save memory and
+     * CPU cycles). This method explicitly forces Grid's row cache invalidation.
      */
     public void refreshRows() {
         Collection<Extension> extensions = getExtensions();
@@ -272,8 +281,8 @@ public class MGrid<T> extends Grid {
             }
         }
     }
-    
-        /**
+
+    /**
      * Makes the table lazy load its content with given strategy.
      *
      * @param pageProvider the interface via entities are fetched
@@ -307,9 +316,12 @@ public class MGrid<T> extends Grid {
      * @param countProvider the interface via the count of items is detected
      * @return this MTable object
      */
-    public MGrid<T> lazyLoadFrom(SortableLazyList.SortablePagingProvider<T> pageProvider,
+    public MGrid<T> lazyLoadFrom(
+            SortableLazyList.SortablePagingProvider<T> pageProvider,
             LazyList.CountProvider countProvider) {
-        setRows(new SortableLazyList(pageProvider, countProvider, DEFAULT_PAGE_SIZE));
+        setRows(new SortableLazyList(pageProvider, countProvider,
+                DEFAULT_PAGE_SIZE));
+        ensureSortListener();
         return this;
     }
 
@@ -321,9 +333,11 @@ public class MGrid<T> extends Grid {
      * @param pageSize the page size (aka maxResults) that is used in paging.
      * @return this MTable object
      */
-    public MGrid<T> lazyLoadFrom(SortableLazyList.SortablePagingProvider<T> pageProvider,
+    public MGrid<T> lazyLoadFrom(
+            SortableLazyList.SortablePagingProvider<T> pageProvider,
             LazyList.CountProvider countProvider, int pageSize) {
         setRows(new SortableLazyList(pageProvider, countProvider, pageSize));
+        ensureSortListener();
         return this;
     }
 

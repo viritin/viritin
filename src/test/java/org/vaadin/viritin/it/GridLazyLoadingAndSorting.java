@@ -1,8 +1,6 @@
 package org.vaadin.viritin.it;
 
 import com.vaadin.annotations.Theme;
-import com.vaadin.data.Container;
-import com.vaadin.event.SortEvent;
 import com.vaadin.ui.Component;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,6 +10,7 @@ import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.viritin.LazyList;
 import org.vaadin.viritin.SortableLazyList;
 import org.vaadin.viritin.grid.MGrid;
+import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.vaadin.viritin.testdomain.Person;
 import org.vaadin.viritin.testdomain.Service;
 
@@ -57,7 +56,38 @@ public class GridLazyLoadingAndSorting extends AbstractTest {
         }
         );
 
-        return g;
+        final MGrid<Person> g2 = new MGrid<Person>(Person.class);
+        g2.lazyLoadFrom(
+                new SortableLazyList.SortablePagingProvider<Person>() {
+            @Override
+            public List<Person> findEntities(int firstRow, boolean sortAscending,
+                    String property) {
+                if (property != null) {
+
+                    Collections.sort(listOfPersons, new BeanComparator<Person>(
+                            property));
+                    if (!sortAscending) {
+                        Collections.reverse(listOfPersons);
+                    }
+                }
+                int last = firstRow + LazyList.DEFAULT_PAGE_SIZE;
+                if (last > listOfPersons.size()) {
+                    last = listOfPersons.size();
+                }
+                return new ArrayList<Person>(listOfPersons.subList(firstRow,
+                        last));
+            }
+        },
+                new LazyList.CountProvider() {
+
+            @Override
+            public int size() {
+                return listOfPersons.size();
+            }
+        }
+        );
+
+        return new MVerticalLayout(g, g2);
     }
 
 }
