@@ -1,6 +1,5 @@
 package org.vaadin.viritin.it.issues;
 
-import com.sun.istack.internal.logging.Logger;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
@@ -8,6 +7,7 @@ import com.vaadin.ui.Notification;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Set;
+import java.util.logging.Logger;
 import javax.validation.ConstraintViolation;
 import javax.validation.constraints.NotNull;
 import org.apache.commons.collections.CollectionUtils;
@@ -98,7 +98,7 @@ public class Issue131 extends AbstractTest {
 
     }
 
-    Logger log = Logger.getLogger(getClass());
+    Logger log = Logger.getLogger(getClass().getName());
 
     public class MemberForm2 extends AbstractForm<Member> {
 
