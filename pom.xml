@@ -212,6 +212,7 @@
                     <instructions>
                         <Export-Package>org.vaadin.viritin.*</Export-Package>
                         <Import-Package>
+                            !org.markdown4j;resolution,
                             *,
                             org.markdown4j;resolution:=optional
                         </Import-Package>
