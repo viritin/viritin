@@ -128,6 +128,62 @@ public class MTable<T> extends Table {
         this(new SortableLazyList(pageProvider, countProvider, pageSize));
     }
 
+    /**
+     * A shorthand to create MTable using LazyList. By default page size of
+     * LazyList.DEFAULT_PAGE_SIZE (30) is used.
+     *
+     * @param rowType the type of entities listed in the table
+     * @param pageProvider the interface via entities are fetched
+     * @param countProvider the interface via the count of items is detected
+     */
+    public MTable(Class<T> rowType, LazyList.PagingProvider<T> pageProvider,
+            LazyList.CountProvider countProvider) {
+        this(rowType, pageProvider, countProvider, DEFAULT_PAGE_SIZE);
+    }
+
+    /**
+     * A shorthand to create MTable using LazyList.
+     *
+     * @param rowType the type of entities listed in the table
+     * @param pageProvider the interface via entities are fetched
+     * @param countProvider the interface via the count of items is detected
+     * @param pageSize the page size (aka maxResults) that is used in paging.
+     */
+    public MTable(Class<T> rowType, LazyList.PagingProvider<T> pageProvider,
+            LazyList.CountProvider countProvider, int pageSize) {
+        this(rowType);
+        lazyLoadFrom(pageProvider, countProvider, pageSize);
+    }
+
+    /**
+     * A shorthand to create MTable using SortableLazyList. By default page size
+     * of LazyList.DEFAULT_PAGE_SIZE (30) is used.
+     *
+     * @param rowType the type of entities listed in the table
+     * @param pageProvider the interface via entities are fetched
+     * @param countProvider the interface via the count of items is detected
+     */
+    public MTable(Class<T> rowType,
+            SortableLazyList.SortablePagingProvider<T> pageProvider,
+            LazyList.CountProvider countProvider) {
+        this(rowType, pageProvider, countProvider, DEFAULT_PAGE_SIZE);
+    }
+
+    /**
+     * A shorthand to create MTable using SortableLazyList.
+     *
+     * @param rowType the type of entities listed in the table
+     * @param pageProvider the interface via entities are fetched
+     * @param countProvider the interface via the count of items is detected
+     * @param pageSize the page size (aka maxResults) that is used in paging.
+     */
+    public MTable(Class<T> rowType,
+            SortableLazyList.SortablePagingProvider<T> pageProvider,
+            LazyList.CountProvider countProvider, int pageSize) {
+        this(rowType);
+        lazyLoadFrom(pageProvider, countProvider, pageSize);
+    }
+
     public MTable(Collection<T> beans) {
         this();
         if (beans != null) {
@@ -170,9 +226,11 @@ public class MTable<T> extends Table {
      * @param countProvider the interface via the count of items is detected
      * @return this MTable object
      */
-    public MTable<T> lazyLoadFrom(SortableLazyList.SortablePagingProvider<T> pageProvider,
+    public MTable<T> lazyLoadFrom(
+            SortableLazyList.SortablePagingProvider<T> pageProvider,
             LazyList.CountProvider countProvider) {
-        setBeans(new SortableLazyList(pageProvider, countProvider, DEFAULT_PAGE_SIZE));
+        setBeans(new SortableLazyList(pageProvider, countProvider,
+                DEFAULT_PAGE_SIZE));
         return this;
     }
 
@@ -184,7 +242,8 @@ public class MTable<T> extends Table {
      * @param pageSize the page size (aka maxResults) that is used in paging.
      * @return this MTable object
      */
-    public MTable<T> lazyLoadFrom(SortableLazyList.SortablePagingProvider<T> pageProvider,
+    public MTable<T> lazyLoadFrom(
+            SortableLazyList.SortablePagingProvider<T> pageProvider,
             LazyList.CountProvider countProvider, int pageSize) {
         setBeans(new SortableLazyList(pageProvider, countProvider, pageSize));
         return this;
@@ -356,12 +415,12 @@ public class MTable<T> extends Table {
         return this;
     }
 
-
     /**
-     * Makes the first column of the table a primary column, for which all
-     * space left out from other columns is given. The method also makes sure
-     * the Table has a width defined (otherwise the setting makes no sense).
-     *     * 
+     * Makes the first column of the table a primary column, for which all space
+     * left out from other columns is given. The method also makes sure the
+     * Table has a width defined (otherwise the setting makes no sense).
+     *
+     *
      * @return {@link MTable}
      */
     public MTable<T> expandFirstColumn() {
@@ -414,6 +473,7 @@ public class MTable<T> extends Table {
     }
 
     private ItemClickListener itemClickPiggyback;
+
     private void ensureTypedItemClickPiggybackListener() {
         if (itemClickPiggyback == null) {
             itemClickPiggyback = new ItemClickListener() {
@@ -577,7 +637,9 @@ public class MTable<T> extends Table {
 
         static {
             try {
-                TYPED_ITEM_CLICK_METHOD = RowClickListener.class.getDeclaredMethod("rowClick", new Class[]{RowClickEvent.class});
+                TYPED_ITEM_CLICK_METHOD = RowClickListener.class.
+                        getDeclaredMethod("rowClick",
+                                new Class[]{RowClickEvent.class});
             } catch (final java.lang.NoSuchMethodException e) {
                 // This should never happen
                 throw new java.lang.RuntimeException();
@@ -666,19 +728,23 @@ public class MTable<T> extends Table {
 
     /**
      * A better typed version of ItemClickEvent.
+     *
      * @param <T> the type of entities listed in the table
      */
     public interface RowClickListener<T> extends Serializable {
+
         public void rowClick(RowClickEvent<T> event);
     }
 
     public void addRowClickListener(RowClickListener<T> listener) {
         ensureTypedItemClickPiggybackListener();
-        addListener(RowClickEvent.class, listener, RowClickEvent.TYPED_ITEM_CLICK_METHOD);
+        addListener(RowClickEvent.class, listener,
+                RowClickEvent.TYPED_ITEM_CLICK_METHOD);
     }
 
     public void removeRowClickListener(RowClickListener<T> listener) {
-        removeListener(RowClickEvent.class, listener, RowClickEvent.TYPED_ITEM_CLICK_METHOD);
+        removeListener(RowClickEvent.class, listener,
+                RowClickEvent.TYPED_ITEM_CLICK_METHOD);
     }
 
     /**
