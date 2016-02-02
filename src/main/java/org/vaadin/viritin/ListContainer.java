@@ -372,8 +372,8 @@ public class ListContainer<T> extends AbstractContainer implements
                         ascending);
 
                 Collections.sort(backingList, comparator);
-                fireItemSetChange();
             }
+            fireItemSetChange();
         }
     }
 
