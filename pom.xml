@@ -146,7 +146,7 @@
         <dependency>
             <groupId>org.vaadin</groupId>
             <artifactId>addon-test-helpers</artifactId>
-            <version>1.4</version>
+            <version>1.5</version>
             <scope>test</scope>
         </dependency>
         <!-- To support websocket commmunication for tests, to be kept in sync 
