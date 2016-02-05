@@ -29,7 +29,6 @@ import org.vaadin.viritin.util.HtmlElementPropertySetter;
  * @author Matti Tahvonen
  */
 @Theme("valo")
-@StyleSheet("valo_shadow_dom_enhancements.css")
 public class ElementPropertySetterTest extends AbstractTest {
 
     private final ValueChangeListener vcl = new ValueChangeListener() {
