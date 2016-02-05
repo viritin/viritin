@@ -54,6 +54,7 @@ import javax.validation.metadata.ConstraintDescriptor;
 import org.vaadin.viritin.fields.MPasswordField;
 
 import org.vaadin.viritin.fields.MTextField;
+import org.vaadin.viritin.fields.EagerValidateable;
 
 /**
  * Enhanced version of basic BeanFieldGroup in Vaadin. Supports "eager
@@ -504,15 +505,9 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
         for (Field<?> field : getFields()) {
             ((AbstractComponent) field).setImmediate(true);
             field.addValueChangeListener(this);
-            if (field instanceof MTextField) {
-                final MTextField abstractTextField = (MTextField) field;
-                abstractTextField.setEagerValidation(true);
-            }
-            // TODO DRY, create interface eagervalidateable, or just push Vaadin
-            // core team to get this done
-            if (field instanceof MPasswordField) {
-                final MPasswordField abstractPwField = (MPasswordField) field;
-                abstractPwField.setEagerValidation(true);
+            if (field instanceof EagerValidateable) {
+                EagerValidateable ev = (EagerValidateable) field;
+                ev.setEagerValidation(true);
             }
             if (field instanceof TextChangeNotifier) {
                 final TextChangeNotifier abstractTextField = (TextChangeNotifier) field;

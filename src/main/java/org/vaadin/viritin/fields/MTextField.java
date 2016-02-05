@@ -32,7 +32,7 @@ import java.util.EventObject;
  * "nullRepresentation" (""), adds support for "eager validation" (~ validate
  * while typing) and adds some fluent APIs.
  */
-public class MTextField extends TextField {
+public class MTextField extends TextField implements EagerValidateable {
 
     private boolean eagerValidation = false;
     private boolean eagerValidationStatus;
@@ -73,10 +73,12 @@ public class MTextField extends TextField {
         super.setValue(newFieldValue, repaintIsNotNeeded);
     }
 
+    @Override
     public boolean isEagerValidation() {
         return eagerValidation;
     }
 
+    @Override
     public void setEagerValidation(boolean eagerValidation) {
         this.eagerValidation = eagerValidation;
     }
@@ -223,7 +225,7 @@ public class MTextField extends TextField {
                 markAsDirty();
             }
             // Also eagerly pass content to backing bean to make top level 
-            // navigation eager, but do not listen the value back in value change
+            // validation eager, but do not listen the value back in value change
             // event
             if (getPropertyDataSource() != null) {
                 skipValueChangeEvent = true;

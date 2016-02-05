@@ -31,7 +31,7 @@ import java.util.EventObject;
  * "nullRepresentation" (""), adds support for "eager validation" (~ validate
  * while typing) and adds some fluent APIs.
  */
-public class MPasswordField extends PasswordField {
+public class MPasswordField extends PasswordField implements EagerValidateable {
 
     private boolean eagerValidation = false;
     private boolean eagerValidationStatus;
@@ -72,10 +72,12 @@ public class MPasswordField extends PasswordField {
         super.setValue(newFieldValue, repaintIsNotNeeded);
     }
 
+    @Override
     public boolean isEagerValidation() {
         return eagerValidation;
     }
 
+    @Override
     public void setEagerValidation(boolean eagerValidation) {
         this.eagerValidation = eagerValidation;
     }
