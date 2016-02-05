@@ -4,6 +4,10 @@ import com.vaadin.annotations.StyleSheet;
 import com.vaadin.annotations.Theme;
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeListener;
+import com.vaadin.server.ServiceException;
+import com.vaadin.server.SessionInitEvent;
+import com.vaadin.server.SessionInitListener;
+import com.vaadin.server.VaadinService;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Notification;
@@ -40,19 +44,6 @@ public class ElementPropertySetterTest extends AbstractTest {
     public Component getTestComponent() {
 
         final MVerticalLayout mVerticalLayout = new MVerticalLayout();
-
-        // Loading with @JavaScript annotations seems to have some issues with
-        // the test environment, loading it before hear. In normal usage
-        // whould not be needed.
-        try {
-            String js = IOUtils.toString(HtmlElementPropertySetter.class.
-                    getResource(
-                            "viritin.js"), "utf-8");
-            com.vaadin.ui.JavaScript.eval(js);
-        } catch (IOException ex) {
-            Logger.getLogger(HtmlElementPropertySetter.class.getName()).
-                    log(Level.SEVERE, null, ex);
-        }
 
         Button b = new Button("Do stuff with things");
 
