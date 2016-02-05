@@ -11,6 +11,7 @@ import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.viritin.BeanBinder;
 import org.vaadin.viritin.MBeanFieldGroup;
 import org.vaadin.viritin.fields.IntegerField;
+import org.vaadin.viritin.fields.IntegerSliderField;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 
 /**
@@ -23,10 +24,14 @@ public class IntegerFieldUsage extends AbstractTest {
 
         private Integer integer;
         private int intti = 2;
-        @NotNull
         @Min(10)
         @Max(100)
         private Integer validatedInteger;
+
+        @NotNull
+        @Min(5)
+        @Max(55)
+        private int slider = 50;
 
         public Integer getValidatedInteger() {
             return validatedInteger;
@@ -52,9 +57,17 @@ public class IntegerFieldUsage extends AbstractTest {
             this.intti = intti;
         }
 
+        public int getSlider() {
+            return slider;
+        }
+
+        public void setSlider(int slider) {
+            this.slider = slider;
+        }
+
         @Override
         public String toString() {
-            return "Domain{" + "integer=" + integer + ", intti=" + intti + ", validatedInteger=" + validatedInteger + '}';
+            return "Domain{" + "integer=" + integer + ", intti=" + intti + ", validatedInteger=" + validatedInteger + ", slider=" + slider + '}';
         }
 
     }
@@ -63,6 +76,11 @@ public class IntegerFieldUsage extends AbstractTest {
     private IntegerField intti = new IntegerField().withCaption("int");
     private IntegerField validatedInteger = new IntegerField().withCaption(
             "validated");
+    private IntegerSliderField slider = new IntegerSliderField()
+            .withCaption("Slider")
+            .withStep(5) // .withMax(69) // Set automatically from BeanValidation annotations
+            // .withMin(-69) // Set automatically from BeanValidation annotations
+            ;
 
     @Override
     public Component getTestComponent() {
@@ -71,13 +89,20 @@ public class IntegerFieldUsage extends AbstractTest {
 
         BeanBinder.bind(domain, this).withEagerValidation(
                 new MBeanFieldGroup.FieldGroupListener<Domain>() {
+
+            boolean wasvalid = true;
+
             @Override
             public void onFieldGroupChange(
                     MBeanFieldGroup<Domain> beanFieldGroup) {
-                if (beanFieldGroup.isValid()) {
-                    Notification.show("Bean is now valid!");
-                } else {
-                    Notification.show("Bean is invalid!");
+                if (wasvalid != beanFieldGroup.isValid()) {
+
+                    if (beanFieldGroup.isValid()) {
+                        Notification.show("Bean is now valid!");
+                    } else {
+                        Notification.show("Bean is invalid!");
+                    }
+                    wasvalid = beanFieldGroup.isValid();
                 }
             }
         });
@@ -100,11 +125,13 @@ public class IntegerFieldUsage extends AbstractTest {
         // Put invalid value to the backing bean, otherwise demo might appear
         // broken
         validatedInteger.setInvalidCommitted(true);
+        slider.setInvalidCommitted(true);
 
         return new MVerticalLayout(
-                integer, 
-                intti, 
-                validatedInteger, 
+                integer,
+                intti,
+                validatedInteger,
+                slider,
                 show,
                 toggleVisible
         );

@@ -1,4 +1,3 @@
-
 package org.vaadin.viritin.fields;
 
 import com.vaadin.data.Property;
@@ -11,18 +10,25 @@ import org.vaadin.viritin.util.HtmlElementPropertySetter;
  *
  * @author Matti Tahvonen
  */
-public abstract class AbstractNumberField<T> extends CustomField<T> implements EagerValidateable, FieldEvents.TextChangeNotifier {
+public abstract class AbstractNumberField<T> extends CustomField<T> implements
+        EagerValidateable, FieldEvents.TextChangeNotifier {
+
+    private String htmlFieldType = "number";
 
     protected MTextField tf = new MTextField() {
         @Override
         public void beforeClientResponse(boolean initial) {
             super.beforeClientResponse(initial);
-            s.setProperty("type", "number");
-            // prevent all but numbers with a simple js
-            s.setJavaScriptEventHandler("keypress",
-                    "function(e) {var c = viritin.getChar(e); return c==null || /^[\\d\\n\\t\\r]+$/.test(c);}");
+            configureHtmlElement();
         }
     };
+
+    protected void configureHtmlElement() {
+        s.setProperty("type", getHtmlFieldType());
+        // prevent all but numbers with a simple js
+        s.setJavaScriptEventHandler("keypress",
+                "function(e) {var c = viritin.getChar(e); return c==null || /^[\\d\\n\\t\\r]+$/.test(c);}");
+    }
     protected HtmlElementPropertySetter s = new HtmlElementPropertySetter(tf);
     protected Property.ValueChangeListener vcl = new Property.ValueChangeListener() {
         @Override
@@ -31,7 +37,7 @@ public abstract class AbstractNumberField<T> extends CustomField<T> implements E
             userInputToValue(String.valueOf(value));
         }
     };
-    
+
     protected FieldEvents.TextChangeListener tcl;
 
     protected abstract void userInputToValue(String str);
@@ -54,6 +60,20 @@ public abstract class AbstractNumberField<T> extends CustomField<T> implements E
 
     protected String valueToPresentation(T newValue) {
         return newValue.toString();
+    }
+
+    public String getHtmlFieldType() {
+        return htmlFieldType;
+    }
+
+    /**
+     * Sets the type property of the input field used on the browser. "number"
+     * by default.
+     *
+     * @param htmlFieldType the type value
+     */
+    public void setHtmlFieldType(String htmlFieldType) {
+        this.htmlFieldType = htmlFieldType;
     }
 
     @Override

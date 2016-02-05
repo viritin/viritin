@@ -27,5 +27,4 @@ public class IntegerField extends AbstractNumberField<Integer> {
         return this;
     }
 
-
 }
