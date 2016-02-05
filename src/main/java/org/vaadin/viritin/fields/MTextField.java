@@ -26,6 +26,7 @@ import com.vaadin.server.ErrorMessage;
 import com.vaadin.server.Resource;
 import com.vaadin.ui.TextField;
 import java.util.EventObject;
+import org.vaadin.viritin.util.HtmlElementPropertySetter;
 
 /**
  * A an extension to basic Vaadin TextField. Uses the only sane default for
@@ -38,6 +39,9 @@ public class MTextField extends TextField implements EagerValidateable {
     private boolean eagerValidationStatus;
     private String lastKnownTextChangeValue;
     private Validator.InvalidValueException eagerValidationError;
+    private AutoComplete autocomplete;
+    private AutoCapitalize autocapitalize;
+    private AutoCorrect autocorrect;
 
     public MTextField() {
         configureMaddonStuff();
@@ -156,15 +160,97 @@ public class MTextField extends TextField implements EagerValidateable {
         setIcon(icon);
         return this;
     }
-    
+
     public MTextField withRequired(boolean required) {
         setRequired(required);
         return this;
     }
-    
+
     public MTextField withRequiredError(String requiredError) {
         setRequiredError(requiredError);
         return this;
+    }
+
+    public enum AutoComplete {
+        on, off
+    }
+
+    public enum AutoCorrect {
+        on, off
+    }
+
+    public enum AutoCapitalize {
+        on, off
+    }
+
+    public MTextField withAutocompleteOff() {
+        return setAutocomplete(AutoComplete.off);
+    }
+
+    public MTextField setAutocomplete(AutoComplete autocomplete) {
+        this.autocomplete = autocomplete;
+        return this;
+    }
+
+    public AutoComplete getAutocomplete() {
+        return autocomplete;
+    }
+
+    public MTextField withAutoCapitalizeOff() {
+        return setAutoCapitalize(AutoCapitalize.off);
+    }
+
+    public MTextField setAutoCapitalize(AutoCapitalize autoCapitalize) {
+        this.autocapitalize = autoCapitalize;
+        return this;
+    }
+
+    public AutoCapitalize getAutoCapitalize() {
+        return autocapitalize;
+    }
+
+    public MTextField withAutoCorrectOff() {
+        return setAutoCorrect(AutoCorrect.off);
+    }
+
+    public MTextField setAutoCorrect(AutoCorrect autoCorrect) {
+        this.autocorrect = autoCorrect;
+        return this;
+    }
+
+    public AutoCorrect getAutoCorrect() {
+        return autocorrect;
+    }
+
+    private HtmlElementPropertySetter heps;
+
+    protected HtmlElementPropertySetter getHtmlElementPropertySetter() {
+        if (heps == null) {
+            heps = new HtmlElementPropertySetter(this);
+        }
+        return heps;
+    }
+
+    @Override
+    public void beforeClientResponse(boolean initial) {
+        super.beforeClientResponse(initial);
+        if (initial) {
+            if (autocomplete != null) {
+                // sending here to keep value if toggling visibility
+                getHtmlElementPropertySetter().setProperty("autocomplete",
+                        autocomplete.toString());
+            }
+            if (autocorrect != null) {
+                // sending here to keep value if toggling visibility
+                getHtmlElementPropertySetter().setProperty("autocorrect",
+                        autocorrect.toString());
+            }
+            if (autocapitalize != null) {
+                // sending here to keep value if toggling visibility
+                getHtmlElementPropertySetter().setProperty("autocapitalize",
+                        autocapitalize.toString());
+            }
+        }
     }
 
     @Override

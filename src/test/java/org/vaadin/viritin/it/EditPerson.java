@@ -51,7 +51,10 @@ public class EditPerson extends AbstractTest {
 
     public static class PersonForm extends AbstractForm<Person> {
 
-        private MTextField firstName = new MTextField("Name");
+        private MTextField firstName = new MTextField("Name")
+                .withAutocompleteOff()
+                .withAutoCorrectOff()
+                .withAutoCapitalizeOff();
 
         private MTextField age = new MTextField("Age");
 
