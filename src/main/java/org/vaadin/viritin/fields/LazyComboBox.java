@@ -13,6 +13,7 @@ import org.vaadin.viritin.ListContainer;
 
 import java.util.Collection;
 import java.util.List;
+import org.vaadin.viritin.util.HtmlElementPropertySetter;
 
 /**
  * This class tries to provide a simple lazy loading connection form ComboBox to
@@ -148,9 +149,18 @@ public class LazyComboBox<T> extends TypedSelect<T> {
             // large index
             comboBox.setScrollToSelectedItem(false);
         }
+        
+        fixComboBoxVaadinIssue16647(comboBox);
         setSelectInstance(comboBox);
 
         return comboBox;
+    }
+
+    public static void fixComboBoxVaadinIssue16647(final ComboBox comboBox) {
+        HtmlElementPropertySetter heps = new HtmlElementPropertySetter(comboBox);
+        heps.setProperty("./input", "autocorrect", "off");
+        heps.setProperty("./input", "autocomplete", "off");
+        heps.setProperty("./input", "autocapitalize", "off");
     }
 
     /**

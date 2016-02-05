@@ -140,6 +140,7 @@ public class TypedSelect<T> extends CustomField {
                     return TypedSelect.this.getCaption((T) itemId);
                 }
             });
+            LazyComboBox.fixComboBoxVaadinIssue16647((ComboBox) getSelect());
         } else if (selectType == TwinColSelect.class) {
             setSelectInstance(new TwinColSelect() {
                 @SuppressWarnings("unchecked")
