@@ -92,6 +92,7 @@ public class LabelField<T> extends CustomField<T> {
      */
     public void setCaptionGenerator(CaptionGenerator<T> captionGenerator) {
         this.captionGenerator = captionGenerator;
+        updateLabel();
     }
 
     public void setLabel(Label label) {
