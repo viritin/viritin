@@ -20,7 +20,6 @@ import com.vaadin.data.Container.ItemSetChangeNotifier;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.AbstractContainer;
-import com.vaadin.ui.Grid;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
@@ -436,6 +435,11 @@ public class ListContainer<T> extends AbstractContainer implements
      */
     public void setContainerPropertyIds(String... properties) {
         this.properties = Arrays.asList(properties);
+    }
+
+    @Override
+    public void fireItemSetChange() {
+        super.fireItemSetChange();
     }
 
     private class PropertyComparator implements Comparator<T> {
