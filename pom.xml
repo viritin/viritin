@@ -210,11 +210,11 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
+                        <Embed-Dependency>markdown4j;scope=compile|runtime</Embed-Dependency>
                         <Export-Package>org.vaadin.viritin.*</Export-Package>
                         <Import-Package>
-                            !org.markdown4j;resolution,
-                            *,
-                            org.markdown4j;resolution:=optional
+                            org.markdown4j;resolution:=optional,
+                            *
                         </Import-Package>
                     </instructions>
                 </configuration>
