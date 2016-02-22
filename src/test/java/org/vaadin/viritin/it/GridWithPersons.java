@@ -19,7 +19,10 @@ public class GridWithPersons extends AbstractTest {
         List<Person> listOfPersons = Service.getListOfPersons(100);
         final Person selectedDude = listOfPersons.get(2);
 
-        MGrid<Person> g = new MGrid<Person>();
+        MGrid<Person> g = new MGrid<>(Person.class);
+        
+        g.withProperties("firstName", "lastName", "age", "addresses[1].street");
+        
         // Awesome, now the API actually tells you what you should pass as 
         // parameters and what you'll get as return type.
         g.setRows(listOfPersons);
