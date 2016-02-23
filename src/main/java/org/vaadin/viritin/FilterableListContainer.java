@@ -105,7 +105,7 @@ public class FilterableListContainer<T> extends ListContainer<T> implements
      *
      */
     @Override
-    protected void fireItemSetChange() {
+    public void fireItemSetChange() {
         applyFilters();
         super.fireItemSetChange();
     }

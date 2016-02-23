@@ -103,7 +103,7 @@ public class MGrid<T> extends Grid {
             sortListener = new SortEvent.SortListener() {
                 @Override
                 public void sort(SortEvent event) {
-                    refreshRows();
+                    refreshVisibleRows();
                 }
             };
             addSortListener(sortListener);
@@ -123,12 +123,20 @@ public class MGrid<T> extends Grid {
 
     public MGrid<T> setRows(List<T> rows) {
         if (getContainerDataSource() instanceof ListContainer) {
-            ListContainer<T> listContainer = (ListContainer<T>) getContainerDataSource();
-            listContainer.setCollection(rows);
+            getListContainer().setCollection(rows);
         } else {
             setContainerDataSource(new ListContainer(rows));
         }
         return this;
+    }
+    
+    public List<T> getRows() {
+        return (List<T>) getListContainer().getItemIds();
+    }
+
+    protected ListContainer<T> getListContainer() {
+        ListContainer<T> listContainer = (ListContainer<T>) getContainerDataSource();
+        return listContainer;
     }
 
     public MGrid<T> setRows(T... rows) {
@@ -166,6 +174,7 @@ public class MGrid<T> extends Grid {
     }
 
     public MGrid<T> withProperties(String... propertyIds) {
+        getListContainer().setContainerPropertyIds(propertyIds);
         setColumns((Object[]) propertyIds);
         return this;
     }
@@ -247,11 +256,24 @@ public class MGrid<T> extends Grid {
     }
 
     /**
-     * Manually forces refresh of all visible rows. ListContainer backing
+     * Manually forces refresh of the whole data. ListContainer backing
      * MGrid/MTable don't support property change listeners (to save memory and
      * CPU cycles). This method explicitly forces Grid's row cache invalidation.
      */
     public void refreshRows() {
+        ListContainer<T> listContainer = getListContainer();
+        if (getRows() instanceof Object) {
+            listContainer.fireItemSetChange();
+        }
+        refreshVisibleRows();
+    }
+
+    /**
+     * Manually forces refresh of all visible rows. ListContainer backing
+     * MGrid/MTable don't support property change listeners (to save memory and
+     * CPU cycles). This method explicitly forces Grid's row cache invalidation.
+     */
+    public void refreshVisibleRows() {
         Collection<Extension> extensions = getExtensions();
         for (Extension extension : extensions) {
             // Calling with reflection for 7.6-7.5 compatibility

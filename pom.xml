@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.vaadin</groupId>
     <artifactId>viritin</artifactId>
-    <version>1.45-SNAPSHOT</version>
+    <version>1.46-SNAPSHOT</version>
     <name>Viritin</name>
     <packaging>bundle</packaging>
     <properties>
@@ -102,7 +102,7 @@
         <dependency>
             <groupId>org.commonjava.googlecode.markdown4j</groupId>
             <artifactId>markdown4j</artifactId>
-            <version>2.2-cj-1.0</version>
+            <version>2.2-cj-1.1</version>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
@@ -211,11 +211,6 @@
                 <configuration>
                     <instructions>
                         <Export-Package>org.vaadin.viritin.*</Export-Package>
-                        <Import-Package>
-                            !org.markdown4j;resolution,
-                            *,
-                            org.markdown4j;resolution:=optional
-                        </Import-Package>
                     </instructions>
                 </configuration>
                 <executions>
@@ -232,10 +227,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.0</version>
+                <version>3.5.1</version>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>1.7</source>
+                    <target>1.7</target>
                 </configuration>
             </plugin>
 
