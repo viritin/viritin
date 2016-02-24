@@ -57,6 +57,11 @@ public class LabelField<T> extends CustomField<T> {
         return this;
     }
 
+    public LabelField<T> withValue(T newFieldValue) {
+        setValue(newFieldValue);
+        return this;
+    }
+    
     @Override
     protected Component initContent() {
         updateLabel();
