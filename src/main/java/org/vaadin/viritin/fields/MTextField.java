@@ -42,6 +42,7 @@ public class MTextField extends TextField implements EagerValidateable {
     private AutoComplete autocomplete;
     private AutoCapitalize autocapitalize;
     private AutoCorrect autocorrect;
+    private Boolean spellcheck;
 
     public MTextField() {
         configureMaddonStuff();
@@ -171,6 +172,19 @@ public class MTextField extends TextField implements EagerValidateable {
         return this;
     }
 
+    public void setSpellcheck(Boolean spellcheck) {
+        this.spellcheck = spellcheck;
+    }
+
+    public Boolean getSpellcheck() {
+        return spellcheck;
+    }
+
+    public MTextField withSpellCheckOff() {
+        setSpellcheck(false);
+        return this;
+    }
+
     public enum AutoComplete {
         on, off
     }
@@ -182,6 +196,8 @@ public class MTextField extends TextField implements EagerValidateable {
     public enum AutoCapitalize {
         on, off
     }
+    
+    
 
     public MTextField withAutocompleteOff() {
         return setAutocomplete(AutoComplete.off);
@@ -235,6 +251,10 @@ public class MTextField extends TextField implements EagerValidateable {
     public void beforeClientResponse(boolean initial) {
         super.beforeClientResponse(initial);
         if (initial) {
+            if(spellcheck != null) {
+                getHtmlElementPropertySetter().setProperty(
+                        "spellcheck", spellcheck);
+            }
             if (autocomplete != null) {
                 // sending here to keep value if toggling visibility
                 getHtmlElementPropertySetter().setProperty("autocomplete",

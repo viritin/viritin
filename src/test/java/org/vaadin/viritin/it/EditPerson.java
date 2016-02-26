@@ -19,6 +19,7 @@ import org.vaadin.viritin.testdomain.Address;
 import org.vaadin.viritin.testdomain.Group;
 import org.vaadin.viritin.testdomain.Person;
 import org.vaadin.viritin.testdomain.Service;
+import org.vaadin.viritin.util.HtmlElementPropertySetter;
 
 /**
  *
@@ -54,7 +55,9 @@ public class EditPerson extends AbstractTest {
         private MTextField firstName = new MTextField("Name")
                 .withAutocompleteOff()
                 .withAutoCorrectOff()
-                .withAutoCapitalizeOff();
+                .withAutoCapitalizeOff()
+                .withSpellCheckOff()
+                ;
 
         private MTextField age = new MTextField("Age");
 

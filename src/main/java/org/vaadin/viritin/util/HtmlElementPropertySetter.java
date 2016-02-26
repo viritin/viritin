@@ -26,11 +26,11 @@ public class HtmlElementPropertySetter extends AbstractJavaScriptExtension {
         extend(c);
     }
 
-    public void setProperty(String name, String value) {
+    public void setProperty(String name, Object value) {
         callFunction("xpathset", false, null, name, value);
     }
 
-    public void setProperty(String xpath, String name, String value) {
+    public void setProperty(String xpath, String name, Object value) {
         callFunction("xpathset", false, xpath, name, value);
     }
 
