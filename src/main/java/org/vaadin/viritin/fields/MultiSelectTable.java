@@ -376,8 +376,10 @@ public class MultiSelectTable<ET> extends CustomField<Collection> {
         return this;
     }
 
-    public MultiSelectTable<ET> withStyleName(String styleName) {
-        setStyleName(styleName);
+    public MultiSelectTable<ET> withStyleName(String... styleNames) {
+        for (String styleName : styleNames) {
+            addStyleName(styleName);
+        }
         return this;
     }
 

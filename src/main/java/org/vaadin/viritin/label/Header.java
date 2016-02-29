@@ -100,8 +100,10 @@ public class Header extends Label {
         }
     }
 
-    public Header withStyleName(String styleName) {
-        setStyleName(styleName);
+    public Header withStyleName(String... styleNames) {
+        for (String styleName : styleNames) {
+            addStyleName(styleName);
+        }
         return this;
     }
 

@@ -412,8 +412,10 @@ public class TypedSelect<T> extends CustomField {
         return this;
     }
 
-    public TypedSelect<T> withStyleName(String styleName) {
-        setStyleName(styleName);
+    public TypedSelect<T> withStyleName(String... styleNames) {
+        for (String styleName : styleNames) {
+            addStyleName(styleName);
+        }
         return this;
     }
 

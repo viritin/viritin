@@ -68,4 +68,11 @@ public class MWindow extends Window {
         setHeight(size.getHeight(), size.getHeightUnit());
         return this;
     }
+
+    public MWindow withStyleName(String... styleNames) {
+        for (String styleName : styleNames) {
+            addStyleName(styleName);
+        }
+        return this;
+    }
 }

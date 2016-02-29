@@ -100,8 +100,10 @@ public class MDateField extends DateField {
         return this;
     }
 
-    public MDateField withStyleName(String styleName) {
-        setStyleName(styleName);
+    public MDateField withStyleName(String... styleNames) {
+        for (String styleName : styleNames) {
+            addStyleName(styleName);
+        }
         return this;
     }
 
