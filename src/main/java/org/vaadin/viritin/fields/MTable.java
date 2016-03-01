@@ -455,8 +455,10 @@ public class MTable<T> extends Table {
         return this;
     }
 
-    public MTable<T> withStyleName(String styleName) {
-        setStyleName(styleName);
+    public MTable<T> withStyleName(String... styleNames) {
+        for (String styleName : styleNames) {
+            addStyleName(styleName);
+        }
         return this;
     }
 

@@ -124,8 +124,10 @@ public class MHorizontalLayout extends HorizontalLayout {
         return this;
     }
 
-    public MHorizontalLayout withStyleName(String styleName) {
-        setStyleName(styleName);
+    public MHorizontalLayout withStyleName(String... styleNames) {
+        for (String styleName : styleNames) {
+            addStyleName(styleName);
+        }
         return this;
     }
 

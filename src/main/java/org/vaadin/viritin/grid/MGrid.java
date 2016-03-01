@@ -363,4 +363,11 @@ public class MGrid<T> extends Grid {
         return this;
     }
 
+    public MGrid<T> withStyleName(String... styleNames) {
+        for (String styleName : styleNames) {
+            addStyleName(styleName);
+        }
+        return this;
+    }
+
 }

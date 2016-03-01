@@ -51,8 +51,10 @@ public class MFormLayout extends FormLayout {
         return this;
     }
 
-    public MFormLayout withStyleName(String styleName) {
-        setStyleName(styleName);
+    public MFormLayout withStyleName(String... styleNames) {
+        for (String styleName : styleNames) {
+            addStyleName(styleName);
+        }
         return this;
     }
 
