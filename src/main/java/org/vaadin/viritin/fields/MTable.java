@@ -753,8 +753,20 @@ public class MTable<T> extends Table {
      * Clears caches in case the Table is backed by a LazyList implementation.
      * Also resets "pageBuffer" used by table. If you know you have changes in
      * the listing, you can call this method to ensure the UI gets updated.
+     * 
+     * @deprecated use refreshRows instead
      */
+    @Deprecated
     public void resetLazyList() {
+        refreshRows();
+    }
+    
+    /**
+     * Clears caches in case the Table is backed by a LazyList implementation.
+     * Also resets "pageBuffer" used by table. If you know you have changes in
+     * the listing, you can call this method to ensure the UI gets updated.
+     */
+    public void refreshRows() {
         if (bic != null && bic.getItemIds() instanceof LazyList) {
             ((LazyList) bic.getItemIds()).reset();
         }

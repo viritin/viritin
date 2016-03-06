@@ -1,7 +1,9 @@
 package org.vaadin.viritin.grid;
 
+import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.data.fieldgroup.FieldGroup;
+import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.event.SortEvent;
 import com.vaadin.event.SortEvent.SortListener;
 import com.vaadin.server.Extension;
@@ -265,8 +267,11 @@ public class MGrid<T> extends Grid {
      * CPU cycles). This method explicitly forces Grid's row cache invalidation.
      */
     public void refreshRows() {
-        ListContainer<T> listContainer = getListContainer();
-        if (getRows() instanceof Object) {
+        if (getContainerDataSource() instanceof ListContainer) {
+            ListContainer<T> listContainer = getListContainer();
+            if (listContainer.getItemIds() instanceof LazyList) {
+                ((LazyList) listContainer.getItemIds()).reset();
+            }
             listContainer.fireItemSetChange();
         }
         refreshVisibleRows();
