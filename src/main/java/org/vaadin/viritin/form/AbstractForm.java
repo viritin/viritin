@@ -439,6 +439,11 @@ public abstract class AbstractForm<T> extends CustomComponent implements
         deleteHandler.onDelete(getEntity());
     }
 
+    /**
+     * Focuses the first field found from the form. It often improves UX to 
+     * call this method, or focus another field, when you assign a bean for 
+     * editing.
+     */
     public void focusFirst() {
         Component compositionRoot = getCompositionRoot();
         findFieldAndFocus(compositionRoot);
@@ -528,8 +533,7 @@ public abstract class AbstractForm<T> extends CustomComponent implements
      * used to validate the bean. Note, that groups currently only affect 
      * cross-field/bean-level validation.
      */
-    public void setValidationGroups(
-            Class<?>... validationGroups) {
+    public void setValidationGroups(Class<?>... validationGroups) {
         this.validationGroups = validationGroups;
         if(getFieldGroup() != null) {
             getFieldGroup().setValidationGroups(validationGroups);
