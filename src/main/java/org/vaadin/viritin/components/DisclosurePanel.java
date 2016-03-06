@@ -2,16 +2,11 @@ package org.vaadin.viritin.components;
 
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.FontIcon;
-import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import org.vaadin.viritin.button.MButton;
-import org.vaadin.viritin.label.Header;
-import org.vaadin.viritin.layouts.MHorizontalLayout;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 
 /**
@@ -43,7 +38,7 @@ public class DisclosurePanel extends VerticalLayout {
     }
 
     public boolean isOpen() {
-        return toggle.getIcon() == openIcon;
+        return contentWrapper.isVisible();
     }
 
     public DisclosurePanel setOpen(boolean open) {
@@ -71,16 +66,18 @@ public class DisclosurePanel extends VerticalLayout {
         return closedIcon;
     }
 
-    public void setClosedIcon(FontIcon closedIcon) {
+    public DisclosurePanel setClosedIcon(FontIcon closedIcon) {
         this.closedIcon = closedIcon;
+        return setOpen(isOpen());
     }
 
     public FontIcon getOpenIcon() {
         return openIcon;
     }
 
-    public void setOpenIcon(FontIcon openIcon) {
+    public DisclosurePanel setOpenIcon(FontIcon openIcon) {
         this.openIcon = openIcon;
+        return setOpen(isOpen());
     }
 
 }
