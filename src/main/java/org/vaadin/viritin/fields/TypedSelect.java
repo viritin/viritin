@@ -33,6 +33,7 @@ import java.util.List;
 public class TypedSelect<T> extends CustomField {
 
     private CaptionGenerator<T> captionGenerator;
+    private IconGenerator<T> iconGenerator;
 
     private AbstractSelect select;
 
@@ -84,12 +85,11 @@ public class TypedSelect<T> extends CustomField {
         getSelect().addStyleName(style);
         super.addStyleName(style);
     }
-    
-    
+
     @Override
     public void removeStyleName(String style) {
-    	getSelect().removeStyleName(style);
-    	super.removeStyleName(style);
+        getSelect().removeStyleName(style);
+        super.removeStyleName(style);
     }
 
     @Override
@@ -123,6 +123,15 @@ public class TypedSelect<T> extends CustomField {
                 public String getItemCaption(Object itemId) {
                     return TypedSelect.this.getCaption((T) itemId);
                 }
+
+                @Override
+                public Resource getItemIcon(Object itemId) {
+                    if (iconGenerator != null) {
+                        return iconGenerator.getIcon((T) itemId);
+                    }
+                    return super.getItemIcon(itemId);
+                }
+
             });
         } else if (selectType == OptionGroup.class) {
             setSelectInstance(new OptionGroup() {
@@ -131,6 +140,15 @@ public class TypedSelect<T> extends CustomField {
                 public String getItemCaption(Object itemId) {
                     return TypedSelect.this.getCaption((T) itemId);
                 }
+
+                @Override
+                public Resource getItemIcon(Object itemId) {
+                    if (iconGenerator != null) {
+                        return iconGenerator.getIcon((T) itemId);
+                    }
+                    return super.getItemIcon(itemId);
+                }
+
             });
         } else if (selectType == ComboBox.class) {
             setSelectInstance(new ComboBox() {
@@ -138,6 +156,14 @@ public class TypedSelect<T> extends CustomField {
                 @Override
                 public String getItemCaption(Object itemId) {
                     return TypedSelect.this.getCaption((T) itemId);
+                }
+
+                @Override
+                public Resource getItemIcon(Object itemId) {
+                    if (iconGenerator != null) {
+                        return iconGenerator.getIcon((T) itemId);
+                    }
+                    return super.getItemIcon(itemId);
                 }
             });
             LazyComboBox.fixComboBoxVaadinIssue16647((ComboBox) getSelect());
@@ -148,6 +174,14 @@ public class TypedSelect<T> extends CustomField {
                 public String getItemCaption(Object itemId) {
                     return TypedSelect.this.getCaption((T) itemId);
                 }
+
+                @Override
+                public Resource getItemIcon(Object itemId) {
+                    if (iconGenerator != null) {
+                        return iconGenerator.getIcon((T) itemId);
+                    }
+                    return super.getItemIcon(itemId);
+                }
             });
         } else /*if (selectType == null || selectType == NativeSelect.class)*/ {
             setSelectInstance(new NativeSelect() {
@@ -155,6 +189,14 @@ public class TypedSelect<T> extends CustomField {
                 @Override
                 public String getItemCaption(Object itemId) {
                     return TypedSelect.this.getCaption((T) itemId);
+                }
+
+                @Override
+                public Resource getItemIcon(Object itemId) {
+                    if (iconGenerator != null) {
+                        return iconGenerator.getIcon((T) itemId);
+                    }
+                    return super.getItemIcon(itemId);
                 }
             });
         }
@@ -203,6 +245,13 @@ public class TypedSelect<T> extends CustomField {
             return captionGenerator.getCaption(option);
         }
         return option.toString();
+    }
+
+    protected Resource getIcon(T entity) {
+        if (iconGenerator != null) {
+            return iconGenerator.getIcon(entity);
+        }
+        return null;
     }
 
     @Override
@@ -328,6 +377,15 @@ public class TypedSelect<T> extends CustomField {
             CaptionGenerator<T> captionGenerator) {
         this.captionGenerator = captionGenerator;
         return this;
+    }
+
+    public TypedSelect<T> setIconGenerator(IconGenerator<T> generator) {
+        this.iconGenerator = generator;
+        return this;
+    }
+
+    public IconGenerator<T> getIconGenerator() {
+        return iconGenerator;
     }
 
     public final TypedSelect<T> setOptions(Collection<T> options) {
