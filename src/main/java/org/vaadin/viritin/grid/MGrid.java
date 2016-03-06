@@ -174,7 +174,11 @@ public class MGrid<T> extends Grid {
     }
 
     public MGrid<T> withProperties(String... propertyIds) {
-        getListContainer().setContainerPropertyIds(propertyIds);
+        Container.Indexed containerDataSource = getContainerDataSource();
+        if (containerDataSource instanceof ListContainer) {
+            ListContainer lc = (ListContainer) containerDataSource;
+            lc.setContainerPropertyIds(propertyIds);
+        }
         setColumns((Object[]) propertyIds);
         return this;
     }
