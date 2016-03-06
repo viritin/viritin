@@ -13,6 +13,13 @@ package org.vaadin.viritin.fields;
  */
 public class IntegerField extends AbstractNumberField<Integer> {
 
+    public IntegerField() {
+    }
+
+    public IntegerField(String caption) {
+        setCaption(caption);
+    }
+
     protected void userInputToValue(String str) {
         setValue(Integer.parseInt(str));
     }
