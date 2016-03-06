@@ -323,6 +323,18 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     public Window getPopup() {
         return popup;
     }
+    
+    /**
+     * If the form is opened into a popup window using openInModalPopup(), you
+     * you can use this method to close the popup.
+     */
+    public void closePopup() {
+        if(popup != null) {
+            popup.close();
+            popup = null;
+        }
+    }
+
 
     /**
      * @return A default toolbar containing save/cancel/delete buttons
