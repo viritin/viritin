@@ -10,6 +10,7 @@ import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.viritin.fields.CaptionGenerator;
 import org.vaadin.viritin.fields.EnumSelect;
 import org.vaadin.viritin.fields.ElementCollectionField;
+import org.vaadin.viritin.fields.IntegerField;
 import org.vaadin.viritin.fields.LabelField;
 import org.vaadin.viritin.fields.MTextField;
 import org.vaadin.viritin.fields.MultiSelectTable;
@@ -59,11 +60,11 @@ public class EditPerson extends AbstractTest {
                 .withSpellCheckOff()
                 ;
 
-        private MTextField age = new MTextField("Age");
+        private IntegerField age = new IntegerField("Age");
 
-        LabelField<Integer> id = new LabelField<Integer>(Integer.class)
+        private LabelField<Integer> id = new LabelField<>(Integer.class)
                 .withCaption("ID");
-        private final ElementCollectionField<Address> addresses = new ElementCollectionField<Address>(
+        private final ElementCollectionField<Address> addresses = new ElementCollectionField<>(
                 Address.class, AddressRow.class).withCaption("Addressess")
                 .addElementAddedListener(ElementCollections.addedListener)
                 .addElementRemovedListener(ElementCollections.removeListener);
