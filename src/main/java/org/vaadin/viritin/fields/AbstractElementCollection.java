@@ -71,12 +71,12 @@ public abstract class AbstractElementCollection<ET> extends CustomField<Collecti
 
     }
 
-    public interface ElementAddedListener<ET> {
+    public interface ElementAddedListener<ET> extends Serializable {
 
         void elementAdded(ElementAddedEvent<ET> e);
     }
 
-    public interface ElementRemovedListener<ET> {
+    public interface ElementRemovedListener<ET> extends Serializable {
 
         void elementRemoved(ElementRemovedEvent<ET> e);
     }
@@ -219,7 +219,7 @@ public abstract class AbstractElementCollection<ET> extends CustomField<Collecti
         return this;
     }
 
-    public interface Instantiator<ET> {
+    public interface Instantiator<ET> extends Serializable {
 
         ET create();
     }
