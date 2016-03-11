@@ -3,6 +3,7 @@ package org.vaadin.viritin.form;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import com.vaadin.util.ReflectTools;
+import java.io.Serializable;
 import org.vaadin.viritin.BeanBinder;
 import org.vaadin.viritin.MBeanFieldGroup;
 import org.vaadin.viritin.MBeanFieldGroup.FieldGroupListener;
@@ -44,7 +45,7 @@ public abstract class AbstractForm<T> extends CustomComponent implements
 
     }
 
-    public interface ValidityChangedListener<T> {
+    public interface ValidityChangedListener<T> extends Serializable {
 
         public void onValidityChanged(ValidityChangedEvent<T> event);
     }
@@ -163,17 +164,17 @@ public abstract class AbstractForm<T> extends CustomComponent implements
         fireEvent(new ValidityChangedEvent(this));
     }
 
-    public interface SavedHandler<T> {
+    public interface SavedHandler<T> extends Serializable {
 
         void onSave(T entity);
     }
 
-    public interface ResetHandler<T> {
+    public interface ResetHandler<T> extends Serializable {
 
         void onReset(T entity);
     }
 
-    public interface DeleteHandler<T> {
+    public interface DeleteHandler<T> extends Serializable {
 
         void onDelete(T entity);
     }
