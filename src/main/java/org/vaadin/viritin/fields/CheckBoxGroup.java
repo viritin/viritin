@@ -1,9 +1,5 @@
 package org.vaadin.viritin.fields;
 
-import com.vaadin.data.util.converter.Converter;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.CustomField;
-import com.vaadin.ui.OptionGroup;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -13,7 +9,13 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+
 import org.vaadin.viritin.ListContainer;
+
+import com.vaadin.data.util.converter.Converter;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.CustomField;
+import com.vaadin.ui.OptionGroup;
 
 /**
  * An OptionGroup that can be used as a field to modify
@@ -231,6 +233,11 @@ public class CheckBoxGroup<ET> extends CustomField<Collection> {
 
     public CheckBoxGroup<ET> withCaption(String caption) {
         setCaption(caption);
+        return this;
+    }
+
+    public CheckBoxGroup<ET> withId(String id) {
+        setId(id);
         return this;
     }
 

@@ -1,15 +1,7 @@
 package org.vaadin.viritin.grid;
 
-import com.vaadin.data.Container;
-import com.vaadin.data.Item;
-import com.vaadin.data.fieldgroup.FieldGroup;
-import com.vaadin.data.util.IndexedContainer;
-import com.vaadin.event.SortEvent;
-import com.vaadin.event.SortEvent.SortListener;
-import com.vaadin.server.Extension;
-import org.vaadin.viritin.grid.utils.GridUtils;
+import static org.vaadin.viritin.LazyList.DEFAULT_PAGE_SIZE;
 
-import com.vaadin.ui.Grid;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -17,10 +9,19 @@ import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.vaadin.viritin.LazyList;
-import static org.vaadin.viritin.LazyList.DEFAULT_PAGE_SIZE;
 import org.vaadin.viritin.ListContainer;
 import org.vaadin.viritin.SortableLazyList;
+import org.vaadin.viritin.grid.utils.GridUtils;
+
+import com.vaadin.data.Container;
+import com.vaadin.data.Item;
+import com.vaadin.data.fieldgroup.FieldGroup;
+import com.vaadin.event.SortEvent;
+import com.vaadin.event.SortEvent.SortListener;
+import com.vaadin.server.Extension;
+import com.vaadin.ui.Grid;
 
 /**
  *
@@ -182,6 +183,11 @@ public class MGrid<T> extends Grid {
             lc.setContainerPropertyIds(propertyIds);
         }
         setColumns((Object[]) propertyIds);
+        return this;
+    }
+    
+    public MGrid<T> withId(String id) {
+        setId(id);
         return this;
     }
 

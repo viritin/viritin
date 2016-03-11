@@ -106,4 +106,9 @@ public class MTextArea extends TextArea {
         setRequiredError(requiredError);
         return this;
     }
+
+    public MTextArea withId(String id) {
+        setId(id);
+        return this;
+    }
 }

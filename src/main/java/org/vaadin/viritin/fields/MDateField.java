@@ -1,11 +1,12 @@
 package org.vaadin.viritin.fields;
 
+import java.util.Date;
+import java.util.Map;
+
 import com.vaadin.data.Property;
 import com.vaadin.server.Resource;
 import com.vaadin.shared.ui.datefield.Resolution;
 import com.vaadin.ui.DateField;
-import java.util.Date;
-import java.util.Map;
 
 /**
  *
@@ -114,6 +115,11 @@ public class MDateField extends DateField {
 
     public MDateField withRequiredError(String requiredError) {
         setRequiredError(requiredError);
+        return this;
+    }
+
+    public MDateField withId(String id) {
+        setId(id);
         return this;
     }
 

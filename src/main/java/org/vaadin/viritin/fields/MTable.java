@@ -15,7 +15,20 @@
  */
 package org.vaadin.viritin.fields;
 
-import com.vaadin.data.Item;
+import static org.vaadin.viritin.LazyList.DEFAULT_PAGE_SIZE;
+
+import java.io.Serializable;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+
+import org.apache.commons.lang3.StringUtils;
+import org.vaadin.viritin.LazyList;
+import org.vaadin.viritin.ListContainer;
+import org.vaadin.viritin.SortableLazyList;
+
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.event.ItemClickEvent.ItemClickListener;
 import com.vaadin.event.MouseEvents;
@@ -24,19 +37,6 @@ import com.vaadin.shared.MouseEventDetails;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Table;
 import com.vaadin.util.ReflectTools;
-import java.io.Serializable;
-import java.lang.reflect.Method;
-import org.vaadin.viritin.ListContainer;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.EventObject;
-import org.apache.commons.lang3.StringUtils;
-import org.vaadin.viritin.LazyList;
-import static org.vaadin.viritin.LazyList.DEFAULT_PAGE_SIZE;
-import org.vaadin.viritin.SortableLazyList;
 
 /**
  * A better typed version of the Table component in Vaadin. Expects that users
@@ -466,6 +466,13 @@ public class MTable<T> extends Table {
         setIcon(icon);
         return this;
     }
+    
+
+    public MTable<T> withId(String id) {
+        setId(id);
+        return this;
+    }
+
 
     public MTable<T> expand(String... propertiesToExpand) {
         for (String property : propertiesToExpand) {
