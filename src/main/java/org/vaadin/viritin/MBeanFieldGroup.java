@@ -283,7 +283,7 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
         return firstField.getLocale();
     }
 
-    public interface FieldGroupListener<T> {
+    public interface FieldGroupListener<T> extends Serializable {
 
         public void onFieldGroupChange(MBeanFieldGroup<T> beanFieldGroup);
 
