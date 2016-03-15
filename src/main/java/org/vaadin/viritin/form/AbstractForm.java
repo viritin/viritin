@@ -592,5 +592,11 @@ public abstract class AbstractForm<T> extends CustomComponent implements
         }
         return this;
     }
+    
+    public void setRequired(Field... fields) {
+        for (Field field : fields) {
+            field.setRequired(true);
+        }
+    }
 
 }
