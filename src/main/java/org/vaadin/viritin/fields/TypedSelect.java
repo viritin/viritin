@@ -1,17 +1,25 @@
 package org.vaadin.viritin.fields;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
+import org.vaadin.viritin.ListContainer;
+
 import com.vaadin.data.Container;
 import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
 import com.vaadin.data.Validator.InvalidValueException;
 import com.vaadin.server.Resource;
-import com.vaadin.ui.*;
-import org.vaadin.viritin.ListContainer;
-
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import com.vaadin.ui.AbstractSelect;
+import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.CustomField;
+import com.vaadin.ui.ListSelect;
+import com.vaadin.ui.NativeSelect;
+import com.vaadin.ui.OptionGroup;
+import com.vaadin.ui.TwinColSelect;
 
 /**
  * A select implementation with better typed API than in core Vaadin.
@@ -467,6 +475,11 @@ public class TypedSelect<T> extends CustomField {
 
     public TypedSelect<T> withWidth(String width) {
         setWidth(width);
+        return this;
+    }
+    
+    public TypedSelect<T> withId(String id) {
+        setId(id);
         return this;
     }
 

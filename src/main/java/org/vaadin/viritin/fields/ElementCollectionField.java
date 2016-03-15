@@ -1,5 +1,13 @@
 package org.vaadin.viritin.fields;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.vaadin.viritin.MBeanFieldGroup;
+import org.vaadin.viritin.button.MButton;
+
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.Alignment;
@@ -9,12 +17,6 @@ import com.vaadin.ui.Field;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.themes.ValoTheme;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.vaadin.viritin.MBeanFieldGroup;
-import org.vaadin.viritin.button.MButton;
 
 /**
  * A field suitable for editing collection of referenced objects tied to parent
@@ -317,6 +319,11 @@ public class ElementCollectionField<ET> extends AbstractElementCollection<ET> {
 
     public ElementCollectionField<ET> withFullWidth() {
         setWidth(100, Unit.PERCENTAGE);
+        return this;
+    }
+
+    public ElementCollectionField<ET> withId(String id) {
+        setId(id);
         return this;
     }
 
