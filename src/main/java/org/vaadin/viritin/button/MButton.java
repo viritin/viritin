@@ -39,6 +39,12 @@ public class MButton extends Button {
         setIcon(icon);
     }
 
+    public MButton(Resource icon, String caption, ClickListener listener) {
+        super(null, listener);
+        setIcon(icon);
+        setCaption(caption);
+    }
+
     public MButton(String caption) {
         super(caption);
     }

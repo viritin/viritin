@@ -17,9 +17,10 @@
 package org.vaadin.viritin.button;
 
 import com.vaadin.event.ShortcutAction;
+import com.vaadin.server.Resource;
 
 /**
- * A primary button, commonly used for e.g. saving an entity. Automatically sets 
+ * A primary button, commonly used for e.g. saving an entity. Automatically sets
  * "primary" class name and hooks click shortcut for ENTER.
  */
 public class PrimaryButton extends MButton {
@@ -38,9 +39,19 @@ public class PrimaryButton extends MButton {
         setupPrimaryButton();
     }
 
+    public PrimaryButton(Resource icon, ClickListener listener) {
+        super(icon, listener);
+        setupPrimaryButton();
+    }
+
+    public PrimaryButton(Resource icon, String caption, ClickListener listener) {
+        super(icon, caption, listener);
+        setupPrimaryButton();
+    }
+
     private void setupPrimaryButton() {
         setStyleName("primary default");
         setClickShortcut(ShortcutAction.KeyCode.ENTER, null);
     }
-    
+
 }

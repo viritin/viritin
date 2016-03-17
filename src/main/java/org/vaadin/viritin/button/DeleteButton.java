@@ -16,6 +16,8 @@
 
 package org.vaadin.viritin.button;
 
+import com.vaadin.server.Resource;
+
 /**
  * A delete button, commonly used for deleting an entity. Automatically sets
  * "danger" class name and open a confirmation dialog.
@@ -33,6 +35,11 @@ public class DeleteButton extends ConfirmButton {
 
     public DeleteButton(String caption, String confirmationText, ClickListener listener) {
         super(caption, confirmationText, listener);
+        setupDeleteButton();
+    }
+
+    public DeleteButton(Resource icon, String caption, String confirmationText, ClickListener listener) {
+        super(icon, caption, confirmationText, listener);
         setupDeleteButton();
     }
 

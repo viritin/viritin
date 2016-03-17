@@ -45,6 +45,12 @@ public class ConfirmButton extends MButton {
         this.confirmationText = confirmationText;
     }
 
+    public ConfirmButton(Resource icon, String buttonCaption, String confirmationText,
+                         ClickListener listener) {
+        super(icon, buttonCaption, listener);
+        this.confirmationText = confirmationText;
+    }
+
     @Override
     protected void fireClick(final MouseEventDetails details) {
         ConfirmDialog.show(getUI(), getConfirmWindowCaption(),
@@ -96,6 +102,12 @@ public class ConfirmButton extends MButton {
     }
 
     public ConfirmButton setCancelCaption(String cancelCaption) {
+        this.cancelCaption = cancelCaption;
+        return this;
+    }
+
+    public ConfirmButton withI18NCaption(String okCaption, String cancelCaption) {
+        this.okCaption = okCaption;
         this.cancelCaption = cancelCaption;
         return this;
     }

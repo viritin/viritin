@@ -28,6 +28,12 @@ import org.vaadin.viritin.label.RichText;
 public abstract class AbstractForm<T> extends CustomComponent implements
         FieldGroupListener {
 
+    private String modalWindowTitle = "Edit entry";
+    private String saveCaption = "Save";
+    private String deleteCaption = "Delete";
+    private String cancelCaption = "Cancel";
+
+
     public static class ValidityChangedEvent<T> extends Component.Event {
 
         private static final Method method = ReflectTools.findMethod(
@@ -250,7 +256,7 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     protected MBeanFieldGroup<T> bindEntity(T entity) {
         return BeanBinder.bind(entity, this, getNestedProperties());
     }
-    
+
     private String[] nestedProperties;
 
     public String[] getNestedProperties() {
@@ -309,7 +315,7 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     }
 
     public Window openInModalPopup() {
-        popup = new Window("Edit entry", this);
+        popup = new Window(getModalWindowTitle(), this);
         popup.setModal(true);
         UI.getCurrent().addWindow(popup);
         focusFirst();
@@ -324,7 +330,7 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     public Window getPopup() {
         return popup;
     }
-    
+
     /**
      * If the form is opened into a popup window using openInModalPopup(), you
      * you can use this method to close the popup.
@@ -349,7 +355,7 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     }
 
     protected Button createCancelButton() {
-        return new MButton("Cancel")
+        return new MButton(getCancelCaption())
                 .withVisible(false);
     }
     private Button resetButton;
@@ -373,7 +379,7 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     }
 
     protected Button createSaveButton() {
-        return new PrimaryButton("Save")
+        return new PrimaryButton(getSaveCaption())
                 .withVisible(false);
     }
 
@@ -398,7 +404,7 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     }
 
     protected Button createDeleteButton() {
-        return new DeleteButton("Delete")
+        return new DeleteButton(getDeleteCaption())
                 .withVisible(false);
     }
 
@@ -441,8 +447,8 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     }
 
     /**
-     * Focuses the first field found from the form. It often improves UX to 
-     * call this method, or focus another field, when you assign a bean for 
+     * Focuses the first field found from the form. It often improves UX to
+     * call this method, or focus another field, when you assign a bean for
      * editing.
      */
     public void focusFirst() {
@@ -531,7 +537,7 @@ public abstract class AbstractForm<T> extends CustomComponent implements
 
     /**
      * @param validationGroups the JSR 303 bean validation groups that should be
-     * used to validate the bean. Note, that groups currently only affect 
+     * used to validate the bean. Note, that groups currently only affect
      * cross-field/bean-level validation.
      */
     public void setValidationGroups(Class<?>... validationGroups) {
@@ -592,11 +598,51 @@ public abstract class AbstractForm<T> extends CustomComponent implements
         }
         return this;
     }
-    
+
     public void setRequired(Field... fields) {
         for (Field field : fields) {
             field.setRequired(true);
         }
+    }
+
+    public String getModalWindowTitle() {
+        return modalWindowTitle;
+    }
+
+    public void setModalWindowTitle(String modalWindowTitle) {
+        this.modalWindowTitle = modalWindowTitle;
+    }
+
+    public String getCancelCaption() {
+        return cancelCaption;
+    }
+
+    public void setCancelCaption(String cancelCaption) {
+        this.cancelCaption = cancelCaption;
+    }
+
+    public String getSaveCaption() {
+        return saveCaption;
+    }
+
+    public void setSaveCaption(String saveCaption) {
+        this.saveCaption = saveCaption;
+    }
+
+    public String getDeleteCaption() {
+        return deleteCaption;
+    }
+
+    public void setDeleteCaption(String deleteCaption) {
+        this.deleteCaption = deleteCaption;
+    }
+
+
+    public AbstractForm<T> withI18NCaption(String saveCaption, String deleteCaption, String cancelCaption) {
+        this.saveCaption = saveCaption;
+        this.deleteCaption = deleteCaption;
+        this.cancelCaption = cancelCaption;
+        return this;
     }
 
 }
