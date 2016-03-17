@@ -106,4 +106,10 @@ public class ConfirmButton extends MButton {
         return this;
     }
 
+    public ConfirmButton withI18NCaption(String okCaption, String cancelCaption) {
+        this.okCaption = okCaption;
+        this.cancelCaption = cancelCaption;
+        return this;
+    }
+
 }
