@@ -118,8 +118,10 @@ public class MVerticalLayout extends VerticalLayout {
         return this;
     }
 
-    public MVerticalLayout withStyleName(String styleName) {
-        setStyleName(styleName);
+    public MVerticalLayout withStyleName(String... styleNames) {
+        for (String styleName : styleNames) {
+            addStyleName(styleName);
+        }
         return this;
     }
 

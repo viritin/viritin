@@ -1,12 +1,5 @@
 package org.vaadin.viritin.fields;
 
-import com.vaadin.data.Property;
-import com.vaadin.data.util.converter.Converter;
-import com.vaadin.server.Resource;
-import com.vaadin.shared.ui.MultiSelectMode;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.CustomField;
-import com.vaadin.ui.Table;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -16,7 +9,16 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+
 import org.vaadin.viritin.ListContainer;
+
+import com.vaadin.data.Property;
+import com.vaadin.data.util.converter.Converter;
+import com.vaadin.server.Resource;
+import com.vaadin.shared.ui.MultiSelectMode;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.CustomField;
+import com.vaadin.ui.Table;
 
 /**
  * A Table that can be used as a field to modify List&gt;YourDomainObject&lt; or
@@ -376,13 +378,20 @@ public class MultiSelectTable<ET> extends CustomField<Collection> {
         return this;
     }
 
-    public MultiSelectTable<ET> withStyleName(String styleName) {
-        setStyleName(styleName);
+    public MultiSelectTable<ET> withStyleName(String... styleNames) {
+        for (String styleName : styleNames) {
+            addStyleName(styleName);
+        }
         return this;
     }
 
     public MultiSelectTable<ET> withIcon(Resource icon) {
         setIcon(icon);
+        return this;
+    }
+
+    public MultiSelectTable<ET> withId(String id) {
+        table.setId(id);
         return this;
     }
 

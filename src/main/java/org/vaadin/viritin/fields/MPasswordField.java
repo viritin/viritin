@@ -15,6 +15,8 @@
  */
 package org.vaadin.viritin.fields;
 
+import java.util.EventObject;
+
 import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
 import com.vaadin.data.util.converter.Converter;
@@ -24,7 +26,6 @@ import com.vaadin.server.CompositeErrorMessage;
 import com.vaadin.server.ErrorMessage;
 import com.vaadin.server.Resource;
 import com.vaadin.ui.PasswordField;
-import java.util.EventObject;
 
 /**
  * A an extension to basic Vaadin PasswordField. Uses the only sane default for
@@ -157,6 +158,11 @@ public class MPasswordField extends PasswordField implements EagerValidateable {
     
     public MPasswordField withRequiredError(String requiredError) {
         setRequiredError(requiredError);
+        return this;
+    }
+
+    public MPasswordField withId(String id) {
+        setId(id);
         return this;
     }
 

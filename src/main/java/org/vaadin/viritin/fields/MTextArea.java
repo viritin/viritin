@@ -85,8 +85,10 @@ public class MTextArea extends TextArea {
         return this;
     }
 
-    public MTextArea withStyleName(String styleName) {
-        setStyleName(styleName);
+    public MTextArea withStyleName(String... styleNames) {
+        for (String styleName : styleNames) {
+            addStyleName(styleName);
+        }
         return this;
     }
 
@@ -99,9 +101,14 @@ public class MTextArea extends TextArea {
         setRequired(required);
         return this;
     }
-    
+
     public MTextArea withRequiredError(String requiredError) {
         setRequiredError(requiredError);
+        return this;
+    }
+
+    public MTextArea withId(String id) {
+        setId(id);
         return this;
     }
 }

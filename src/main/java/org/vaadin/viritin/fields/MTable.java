@@ -15,7 +15,20 @@
  */
 package org.vaadin.viritin.fields;
 
-import com.vaadin.data.Item;
+import static org.vaadin.viritin.LazyList.DEFAULT_PAGE_SIZE;
+
+import java.io.Serializable;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+
+import org.apache.commons.lang3.StringUtils;
+import org.vaadin.viritin.LazyList;
+import org.vaadin.viritin.ListContainer;
+import org.vaadin.viritin.SortableLazyList;
+
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.event.ItemClickEvent.ItemClickListener;
 import com.vaadin.event.MouseEvents;
@@ -24,19 +37,6 @@ import com.vaadin.shared.MouseEventDetails;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Table;
 import com.vaadin.util.ReflectTools;
-import java.io.Serializable;
-import java.lang.reflect.Method;
-import org.vaadin.viritin.ListContainer;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.EventObject;
-import org.apache.commons.lang3.StringUtils;
-import org.vaadin.viritin.LazyList;
-import static org.vaadin.viritin.LazyList.DEFAULT_PAGE_SIZE;
-import org.vaadin.viritin.SortableLazyList;
 
 /**
  * A better typed version of the Table component in Vaadin. Expects that users
@@ -455,8 +455,10 @@ public class MTable<T> extends Table {
         return this;
     }
 
-    public MTable<T> withStyleName(String styleName) {
-        setStyleName(styleName);
+    public MTable<T> withStyleName(String... styleNames) {
+        for (String styleName : styleNames) {
+            addStyleName(styleName);
+        }
         return this;
     }
 
@@ -464,6 +466,13 @@ public class MTable<T> extends Table {
         setIcon(icon);
         return this;
     }
+    
+
+    public MTable<T> withId(String id) {
+        setId(id);
+        return this;
+    }
+
 
     public MTable<T> expand(String... propertiesToExpand) {
         for (String property : propertiesToExpand) {
@@ -751,8 +760,20 @@ public class MTable<T> extends Table {
      * Clears caches in case the Table is backed by a LazyList implementation.
      * Also resets "pageBuffer" used by table. If you know you have changes in
      * the listing, you can call this method to ensure the UI gets updated.
+     * 
+     * @deprecated use refreshRows instead
      */
+    @Deprecated
     public void resetLazyList() {
+        refreshRows();
+    }
+    
+    /**
+     * Clears caches in case the Table is backed by a LazyList implementation.
+     * Also resets "pageBuffer" used by table. If you know you have changes in
+     * the listing, you can call this method to ensure the UI gets updated.
+     */
+    public void refreshRows() {
         if (bic != null && bic.getItemIds() instanceof LazyList) {
             ((LazyList) bic.getItemIds()).reset();
         }

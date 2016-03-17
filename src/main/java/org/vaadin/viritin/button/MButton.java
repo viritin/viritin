@@ -15,10 +15,11 @@
  */
 package org.vaadin.viritin.button;
 
+import java.util.LinkedHashSet;
+
 import com.vaadin.server.Resource;
 import com.vaadin.shared.MouseEventDetails;
 import com.vaadin.ui.Button;
-import java.util.LinkedHashSet;
 
 /**
  * An extension to basic Vaadin button that adds some handy constructors and
@@ -56,8 +57,10 @@ public class MButton extends Button {
         return this;
     }
 
-    public MButton withStyleName(String styleName) {
-        setStyleName(styleName);
+    public MButton withStyleName(String... styleNames) {
+        for (String styleName : styleNames) {
+            addStyleName(styleName);
+        }
         return this;
     }
 
@@ -73,6 +76,11 @@ public class MButton extends Button {
 
     public MButton withVisible(boolean visible) {
         setVisible(visible);
+        return this;
+    }
+    
+    public MButton withId(String id) {
+        setId(id);
         return this;
     }
 

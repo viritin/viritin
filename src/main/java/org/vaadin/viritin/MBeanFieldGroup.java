@@ -51,9 +51,6 @@ import javax.validation.ValidatorFactory;
 import javax.validation.constraints.NotNull;
 import javax.validation.groups.Default;
 import javax.validation.metadata.ConstraintDescriptor;
-import org.vaadin.viritin.fields.MPasswordField;
-
-import org.vaadin.viritin.fields.MTextField;
 import org.vaadin.viritin.fields.EagerValidateable;
 
 /**
@@ -286,7 +283,7 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
         return firstField.getLocale();
     }
 
-    public interface FieldGroupListener<T> {
+    public interface FieldGroupListener<T> extends Serializable {
 
         public void onFieldGroupChange(MBeanFieldGroup<T> beanFieldGroup);
 

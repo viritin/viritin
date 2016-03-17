@@ -15,6 +15,10 @@
  */
 package org.vaadin.viritin.fields;
 
+import java.util.EventObject;
+
+import org.vaadin.viritin.util.HtmlElementPropertySetter;
+
 import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
 import com.vaadin.data.util.converter.Converter;
@@ -25,8 +29,6 @@ import com.vaadin.server.CompositeErrorMessage;
 import com.vaadin.server.ErrorMessage;
 import com.vaadin.server.Resource;
 import com.vaadin.ui.TextField;
-import java.util.EventObject;
-import org.vaadin.viritin.util.HtmlElementPropertySetter;
 
 /**
  * A an extension to basic Vaadin TextField. Uses the only sane default for
@@ -152,8 +154,10 @@ public class MTextField extends TextField implements EagerValidateable {
         return this;
     }
 
-    public MTextField withStyleName(String styleName) {
-        setStyleName(styleName);
+    public MTextField withStyleName(String... styleNames) {
+        for (String styleName : styleNames) {
+            addStyleName(styleName);
+        }
         return this;
     }
 
@@ -184,6 +188,12 @@ public class MTextField extends TextField implements EagerValidateable {
         setSpellcheck(false);
         return this;
     }
+    
+    public MTextField withId(String id) {
+        setId(id);
+        return this;
+    }
+
 
     public enum AutoComplete {
         on, off

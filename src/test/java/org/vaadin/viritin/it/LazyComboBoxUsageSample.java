@@ -1,6 +1,8 @@
 package org.vaadin.viritin.it;
 
 import com.vaadin.annotations.Theme;
+import com.vaadin.server.FontAwesome;
+import com.vaadin.server.Resource;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Notification;
@@ -15,6 +17,7 @@ import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.vaadin.viritin.testdomain.Person;
 
 import java.util.List;
+import org.vaadin.viritin.fields.IconGenerator;
 
 @Theme("valo")
 public class LazyComboBoxUsageSample extends AbstractTest {
@@ -23,36 +26,44 @@ public class LazyComboBoxUsageSample extends AbstractTest {
     public Component getTestComponent() {
 
         final LazyComboBoxUsage.LazyService service = new LazyComboBoxUsage.LazyService();
-        
+
         // This is naturally much cleaner with Java 8, just wire to service layer
         // using method reference, with older java, better create a class for 
         // each entity type.
         final LazyComboBox.FilterablePagingProvider filterablePagingProvider = new LazyComboBox.FilterablePagingProvider() {
-            
+
             @Override
             public List findEntities(int firstRow, String filter) {
-                System.err.println("find entities " + firstRow + " f: " + filter);
+                System.err.
+                        println("find entities " + firstRow + " f: " + filter);
                 return service.findPersons(filter, firstRow,
                         LazyList.DEFAULT_PAGE_SIZE);
             }
         };
         final LazyComboBox.FilterableCountProvider filterableCountProvider = new LazyComboBox.FilterableCountProvider() {
-            
+
             @Override
             public int size(String filter) {
                 System.err.println("size " + filter);
                 return service.countPersons(filter);
             }
-            
+
         };
 
-        final LazyComboBox<Person> cb = new LazyComboBox(Person.class, filterablePagingProvider, filterableCountProvider)
+        final LazyComboBox<Person> cb = new LazyComboBox(Person.class,
+                filterablePagingProvider, filterableCountProvider)
                 .setCaptionGenerator(new CaptionGenerator<Person>() {
 
                     @Override
                     public String getCaption(Person option) {
                         return option.getFirstName() + " " + option.
-                        getLastName();
+                                getLastName();
+                    }
+                })
+                .setIconGenerator(new IconGenerator<Person>() {
+                    @Override
+                    public Resource getIcon(Person option) {
+                        return FontAwesome.AMBULANCE;
                     }
                 });
         
@@ -68,7 +79,7 @@ public class LazyComboBoxUsageSample extends AbstractTest {
                 Notification.show("Selected value :" + event.getValue());
             }
         });
-        
+
         Button toggle = new Button("Toggle readonly");
         toggle.addClickListener(new Button.ClickListener() {
 

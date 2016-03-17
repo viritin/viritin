@@ -3,6 +3,7 @@ package org.vaadin.viritin.fields;
 import com.vaadin.data.Container;
 import com.vaadin.data.Container.Filterable;
 import com.vaadin.data.util.filter.UnsupportedFilterException;
+import com.vaadin.server.Resource;
 import com.vaadin.shared.Version;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.ComboBox;
@@ -109,6 +110,14 @@ public class LazyComboBox<T> extends TypedSelect<T> {
             @Override
             public String getItemCaption(Object itemId) {
                 return LazyComboBox.this.getCaption((T) itemId);
+            }
+
+            @Override
+            public Resource getItemIcon(Object itemId) {
+                if(getIconGenerator() != null) {
+                    return LazyComboBox.this.getIcon((T) itemId);
+                }
+                return super.getItemIcon(itemId);
             }
 
             @Override
@@ -263,6 +272,11 @@ public class LazyComboBox<T> extends TypedSelect<T> {
     public LazyComboBox<T> setCaptionGenerator(
             CaptionGenerator<T> captionGenerator) {
         return (LazyComboBox<T>) super.setCaptionGenerator(captionGenerator);
+    }
+    
+    @Override
+    public LazyComboBox<T> setIconGenerator(IconGenerator<T> generator) {
+        return (LazyComboBox<T>) super.setIconGenerator(generator);
     }
 
     @Override

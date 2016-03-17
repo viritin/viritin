@@ -40,8 +40,10 @@ public class MCssLayout extends CssLayout {
         return this;
     }
 
-    public MCssLayout withStyleName(String styleName) {
-        setStyleName(styleName);
+    public MCssLayout withStyleName(String... styleNames) {
+        for (String styleName : styleNames) {
+            addStyleName(styleName);
+        }
         return this;
     }
 

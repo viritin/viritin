@@ -3,6 +3,7 @@ package org.vaadin.viritin.form;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import com.vaadin.util.ReflectTools;
+import java.io.Serializable;
 import org.vaadin.viritin.BeanBinder;
 import org.vaadin.viritin.MBeanFieldGroup;
 import org.vaadin.viritin.MBeanFieldGroup.FieldGroupListener;
@@ -44,7 +45,7 @@ public abstract class AbstractForm<T> extends CustomComponent implements
 
     }
 
-    public interface ValidityChangedListener<T> {
+    public interface ValidityChangedListener<T> extends Serializable {
 
         public void onValidityChanged(ValidityChangedEvent<T> event);
     }
@@ -163,17 +164,17 @@ public abstract class AbstractForm<T> extends CustomComponent implements
         fireEvent(new ValidityChangedEvent(this));
     }
 
-    public interface SavedHandler<T> {
+    public interface SavedHandler<T> extends Serializable {
 
         void onSave(T entity);
     }
 
-    public interface ResetHandler<T> {
+    public interface ResetHandler<T> extends Serializable {
 
         void onReset(T entity);
     }
 
-    public interface DeleteHandler<T> {
+    public interface DeleteHandler<T> extends Serializable {
 
         void onDelete(T entity);
     }
@@ -323,6 +324,18 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     public Window getPopup() {
         return popup;
     }
+    
+    /**
+     * If the form is opened into a popup window using openInModalPopup(), you
+     * you can use this method to close the popup.
+     */
+    public void closePopup() {
+        if(popup != null) {
+            popup.close();
+            popup = null;
+        }
+    }
+
 
     /**
      * @return A default toolbar containing save/cancel/delete buttons
@@ -427,6 +440,11 @@ public abstract class AbstractForm<T> extends CustomComponent implements
         deleteHandler.onDelete(getEntity());
     }
 
+    /**
+     * Focuses the first field found from the form. It often improves UX to 
+     * call this method, or focus another field, when you assign a bean for 
+     * editing.
+     */
     public void focusFirst() {
         Component compositionRoot = getCompositionRoot();
         findFieldAndFocus(compositionRoot);
@@ -516,8 +534,7 @@ public abstract class AbstractForm<T> extends CustomComponent implements
      * used to validate the bean. Note, that groups currently only affect 
      * cross-field/bean-level validation.
      */
-    public void setValidationGroups(
-            Class<?>... validationGroups) {
+    public void setValidationGroups(Class<?>... validationGroups) {
         this.validationGroups = validationGroups;
         if(getFieldGroup() != null) {
             getFieldGroup().setValidationGroups(validationGroups);
@@ -574,6 +591,12 @@ public abstract class AbstractForm<T> extends CustomComponent implements
             getFieldGroup().clear();
         }
         return this;
+    }
+    
+    public void setRequired(Field... fields) {
+        for (Field field : fields) {
+            field.setRequired(true);
+        }
     }
 
 }
