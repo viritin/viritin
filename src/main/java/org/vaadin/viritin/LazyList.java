@@ -287,7 +287,7 @@ public class LazyList<T> extends AbstractList<T> implements Serializable {
             // Increase the amount of cached pages if necessary
             maxPages = sizeOfSublist/pageSize + 1;
         }
-        return super.subList(fromIndex, toIndex);
+        return new ArrayList(super.subList(fromIndex, toIndex));
     }
 
     @Override
