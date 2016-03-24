@@ -47,7 +47,7 @@ public class Service {
     private static final Logger logger = Logger.getLogger(Service.class.getName());
 
     public static List<Person> findAll(long start, long maxResults) {
-//        logger.log(Level.INFO, "findAll {0} {1}", new Object[]{start, maxResults});
+        System.err.println("findAll " + start + " " + maxResults);
         if (pagedBase == null) {
             pagedBase = getListOfPersons((int) COUNT);
         }

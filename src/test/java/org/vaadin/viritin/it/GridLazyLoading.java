@@ -13,7 +13,7 @@ import org.vaadin.viritin.testdomain.Service;
  *
  * @author Matti Tahvonen
  */
-@Theme("valo")
+//@Theme("valo")
 public class GridLazyLoading extends AbstractTest {
 
     @Override
@@ -36,6 +36,7 @@ public class GridLazyLoading extends AbstractTest {
                     }
                 }
         );
+        //g.setSizeFull();
         return g;
     }
 

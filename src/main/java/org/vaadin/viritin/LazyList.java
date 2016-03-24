@@ -15,6 +15,35 @@ import java.util.*;
  */
 public class LazyList<T> extends AbstractList<T> implements Serializable {
 
+    private List<T> findPageFromCache(int pageIndexForReqest) {
+        int p = pageIndexForReqest - pageIndex;
+        if (p < 0) {
+            return null;
+        }
+        if (pages.size() <= p) {
+            return null;
+        }
+        return pages.get(p);
+    }
+
+    private void loadPreviousPage() {
+        pageIndex--;
+        List page = findEntities(pageIndex * pageSize);
+        pages.add(0, page);
+        if (pages.size() > maxPages) {
+            pages.remove(pages.size() - 1);
+        }
+    }
+
+    private void loadNextPage() {
+        List page = findEntities((pageIndex + pages.size()) * pageSize);
+        pages.add(page);
+        if (pages.size() > maxPages) {
+            pages.remove(0);
+            pageIndex++;
+        }
+    }
+
     // Split into subinterfaces for better Java 8 lambda support
     /**
      * Interface via the LazyList communicates with the "backend"
@@ -61,15 +90,31 @@ public class LazyList<T> extends AbstractList<T> implements Serializable {
     // Vaadin table by default has 15 rows, 2x that to cache up an down
     // With this setting it is maximum of 2 requests that happens. With
     // normal scrolling just 0-1 per user interaction
-    public static final int DEFAULT_PAGE_SIZE = 15 + 15*2;
+    public static final int DEFAULT_PAGE_SIZE = 15 + 15 * 2;
 
-    private List<T> currentPage;
-    private List<T> prevPage;
-    private List<T> nextPage;
+    public int getMaxPages() {
+        return maxPages;
+    }
+
+    /**
+     * Sets the maximum of pages that are held in memory. By default 3, but it
+     * is adjusted automatically based on requests that are made to the list,
+     * like subList method calls. Most often this shouldn't be called by end
+     * user.
+     *
+     * @param maxPages the number of pages to be held in memory
+     */
+    public void setMaxPages(int maxPages) {
+        this.maxPages = maxPages;
+    }
+
+    private int maxPages = 3;
+
+    List<List<T>> pages = new ArrayList<>();
 
     private int pageIndex = -10;
     private final int pageSize;
-    
+
     protected LazyList(CountProvider countProvider, int pageSize) {
         this.countProvider = countProvider;
         this.pageSize = pageSize;
@@ -134,44 +179,38 @@ public class LazyList<T> extends AbstractList<T> implements Serializable {
         final int indexOnPage = index % pageSize;
 
         // Find page from cache
-        List<T> page = null;
-        if (pageIndex == pageIndexForReqest) {
-            page = currentPage;
-        } else if (pageIndex - 1 == pageIndexForReqest && prevPage != null) {
-            page = prevPage;
-        } else if (pageIndex + 1 == pageIndexForReqest && nextPage != null) {
-            page = nextPage;
-        }
+        List<T> page = findPageFromCache(pageIndexForReqest);
 
         if (page == null) {
-            // Page not in cache, change page, move next/prev is feasible
-            if (pageIndexForReqest - 1 == pageIndex) {
-                // going to next page
-                prevPage = currentPage;
-                currentPage = nextPage;
-                nextPage = null;
-            } else if (pageIndexForReqest + 1 == pageIndex) {
-                // going to previous page
-                nextPage = currentPage;
-                currentPage = prevPage;
-                prevPage = null;
+            if (pageIndex >= 0) {
+                if (pageIndexForReqest > pageIndex && pageIndexForReqest < pageIndex + pages.size() + maxPages) {
+                    // load next n pages forward
+                    while (pageIndexForReqest >= pageIndex + pages.size()) {
+                        loadNextPage();
+                    }
+                } else if (pageIndexForReqest < pageIndex && pageIndexForReqest > pageIndex - maxPages) {
+                    //load prev page to cache
+                    while (pageIndexForReqest < pageIndex) {
+                        loadPreviousPage();
+                    }
+                } else {
+                    initCacheFormPage(pageIndexForReqest);
+                }
             } else {
-                currentPage = null;
-                prevPage = null;
-                nextPage = null;
+                // first page to load
+                initCacheFormPage(pageIndexForReqest);
             }
-            pageIndex = pageIndexForReqest;
-            if (currentPage == null) {
-                currentPage = findEntities(pageIndex * pageSize);
-            }
-            if (currentPage == null) {
-                return null;
-            } else {
-                page = currentPage;
-            }
+            page = findPageFromCache(pageIndexForReqest);
         }
         final T get = page.get(indexOnPage);
         return get;
+    }
+
+    protected void initCacheFormPage(final int pageIndexForReqest) {
+        // clear cache
+        pageIndex = pageIndexForReqest;
+        pages.clear();
+        pages.add(findEntities(pageIndex * pageSize));
     }
 
     protected List findEntities(int i) {
@@ -188,10 +227,10 @@ public class LazyList<T> extends AbstractList<T> implements Serializable {
         return cachedSize;
     }
 
-    private transient WeakHashMap<T,Integer> indexCache ;
+    private transient WeakHashMap<T, Integer> indexCache;
 
     private Map<T, Integer> getIndexCache() {
-        if(indexCache == null) {
+        if (indexCache == null) {
             indexCache = new WeakHashMap<T, Integer>();
         }
         return indexCache;
@@ -201,27 +240,17 @@ public class LazyList<T> extends AbstractList<T> implements Serializable {
     public int indexOf(Object o) {
         // optimize: check the buffers first
         Integer indexViaCache = getIndexCache().get(o);
-        if(indexViaCache != null) {
+        if (indexViaCache != null) {
             return indexViaCache;
-        } else if (currentPage != null) {
-            int idx = currentPage.indexOf(o);
-            if (idx != -1) {
-                indexViaCache = pageIndex * pageSize + idx;
+        }
+        for (int i = 0; i < pages.size(); i++) {
+            List<T> page = pages.get(i);
+            int indexOf = page.indexOf(o);
+            if (indexOf != -1) {
+                indexViaCache = (pageIndex + i) * pageSize + indexOf;
             }
         }
-        if (indexViaCache == null && prevPage != null) {
-            int idx = prevPage.indexOf(o);
-            if (idx != -1) {
-                indexViaCache =  (pageIndex - 1) * pageSize + idx;
-            }
-        }
-        if (indexViaCache == null && nextPage != null) {
-            int idx = nextPage.indexOf(o);
-            if (idx != -1) {
-                indexViaCache =  (pageIndex + 1) * pageSize + idx;
-            }
-        }
-        if(indexViaCache != null) {
+        if (indexViaCache != null) {
             /*
              * In some cases (selected value) components like Vaadin combobox calls this, then stuff from elsewhere with indexes and
              * finally again this method with the same object (possibly on other page). Thus, to avoid heavy iterating,
@@ -240,16 +269,25 @@ public class LazyList<T> extends AbstractList<T> implements Serializable {
     public boolean contains(Object o) {
         // Although there would be the indexed version, vaadin sometimes calls this
         // First check caches, then fall back to sluggish iterator :-(
-        if(getIndexCache().containsKey(o)) {
-            return true;
-        } else if (currentPage != null && currentPage.contains(o)) {
-            return true;
-        } else if (prevPage != null && prevPage.contains(o)) {
-            return true;
-        }  else if (nextPage != null && nextPage.contains(o)) {
+        if (getIndexCache().containsKey(o)) {
             return true;
         }
+        for(List<T> t : pages) {
+            if(t.contains(o)) {
+                return true;
+            }
+        }
         return super.contains(o);
+    }
+
+    @Override
+    public List<T> subList(int fromIndex, int toIndex) {
+        final int sizeOfSublist = toIndex - fromIndex;
+        if (sizeOfSublist > maxPages * (pageSize -1)) {
+            // Increase the amount of cached pages if necessary
+            maxPages = sizeOfSublist/pageSize + 1;
+        }
+        return super.subList(fromIndex, toIndex);
     }
 
     @Override
@@ -281,12 +319,10 @@ public class LazyList<T> extends AbstractList<T> implements Serializable {
      * Resets buffers used by the LazyList.
      */
     public void reset() {
-        currentPage = null;
-        prevPage = null;
-        nextPage = null;
+        pages.clear();
         pageIndex = -10;
         cachedSize = null;
-        if(indexCache != null) {
+        if (indexCache != null) {
             indexCache.clear();
         }
     }
