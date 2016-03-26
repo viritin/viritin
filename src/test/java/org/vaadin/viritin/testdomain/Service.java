@@ -26,7 +26,7 @@ public class Service {
     }
 
     public static List<Group> getAvailableGroups() {
-        return new ArrayList(groups);
+        return new ArrayList<Group>(groups);
     }
 
     public static List<Person> getListOfPersons(int total) {
