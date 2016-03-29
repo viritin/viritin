@@ -29,6 +29,9 @@ import org.vaadin.viritin.testdomain.User;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.ui.Component;
+import java.text.MessageFormat;
+import java.util.Locale;
+import java.util.Random;
 
 /**
  * Test reading default methods
@@ -42,17 +45,23 @@ public class MTableLazyLoadingWithEntityAspect extends AbstractTest {
 
 	@Override
 	public Component getTestComponent() {
+        
+        Random r = new Random(0);
 
 		final List<User> listOfPersons = 
 				Service
 				.getListOfPersons(1000).stream()
-				.map(person -> new User(person))
+				.map(person -> {
+                    User u = new User(person);
+                    u.setLocale(r.nextBoolean() ? Locale.ENGLISH : Locale.FRENCH);
+                    return u;
+                })
 				.collect(Collectors.toList());
 		
 		MTable<User> table = new MTable<>(
 				(firstRow, sortAscending, property) -> {
 					if (property != null) {
-						Collections.sort(listOfPersons, new BeanComparator<User>(
+						Collections.sort(listOfPersons, new BeanComparator<>(
 								property));
 						if (!sortAscending) {
 							Collections.reverse(listOfPersons);
@@ -67,9 +76,11 @@ public class MTableLazyLoadingWithEntityAspect extends AbstractTest {
 				},
 				() -> (int)Service.count()
 				)
-				.withProperties("localizedSalutation", "person.firstName", "person.lastName")
-				.withColumnHeaders("Salutation", "Forename", "Name")
-				.withFullWidth();
+				.withProperties("localizedSalutation","locale", "person.firstName", "person.lastName")
+				.withColumnHeaders("Salutation", "Locale", "Forename", "Name")
+				.withFullWidth()
+                .withGeneratedColumn("localizedSalutation", u-> MessageFormat.format(
+                        u.getLocalizedSalutation(), u.getPerson().getFirstName()));
 
 		return table;
 	}
