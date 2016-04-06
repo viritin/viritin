@@ -304,6 +304,17 @@ public class MTable<T> extends Table {
     }
 
     /**
+     * the propertyId has to been added before!
+     * @param propertyId columns property id
+     * @param width width to be reserved for columns content
+     * @return MTable
+     */
+    public MTable<T> withColumnWidth(String propertyId, int width) {
+        setColumnWidth(propertyId, width);
+        return this;
+    }
+
+    /**
      * Explicitly sets which properties are sortable in the UI.
      *
      * @param sortableProperties the collection of property identifiers/names
@@ -473,7 +484,7 @@ public class MTable<T> extends Table {
         setIcon(icon);
         return this;
     }
-    
+
 
     public MTable<T> withId(String id) {
         setId(id);
@@ -485,6 +496,17 @@ public class MTable<T> extends Table {
         for (String property : propertiesToExpand) {
             setColumnExpandRatio(property, 1);
         }
+        return this;
+    }
+
+    /**
+     * the propertyId has to been added before!
+     * @param propertyId columns property id
+     * @param ratio the expandRatio used to divide excess space for this column
+     * @return MTable
+     */
+    public MTable<T> withColumnExpand(String propertyId, float ratio) {
+        setColumnExpandRatio(propertyId, ratio);
         return this;
     }
 
@@ -767,14 +789,14 @@ public class MTable<T> extends Table {
      * Clears caches in case the Table is backed by a LazyList implementation.
      * Also resets "pageBuffer" used by table. If you know you have changes in
      * the listing, you can call this method to ensure the UI gets updated.
-     * 
+     *
      * @deprecated use refreshRows instead
      */
     @Deprecated
     public void resetLazyList() {
         refreshRows();
     }
-    
+
     /**
      * Clears caches in case the Table is backed by a LazyList implementation.
      * Also resets "pageBuffer" used by table. If you know you have changes in
