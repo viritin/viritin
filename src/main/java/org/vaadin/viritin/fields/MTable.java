@@ -27,6 +27,7 @@ import java.util.Collections;
 import org.apache.commons.lang3.StringUtils;
 import org.vaadin.viritin.LazyList;
 import org.vaadin.viritin.ListContainer;
+import org.vaadin.viritin.MSize;
 import org.vaadin.viritin.SortableLazyList;
 
 import com.vaadin.event.ItemClickEvent;
@@ -447,6 +448,12 @@ public class MTable<T> extends Table {
 
     public MTable<T> withWidth(String width) {
         setWidth(width);
+        return this;
+    }
+
+    public MTable<T> withSize(MSize mSize) {
+        setWidth(mSize.getWidth(), mSize.getWidthUnit());
+        setHeight(mSize.getHeight(), mSize.getHeightUnit());
         return this;
     }
 
