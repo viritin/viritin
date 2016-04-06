@@ -63,6 +63,16 @@ public class MWindow extends Window {
         return this;
     }
 
+    public MWindow withCenter() {
+        center();
+        return this;
+    }
+
+    public MWindow withPosition(int x, int y) {
+        setPosition(x,y);
+        return this;
+    }
+
     public MWindow withSize(MSize size) {
         setWidth(size.getWidth(), size.getWidthUnit());
         setHeight(size.getHeight(), size.getHeightUnit());
