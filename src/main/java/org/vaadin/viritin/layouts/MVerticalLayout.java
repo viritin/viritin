@@ -108,8 +108,21 @@ public class MVerticalLayout extends VerticalLayout {
         return add(component).withAlign(component, alignment);
     }
 
+    public MVerticalLayout add(Component component, float ratio) {
+        return add(component).withExpand(component, ratio);
+    }
+
+    public MVerticalLayout add(Component component, Alignment alignment, float ratio) {
+        return add(component).withAlign(component, alignment).withExpand(component, ratio);
+    }
+
     public MVerticalLayout withAlign(Component component, Alignment alignment) {
         setComponentAlignment(component, alignment);
+        return this;
+    }
+
+    public MVerticalLayout withExpand(Component component, float ratio) {
+        setExpandRatio(component, ratio);
         return this;
     }
 
