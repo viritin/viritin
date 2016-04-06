@@ -22,6 +22,7 @@ import com.vaadin.data.Property;
 import com.vaadin.data.util.AbstractContainer;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import org.apache.commons.beanutils.*;
@@ -279,7 +280,15 @@ public class ListContainer<T> extends AbstractContainer implements
             return detectTypeParameter(clazz, property,
                     resolver.isIndexed(name) ? 0 : 1);
         }
-        Class<?> type = bean.getDynaProperty(name).getType();
+        Class<?> type;
+        DynaProperty dynaProperty = bean.getDynaProperty(name);
+        if (dynaProperty != null) {
+        	type = dynaProperty.getType();
+        } 
+        else { //happens for default methods
+        	Method method = obtainGetterOfProperty(bean, name);
+        	type = method.getReturnType();
+        }
         if (type.isPrimitive() == true) {
             // Vaadin can't handle primitive types in _all_ places, so use
             // wrappers instead. FieldGroup works, but e.g. Table in _editable_
@@ -287,6 +296,23 @@ public class ListContainer<T> extends AbstractContainer implements
             return ClassUtils.primitiveToWrapper(type);
         }
         return type;
+    }
+    
+    /**
+     * Explicitly resolves the getter bypassing commons.beanutils
+     * @param beanClass
+     * @param propertyName
+     * @return getter method of the property
+     * @throws ClassNotFoundException if class forName fails
+     * @throws NoSuchMethodException if there is no getter
+     * @throws SecurityException if there are constraints by the security manager
+     */
+    private static Method obtainGetterOfProperty(DynaClass beanClass, String propertyName) throws ClassNotFoundException, NoSuchMethodException, SecurityException {
+    	Class<?> clazz = Class.forName(beanClass.getName());
+    	return clazz.getMethod("get"+firstLetterUppercase(propertyName));
+    }
+    private static String firstLetterUppercase(String s) {
+    	return Character.toUpperCase(s.charAt(0)) + (s.length() > 1 ? s.substring(1) : "");
     }
 
     private static Class<?> detectTypeParameter(Class clazz, String name,
@@ -488,12 +514,14 @@ public class ListContainer<T> extends AbstractContainer implements
 
             @Override
             public Object getValue() {
-                try {
-                    return getDynaBean().get(propertyName);
+            	DynaBean dynaBean = getDynaBean();
+            	try {
+                    return dynaBean.get(propertyName);
                 } catch (Exception e) {
                     try {
                         return PropertyUtils.getProperty(bean, propertyName);
-                    } catch (NestedNullException ex) {
+                    } 
+                    catch (NestedNullException ex) {
                         return null;
                     } catch(java.lang.IndexOutOfBoundsException ex) {
                         return null;
@@ -502,9 +530,24 @@ public class ListContainer<T> extends AbstractContainer implements
                     } catch (InvocationTargetException ex) {
                         throw new RuntimeException(ex);
                     } catch (NoSuchMethodException ex) {
-                        throw new RuntimeException(ex);
+                    	Logger.getLogger(ListContainer.class.getName()).log(
+                                Level.FINE, "Trying default method fallback for property {0}",
+                                propertyName);
                     }
                 }
+            	
+            	//fallback for default methods:
+            	Method method;
+				try {
+					method = obtainGetterOfProperty(dynaBean.getDynaClass(), propertyName);
+					return method.invoke(bean);
+				} catch (ReflectiveOperationException e) {
+					throw new RuntimeException(e);
+				} catch (SecurityException e) {
+					throw new RuntimeException(e);
+				} catch (IllegalArgumentException e) {
+					throw new RuntimeException(e);
+				}
             }
 
             @Override
