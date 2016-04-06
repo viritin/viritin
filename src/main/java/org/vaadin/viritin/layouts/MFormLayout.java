@@ -35,6 +35,11 @@ public class MFormLayout extends FormLayout {
         return this;
     }
 
+    public MFormLayout withWidth(float width, Unit unit) {
+        setWidth(width, unit);
+        return this;
+    }
+
     public MFormLayout withFullWidth() {
         setWidth(100, Unit.PERCENTAGE);
         return this;
@@ -42,6 +47,11 @@ public class MFormLayout extends FormLayout {
 
     public MFormLayout withHeight(String height) {
         setHeight(height);
+        return this;
+    }
+
+    public MFormLayout withHeight(float height, Unit unit) {
+        setHeight(height, unit);
         return this;
     }
 

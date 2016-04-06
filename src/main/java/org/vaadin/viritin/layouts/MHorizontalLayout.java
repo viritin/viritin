@@ -51,6 +51,11 @@ public class MHorizontalLayout extends HorizontalLayout {
         return this;
     }
 
+    public MHorizontalLayout withWidth(float width, Unit unit) {
+        setWidth(width, unit);
+        return this;
+    }
+
     public MHorizontalLayout withFullWidth() {
         setWidth("100%");
         return this;
@@ -58,6 +63,11 @@ public class MHorizontalLayout extends HorizontalLayout {
 
     public MHorizontalLayout withHeight(String height) {
         setHeight(height);
+        return this;
+    }
+
+    public MHorizontalLayout withHeight(float height, Unit unit) {
+        setHeight(height, unit);
         return this;
     }
 

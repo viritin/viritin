@@ -46,6 +46,11 @@ public class MGridLayout extends GridLayout {
         return this;
     }
 
+    public MGridLayout withWidth(float width, Unit unit) {
+        setWidth(width, unit);
+        return this;
+    }
+
     public MGridLayout withFullWidth() {
         setWidth("100%");
         return this;
@@ -53,6 +58,11 @@ public class MGridLayout extends GridLayout {
 
     public MGridLayout withHeight(String height) {
         setHeight(height);
+        return this;
+    }
+
+    public MGridLayout withHeight(float height, Unit unit) {
+        setHeight(height, unit);
         return this;
     }
 
