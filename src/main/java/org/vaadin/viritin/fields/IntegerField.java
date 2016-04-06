@@ -39,4 +39,19 @@ public class IntegerField extends AbstractNumberField<Integer> {
         setId(id);
         return this;
     }
+
+    public IntegerField withFullWidth() {
+        setWidth("100%");
+        return this;
+    }
+
+    public IntegerField withWidth(float width, Unit unit) {
+        setWidth(width, unit);
+        return this;
+    }
+
+    public IntegerField withWidth(String width) {
+        setWidth(width);
+        return this;
+    }
 }

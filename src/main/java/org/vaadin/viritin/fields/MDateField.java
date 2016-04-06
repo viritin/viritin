@@ -118,6 +118,21 @@ public class MDateField extends DateField {
         return this;
     }
 
+    public MDateField withFullWidth() {
+        setWidth("100%");
+        return this;
+    }
+
+    public MDateField withWidth(float width, Unit unit) {
+        setWidth(width, unit);
+        return this;
+    }
+
+    public MDateField withWidth(String width) {
+        setWidth(width);
+        return this;
+    }
+
     public MDateField withId(String id) {
         setId(id);
         return this;
