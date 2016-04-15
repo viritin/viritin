@@ -20,6 +20,7 @@ import java.util.LinkedHashSet;
 import com.vaadin.server.Resource;
 import com.vaadin.shared.MouseEventDetails;
 import com.vaadin.ui.Button;
+import org.vaadin.viritin.MSize;
 
 /**
  * An extension to basic Vaadin button that adds some handy constructors and
@@ -84,9 +85,45 @@ public class MButton extends Button {
         setVisible(visible);
         return this;
     }
-    
+
     public MButton withId(String id) {
         setId(id);
+        return this;
+    }
+
+    public MButton withWidth(String width) {
+        setWidth(width);
+        return this;
+    }
+
+    public MButton withWidth(float width, Unit unit) {
+        setWidth(width, unit);
+        return this;
+    }
+
+    public MButton withFullWidth() {
+        setWidth("100%");
+        return this;
+    }
+
+    public MButton withHeight(String height) {
+        setHeight(height);
+        return this;
+    }
+
+    public MButton withHeight(float height, Unit unit) {
+        setHeight(height, unit);
+        return this;
+    }
+
+    public MButton withFullHeight() {
+        setHeight("100%");
+        return this;
+    }
+
+    public MButton withSize(MSize size) {
+        setWidth(size.getWidth(), size.getWidthUnit());
+        setHeight(size.getHeight(), size.getHeightUnit());
         return this;
     }
 
