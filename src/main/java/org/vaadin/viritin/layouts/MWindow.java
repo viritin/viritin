@@ -48,6 +48,11 @@ public class MWindow extends Window {
         return this;
     }
 
+    public MWindow withWidth(float width, Unit unit) {
+        setWidth(width, unit);
+        return this;
+    }
+
     public MWindow withFullWidth() {
         setWidth("100%");
         return this;
@@ -58,8 +63,23 @@ public class MWindow extends Window {
         return this;
     }
 
+    public MWindow withHeight(float height, Unit unit) {
+        setHeight(height, unit);
+        return this;
+    }
+
     public MWindow withFullHeight() {
         setHeight("100%");
+        return this;
+    }
+
+    public MWindow withCenter() {
+        center();
+        return this;
+    }
+
+    public MWindow withPosition(int x, int y) {
+        setPosition(x,y);
         return this;
     }
 

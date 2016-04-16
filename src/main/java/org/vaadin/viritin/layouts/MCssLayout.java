@@ -19,6 +19,11 @@ public class MCssLayout extends CssLayout {
         return this;
     }
 
+    public MCssLayout withWidth(float width, Unit unit) {
+        setWidth(width, unit);
+        return this;
+    }
+
     public MCssLayout withFullWidth() {
         setWidth("100%");
         return this;
@@ -26,6 +31,11 @@ public class MCssLayout extends CssLayout {
 
     public MCssLayout withHeight(String height) {
         setHeight(height);
+        return this;
+    }
+
+    public MCssLayout withHeight(float height, Unit unit) {
+        setHeight(height, unit);
         return this;
     }
 

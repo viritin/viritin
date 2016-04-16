@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 
 import org.vaadin.viritin.LazyList;
 import org.vaadin.viritin.ListContainer;
+import org.vaadin.viritin.MSize;
 import org.vaadin.viritin.SortableLazyList;
 import org.vaadin.viritin.grid.utils.GridUtils;
 
@@ -385,4 +386,30 @@ public class MGrid<T> extends Grid {
         return this;
     }
 
+
+    public MGrid<T> withWidth(String width) {
+        setWidth(width);
+        return this;
+    }
+
+    public MGrid<T> withFullWidth() {
+        setWidth(100, Unit.PERCENTAGE);
+        return this;
+    }
+
+    public MGrid<T> withHeight(String height) {
+        setHeight(height);
+        return this;
+    }
+
+    public MGrid<T> withFullHeight() {
+        return withHeight("100%");
+    }
+
+
+    public MGrid<T> withSize(MSize mSize) {
+        setWidth(mSize.getWidth(), mSize.getWidthUnit());
+        setHeight(mSize.getHeight(), mSize.getHeightUnit());
+        return this;
+    }
 }

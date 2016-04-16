@@ -51,6 +51,11 @@ public class MHorizontalLayout extends HorizontalLayout {
         return this;
     }
 
+    public MHorizontalLayout withWidth(float width, Unit unit) {
+        setWidth(width, unit);
+        return this;
+    }
+
     public MHorizontalLayout withFullWidth() {
         setWidth("100%");
         return this;
@@ -58,6 +63,11 @@ public class MHorizontalLayout extends HorizontalLayout {
 
     public MHorizontalLayout withHeight(String height) {
         setHeight(height);
+        return this;
+    }
+
+    public MHorizontalLayout withHeight(float height, Unit unit) {
+        setHeight(height, unit);
         return this;
     }
 
@@ -114,8 +124,21 @@ public class MHorizontalLayout extends HorizontalLayout {
         return add(component).withAlign(component, alignment);
     }
 
+    public MHorizontalLayout add(Component component, float ratio) {
+        return add(component).withExpand(component, ratio);
+    }
+
+    public MHorizontalLayout add(Component component, Alignment alignment, float ratio) {
+        return add(component).withAlign(component, alignment).withExpand(component, ratio);
+    }
+
     public MHorizontalLayout withAlign(Component component, Alignment alignment) {
         setComponentAlignment(component, alignment);
+        return this;
+    }
+
+    public MHorizontalLayout withExpand(Component component, float ratio) {
+        setExpandRatio(component, ratio);
         return this;
     }
 

@@ -19,6 +19,7 @@ import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
 import com.vaadin.server.Resource;
 import com.vaadin.ui.TextArea;
+import org.vaadin.viritin.MSize;
 
 /**
  *
@@ -61,6 +62,12 @@ public class MTextArea extends TextArea {
 
     public MTextArea withFullWidth() {
         setWidth("100%");
+        return this;
+    }
+
+    public MTextArea withSize(MSize mSize) {
+        setWidth(mSize.getWidth(), mSize.getWidthUnit());
+        setHeight(mSize.getHeight(), mSize.getHeightUnit());
         return this;
     }
 

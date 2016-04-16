@@ -19,6 +19,7 @@ import com.vaadin.shared.ui.MultiSelectMode;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomField;
 import com.vaadin.ui.Table;
+import org.vaadin.viritin.MSize;
 
 /**
  * A Table that can be used as a field to modify List&gt;YourDomainObject&lt; or
@@ -370,6 +371,12 @@ public class MultiSelectTable<ET> extends CustomField<Collection> {
 
     public MultiSelectTable<ET> withWidth(String width) {
         setWidth(width);
+        return this;
+    }
+
+    public MultiSelectTable withSize(MSize mSize) {
+        setWidth(mSize.getWidth(), mSize.getWidthUnit());
+        setHeight(mSize.getHeight(), mSize.getHeightUnit());
         return this;
     }
 

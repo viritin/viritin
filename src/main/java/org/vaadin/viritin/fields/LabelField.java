@@ -52,6 +52,21 @@ public class LabelField<T> extends CustomField<T> {
         this.type = (Class<T>) String.class;
     }
 
+    public LabelField<T> withFullWidth() {
+        setWidth("100%");
+        return this;
+    }
+
+    public LabelField<T> withWidth(float width, Unit unit) {
+        setWidth(width, unit);
+        return this;
+    }
+
+    public LabelField<T> withWidth(String width) {
+        setWidth(width);
+        return this;
+    }
+
     public LabelField<T> withCaption(String caption) {
         setCaption(caption);
         return this;
@@ -61,7 +76,7 @@ public class LabelField<T> extends CustomField<T> {
         setValue(newFieldValue);
         return this;
     }
-    
+
     @Override
     protected Component initContent() {
         updateLabel();
