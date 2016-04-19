@@ -15,14 +15,12 @@
  */
 package org.vaadin.viritin.label;
 
-import com.vaadin.shared.ui.label.ContentMode;
-import com.vaadin.ui.Label;
 import org.vaadin.viritin.MSize;
 
 /**
  * Fluent Label
  */
-public class MLabel extends Label {
+public class MLabel extends FLabel {
 
     public MLabel() {
         super();
@@ -37,28 +35,8 @@ public class MLabel extends Label {
         setCaption(caption);
     }
 
-    public MLabel withCaption(String caption) {
-        setCaption(caption);
-        return this;
-    }
-
     public MLabel withContent(String content) {
         setValue(content);
-        return this;
-    }
-
-    public MLabel withContentMode(ContentMode mode) {
-        setContentMode(mode);
-        return this;
-    }
-
-    public MLabel withWidth(String width) {
-        setWidth(width);
-        return this;
-    }
-
-    public MLabel withHeight(String height) {
-        setHeight(height);
         return this;
     }
 
@@ -71,11 +49,6 @@ public class MLabel extends Label {
     public MLabel withSize(MSize mSize) {
         setWidth(mSize.getWidth(), mSize.getWidthUnit());
         setHeight(mSize.getHeight(), mSize.getHeightUnit());
-        return this;
-    }
-
-    public MLabel withStyleName(String styleName) {
-        addStyleName(styleName);
         return this;
     }
 

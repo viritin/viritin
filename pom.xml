@@ -202,6 +202,49 @@
 
     <build>
         <plugins>
+        	<!-- create fluent base classes -->
+        	<plugin>
+				<groupId>net.vergien</groupId>
+				<artifactId>fluent-interface-generator-maven-plugin</artifactId>
+				<version>1.0-SNAPSHOT</version>
+				<dependencies>
+					<dependency>
+           				<groupId>com.vaadin</groupId>
+            			<artifactId>vaadin-server</artifactId>
+            			<version>${vaadin.version}</version>
+            			<exclusions>
+                			<exclusion>
+                    			<artifactId>vaadin-theme-compiler</artifactId>
+                    			<groupId>com.vaadin</groupId>
+                			</exclusion>
+            			</exclusions>
+        			</dependency>
+				</dependencies>
+				<executions>
+					<execution>
+						<id>touch</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>touch</goal>
+						</goals>
+						<configuration>
+							<abstractPrefix>F</abstractPrefix>
+							<prefix>M</prefix>
+							<mapping>
+								<pkgConf>
+									<pkgName>org.vaadin.viritin.label</pkgName>
+									<ignoreMethods>
+										<param>setStyleName</param>
+									</ignoreMethods>
+									<classNames>
+										<param>com.vaadin.ui.Label</param>
+									</classNames>
+								</pkgConf>
+							</mapping>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
             <!-- add proper OGSI entries to manifest -->
             <plugin>
                 <groupId>org.apache.felix</groupId>
