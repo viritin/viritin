@@ -1,9 +1,7 @@
 
 package org.vaadin.viritin.layouts;
 
-import com.vaadin.shared.ui.MarginInfo;
-
-public class MMarginInfo extends MarginInfo {
+public class MMarginInfo extends FMarginInfo {
 
     public MMarginInfo(boolean enabled) {
         super(enabled);

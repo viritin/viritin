@@ -1,14 +1,13 @@
 package org.vaadin.viritin.layouts;
 
-import com.vaadin.server.Resource;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.Panel;
 import org.vaadin.viritin.MSize;
+
+import com.vaadin.ui.Component;
 
 /**
  * Fluent Panel
  */
-public class MPanel extends Panel{
+public class MPanel extends FPanel{
 
     public MPanel() {
         super();
@@ -26,43 +25,8 @@ public class MPanel extends Panel{
         super(caption, content);
     }
 
-    public MPanel withCaption(String caption) {
-        setCaption(caption);
-        return this;
-    }
-
-    public MPanel withContent(Component content) {
-        setContent(content);
-        return this;
-    }
-
-    public MPanel withWidth(String width) {
-        setWidth(width);
-        return this;
-    }
-
-    public MPanel withWidth(float width, Unit unit) {
-        setWidth(width, unit);
-        return this;
-    }
-
     public MPanel withFullWidth() {
         setWidth("100%");
-        return this;
-    }
-
-    public MPanel withHeight(String height) {
-        setHeight(height);
-        return this;
-    }
-
-    public MPanel withHeight(float height, Unit unit) {
-        setHeight(height, unit);
-        return this;
-    }
-
-    public MPanel withFullHeight() {
-        setHeight("100%");
         return this;
     }
 
@@ -76,11 +40,6 @@ public class MPanel extends Panel{
         for (String styleName : styleNames) {
             addStyleName(styleName);
         }
-        return this;
-    }
-
-    public MPanel withIcon(Resource icon) {
-        setIcon(icon);
         return this;
     }
 }

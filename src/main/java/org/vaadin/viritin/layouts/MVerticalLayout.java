@@ -1,15 +1,15 @@
 package org.vaadin.viritin.layouts;
 
+import java.util.Collection;
+
+import org.vaadin.viritin.MSize;
+
 import com.vaadin.server.Resource;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.VerticalLayout;
-import org.vaadin.viritin.MSize;
 
-import java.util.Collection;
-
-public class MVerticalLayout extends VerticalLayout {
+public class MVerticalLayout extends FVerticalLayout {
 
     public MVerticalLayout() {
         super.setSpacing(true);
@@ -26,33 +26,8 @@ public class MVerticalLayout extends VerticalLayout {
         return this;
     }
 
-    public MVerticalLayout withSpacing(boolean spacing) {
-        setSpacing(spacing);
-        return this;
-    }
-
-    public MVerticalLayout withMargin(boolean marging) {
-        setMargin(marging);
-        return this;
-    }
-
-    public MVerticalLayout withMargin(MarginInfo marginInfo) {
-        setMargin(marginInfo);
-        return this;
-    }
-
-    public MVerticalLayout withWidth(String width) {
-        setWidth(width);
-        return this;
-    }
-
     public MVerticalLayout withFullWidth() {
         setWidth("100%");
-        return this;
-    }
-
-    public MVerticalLayout withHeight(String height) {
-        setHeight(height);
         return this;
     }
 
@@ -126,21 +101,10 @@ public class MVerticalLayout extends VerticalLayout {
         return this;
     }
 
-    public MVerticalLayout withCaption(String caption) {
-        setCaption(caption);
-        return this;
-    }
-
     public MVerticalLayout withStyleName(String... styleNames) {
         for (String styleName : styleNames) {
             addStyleName(styleName);
         }
         return this;
     }
-
-    public MVerticalLayout withIcon(Resource icon) {
-        setIcon(icon);
-        return this;
-    }
-
 }

@@ -1,15 +1,13 @@
 package org.vaadin.viritin.layouts;
 
-import com.vaadin.server.Resource;
-import com.vaadin.shared.ui.MarginInfo;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.GridLayout;
-import org.vaadin.viritin.MSize;
-
 import java.util.Collection;
 
-public class MGridLayout extends GridLayout {
+import org.vaadin.viritin.MSize;
+
+import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Component;
+
+public class MGridLayout extends FGridLayout {
 
     public MGridLayout() {
         super.setSpacing(true);
@@ -26,43 +24,8 @@ public class MGridLayout extends GridLayout {
         return this;
     }
 
-    public MGridLayout withSpacing(boolean spacing) {
-        setSpacing(spacing);
-        return this;
-    }
-
-    public MGridLayout withMargin(boolean marging) {
-        setMargin(marging);
-        return this;
-    }
-
-    public MGridLayout withMargin(MarginInfo marginInfo) {
-        setMargin(marginInfo);
-        return this;
-    }
-
-    public MGridLayout withWidth(String width) {
-        setWidth(width);
-        return this;
-    }
-
-    public MGridLayout withWidth(float width, Unit unit) {
-        setWidth(width, unit);
-        return this;
-    }
-
     public MGridLayout withFullWidth() {
         setWidth("100%");
-        return this;
-    }
-
-    public MGridLayout withHeight(String height) {
-        setHeight(height);
-        return this;
-    }
-
-    public MGridLayout withHeight(float height, Unit unit) {
-        setHeight(height, unit);
         return this;
     }
 
@@ -92,20 +55,10 @@ public class MGridLayout extends GridLayout {
         return with(component.toArray(new Component[component.size()]));
     }
 
-    public MGridLayout withCaption(String caption) {
-        setCaption(caption);
-        return this;
-    }
-
     public MGridLayout withStyleName(String... styleNames) {
         for (String styleName : styleNames) {
             addStyleName(styleName);
         }
-        return this;
-    }
-
-    public MGridLayout withIcon(Resource icon) {
-        setIcon(icon);
         return this;
     }
 }

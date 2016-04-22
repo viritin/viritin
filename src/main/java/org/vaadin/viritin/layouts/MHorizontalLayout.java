@@ -10,7 +10,7 @@ import org.vaadin.viritin.MSize;
 
 import java.util.Collection;
 
-public class MHorizontalLayout extends HorizontalLayout {
+public class MHorizontalLayout extends FHorizontalLayout {
 
     public MHorizontalLayout() {
         super.setSpacing(true);
@@ -26,48 +26,8 @@ public class MHorizontalLayout extends HorizontalLayout {
         return this;
     }
 
-    public MHorizontalLayout withSpacing(boolean spacing) {
-        setSpacing(spacing);
-        return this;
-    }
-
-    public MHorizontalLayout withMargin(boolean marging) {
-        setMargin(marging);
-        return this;
-    }
-
-    public MHorizontalLayout withMargin(MarginInfo marginInfo) {
-        setMargin(marginInfo);
-        return this;
-    }
-
-    public MHorizontalLayout withIcon(Resource icon) {
-        setIcon(icon);
-        return this;
-    }
-
-    public MHorizontalLayout withWidth(String width) {
-        setWidth(width);
-        return this;
-    }
-
-    public MHorizontalLayout withWidth(float width, Unit unit) {
-        setWidth(width, unit);
-        return this;
-    }
-
     public MHorizontalLayout withFullWidth() {
         setWidth("100%");
-        return this;
-    }
-
-    public MHorizontalLayout withHeight(String height) {
-        setHeight(height);
-        return this;
-    }
-
-    public MHorizontalLayout withHeight(float height, Unit unit) {
-        setHeight(height, unit);
         return this;
     }
 
@@ -142,11 +102,6 @@ public class MHorizontalLayout extends HorizontalLayout {
         return this;
     }
 
-    public MHorizontalLayout withCaption(String caption) {
-        setCaption(caption);
-        return this;
-    }
-
     public MHorizontalLayout withStyleName(String... styleNames) {
         for (String styleName : styleNames) {
             addStyleName(styleName);
@@ -164,5 +119,4 @@ public class MHorizontalLayout extends HorizontalLayout {
     public MHorizontalLayout space() {
         return expand(new Label());
     }
-
 }

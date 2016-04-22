@@ -5,7 +5,7 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
 import org.vaadin.viritin.MSize;
 
-public class MCssLayout extends CssLayout {
+public class MCssLayout extends FCssLayout {
 
     public MCssLayout() {
     }
@@ -14,28 +14,8 @@ public class MCssLayout extends CssLayout {
         super(children);
     }
 
-    public MCssLayout withWidth(String width) {
-        setWidth(width);
-        return this;
-    }
-
-    public MCssLayout withWidth(float width, Unit unit) {
-        setWidth(width, unit);
-        return this;
-    }
-
     public MCssLayout withFullWidth() {
         setWidth("100%");
-        return this;
-    }
-
-    public MCssLayout withHeight(String height) {
-        setHeight(height);
-        return this;
-    }
-
-    public MCssLayout withHeight(float height, Unit unit) {
-        setHeight(height, unit);
         return this;
     }
 
@@ -54,11 +34,6 @@ public class MCssLayout extends CssLayout {
         for (String styleName : styleNames) {
             addStyleName(styleName);
         }
-        return this;
-    }
-
-    public MCssLayout withIcon(Resource icon) {
-        setIcon(icon);
         return this;
     }
 }

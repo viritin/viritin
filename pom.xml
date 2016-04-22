@@ -204,9 +204,9 @@
         <plugins>
         	<!-- create fluent base classes -->
         	<plugin>
-				<groupId>net.vergien</groupId>
+				<groupId>net.vergien.fig</groupId>
 				<artifactId>fluent-interface-generator-maven-plugin</artifactId>
-				<version>1.0-SNAPSHOT</version>
+				<version>0.0.1-SNAPSHOT</version>
 				<dependencies>
 					<dependency>
            				<groupId>com.vaadin</groupId>
@@ -238,6 +238,23 @@
 									</ignoreMethods>
 									<classNames>
 										<param>com.vaadin.ui.Label</param>
+									</classNames>
+								</pkgConf>
+								<pkgConf>
+									<pkgName>org.vaadin.viritin.layouts</pkgName>
+									<ignoreMethods>
+										<param>setStyleName</param>
+										<param>addAction</param>
+									</ignoreMethods>
+									<classNames>
+										<param>com.vaadin.ui.CssLayout</param>
+										<param>com.vaadin.ui.FormLayout</param>
+										<param>com.vaadin.ui.GridLayout</param>
+										<param>com.vaadin.ui.HorizontalLayout</param>
+										<param>com.vaadin.shared.ui.MarginInfo</param>
+										<param>com.vaadin.ui.Panel</param>
+										<param>com.vaadin.ui.VerticalLayout</param>
+										<param>com.vaadin.ui.Window</param>
 									</classNames>
 								</pkgConf>
 							</mapping>
