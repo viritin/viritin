@@ -7,9 +7,14 @@ import com.vaadin.data.util.PropertyValueGenerator;
 
 import java.util.*;
 
+/**
+ *
+ * @author Shabak Nikolay (nikolay.shabak@gmail.com)
+ * @param <T> the entity type listed in the consumer of the container, Vaadin Grid
+ */
 public class GeneratedPropertyListContainer<T> extends ListContainer<T> {
 
-    private final Map<Object, PropertyValueGenerator<?>> propertyGenerators = new HashMap();
+    private final Map<String, PropertyValueGenerator<?>> propertyGenerators = new HashMap();
 
     /**
      * Property implementation for generated properties
@@ -138,12 +143,16 @@ public class GeneratedPropertyListContainer<T> extends ListContainer<T> {
         }
     }
 
-    public GeneratedPropertyListContainer(Class<T> type, String[] properties) {
+    public GeneratedPropertyListContainer(Class<T> type) {
+        super(type);
+    }
+
+    public GeneratedPropertyListContainer(Class<T> type, String... properties) {
         super(type);
         setContainerPropertyIds(properties);
     }
 
-    public void addGeneratedProperty(Object propertyId, PropertyValueGenerator<?> generator) {
+    public void addGeneratedProperty(String propertyId, PropertyValueGenerator<?> generator) {
         propertyGenerators.put(propertyId, generator);
         fireContainerPropertySetChange();
     }

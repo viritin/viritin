@@ -10,11 +10,14 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.vaadin.viritin.GeneratedPropertyListContainer;
 import org.vaadin.viritin.LazyList;
 import org.vaadin.viritin.ListContainer;
 import org.vaadin.viritin.SortableLazyList;
+import org.vaadin.viritin.fields.MTable;
 import org.vaadin.viritin.grid.utils.GridUtils;
 
+import com.vaadin.data.util.PropertyValueGenerator;
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.data.fieldgroup.FieldGroup;
@@ -29,6 +32,8 @@ import com.vaadin.ui.Grid;
  */
 public class MGrid<T> extends Grid {
 
+    private Class<T> typeOfRows;
+
     public MGrid() {
     }
 
@@ -39,6 +44,7 @@ public class MGrid<T> extends Grid {
      */
     public MGrid(Class<T> typeOfRows) {
         setContainerDataSource(new ListContainer(typeOfRows));
+        this.typeOfRows = typeOfRows;
     }
 
     /**
@@ -143,7 +149,26 @@ public class MGrid<T> extends Grid {
     }
 
     public MGrid<T> setRows(T... rows) {
-        setContainerDataSource(new ListContainer(Arrays.asList(rows)));
+        setRows(Arrays.asList(rows));
+        return this;
+    }
+
+    public MGrid<T> withGeneratedColumn(String columnId,
+                                        final PropertyValueGenerator<?> columnGenerator) {
+        Container.Indexed container = getContainerDataSource();
+        GeneratedPropertyListContainer gplc;
+        if (container instanceof GeneratedPropertyListContainer) {
+            gplc = (GeneratedPropertyListContainer) container;
+        } else {
+            gplc = new GeneratedPropertyListContainer(typeOfRows);
+            setContainerDataSource(gplc);
+        }
+        gplc.addGeneratedProperty(columnId, columnGenerator);
+        return this;
+    }
+
+    public MGrid<T> withFullWidth() {
+        setWidth(100, Unit.PERCENTAGE);
         return this;
     }
 
