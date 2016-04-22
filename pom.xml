@@ -150,7 +150,7 @@
             <scope>test</scope>
         </dependency>
         <!-- To support websocket commmunication for tests, to be kept in sync 
-             with addon-test-helper jetty dependency. -->
+        with addon-test-helper jetty dependency. -->
         <dependency>
             <groupId>org.eclipse.jetty.websocket</groupId>
             <artifactId>websocket-server</artifactId>
@@ -185,7 +185,7 @@
             <artifactId>vaadin-themes</artifactId>
             <version>${vaadin.version}</version>
             <scope>test</scope>
-        </dependency>        
+        </dependency>
         <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-push</artifactId>
@@ -202,49 +202,51 @@
 
     <build>
         <plugins>
-        	<!-- create fluent base classes -->
-        	<plugin>
-				<groupId>net.vergien</groupId>
-				<artifactId>fluent-interface-generator-maven-plugin</artifactId>
-				<version>1.0-SNAPSHOT</version>
-				<dependencies>
-					<dependency>
-           				<groupId>com.vaadin</groupId>
-            			<artifactId>vaadin-server</artifactId>
-            			<version>${vaadin.version}</version>
-            			<exclusions>
-                			<exclusion>
-                    			<artifactId>vaadin-theme-compiler</artifactId>
-                    			<groupId>com.vaadin</groupId>
-                			</exclusion>
-            			</exclusions>
-        			</dependency>
-				</dependencies>
-				<executions>
-					<execution>
-						<id>touch</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>touch</goal>
-						</goals>
-						<configuration>
-							<abstractPrefix>F</abstractPrefix>
-							<prefix>M</prefix>
-							<mapping>
-								<pkgConf>
-									<pkgName>org.vaadin.viritin.label</pkgName>
-									<ignoreMethods>
-										<param>setStyleName</param>
-									</ignoreMethods>
-									<classNames>
-										<param>com.vaadin.ui.Label</param>
-									</classNames>
-								</pkgConf>
-							</mapping>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
+            <!-- create fluent base classes -->
+            <plugin>
+                <groupId>net.vergien</groupId>
+                <artifactId>fluent-interface-generator-maven-plugin</artifactId>
+                <version>1.0-SNAPSHOT</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.vaadin</groupId>
+                        <artifactId>vaadin-server</artifactId>
+                        <version>${vaadin.version}</version>
+                        <exclusions>
+                            <exclusion>
+                                <artifactId>vaadin-theme-compiler</artifactId>
+                                <groupId>com.vaadin</groupId>
+                            </exclusion>
+                        </exclusions>
+                    </dependency>
+                </dependencies>
+                <executions>
+                    <execution>
+                        <id>touch</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>touch</goal>
+                        </goals>
+                        <configuration>
+                            <abstractPrefix>F</abstractPrefix>
+                            <interfacePrefix>I</interfacePrefix>
+                            <prefix>M</prefix>
+                            <mapping>
+                                <pkgConf>
+                                    <pkgName>org.vaadin.viritin.label</pkgName>
+                                    <interfacePkgName>org.vaadin.viritin.fluency.label</interfacePkgName>
+                                    <ignoreMethods>
+                                        <param>setStyleName</param>
+                                    </ignoreMethods>
+                                    <classNames>
+                                        <param>com.vaadin.ui.Label</param>
+                                    </classNames>
+                                </pkgConf>
+                            </mapping>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <!-- add proper OGSI entries to manifest -->
             <plugin>
                 <groupId>org.apache.felix</groupId>
@@ -272,21 +274,48 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.5.1</version>
                 <executions>
-                	<execution>
-                		<id>default-compile</id>
-						<configuration>
-                    		<source>1.7</source>
-                    		<target>1.7</target>
-                		</configuration>
-                	</execution>
-                	<!-- see https://maven.apache.org/guides/mini/guide-default-execution-ids.html -->
-                	<execution>
-                		<id>default-testCompile</id>
-						<configuration>
-                    		<source>1.8</source>
-                    		<target>1.8</target>
-                		</configuration>
-                	</execution>
+                    <!-- Compile the package org.vaadin.viritin.fluency on   -->
+                    <!-- "generate-sources" so the fluent interfaces are     -->
+                    <!-- available to the                                    -->
+                    <!-- "fluent-interface-generator-maven-plugin"           -->
+                    <execution>
+                        <id>default-compile</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <source>1.7</source>
+                            <target>1.7</target>
+                            <includes>
+                                <include>org/vaadin/viritin/fluency/**</include>
+                            </includes>
+                        </configuration>
+                    </execution>
+                    <!-- Compile the remaining java files after the abstract -->
+                    <!-- fluent classes have been generated.                 -->
+                    <execution>
+                        <id>build-generated-code</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <source>1.7</source>
+                            <target>1.7</target>
+                            <excludes>
+                                <exclude>org/vaadin/viritin/fluency/**</exclude>
+                            </excludes>
+                        </configuration>
+                    </execution>
+                    <!-- see https://maven.apache.org/guides/mini/guide-default-execution-ids.html -->
+                    <execution>
+                        <id>default-testCompile</id>
+                        <configuration>
+                            <source>1.8</source>
+                            <target>1.8</target>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 
