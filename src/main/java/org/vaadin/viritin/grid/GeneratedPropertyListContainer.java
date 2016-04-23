@@ -1,20 +1,23 @@
-package org.vaadin.viritin;
+package org.vaadin.viritin.grid;
 
 import com.google.gwt.thirdparty.guava.common.collect.Sets;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.PropertyValueGenerator;
+import org.vaadin.viritin.ListContainer;
 
 import java.util.*;
 
 /**
  *
  * @author Shabak Nikolay (nikolay.shabak@gmail.com)
+ * @since 23.04.2016
  * @param <T> the entity type listed in the consumer of the container, Vaadin Grid
  */
 public class GeneratedPropertyListContainer<T> extends ListContainer<T> {
 
     private final Map<String, PropertyValueGenerator<?>> propertyGenerators = new HashMap();
+    protected final Class<T> type;
 
     /**
      * Property implementation for generated properties
@@ -145,15 +148,29 @@ public class GeneratedPropertyListContainer<T> extends ListContainer<T> {
 
     public GeneratedPropertyListContainer(Class<T> type) {
         super(type);
+        this.type = type;
     }
 
     public GeneratedPropertyListContainer(Class<T> type, String... properties) {
         super(type);
+        this.type = type;
         setContainerPropertyIds(properties);
     }
 
     public void addGeneratedProperty(String propertyId, PropertyValueGenerator<?> generator) {
         propertyGenerators.put(propertyId, generator);
+        fireContainerPropertySetChange();
+    }
+
+    /**
+     * @param <P> the presentation type, displays the generated value
+     */
+    public <P> void addGeneratedProperty(String propertyId,
+                                         Class<P> presentationType,
+                                         LambdaPropertyValueGenerator.ValueGenerator<T, P> generator) {
+        LambdaPropertyValueGenerator<T, P> lambdaPropertyValueGenerator =
+                new LambdaPropertyValueGenerator<>(type, presentationType, generator);
+        propertyGenerators.put(propertyId, lambdaPropertyValueGenerator);
         fireContainerPropertySetChange();
     }
 

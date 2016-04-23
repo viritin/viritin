@@ -10,11 +10,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.vaadin.viritin.GeneratedPropertyListContainer;
 import org.vaadin.viritin.LazyList;
 import org.vaadin.viritin.ListContainer;
 import org.vaadin.viritin.SortableLazyList;
-import org.vaadin.viritin.fields.MTable;
 import org.vaadin.viritin.grid.utils.GridUtils;
 
 import com.vaadin.data.util.PropertyValueGenerator;
@@ -153,8 +151,21 @@ public class MGrid<T> extends Grid {
         return this;
     }
 
-    public MGrid<T> withGeneratedColumn(String columnId,
-                                        final PropertyValueGenerator<?> columnGenerator) {
+    public <P> MGrid<T> withGeneratedColumn(String columnId,
+                                            Class<P> presentationType,
+                                            LambdaPropertyValueGenerator.ValueGenerator<T, P> generator) {
+        LambdaPropertyValueGenerator<T, P> lambdaPropertyValueGenerator =
+                new LambdaPropertyValueGenerator<>(typeOfRows, presentationType, generator);
+        addGeneratedColumn(columnId, lambdaPropertyValueGenerator);
+        return this;
+    }
+
+    public MGrid<T> withGeneratedColumn(String columnId, final PropertyValueGenerator<?> columnGenerator) {
+        addGeneratedColumn(columnId, columnGenerator);
+        return this;
+    }
+
+    private void addGeneratedColumn(String columnId, final PropertyValueGenerator<?> columnGenerator) {
         Container.Indexed container = getContainerDataSource();
         GeneratedPropertyListContainer gplc;
         if (container instanceof GeneratedPropertyListContainer) {
@@ -164,7 +175,6 @@ public class MGrid<T> extends Grid {
             setContainerDataSource(gplc);
         }
         gplc.addGeneratedProperty(columnId, columnGenerator);
-        return this;
     }
 
     public MGrid<T> withFullWidth() {
