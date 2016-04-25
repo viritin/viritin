@@ -20,9 +20,9 @@ import java.io.Serializable;
  */
 public class LambdaPropertyValueGenerator<M, P> extends PropertyValueGenerator<P> {
 
-    Class<M> modelType;
-    Class<P> presentationType;
-    ValueGenerator<M, P> valueGenerator;
+    protected Class<M> modelType;
+    protected Class<P> presentationType;
+    protected ValueGenerator<M, P> valueGenerator;
 
     public LambdaPropertyValueGenerator(Class<M> modelType,
                                         Class<P> presentationType,

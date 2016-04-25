@@ -174,6 +174,14 @@ public class GeneratedPropertyListContainer<T> extends ListContainer<T> {
         fireContainerPropertySetChange();
     }
 
+    public void addGeneratedProperty(String propertyId,
+                                     StringPropertyValueGenerator.ValueGenerator<T> generator) {
+        StringPropertyValueGenerator<T> lambdaPropertyValueGenerator =
+                new StringPropertyValueGenerator<>(type, generator);
+        propertyGenerators.put(propertyId, lambdaPropertyValueGenerator);
+        fireContainerPropertySetChange();
+    }
+
     @Override
     public Class<?> getType(Object propertyId) {
         if (propertyGenerators.containsKey(propertyId)) {

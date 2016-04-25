@@ -160,6 +160,13 @@ public class MGrid<T> extends Grid {
         return this;
     }
 
+    public MGrid<T> withGeneratedColumn(String columnId, StringPropertyValueGenerator.ValueGenerator<T> generator) {
+        StringPropertyValueGenerator<T> lambdaPropertyValueGenerator =
+                new StringPropertyValueGenerator<>(typeOfRows, generator);
+        addGeneratedColumn(columnId, lambdaPropertyValueGenerator);
+        return this;
+    }
+
     public MGrid<T> withGeneratedColumn(String columnId, final PropertyValueGenerator<?> columnGenerator) {
         addGeneratedColumn(columnId, columnGenerator);
         return this;
