@@ -22,11 +22,11 @@ import org.vaadin.viritin.testdomain.Service;
 public class GeneratedPropertyListContainerExample extends AbstractTest {
 
     private MGrid<Person> fashionableApiGrid = new MGrid<>(Person.class)
+            .setRows(Service.getListOfPersons(100))
             .withGeneratedColumn("fullname", p -> p.getFirstName() + " " + p.getLastName())
             .withGeneratedColumn("groupnumber", Integer.class, p -> p.getGroups() != null ? p.getGroups().size() : 0)
             .withGeneratedColumn("details", new DetailsGenerator())
             .withProperties("id", "fullname", "groupnumber", "details")
-            .setRows(Service.getListOfPersons(100))
             .withFullWidth();
 
     private MGrid<Person> legacyApiGrid = new MGrid<>();

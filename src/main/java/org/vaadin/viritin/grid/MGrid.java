@@ -180,6 +180,7 @@ public class MGrid<T> extends Grid {
             gplc = (GeneratedPropertyListContainer) container;
         } else {
             gplc = new GeneratedPropertyListContainer(typeOfRows);
+            gplc.setCollection(getListContainer().getItemIds());
             setContainerDataSource(gplc);
         }
         gplc.addGeneratedProperty(columnId, columnGenerator);
