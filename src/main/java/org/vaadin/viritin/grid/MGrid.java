@@ -16,6 +16,7 @@ import org.vaadin.viritin.MSize;
 import org.vaadin.viritin.SortableLazyList;
 import org.vaadin.viritin.grid.utils.GridUtils;
 
+import com.vaadin.data.util.PropertyValueGenerator;
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.data.fieldgroup.FieldGroup;
@@ -30,6 +31,8 @@ import com.vaadin.ui.Grid;
  */
 public class MGrid<T> extends Grid {
 
+    private Class<T> typeOfRows;
+
     public MGrid() {
     }
 
@@ -40,6 +43,7 @@ public class MGrid<T> extends Grid {
      */
     public MGrid(Class<T> typeOfRows) {
         setContainerDataSource(new ListContainer(typeOfRows));
+        this.typeOfRows = typeOfRows;
     }
 
     /**
@@ -144,7 +148,45 @@ public class MGrid<T> extends Grid {
     }
 
     public MGrid<T> setRows(T... rows) {
-        setContainerDataSource(new ListContainer(Arrays.asList(rows)));
+        setRows(Arrays.asList(rows));
+        return this;
+    }
+
+    public <P> MGrid<T> withGeneratedColumn(String columnId,
+                                            Class<P> presentationType,
+                                            LambdaPropertyValueGenerator.ValueGenerator<T, P> generator) {
+        LambdaPropertyValueGenerator<T, P> lambdaPropertyValueGenerator =
+                new LambdaPropertyValueGenerator<>(typeOfRows, presentationType, generator);
+        addGeneratedColumn(columnId, lambdaPropertyValueGenerator);
+        return this;
+    }
+
+    public MGrid<T> withGeneratedColumn(String columnId, StringPropertyValueGenerator.ValueGenerator<T> generator) {
+        StringPropertyValueGenerator<T> lambdaPropertyValueGenerator =
+                new StringPropertyValueGenerator<>(typeOfRows, generator);
+        addGeneratedColumn(columnId, lambdaPropertyValueGenerator);
+        return this;
+    }
+
+    public MGrid<T> withGeneratedColumn(String columnId, final PropertyValueGenerator<?> columnGenerator) {
+        addGeneratedColumn(columnId, columnGenerator);
+        return this;
+    }
+
+    private void addGeneratedColumn(String columnId, final PropertyValueGenerator<?> columnGenerator) {
+        Container.Indexed container = getContainerDataSource();
+        GeneratedPropertyListContainer gplc;
+        if (container instanceof GeneratedPropertyListContainer) {
+            gplc = (GeneratedPropertyListContainer) container;
+        } else {
+            gplc = new GeneratedPropertyListContainer(typeOfRows);
+            setContainerDataSource(gplc);
+        }
+        gplc.addGeneratedProperty(columnId, columnGenerator);
+    }
+
+    public MGrid<T> withFullWidth() {
+        setWidth(100, Unit.PERCENTAGE);
         return this;
     }
 
