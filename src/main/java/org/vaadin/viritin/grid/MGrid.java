@@ -154,9 +154,9 @@ public class MGrid<T> extends Grid {
 
     public <P> MGrid<T> withGeneratedColumn(String columnId,
                                             Class<P> presentationType,
-                                            LambdaPropertyValueGenerator.ValueGenerator<T, P> generator) {
-        LambdaPropertyValueGenerator<T, P> lambdaPropertyValueGenerator =
-                new LambdaPropertyValueGenerator<>(typeOfRows, presentationType, generator);
+                                            TypedPropertyValueGenerator.ValueGenerator<T, P> generator) {
+        TypedPropertyValueGenerator<T, P> lambdaPropertyValueGenerator =
+                new TypedPropertyValueGenerator<>(typeOfRows, presentationType, generator);
         addGeneratedColumn(columnId, lambdaPropertyValueGenerator);
         return this;
     }
@@ -206,6 +206,9 @@ public class MGrid<T> extends Grid {
     }
 
     /**
+     * 
+     * @return  true if something :-) See parent doc if you REALLY want to use
+     * this.
      * @deprecated use the typed selectRow instead
      */
     @Deprecated
@@ -431,11 +434,6 @@ public class MGrid<T> extends Grid {
 
     public MGrid<T> withWidth(String width) {
         setWidth(width);
-        return this;
-    }
-
-    public MGrid<T> withFullWidth() {
-        setWidth(100, Unit.PERCENTAGE);
         return this;
     }
 

@@ -2,23 +2,17 @@ package org.vaadin.viritin.it;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.data.Item;
-import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.data.util.PropertyValueGenerator;
 import com.vaadin.ui.Component;
-import org.jsoup.safety.Whitelist;
-import org.junit.Test;
 import org.vaadin.addonhelpers.AbstractTest;
-import org.vaadin.viritin.fields.LabelField;
 import org.vaadin.viritin.grid.GeneratedPropertyListContainer;
 import org.vaadin.viritin.grid.MGrid;
-import org.vaadin.viritin.label.RichText;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.vaadin.viritin.testdomain.Address;
 import org.vaadin.viritin.testdomain.Person;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
+import org.vaadin.viritin.testdomain.Service;
 
 /**
  *
@@ -31,7 +25,8 @@ public class GeneratedPropertyListContainerExample extends AbstractTest {
             .withGeneratedColumn("fullname", p -> p.getFirstName() + " " + p.getLastName())
             .withGeneratedColumn("groupnumber", Integer.class, p -> p.getGroups() != null ? p.getGroups().size() : 0)
             .withGeneratedColumn("details", new DetailsGenerator())
-            .withProperties("id", "name", "email", "fullname", "groupnumber", "details")
+            .withProperties("id", "fullname", "groupnumber", "details")
+            .setRows(Service.getListOfPersons(100))
             .withFullWidth();
 
     private MGrid<Person> legacyApiGrid = new MGrid<>();
@@ -41,10 +36,11 @@ public class GeneratedPropertyListContainerExample extends AbstractTest {
 
         GeneratedPropertyListContainer<Person> container = new
                 GeneratedPropertyListContainer(Person.class,
-                "id", "name", "email", "fullname", "groupnumber", "details");
+                "id", "fullname", "groupnumber", "details");
         container.addGeneratedProperty("fullname", p -> p.getFirstName() + " " + p.getLastName());
         container.addGeneratedProperty("groupnumber", Integer.class, p -> p.getGroups() != null ? p.getGroups().size() : 0);
         container.addGeneratedProperty("details", new DetailsGenerator());
+        container.addAll(Service.getListOfPersons(100));
         legacyApiGrid.setContainerDataSource(container);
         legacyApiGrid.getColumn("details").setHeaderCaption("Details");
         legacyApiGrid.setSizeFull();

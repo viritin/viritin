@@ -667,7 +667,7 @@ public class MTable<T> extends Table {
     /**
      * A version of ItemClickEvent that is properly typed and named.
      *
-     * @param <T>
+     * @param <T> the type of the row 
      */
     public static class RowClickEvent<T> extends MouseEvents.ClickEvent {
 

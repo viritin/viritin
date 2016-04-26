@@ -1,15 +1,7 @@
-/*
- * Copyright (c) 2016, i-Free. All Rights Reserved.
- * Use is subject to license terms.
- */
-
 package org.vaadin.viritin.grid;
 
 import com.vaadin.data.Item;
-import com.vaadin.data.util.PropertyValueGenerator;
 import org.vaadin.viritin.ListContainer;
-
-import java.io.Serializable;
 
 /**
  *
@@ -17,7 +9,7 @@ import java.io.Serializable;
  * @since 23.04.2016
  * @param <M> the entity type listed in the consumer of the generator's container, Vaadin Grid
  */
-public class StringPropertyValueGenerator<M> extends LambdaPropertyValueGenerator<M, String> {
+public class StringPropertyValueGenerator<M> extends TypedPropertyValueGenerator<M, String> {
 
     public StringPropertyValueGenerator(Class<M> modelType, ValueGenerator<M> valueGenerator) {
         super(modelType, String.class, valueGenerator);
@@ -28,7 +20,8 @@ public class StringPropertyValueGenerator<M> extends LambdaPropertyValueGenerato
         return valueGenerator.getValue((M) ((ListContainer.DynaBeanItem) item).getBean());
     }
 
-    public interface ValueGenerator<M> extends LambdaPropertyValueGenerator.ValueGenerator<M, String> {
+    public interface ValueGenerator<M> extends TypedPropertyValueGenerator.ValueGenerator<M, String> {
+        @Override
         String getValue(M bean);
     }
 }

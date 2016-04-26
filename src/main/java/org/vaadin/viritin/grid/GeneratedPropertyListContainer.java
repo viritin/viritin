@@ -164,12 +164,15 @@ public class GeneratedPropertyListContainer<T> extends ListContainer<T> {
 
     /**
      * @param <P> the presentation type, displays the generated value
+     * @param propertyId the property id for generated property
+     * @param presentationType the presentation type of the generated property
+     * @param generator the generator that creates the property value on demand
      */
     public <P> void addGeneratedProperty(String propertyId,
                                          Class<P> presentationType,
-                                         LambdaPropertyValueGenerator.ValueGenerator<T, P> generator) {
-        LambdaPropertyValueGenerator<T, P> lambdaPropertyValueGenerator =
-                new LambdaPropertyValueGenerator<>(type, presentationType, generator);
+                                         TypedPropertyValueGenerator.ValueGenerator<T, P> generator) {
+        TypedPropertyValueGenerator<T, P> lambdaPropertyValueGenerator =
+                new TypedPropertyValueGenerator<>(type, presentationType, generator);
         propertyGenerators.put(propertyId, lambdaPropertyValueGenerator);
         fireContainerPropertySetChange();
     }
