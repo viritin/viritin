@@ -1,6 +1,7 @@
 package org.vaadin.viritin.it.examples;
 
 import com.vaadin.annotations.Theme;
+import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Label;
 import java.time.LocalDate;
@@ -21,8 +22,8 @@ public class LocalDateSelector extends AbstractTest {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     
     List<LocalDate> dates = Arrays.asList(
-            LocalDate.now(), 
             LocalDate.now().minusDays(1),
+            LocalDate.now(), 
             LocalDate.now().plusDays(1)
     );
 
@@ -31,7 +32,8 @@ public class LocalDateSelector extends AbstractTest {
 
         Label value = new Label("Value:");
 
-        TypedSelect<LocalDate> field = new TypedSelect<>();
+        TypedSelect<LocalDate> field = new TypedSelect<LocalDate>().withSelectType(
+                ComboBox.class);
         field.setOptions(dates);
         field.setCaptionGenerator(localDate -> localDate.format(formatter));
 
