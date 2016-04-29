@@ -206,7 +206,7 @@
         	<plugin>
 				<groupId>net.vergien.fig</groupId>
 				<artifactId>fluent-interface-generator-maven-plugin</artifactId>
-				<version>0.0.2-SNAPSHOT</version>
+				<version>0.0.2</version>
 				<dependencies>
 					<dependency>
            				<groupId>com.vaadin</groupId>
