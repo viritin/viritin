@@ -53,12 +53,33 @@ public class MLabel extends FLabel {
     }
 
     public MLabel withFullWidth() {
+        return withWidthFull();
+    }
+
+    public MLabel withFullHeight() {
+        return withHeightFull();
+    }
+
+    @Override
+    public MLabel withStyleName(String... styles) {
+        for (String style : styles) {
+            addStyleName(style);
+        }
+        return this;
+    }
+
+    @Override
+    public MLabel withWidthFull() {
         setWidth("100%");
         return this;
     }
 
-    public MLabel withFullHeight() {
+    @Override
+    public MLabel withHeightFull() {
         setHeight("100%");
         return this;
     }
+    
+    
+    
 }
