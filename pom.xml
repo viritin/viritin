@@ -233,6 +233,15 @@
                             <prefix>M</prefix>
 							<mapping>
 								<pkgConf>
+								<pkgName>org.vaadin.viritin.button</pkgName>
+									<ignoreMethods>
+										<param>setStyleName</param>
+									</ignoreMethods>
+									<classNames>
+										<param>com.vaadin.ui.Button</param>
+									</classNames>
+								</pkgConf>
+								<pkgConf>
 									<pkgName>org.vaadin.viritin.label</pkgName>
 									<interfacePkgName>org.vaadin.viritin.fluency.label</interfacePkgName>
 									<ignoreMethods>

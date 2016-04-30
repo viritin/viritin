@@ -17,16 +17,16 @@ package org.vaadin.viritin.button;
 
 import java.util.LinkedHashSet;
 
+import org.vaadin.viritin.MSize;
+
 import com.vaadin.server.Resource;
 import com.vaadin.shared.MouseEventDetails;
-import com.vaadin.ui.Button;
-import org.vaadin.viritin.MSize;
 
 /**
  * An extension to basic Vaadin button that adds some handy constructors and
  * fluent API.
  */
-public class MButton extends Button {
+public class MButton extends FButton {
 
     public MButton() {
     }
@@ -54,11 +54,6 @@ public class MButton extends Button {
         super(caption, listener);
     }
 
-    public MButton withIcon(Resource icon) {
-        setIcon(icon);
-        return this;
-    }
-
     public MButton withListener(ClickListener listener) {
         addClickListener(listener);
         return this;
@@ -71,48 +66,8 @@ public class MButton extends Button {
         return this;
     }
 
-    public MButton withCaption(String caption) {
-        setCaption(caption);
-        return this;
-    }
-
-    public MButton withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    public MButton withVisible(boolean visible) {
-        setVisible(visible);
-        return this;
-    }
-
-    public MButton withId(String id) {
-        setId(id);
-        return this;
-    }
-
-    public MButton withWidth(String width) {
-        setWidth(width);
-        return this;
-    }
-
-    public MButton withWidth(float width, Unit unit) {
-        setWidth(width, unit);
-        return this;
-    }
-
     public MButton withFullWidth() {
         setWidth("100%");
-        return this;
-    }
-
-    public MButton withHeight(String height) {
-        setHeight(height);
-        return this;
-    }
-
-    public MButton withHeight(float height, Unit unit) {
-        setHeight(height, unit);
         return this;
     }
 
