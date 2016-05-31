@@ -14,7 +14,7 @@ import org.vaadin.viritin.LazyList.CountProvider;
  * @author Matti Tahvonen
  * @param <T> The type of the objects in the list
  */
-public class SortableLazyList<T> extends LazyList implements Serializable {
+public class SortableLazyList<T> extends LazyList<T> implements Serializable {
 
     public void sort(boolean ascending, String property) {
         sortAscending = ascending;
@@ -52,11 +52,10 @@ public class SortableLazyList<T> extends LazyList implements Serializable {
      *
      * @param <T> The type of the objects in the list
      */
-    public interface SortableEntityProvider<T> extends SortablePagingProvider,
-            CountProvider {
+    public interface SortableEntityProvider<T> extends SortablePagingProvider<T>, CountProvider {
     }
 
-    private final SortablePagingProvider sortablePageProvider;
+    private final SortablePagingProvider<T> sortablePageProvider;
 
     /**
      * Constructs a new LazyList with given provider and default page size of
@@ -65,7 +64,7 @@ public class SortableLazyList<T> extends LazyList implements Serializable {
      * @param dataProvider the data provider that is used to fetch pages of
      * entities and to detect the total count of entities
      */
-    public SortableLazyList(SortableEntityProvider dataProvider) {
+    public SortableLazyList(SortableEntityProvider<T> dataProvider) {
         this(dataProvider, DEFAULT_PAGE_SIZE);
     }
 
@@ -77,7 +76,7 @@ public class SortableLazyList<T> extends LazyList implements Serializable {
      * entities and to detect the total count of entities
      * @param pageSize the page size to be used
      */
-    public SortableLazyList(SortableEntityProvider dataProvider, int pageSize) {
+    public SortableLazyList(SortableEntityProvider<T> dataProvider, int pageSize) {
         super(dataProvider, pageSize);
         this.sortablePageProvider = dataProvider;
     }
@@ -90,8 +89,7 @@ public class SortableLazyList<T> extends LazyList implements Serializable {
      * @param countProvider the interface via the total count of entities is
      * detected.
      */
-    public SortableLazyList(SortablePagingProvider pageProvider,
-            CountProvider countProvider) {
+    public SortableLazyList(SortablePagingProvider<T> pageProvider, CountProvider countProvider) {
         this(pageProvider, countProvider, DEFAULT_PAGE_SIZE);
     }
 
@@ -103,14 +101,14 @@ public class SortableLazyList<T> extends LazyList implements Serializable {
      * detected.
      * @param pageSize the page size that should be used
      */
-    public SortableLazyList(SortablePagingProvider pageProvider,
-            CountProvider countProvider, int pageSize) {
+    public SortableLazyList(SortablePagingProvider<T> pageProvider, CountProvider countProvider,
+            int pageSize) {
         super(countProvider, pageSize);
         this.sortablePageProvider = pageProvider;
     }
 
     @Override
-    protected List findEntities(int i) {
+    protected List<T> findEntities(int i) {
         return sortablePageProvider.findEntities(i, isSortAscending(), getSortProperty());
     }
 
