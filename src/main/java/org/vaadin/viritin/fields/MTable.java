@@ -38,6 +38,7 @@ import com.vaadin.shared.MouseEventDetails;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Table;
 import com.vaadin.util.ReflectTools;
+import java.util.List;
 
 /**
  * A better typed version of the Table component in Vaadin. Expects that users
@@ -376,9 +377,11 @@ public class MTable<T> extends Table {
             bic = createContainer(beans);
             if (pendingProperties != null) {
                 bic.setContainerPropertyIds(pendingProperties);
+                setContainerDataSource(bic, Arrays.asList(pendingProperties));
                 pendingProperties = null;
+            } else {
+                setContainerDataSource(bic);
             }
-            setContainerDataSource(bic);
             if (pendingHeaders != null) {
                 setColumnHeaders(pendingHeaders);
                 pendingHeaders = null;
@@ -522,6 +525,10 @@ public class MTable<T> extends Table {
             };
             addItemClickListener(itemClickPiggyback);
         }
+    }
+
+    public MTable<T> withProperties(List<String> a) {
+        return withProperties(a.toArray(new String[a.size()]));
     }
 
     public static interface SimpleColumnGenerator<T> {
