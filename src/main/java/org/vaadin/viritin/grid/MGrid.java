@@ -42,7 +42,7 @@ public class MGrid<T> extends Grid {
      * @param typeOfRows the type of objects that are listed in the grid
      */
     public MGrid(Class<T> typeOfRows) {
-        setTypeOfRows(typeOfRows);
+        setRowType(typeOfRows);
     }
 
     /**
@@ -51,7 +51,7 @@ public class MGrid<T> extends Grid {
      * @param typeOfRows1 the type of objects used as rows
      * @return this
      */
-    public MGrid<T> setTypeOfRows(Class<T> typeOfRows1) {
+    public MGrid<T> setRowType(Class<T> typeOfRows1) {
         setContainerDataSource(new ListContainer(typeOfRows1));
         this.typeOfRows = typeOfRows1;
         return this;
