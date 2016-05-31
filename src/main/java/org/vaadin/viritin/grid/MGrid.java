@@ -39,17 +39,31 @@ public class MGrid<T> extends Grid {
     /**
      * Creates a new instance of MGrid that contains certain types of rows.
      *
-     * @param typeOfRows the type of entities that are listed in the grid
+     * @param typeOfRows the type of objects that are listed in the grid
      */
     public MGrid(Class<T> typeOfRows) {
-        setContainerDataSource(new ListContainer(typeOfRows));
-        this.typeOfRows = typeOfRows;
+        setTypeOfRows(typeOfRows);
     }
 
     /**
-     * Creates a new instance of MGrid with given list of rows.
+     * Sets the type of the objects used as rows and resets the listing.
      *
-     * @param listOfEntities the list of entities to be displayed in the grid
+     * @param typeOfRows1 the type of objects used as rows
+     * @return this
+     */
+    public MGrid<T> setTypeOfRows(Class<T> typeOfRows1) {
+        setContainerDataSource(new ListContainer(typeOfRows1));
+        this.typeOfRows = typeOfRows1;
+        return this;
+    }
+
+    /**
+     * Creates a new instance of MGrid with given list of rows. Note that if
+     * your list might be empty, it is better to use the constructor with the
+     * type parameter and then initialize the content with setRows method.
+     *
+     * @param listOfEntities the (non-empty) list of entities to be displayed in
+     * the grid
      */
     public MGrid(List<T> listOfEntities) {
         setRows(listOfEntities);
