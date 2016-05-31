@@ -155,7 +155,8 @@ public class SubSetSelector<ET> extends CustomField<Collection> implements Abstr
     }
 
     /**
-     * @param headers
+     * @param headers the headers to be used for the table containing the
+     * selected items in the display order of the columns
      * @see Table#setColumnHeaders(String[])
      */
     public void setColumnHeaders(String... headers) {
@@ -163,8 +164,9 @@ public class SubSetSelector<ET> extends CustomField<Collection> implements Abstr
     }
 
     /**
-     * @param propertyId
-     * @param header
+     * @param propertyId the id of the property whose columen header is to be
+     * set
+     * @param header the columen header
      * @see Table#setColumnHeader(Object, String)
      */
     public void setColumnHeader(Object propertyId, String header) {

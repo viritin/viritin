@@ -25,44 +25,53 @@ import com.vaadin.ui.SingleComponentContainer;
 import com.vaadin.ui.UI;
 
 /**
- * A navigator utility that allows switching of views in a part of an application. 
- * 
+ * A navigator utility that allows switching of views in a part of an
+ * application.
+ *
  * <p>
- * This is a drop-in replacement for {@link com.vaadin.navigator.Navigator}. 
- * It uses an enhanced {@code View} implementation, called {@link MView}. It is 
- * still possible to use old-style {@code View}s with {@code MNavigator} but then
- * there is no gain to using {@code MNavigator} over {@code Navigator}.
- * 
- * 
- * 
+ * This is a drop-in replacement for {@link com.vaadin.navigator.Navigator}. It
+ * uses an enhanced {@code View} implementation, called {@link MView}. It is
+ * still possible to use old-style {@code View}s with {@code MNavigator} but
+ * then there is no gain to using {@code MNavigator} over {@code Navigator}.
+ *
+ *
+ *
  */
 public class MNavigator extends Navigator {
 
     /**
      * Creates a navigator that is tracking the active view using URI fragments
      * of the {@link com.vaadin.server.Page} containing the given UI and
-     * replacing the contents of a
-     * {@link com.vaadin.ui.ComponentContainer} with the
-     * active view.
-     * 
+     * replacing the contents of a {@link com.vaadin.ui.ComponentContainer} with
+     * the active view.
+     *
      * <p>
-     * This constructor is exactly similar to 
+     * This constructor is exactly similar to
      * {@link com.vaadin.navigator.Navigator#Navigator(com.vaadin.ui.UI, com.vaadin.ui.ComponentContainer)}
-     * 
-     * @see com.vaadin.navigator.Navigator#Navigator(com.vaadin.ui.UI, com.vaadin.ui.ComponentContainer)
+     *
+     * @param ui the UI for which the Navigator is to be created
+     * @param container the component container used for views
+     * @see com.vaadin.navigator.Navigator#Navigator(com.vaadin.ui.UI,
+     * com.vaadin.ui.ComponentContainer)
      */
     public MNavigator(UI ui, ComponentContainer container) {
         super(ui, container);
     }
 
     /**
-     * Creates a navigator. 
-     * 
+     * Creates a navigator.
+     *
      * <p>
-     * This constructor is exactly similar to 
+     * This constructor is exactly similar to
      * {@link com.vaadin.navigator.Navigator#Navigator(com.vaadin.ui.UI, com.vaadin.navigator.NavigationStateManager, com.vaadin.navigator.ViewDisplay)}
-     * 
-     * @see com.vaadin.navigator.Navigator#Navigator(com.vaadin.ui.UI, com.vaadin.navigator.NavigationStateManager, com.vaadin.navigator.ViewDisplay)
+     *
+     * @param ui the UI for which the Navigator is to be created
+     * @param stateManager the NavigationStateManager to be used by this
+     * Navigator
+     * @param display the ViewDisplay that will be used for showing the views
+     * @see com.vaadin.navigator.Navigator#Navigator(com.vaadin.ui.UI,
+     * com.vaadin.navigator.NavigationStateManager,
+     * com.vaadin.navigator.ViewDisplay)
      */
     public MNavigator(UI ui, NavigationStateManager stateManager, ViewDisplay display) {
         super(ui, stateManager, display);
@@ -71,14 +80,17 @@ public class MNavigator extends Navigator {
     /**
      * Creates a navigator that is tracking the active view using URI fragments
      * of the {@link com.vaadin.server.Page} containing the given UI and
-     * replacing the contents of a {@link com.vaadin.ui.SingleComponentContainer} with
-     * the active view.
+     * replacing the contents of a
+     * {@link com.vaadin.ui.SingleComponentContainer} with the active view.
      *
      * <p>
-     * This constructor is exactly similar to 
+     * This constructor is exactly similar to
      * {@link com.vaadin.navigator.Navigator#Navigator(com.vaadin.ui.UI, com.vaadin.ui.SingleComponentContainer)}
-     * 
-     * @see com.vaadin.navigator.Navigator#Navigator(com.vaadin.ui.UI, com.vaadin.ui.SingleComponentContainer) 
+     *
+     * @param ui the UI for which the Navigator is to be created
+     * @param container the component in which the views are to be displayed
+     * @see com.vaadin.navigator.Navigator#Navigator(com.vaadin.ui.UI,
+     * com.vaadin.ui.SingleComponentContainer)
      */
     public MNavigator(UI ui, SingleComponentContainer container) {
         super(ui, container);
@@ -89,16 +101,18 @@ public class MNavigator extends Navigator {
      * of the {@link com.vaadin.server.Page} containing the given UI.
      *
      * <p>
-     * This constructor is exactly similar to 
+     * This constructor is exactly similar to
      * {@link com.vaadin.navigator.Navigator#Navigator(com.vaadin.ui.UI, com.vaadin.navigator.ViewDisplay)}
-     * 
-     * @see com.vaadin.navigator.Navigator#Navigator(com.vaadin.ui.UI, com.vaadin.navigator.ViewDisplay) 
+     *
+     * @param ui the UI for which the Navigator is to be created
+     * @param display the ViewDisplay that will be used for showing the views
+     * @see com.vaadin.navigator.Navigator#Navigator(com.vaadin.ui.UI,
+     * com.vaadin.navigator.ViewDisplay)
      */
     public MNavigator(UI ui, ViewDisplay display) {
         super(ui, display);
     }
 
-    
     /**
      * Creates a navigator. This method is for use by dependency injection
      * frameworks etc. and must be followed by a call to
@@ -108,19 +122,16 @@ public class MNavigator extends Navigator {
      */
     protected MNavigator() {
     }
-    
-
 
     /**
-     * {@inheritDoc}
-     * Generally shouldn't be called directly.
+     * {@inheritDoc} Generally shouldn't be called directly.
      */
     @Override
     protected void init(UI ui, NavigationStateManager stateManager, ViewDisplay display) {
-        super.init(ui, stateManager, display); 
+        super.init(ui, stateManager, display);
         addViewChangeListener(new MViewChangeListener());
     }
-    
+
     // ViewChangeListener which actually does the work of propagating the
     // beforeViewChange and afterViewChange into the relevant views.
     // The listener exists for the life-time of the navigator. It never
@@ -131,7 +142,7 @@ public class MNavigator extends Navigator {
         public boolean beforeViewChange(ViewChangeListener.ViewChangeEvent event) {
             View oldView = event.getOldView();
             if (oldView != null && oldView instanceof MView) {
-                return ((MView)oldView).beforeViewChange(event);
+                return ((MView) oldView).beforeViewChange(event);
             }
             return true;
         }
@@ -140,11 +151,9 @@ public class MNavigator extends Navigator {
         public void afterViewChange(ViewChangeListener.ViewChangeEvent event) {
             View oldView = event.getOldView();
             if (oldView != null && oldView instanceof MView) {
-                ((MView)oldView).afterViewChange(event);
+                ((MView) oldView).afterViewChange(event);
             }
         }
     }
-    
-}
-    
 
+}
