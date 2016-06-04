@@ -145,6 +145,17 @@ public class MGrid<T> extends Grid {
 
     public MGrid<T> setRows(List<T> rows) {
         if (getContainerDataSource() instanceof ListContainer) {
+            
+            Collection<?> itemIds = getListContainer().getItemIds();
+            if (itemIds instanceof SortableLazyList) {
+                SortableLazyList old = (SortableLazyList) itemIds;
+                if(old.getSortProperty() != null && rows instanceof SortableLazyList ) {
+                    SortableLazyList newList =  (SortableLazyList) rows;
+                    newList.setSortProperty(old.getSortProperty());
+                    newList.setSortAscending(old.isSortAscending());
+                }
+            }
+            
             getListContainer().setCollection(rows);
         } else {
             setContainerDataSource(new ListContainer(rows));

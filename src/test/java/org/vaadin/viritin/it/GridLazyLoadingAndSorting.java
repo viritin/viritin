@@ -1,6 +1,7 @@
 package org.vaadin.viritin.it;
 
 import com.vaadin.annotations.Theme;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,13 +25,14 @@ public class GridLazyLoadingAndSorting extends AbstractTest {
     @Override
     public Component getTestComponent() {
 
-        final List<Person> listOfPersons = Service.getListOfPersons(1000);
+        final List<Person> orig = Service.getListOfPersons(1000);
 
         final MGrid<Person> g = new MGrid<Person>(
                 new SortableLazyList.SortablePagingProvider<Person>() {
             @Override
             public List<Person> findEntities(int firstRow, boolean sortAscending,
                     String property) {
+                List<Person> listOfPersons = new ArrayList<>(orig);
                 if (property != null) {
 
                     Collections.sort(listOfPersons, new BeanComparator<Person>(
@@ -51,7 +53,7 @@ public class GridLazyLoadingAndSorting extends AbstractTest {
 
             @Override
             public int size() {
-                return listOfPersons.size();
+                return orig.size();
             }
         }
         );
@@ -62,6 +64,7 @@ public class GridLazyLoadingAndSorting extends AbstractTest {
             @Override
             public List<Person> findEntities(int firstRow, boolean sortAscending,
                     String property) {
+                List<Person> listOfPersons = new ArrayList<>(orig);
                 if (property != null) {
 
                     Collections.sort(listOfPersons, new BeanComparator<Person>(
@@ -82,12 +85,34 @@ public class GridLazyLoadingAndSorting extends AbstractTest {
 
             @Override
             public int size() {
-                return listOfPersons.size();
+                return orig.size();
             }
         }
         );
 
-        return new MVerticalLayout(g, g2);
+        Button b = new Button("Reset loading strategy (should maintaine sort order)");
+        b.addClickListener(e -> {
+            g.lazyLoadFrom((int firstRow, boolean sortAscending, String property) -> {
+                List<Person> listOfPersons = new ArrayList<>(orig);
+                if (property != null) {
+                    
+                    Collections.sort(listOfPersons, new BeanComparator<Person>(
+                            property));
+                    if (!sortAscending) {
+                        Collections.reverse(listOfPersons);
+                    }
+                }
+                int last = firstRow + LazyList.DEFAULT_PAGE_SIZE;
+                if (last > listOfPersons.size()) {
+                    last = listOfPersons.size();
+                }
+                return new ArrayList<>(listOfPersons.subList(firstRow,
+                        last));
+            }, () -> orig.size());
+
+        });
+
+        return new MVerticalLayout(b, g, g2);
     }
 
 }
