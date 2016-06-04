@@ -63,6 +63,11 @@ public class MTable<T> extends Table {
     private String[] pendingHeaders;
 
     private Collection sortableProperties;
+    
+    // Cached last sort properties, used to maintain sorting when re-setting
+    // lazy load strategy
+    private String sortProperty;
+    private boolean sortAscending;
 
     public MTable() {
     }
@@ -422,6 +427,13 @@ public class MTable<T> extends Table {
     }
 
     public MTable<T> setBeans(Collection<T> beans) {
+
+        if(sortProperty != null && beans instanceof SortableLazyList) {
+            final SortableLazyList sll = (SortableLazyList)beans;
+            sll.setSortProperty(sortProperty);
+            sll.setSortAscending(sortAscending);
+        }
+        
         if (!isContainerInitialized() && !beans.isEmpty()) {
             ensureBeanItemContainer(beans);
         } else if (isContainerInitialized()) {
@@ -628,8 +640,8 @@ public class MTable<T> extends Table {
 
             // create sort event and fire it, allow user to prevent default
             // operation
-            final boolean sortAscending = ascending != null && ascending.length > 0 ? ascending[0] : true;
-            final String sortProperty = propertyId != null && propertyId.length > 0 ? propertyId[0].
+            sortAscending = ascending != null && ascending.length > 0 ? ascending[0] : true;
+            sortProperty = propertyId != null && propertyId.length > 0 ? propertyId[0].
                     toString() : null;
 
             final SortEvent sortEvent = new SortEvent(this, sortAscending,
