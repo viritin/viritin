@@ -88,4 +88,19 @@ public class MLabel extends Label {
         setHeight("100%");
         return this;
     }
+
+    public MLabel withWidthUndefined() {
+        setWidthUndefined();
+        return this;
+    }
+
+    public MLabel withEnabled(boolean enabled) {
+        setEnabled(enabled);
+        return this;
+    }
+
+    public MLabel withVisible(boolean visible) {
+        setVisible(visible);
+        return this;
+    }
 }

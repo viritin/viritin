@@ -65,6 +65,11 @@ public class MTextArea extends TextArea {
         return this;
     }
 
+    public MTextArea withValue(String value) {
+        setValue(value);
+        return this;
+    }
+
     public MTextArea withSize(MSize mSize) {
         setWidth(mSize.getWidth(), mSize.getWidthUnit());
         setHeight(mSize.getHeight(), mSize.getHeightUnit());
@@ -116,6 +121,11 @@ public class MTextArea extends TextArea {
 
     public MTextArea withId(String id) {
         setId(id);
+        return this;
+    }
+
+    public MTextArea withVisible(boolean visible) {
+        setVisible(visible);
         return this;
     }
 }

@@ -1,12 +1,12 @@
 package org.vaadin.viritin.fields;
 
-import java.util.Date;
-import java.util.Map;
-
 import com.vaadin.data.Property;
 import com.vaadin.server.Resource;
 import com.vaadin.shared.ui.datefield.Resolution;
 import com.vaadin.ui.DateField;
+
+import java.util.Date;
+import java.util.Map;
 
 /**
  *
@@ -46,7 +46,7 @@ public class MDateField extends DateField {
     private boolean settingInitialValue;
 
     /**
-     * @return the method how value of the time part is to be initialized when 
+     * @return the method how value of the time part is to be initialized when
      * resolution setting don't show time.
      */
     public InitialTimeMode getInitialTimeMode() {
@@ -54,8 +54,8 @@ public class MDateField extends DateField {
     }
 
     /**
-     * 
-     * @param initialTimeMode the method how value of the time part is to be initialized when 
+     *
+     * @param initialTimeMode the method how value of the time part is to be initialized when
      * resolution setting don't show time.
      */
     public void setInitialTimeMode(InitialTimeMode initialTimeMode) {
@@ -123,6 +123,11 @@ public class MDateField extends DateField {
         return this;
     }
 
+    public MDateField withValue(Date newDate) {
+        setValue(newDate);
+        return this;
+    }
+
     public MDateField withWidth(float width, Unit unit) {
         setWidth(width, unit);
         return this;
@@ -135,6 +140,11 @@ public class MDateField extends DateField {
 
     public MDateField withId(String id) {
         setId(id);
+        return this;
+    }
+
+    public MDateField withVisible(boolean visible) {
+        setVisible(visible);
         return this;
     }
 
