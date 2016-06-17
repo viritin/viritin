@@ -221,7 +221,7 @@ public class MNotification extends Notification {
      * on the current page.
      *
      * @param caption The message caption
-     * @param type
+     * @param type the type of the notification to be shown
      * @return The notification (for method chaining)
      */
     public static MNotification display(String caption, Type type) {
@@ -234,7 +234,7 @@ public class MNotification extends Notification {
      *
      * @param caption The message caption
      * @param description The message description
-     * @param type
+     * @param type the type of the notification to be shown
      * @return The notification (for method chaining)
      */
     public static MNotification display(String caption, String description, Type type) {

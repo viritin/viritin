@@ -38,6 +38,7 @@ import com.vaadin.shared.MouseEventDetails;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Table;
 import com.vaadin.util.ReflectTools;
+import java.util.List;
 
 /**
  * A better typed version of the Table component in Vaadin. Expects that users
@@ -62,6 +63,11 @@ public class MTable<T> extends Table {
     private String[] pendingHeaders;
 
     private Collection sortableProperties;
+    
+    // Cached last sort properties, used to maintain sorting when re-setting
+    // lazy load strategy
+    private String sortProperty;
+    private boolean sortAscending;
 
     public MTable() {
     }
@@ -376,9 +382,11 @@ public class MTable<T> extends Table {
             bic = createContainer(beans);
             if (pendingProperties != null) {
                 bic.setContainerPropertyIds(pendingProperties);
+                setContainerDataSource(bic, Arrays.asList(pendingProperties));
                 pendingProperties = null;
+            } else {
+                setContainerDataSource(bic);
             }
-            setContainerDataSource(bic);
             if (pendingHeaders != null) {
                 setColumnHeaders(pendingHeaders);
                 pendingHeaders = null;
@@ -419,6 +427,13 @@ public class MTable<T> extends Table {
     }
 
     public MTable<T> setBeans(Collection<T> beans) {
+
+        if(sortProperty != null && beans instanceof SortableLazyList) {
+            final SortableLazyList sll = (SortableLazyList)beans;
+            sll.setSortProperty(sortProperty);
+            sll.setSortAscending(sortAscending);
+        }
+        
         if (!isContainerInitialized() && !beans.isEmpty()) {
             ensureBeanItemContainer(beans);
         } else if (isContainerInitialized()) {
@@ -524,6 +539,10 @@ public class MTable<T> extends Table {
         }
     }
 
+    public MTable<T> withProperties(List<String> a) {
+        return withProperties(a.toArray(new String[a.size()]));
+    }
+
     public static interface SimpleColumnGenerator<T> {
 
         public Object generate(T entity);
@@ -621,8 +640,8 @@ public class MTable<T> extends Table {
 
             // create sort event and fire it, allow user to prevent default
             // operation
-            final boolean sortAscending = ascending != null && ascending.length > 0 ? ascending[0] : true;
-            final String sortProperty = propertyId != null && propertyId.length > 0 ? propertyId[0].
+            sortAscending = ascending != null && ascending.length > 0 ? ascending[0] : true;
+            sortProperty = propertyId != null && propertyId.length > 0 ? propertyId[0].
                     toString() : null;
 
             final SortEvent sortEvent = new SortEvent(this, sortAscending,
@@ -667,7 +686,7 @@ public class MTable<T> extends Table {
     /**
      * A version of ItemClickEvent that is properly typed and named.
      *
-     * @param <T>
+     * @param <T> the type of the row 
      */
     public static class RowClickEvent<T> extends MouseEvents.ClickEvent {
 

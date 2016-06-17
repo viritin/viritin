@@ -166,6 +166,13 @@ public class MPasswordField extends PasswordField implements EagerValidateable {
         return this;
     }
 
+    public MPasswordField withStyleName(String... styleNames) {
+        for (String styleName : styleNames) {
+            addStyleName(styleName);
+        }
+        return this;
+    }
+    
     @Override
     public ErrorMessage getErrorMessage() {
 

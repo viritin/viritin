@@ -16,6 +16,7 @@ import org.vaadin.viritin.MSize;
 import org.vaadin.viritin.SortableLazyList;
 import org.vaadin.viritin.grid.utils.GridUtils;
 
+import com.vaadin.data.util.PropertyValueGenerator;
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.data.fieldgroup.FieldGroup;
@@ -30,22 +31,39 @@ import com.vaadin.ui.Grid;
  */
 public class MGrid<T> extends Grid {
 
+    private Class<T> typeOfRows;
+
     public MGrid() {
     }
 
     /**
      * Creates a new instance of MGrid that contains certain types of rows.
      *
-     * @param typeOfRows the type of entities that are listed in the grid
+     * @param typeOfRows the type of objects that are listed in the grid
      */
     public MGrid(Class<T> typeOfRows) {
-        setContainerDataSource(new ListContainer(typeOfRows));
+        setRowType(typeOfRows);
     }
 
     /**
-     * Creates a new instance of MGrid with given list of rows.
+     * Sets the type of the objects used as rows and resets the listing.
      *
-     * @param listOfEntities the list of entities to be displayed in the grid
+     * @param typeOfRows1 the type of objects used as rows
+     * @return this
+     */
+    public MGrid<T> setRowType(Class<T> typeOfRows1) {
+        setContainerDataSource(new ListContainer(typeOfRows1));
+        this.typeOfRows = typeOfRows1;
+        return this;
+    }
+
+    /**
+     * Creates a new instance of MGrid with given list of rows. Note that if
+     * your list might be empty, it is better to use the constructor with the
+     * type parameter and then initialize the content with setRows method.
+     *
+     * @param listOfEntities the (non-empty) list of entities to be displayed in
+     * the grid
      */
     public MGrid(List<T> listOfEntities) {
         setRows(listOfEntities);
@@ -127,13 +145,24 @@ public class MGrid<T> extends Grid {
 
     public MGrid<T> setRows(List<T> rows) {
         if (getContainerDataSource() instanceof ListContainer) {
+            
+            Collection<?> itemIds = getListContainer().getItemIds();
+            if (itemIds instanceof SortableLazyList) {
+                SortableLazyList old = (SortableLazyList) itemIds;
+                if(old.getSortProperty() != null && rows instanceof SortableLazyList ) {
+                    SortableLazyList newList =  (SortableLazyList) rows;
+                    newList.setSortProperty(old.getSortProperty());
+                    newList.setSortAscending(old.isSortAscending());
+                }
+            }
+            
             getListContainer().setCollection(rows);
         } else {
             setContainerDataSource(new ListContainer(rows));
         }
         return this;
     }
-    
+
     public List<T> getRows() {
         return (List<T>) getListContainer().getItemIds();
     }
@@ -144,7 +173,53 @@ public class MGrid<T> extends Grid {
     }
 
     public MGrid<T> setRows(T... rows) {
-        setContainerDataSource(new ListContainer(Arrays.asList(rows)));
+        setRows(Arrays.asList(rows));
+        return this;
+    }
+
+    public <P> MGrid<T> withGeneratedColumn(String columnId,
+            Class<P> presentationType,
+            TypedPropertyValueGenerator.ValueGenerator<T, P> generator) {
+        TypedPropertyValueGenerator<T, P> lambdaPropertyValueGenerator
+                = new TypedPropertyValueGenerator<>(typeOfRows, presentationType,
+                        generator);
+        addGeneratedColumn(columnId, lambdaPropertyValueGenerator);
+        return this;
+    }
+
+    public MGrid<T> withGeneratedColumn(String columnId,
+            StringPropertyValueGenerator.ValueGenerator<T> generator) {
+        StringPropertyValueGenerator<T> lambdaPropertyValueGenerator
+                = new StringPropertyValueGenerator<>(typeOfRows, generator);
+        addGeneratedColumn(columnId, lambdaPropertyValueGenerator);
+        return this;
+    }
+
+    public MGrid<T> withGeneratedColumn(String columnId,
+            final PropertyValueGenerator<?> columnGenerator) {
+        addGeneratedColumn(columnId, columnGenerator);
+        return this;
+    }
+
+    private void addGeneratedColumn(String columnId,
+            final PropertyValueGenerator<?> columnGenerator) {
+        Container.Indexed container = getContainerDataSource();
+        GeneratedPropertyListContainer gplc;
+        if (container instanceof GeneratedPropertyListContainer) {
+            gplc = (GeneratedPropertyListContainer) container;
+        } else {
+            gplc = new GeneratedPropertyListContainer(typeOfRows);
+            try {
+                gplc.setCollection(getListContainer().getItemIds());
+            } catch (Exception e) {// NOP, not yet set
+            }
+            setContainerDataSource(gplc);
+        }
+        gplc.addGeneratedProperty(columnId, columnGenerator);
+    }
+
+    public MGrid<T> withFullWidth() {
+        setWidth(100, Unit.PERCENTAGE);
         return this;
     }
 
@@ -164,6 +239,9 @@ public class MGrid<T> extends Grid {
     }
 
     /**
+     *
+     * @return true if something :-) See parent doc if you REALLY want to use
+     * this.
      * @deprecated use the typed selectRow instead
      */
     @Deprecated
@@ -186,7 +264,7 @@ public class MGrid<T> extends Grid {
         setColumns((Object[]) propertyIds);
         return this;
     }
-    
+
     public MGrid<T> withId(String id) {
         setId(id);
         return this;
@@ -386,14 +464,8 @@ public class MGrid<T> extends Grid {
         return this;
     }
 
-
     public MGrid<T> withWidth(String width) {
         setWidth(width);
-        return this;
-    }
-
-    public MGrid<T> withFullWidth() {
-        setWidth(100, Unit.PERCENTAGE);
         return this;
     }
 
@@ -405,7 +477,6 @@ public class MGrid<T> extends Grid {
     public MGrid<T> withFullHeight() {
         return withHeight("100%");
     }
-
 
     public MGrid<T> withSize(MSize mSize) {
         setWidth(mSize.getWidth(), mSize.getWidthUnit());
