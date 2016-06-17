@@ -214,7 +214,7 @@ public class MultiSelectTable<ET> extends CustomField<Collection> {
     }
 
     private boolean isContainerInitialized() {
-        return table.size() != 0;
+        return table.getContainerDataSource() instanceof ListContainer;
     }
 
     public MultiSelectTable<ET> withColumnHeaders(
@@ -256,9 +256,9 @@ public class MultiSelectTable<ET> extends CustomField<Collection> {
      */
     public MultiSelectTable<ET> setOptions(List<ET> list) {
         if (visProps == null) {
-            table.setContainerDataSource(new ListContainer(list));
+            table.setContainerDataSource(new ListContainer(optionType, list));
         } else {
-            table.setContainerDataSource(new ListContainer(list), Arrays.asList(
+            table.setContainerDataSource(new ListContainer(optionType, list), Arrays.asList(
                     visProps));
         }
         if (pendingHeaders != null) {

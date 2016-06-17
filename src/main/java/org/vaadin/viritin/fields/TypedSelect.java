@@ -557,5 +557,9 @@ public class TypedSelect<T> extends CustomField {
     protected Component initContent() {
         return getSelect();
     }
+    
+    public void addOption(T option) {
+        getBic().addItem(option);
+    }
 
 }

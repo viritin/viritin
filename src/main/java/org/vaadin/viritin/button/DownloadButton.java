@@ -78,7 +78,12 @@ public class DownloadButton extends MButton {
         new Thread() {
             @Override
             public void run() {
-                getWriter().write(out);
+                try {
+                    getWriter().write(out);
+                    out.close();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         }.start();
     }

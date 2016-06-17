@@ -18,6 +18,7 @@ package org.vaadin.viritin.button;
 import com.vaadin.server.Resource;
 import com.vaadin.shared.MouseEventDetails;
 import org.vaadin.dialogs.ConfirmDialog;
+import org.vaadin.viritin.button.MButton.MClickListener;
 
 /**
  *
@@ -64,6 +65,111 @@ public class ConfirmButton extends MButton {
 
                 });
 
+    }
+
+    @Override
+    public ConfirmButton removeClickListener(MClickListener listener) {
+        super.removeClickListener(listener);
+
+        return this;
+    }
+
+    @Override
+    public ConfirmButton addClickListener(MClickListener listener) {
+        super.addClickListener(listener);
+
+        return this;
+    }
+
+    @Override
+    public ConfirmButton withFullHeight() {
+        super.withFullHeight();
+
+        return this;
+    }
+
+    @Override
+    public ConfirmButton withHeight(float height, Unit unit) {
+        super.withHeight(height, unit);
+
+        return this;
+    }
+
+    @Override
+    public ConfirmButton withHeight(String height) {
+        super.withHeight(height);
+
+        return this;
+    }
+
+    @Override
+    public ConfirmButton withFullWidth() {
+        super.withFullWidth();
+
+        return this;
+    }
+
+    @Override
+    public ConfirmButton withWidth(float width, Unit unit) {
+        super.withWidth(width, unit);
+
+        return this;
+    }
+
+    @Override
+    public ConfirmButton withWidth(String width) {
+        super.withWidth(width);
+
+        return this;
+    }
+
+    @Override
+    public ConfirmButton withId(String id) {
+        super.withId(id);
+
+        return this;
+    }
+
+    @Override
+    public ConfirmButton withVisible(boolean visible) {
+        super.withVisible(visible);
+
+        return this;
+    }
+
+    @Override
+    public ConfirmButton withDescription(String description) {
+        super.withDescription(description);
+
+        return this;
+    }
+
+    @Override
+    public ConfirmButton withCaption(String caption) {
+        super.withCaption(caption);
+
+        return this;
+    }
+
+    @Override
+    public ConfirmButton withStyleName(String... styleNames) {
+        super.withStyleName(styleNames);
+
+        return this;
+    }
+
+    @Override
+    public ConfirmButton withListener(ClickListener listener) {
+        super.withListener(listener);
+
+        return this;
+    }
+
+    @Override
+    public ConfirmButton withIcon(Resource icon) {
+        super.withIcon(icon);
+
+        return this;
     }
 
     protected void doFireClickListener(final MouseEventDetails details) {
