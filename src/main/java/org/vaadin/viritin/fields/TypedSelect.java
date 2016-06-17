@@ -421,6 +421,10 @@ public class TypedSelect<T> extends CustomField {
         return setOptions(options);
     }
 
+    public Collection<T> getBean() {
+        return (Collection) bic.getItemIds();
+    }
+
     @Override
     public void attach() {
         if (bic != null && getSelect().getContainerDataSource() != bic) {
@@ -557,7 +561,7 @@ public class TypedSelect<T> extends CustomField {
     protected Component initContent() {
         return getSelect();
     }
-    
+
     public void addOption(T option) {
         getBic().addItem(option);
     }
