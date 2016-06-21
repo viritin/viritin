@@ -74,8 +74,10 @@ public class MLabel extends Label {
         return this;
     }
 
-    public MLabel withStyleName(String styleName) {
-        addStyleName(styleName);
+    public MLabel withStyleName(String... styleNames) {
+        for (String styleName : styleNames) {
+            addStyleName(styleName);
+        }
         return this;
     }
 
