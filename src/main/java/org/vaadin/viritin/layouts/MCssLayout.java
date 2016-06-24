@@ -67,6 +67,11 @@ public class MCssLayout extends CssLayout {
         return this;
     }
 
+    public MCssLayout add(Component... component) {
+        addComponents(component);
+        return this;
+    }
+
     public MCssLayout withCaption(String caption, boolean captionAsHtml) {
         setCaption(caption);
         setCaptionAsHtml(captionAsHtml);
