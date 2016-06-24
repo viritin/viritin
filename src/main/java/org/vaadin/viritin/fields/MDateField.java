@@ -1,6 +1,7 @@
 package org.vaadin.viritin.fields;
 
 import com.vaadin.data.Property;
+import com.vaadin.event.FieldEvents;
 import com.vaadin.server.Resource;
 import com.vaadin.shared.ui.datefield.Resolution;
 import com.vaadin.ui.DateField;
@@ -125,6 +126,16 @@ public class MDateField extends DateField {
 
     public MDateField withValue(Date newDate) {
         setValue(newDate);
+        return this;
+    }
+
+    public MDateField withValueChangeListener(Property.ValueChangeListener listener) {
+        addValueChangeListener(listener);
+        return this;
+    }
+
+    public MDateField withBlurListener(FieldEvents.BlurListener listener) {
+        addBlurListener(listener);
         return this;
     }
 

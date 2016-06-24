@@ -17,6 +17,7 @@ package org.vaadin.viritin.fields;
 
 import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
+import com.vaadin.event.FieldEvents;
 import com.vaadin.server.Resource;
 import com.vaadin.ui.TextArea;
 import org.vaadin.viritin.MSize;
@@ -94,6 +95,21 @@ public class MTextArea extends TextArea {
 
     public MTextArea withNullRepresentation(String nullRepresentation) {
         setNullRepresentation(nullRepresentation);
+        return this;
+    }
+
+    public MTextArea withTextChangeListener(FieldEvents.TextChangeListener listener) {
+        addTextChangeListener(listener);
+        return this;
+    }
+
+    public MTextArea withValueChangeListener(Property.ValueChangeListener listener) {
+        addValueChangeListener(listener);
+        return this;
+    }
+
+    public MTextArea withBlurListener(FieldEvents.BlurListener listener) {
+        addBlurListener(listener);
         return this;
     }
 

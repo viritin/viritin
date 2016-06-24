@@ -19,6 +19,7 @@ import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
 import com.vaadin.data.util.converter.Converter;
 import com.vaadin.data.util.converter.ConverterUtil;
+import com.vaadin.event.FieldEvents;
 import com.vaadin.event.FieldEvents.TextChangeEvent;
 import com.vaadin.server.AbstractErrorMessage;
 import com.vaadin.server.CompositeErrorMessage;
@@ -70,6 +71,11 @@ public class MTextField extends TextField implements EagerValidateable {
 
     public MTextField(String caption, String value) {
         super(caption, value);
+    }
+
+    public MTextField withCaption(String caption) {
+        setCaption(caption);
+        return this;
     }
 
     @Override
@@ -183,6 +189,21 @@ public class MTextField extends TextField implements EagerValidateable {
 
     public MTextField withVisible(boolean visible) {
         setVisible(visible);
+        return this;
+    }
+
+    public MTextField withTextChangeListener(FieldEvents.TextChangeListener listener) {
+        addTextChangeListener(listener);
+        return this;
+    }
+
+    public MTextField withValueChangeListener(Property.ValueChangeListener listener) {
+        addValueChangeListener(listener);
+        return this;
+    }
+
+    public MTextField withBlurListener(FieldEvents.BlurListener listener) {
+        addBlurListener(listener);
         return this;
     }
 

@@ -15,17 +15,18 @@
  */
 package org.vaadin.viritin.fields;
 
-import java.util.EventObject;
-
 import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
 import com.vaadin.data.util.converter.Converter;
+import com.vaadin.event.FieldEvents;
 import com.vaadin.event.FieldEvents.TextChangeEvent;
 import com.vaadin.server.AbstractErrorMessage;
 import com.vaadin.server.CompositeErrorMessage;
 import com.vaadin.server.ErrorMessage;
 import com.vaadin.server.Resource;
 import com.vaadin.ui.PasswordField;
+
+import java.util.EventObject;
 
 /**
  * A an extension to basic Vaadin PasswordField. Uses the only sane default for
@@ -155,7 +156,7 @@ public class MPasswordField extends PasswordField implements EagerValidateable {
         setRequired(required);
         return this;
     }
-    
+
     public MPasswordField withRequiredError(String requiredError) {
         setRequiredError(requiredError);
         return this;
@@ -172,7 +173,22 @@ public class MPasswordField extends PasswordField implements EagerValidateable {
         }
         return this;
     }
-    
+
+    public MPasswordField withTextChangeListener(FieldEvents.TextChangeListener listener) {
+        addTextChangeListener(listener);
+        return this;
+    }
+
+    public MPasswordField withValueChangeListener(Property.ValueChangeListener listener) {
+        addValueChangeListener(listener);
+        return this;
+    }
+
+    public MPasswordField withBlurListener(FieldEvents.BlurListener listener) {
+        addBlurListener(listener);
+        return this;
+    }
+
     @Override
     public ErrorMessage getErrorMessage() {
 
@@ -249,7 +265,7 @@ public class MPasswordField extends PasswordField implements EagerValidateable {
     @Override
     public void validate() throws Validator.InvalidValueException {
         if (isEagerValidation() && lastKnownTextChangeValue != null) {
-            // This is most likely not executed, unless someone, for some weird 
+            // This is most likely not executed, unless someone, for some weird
             // reason calls this explicitly
             if (isRequired() && getLastKnownTextContent().isEmpty()) {
                 throw new Validator.EmptyValueException(getRequiredError());
