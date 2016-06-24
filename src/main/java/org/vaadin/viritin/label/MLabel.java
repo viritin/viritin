@@ -42,8 +42,19 @@ public class MLabel extends Label {
         return this;
     }
 
+    /**
+     * equals to withValue
+     *
+     * @param content value of label
+     * @return itself
+     */
     public MLabel withContent(String content) {
         setValue(content);
+        return this;
+    }
+
+    public MLabel withValue(String value) {
+        setValue(value);
         return this;
     }
 
