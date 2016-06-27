@@ -23,6 +23,11 @@ import org.vaadin.viritin.label.RichText;
 /**
  * Abstract super class for simple editor forms.
  *
+ * See {@link #createContent()} for usage information.
+ *
+ * 
+ * @see <a href="https://github.com/viritin/viritin/wiki/AbstractForm">The wiki</a>
+ *
  * @param <T> the type of the bean edited
  */
 public abstract class AbstractForm<T> extends CustomComponent implements
@@ -485,13 +490,14 @@ public abstract class AbstractForm<T> extends CustomComponent implements
      * This method should return the actual content of the form, including
      * possible toolbar.
      *
-     * Example implementation could look like this:      <code>
+     * Use setEntity(T entity) to fill in the data.
+     * Am example implementation could look like this: <pre><code>
      * public class PersonForm extends AbstractForm&lt;Person&gt; {
      *
      *     private TextField firstName = new MTextField(&quot;First Name&quot;);
      *     private TextField lastName = new MTextField(&quot;Last Name&quot;);
      *
-     *     \@Override
+     *    {@literal @}Override
      *     protected Component createContent() {
      *         return new MVerticalLayout(
      *                 new FormLayout(
@@ -502,7 +508,7 @@ public abstract class AbstractForm<T> extends CustomComponent implements
      *         );
      *     }
      * }
-     * </code>
+     * </code></pre>
      *
      * @return the content of the form
      *
