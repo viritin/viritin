@@ -1,5 +1,6 @@
 package org.vaadin.viritin.layouts;
 
+import com.vaadin.server.Resource;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Window;
 import org.vaadin.viritin.MSize;
@@ -80,6 +81,11 @@ public class MWindow extends Window {
 
     public MWindow withPosition(int x, int y) {
         setPosition(x,y);
+        return this;
+    }
+
+    public MWindow withIcon(Resource icon) {
+        setIcon(icon);
         return this;
     }
 

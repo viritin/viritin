@@ -42,8 +42,19 @@ public class MLabel extends Label {
         return this;
     }
 
+    /**
+     * equals to withValue
+     *
+     * @param content value of label
+     * @return itself
+     */
     public MLabel withContent(String content) {
         setValue(content);
+        return this;
+    }
+
+    public MLabel withValue(String value) {
+        setValue(value);
         return this;
     }
 
@@ -74,8 +85,10 @@ public class MLabel extends Label {
         return this;
     }
 
-    public MLabel withStyleName(String styleName) {
-        addStyleName(styleName);
+    public MLabel withStyleName(String... styleNames) {
+        for (String styleName : styleNames) {
+            addStyleName(styleName);
+        }
         return this;
     }
 
@@ -86,6 +99,21 @@ public class MLabel extends Label {
 
     public MLabel withFullHeight() {
         setHeight("100%");
+        return this;
+    }
+
+    public MLabel withWidthUndefined() {
+        setWidthUndefined();
+        return this;
+    }
+
+    public MLabel withEnabled(boolean enabled) {
+        setEnabled(enabled);
+        return this;
+    }
+
+    public MLabel withVisible(boolean visible) {
+        setVisible(visible);
         return this;
     }
 }

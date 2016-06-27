@@ -30,6 +30,12 @@ public class MFormLayout extends FormLayout {
         return this;
     }
 
+    public MFormLayout withCaption(String caption, boolean captionAsHtml) {
+        setCaption(caption);
+        setCaptionAsHtml(captionAsHtml);
+        return this;
+    }
+
     public MFormLayout withWidth(String width) {
         setWidth(width);
         return this;
@@ -68,10 +74,43 @@ public class MFormLayout extends FormLayout {
         return this;
     }
 
-
     public MFormLayout withIcon(Resource icon) {
         setIcon(icon);
         return this;
     }
 
+    public MFormLayout withVisible(boolean visible) {
+        setVisible(visible);
+        return this;
+    }
+
+    public MFormLayout withSizeUndefined() {
+        setSizeUndefined();
+        return this;
+    }
+
+    public MFormLayout withWidthUndefined() {
+        setWidthUndefined();
+        return this;
+    }
+
+    public MFormLayout withHeightUndefined() {
+        setHeightUndefined();
+        return this;
+    }
+
+    public MFormLayout withResponsive(boolean responsive) {
+        setResponsive(responsive);
+        return this;
+    }
+
+    public MFormLayout withId(String id) {
+        setId(id);
+        return this;
+    }
+
+    public MFormLayout withDescription(String description) {
+        setDescription(description);
+        return this;
+    }
 }

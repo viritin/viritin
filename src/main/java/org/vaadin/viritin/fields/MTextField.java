@@ -15,20 +15,20 @@
  */
 package org.vaadin.viritin.fields;
 
-import java.util.EventObject;
-
-import org.vaadin.viritin.util.HtmlElementPropertySetter;
-
 import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
 import com.vaadin.data.util.converter.Converter;
 import com.vaadin.data.util.converter.ConverterUtil;
+import com.vaadin.event.FieldEvents;
 import com.vaadin.event.FieldEvents.TextChangeEvent;
 import com.vaadin.server.AbstractErrorMessage;
 import com.vaadin.server.CompositeErrorMessage;
 import com.vaadin.server.ErrorMessage;
 import com.vaadin.server.Resource;
 import com.vaadin.ui.TextField;
+import org.vaadin.viritin.util.HtmlElementPropertySetter;
+
+import java.util.EventObject;
 
 /**
  * A an extension to basic Vaadin TextField. Uses the only sane default for
@@ -71,6 +71,11 @@ public class MTextField extends TextField implements EagerValidateable {
 
     public MTextField(String caption, String value) {
         super(caption, value);
+    }
+
+    public MTextField withCaption(String caption) {
+        setCaption(caption);
+        return this;
     }
 
     @Override
@@ -120,6 +125,12 @@ public class MTextField extends TextField implements EagerValidateable {
 
     public MTextField withFullWidth() {
         setWidth("100%");
+        return this;
+    }
+
+
+    public MTextField withValue(String value) {
+        setValue(value);
         return this;
     }
 
@@ -176,6 +187,26 @@ public class MTextField extends TextField implements EagerValidateable {
         return this;
     }
 
+    public MTextField withVisible(boolean visible) {
+        setVisible(visible);
+        return this;
+    }
+
+    public MTextField withTextChangeListener(FieldEvents.TextChangeListener listener) {
+        addTextChangeListener(listener);
+        return this;
+    }
+
+    public MTextField withValueChangeListener(Property.ValueChangeListener listener) {
+        addValueChangeListener(listener);
+        return this;
+    }
+
+    public MTextField withBlurListener(FieldEvents.BlurListener listener) {
+        addBlurListener(listener);
+        return this;
+    }
+
     public void setSpellcheck(Boolean spellcheck) {
         this.spellcheck = spellcheck;
     }
@@ -188,7 +219,7 @@ public class MTextField extends TextField implements EagerValidateable {
         setSpellcheck(false);
         return this;
     }
-    
+
     public MTextField withId(String id) {
         setId(id);
         return this;
@@ -206,8 +237,8 @@ public class MTextField extends TextField implements EagerValidateable {
     public enum AutoCapitalize {
         on, off
     }
-    
-    
+
+
 
     public MTextField withAutocompleteOff() {
         return setAutocomplete(AutoComplete.off);
@@ -340,7 +371,7 @@ public class MTextField extends TextField implements EagerValidateable {
             if (!wasvalid) {
                 markAsDirty();
             }
-            // Also eagerly pass content to backing bean to make top level 
+            // Also eagerly pass content to backing bean to make top level
             // validation eager, but do not listen the value back in value change
             // event
             if (getPropertyDataSource() != null) {
@@ -382,7 +413,7 @@ public class MTextField extends TextField implements EagerValidateable {
     @Override
     public void validate() throws Validator.InvalidValueException {
         if (isEagerValidation() && lastKnownTextChangeValue != null) {
-            // This is most likely not executed, unless someone, for some weird 
+            // This is most likely not executed, unless someone, for some weird
             // reason calls this explicitly
             if (isRequired() && getLastKnownTextContent().isEmpty()) {
                 throw new Validator.EmptyValueException(getRequiredError());

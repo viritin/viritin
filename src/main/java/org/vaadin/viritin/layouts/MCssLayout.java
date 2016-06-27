@@ -61,4 +61,57 @@ public class MCssLayout extends CssLayout {
         setIcon(icon);
         return this;
     }
+
+    public MCssLayout withCaption(String caption) {
+        setCaption(caption);
+        return this;
+    }
+
+    public MCssLayout add(Component... component) {
+        addComponents(component);
+        return this;
+    }
+
+    public MCssLayout withCaption(String caption, boolean captionAsHtml) {
+        setCaption(caption);
+        setCaptionAsHtml(captionAsHtml);
+        return this;
+    }
+
+    public MCssLayout withVisible(boolean visible) {
+        setVisible(visible);
+        return this;
+    }
+
+    public MCssLayout withSizeUndefined() {
+        setSizeUndefined();
+        return this;
+    }
+
+    public MCssLayout withWidthUndefined() {
+        setWidthUndefined();
+        return this;
+    }
+
+    public MCssLayout withHeightUndefined() {
+        setHeightUndefined();
+        return this;
+    }
+
+    public MCssLayout withResponsive(boolean responsive) {
+        setResponsive(responsive);
+        return this;
+    }
+
+    public MCssLayout withId(String id) {
+        setId(id);
+        return this;
+    }
+
+    public MCssLayout withDescription(String description) {
+        setDescription(description);
+        return this;
+    }
+
+
 }

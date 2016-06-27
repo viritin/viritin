@@ -1,25 +1,17 @@
 package org.vaadin.viritin.fields;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
-import org.vaadin.viritin.ListContainer;
-
 import com.vaadin.data.Container;
 import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
 import com.vaadin.data.Validator.InvalidValueException;
 import com.vaadin.server.Resource;
-import com.vaadin.ui.AbstractSelect;
-import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.CustomField;
-import com.vaadin.ui.ListSelect;
-import com.vaadin.ui.NativeSelect;
-import com.vaadin.ui.OptionGroup;
-import com.vaadin.ui.TwinColSelect;
+import com.vaadin.ui.*;
+import org.vaadin.viritin.ListContainer;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * A select implementation with better typed API than in core Vaadin.
@@ -119,6 +111,12 @@ public class TypedSelect<T> extends CustomField {
 
     public TypedSelect<T> withCaption(String caption) {
         setCaption(caption);
+        return this;
+    }
+
+    public TypedSelect<T> withCaption(String caption, boolean captionAsHtml) {
+        setCaption(caption);
+        setCaptionAsHtml(captionAsHtml);
         return this;
     }
 
@@ -423,6 +421,10 @@ public class TypedSelect<T> extends CustomField {
         return setOptions(options);
     }
 
+    public Collection<T> getBean() {
+        return (Collection) bic.getItemIds();
+    }
+
     @Override
     public void attach() {
         if (bic != null && getSelect().getContainerDataSource() != bic) {
@@ -477,7 +479,12 @@ public class TypedSelect<T> extends CustomField {
         setWidth(width);
         return this;
     }
-    
+
+    public TypedSelect<T> withWidthUndefined() {
+        setWidthUndefined();
+        return this;
+    }
+
     public TypedSelect<T> withId(String id) {
         setId(id);
         return this;
@@ -499,6 +506,26 @@ public class TypedSelect<T> extends CustomField {
         if (bic != null && bic.size() > 0) {
             getSelect().setValue(bic.getIdByIndex(0));
         }
+    }
+
+    public TypedSelect<T> withNullSelectionAllowed(boolean nullAllowed) {
+        setNullSelectionAllowed(nullAllowed);
+        return this;
+    }
+
+    public TypedSelect<T> withVisible(boolean visible) {
+        setVisible(visible);
+        return this;
+    }
+
+    public TypedSelect<T> withDescription(String description) {
+        setDescription(description);
+        return this;
+    }
+
+    public TypedSelect<T> withEnabled(boolean enabled) {
+        setEnabled(enabled);
+        return this;
     }
 
     /**
@@ -534,7 +561,7 @@ public class TypedSelect<T> extends CustomField {
     protected Component initContent() {
         return getSelect();
     }
-    
+
     public void addOption(T option) {
         getBic().addItem(option);
     }
