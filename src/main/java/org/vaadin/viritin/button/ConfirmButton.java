@@ -218,4 +218,9 @@ public class ConfirmButton extends MButton {
         return this;
     }
 
+    @Override
+    public ConfirmButton withClickShortcut(int keycode, int... modifiers) {
+        setClickShortcut(keycode, modifiers);
+        return this;
+    }
 }

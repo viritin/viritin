@@ -126,4 +126,9 @@ public class DownloadButton extends MButton {
         return this;
     }
 
+    @Override
+    public DownloadButton withClickShortcut(int keycode, int... modifiers) {
+        setClickShortcut(keycode, modifiers);
+        return this;
+    }
 }
