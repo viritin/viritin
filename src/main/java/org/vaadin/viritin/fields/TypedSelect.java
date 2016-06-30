@@ -7,6 +7,10 @@ import com.vaadin.data.Validator.InvalidValueException;
 import com.vaadin.server.Resource;
 import com.vaadin.ui.*;
 import org.vaadin.viritin.ListContainer;
+import org.vaadin.viritin.fields.config.ComboBoxConfig;
+import org.vaadin.viritin.fields.config.ListSelectConfig;
+import org.vaadin.viritin.fields.config.OptionGroupConfig;
+import org.vaadin.viritin.fields.config.TwinColSelectConfig;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -120,91 +124,148 @@ public class TypedSelect<T> extends CustomField {
         return this;
     }
 
+    public TypedSelect<T> asListSelectType() {
+        return asListSelectType(null);
+    }
+
+    public TypedSelect<T> asListSelectType(ListSelectConfig config) {
+        ListSelect listSelect = new ListSelect() {
+            @SuppressWarnings("unchecked")
+            @Override
+            public String getItemCaption(Object itemId) {
+                return TypedSelect.this.getCaption((T) itemId);
+            }
+
+            @Override
+            public Resource getItemIcon(Object itemId) {
+                if (iconGenerator != null) {
+                    return iconGenerator.getIcon((T) itemId);
+                }
+                return super.getItemIcon(itemId);
+            }
+
+        };
+        if (config != null) {
+            config.configurateListSelect(listSelect);
+        }
+        setSelectInstance(listSelect);
+        return this;
+    }
+
+    public TypedSelect<T> asOptionGroupType() {
+        return asOptionGroupType(null);
+    }
+
+    public TypedSelect<T> asOptionGroupType(OptionGroupConfig config) {
+        OptionGroup optionGroup = new OptionGroup() {
+            @SuppressWarnings("unchecked")
+            @Override
+            public String getItemCaption(Object itemId) {
+                return TypedSelect.this.getCaption((T) itemId);
+            }
+
+            @Override
+            public Resource getItemIcon(Object itemId) {
+                if (iconGenerator != null) {
+                    return iconGenerator.getIcon((T) itemId);
+                }
+                return super.getItemIcon(itemId);
+            }
+
+        };
+        if (config != null) {
+            config.configurateOptionGroup(optionGroup);
+        }
+        setSelectInstance(optionGroup);
+        return this;
+    }
+
+    public TypedSelect<T> asComboBoxType() {
+        return asComboBoxType(null);
+    }
+
+    public TypedSelect<T> asComboBoxType(ComboBoxConfig config) {
+        ComboBox comboBox = new ComboBox() {
+            @SuppressWarnings("unchecked")
+            @Override
+            public String getItemCaption(Object itemId) {
+                return TypedSelect.this.getCaption((T) itemId);
+            }
+
+            @Override
+            public Resource getItemIcon(Object itemId) {
+                if (iconGenerator != null) {
+                    return iconGenerator.getIcon((T) itemId);
+                }
+                return super.getItemIcon(itemId);
+            }
+        };
+        if (config != null) {
+            config.configurateComboBox(comboBox);
+        }
+        setSelectInstance(comboBox);
+        LazyComboBox.fixComboBoxVaadinIssue16647(comboBox);
+        return this;
+    }
+
+    public TypedSelect<T> asTwinColSelectType() {
+        return asTwinColSelectType(null);
+    }
+
+    public TypedSelect<T> asTwinColSelectType(TwinColSelectConfig config) {
+        TwinColSelect twinColSelect = new TwinColSelect() {
+            @SuppressWarnings("unchecked")
+            @Override
+            public String getItemCaption(Object itemId) {
+                return TypedSelect.this.getCaption((T) itemId);
+            }
+
+            @Override
+            public Resource getItemIcon(Object itemId) {
+                if (iconGenerator != null) {
+                    return iconGenerator.getIcon((T) itemId);
+                }
+                return super.getItemIcon(itemId);
+            }
+        };
+        if (config != null) {
+            config.configurateTwinColSelect(twinColSelect);
+        }
+        setSelectInstance(twinColSelect);
+        return this;
+    }
+
+    public TypedSelect<T> asNativeSelectType() {
+        setSelectInstance(new NativeSelect() {
+            @SuppressWarnings("unchecked")
+            @Override
+            public String getItemCaption(Object itemId) {
+                return TypedSelect.this.getCaption((T) itemId);
+            }
+
+            @Override
+            public Resource getItemIcon(Object itemId) {
+                if (iconGenerator != null) {
+                    return iconGenerator.getIcon((T) itemId);
+                }
+                return super.getItemIcon(itemId);
+            }
+        });
+        return this;
+    }
+
     public TypedSelect<T> withSelectType(
             Class<? extends AbstractSelect> selectType) {
         if (selectType == ListSelect.class) {
-            setSelectInstance(new ListSelect() {
-                @SuppressWarnings("unchecked")
-                @Override
-                public String getItemCaption(Object itemId) {
-                    return TypedSelect.this.getCaption((T) itemId);
-                }
-
-                @Override
-                public Resource getItemIcon(Object itemId) {
-                    if (iconGenerator != null) {
-                        return iconGenerator.getIcon((T) itemId);
-                    }
-                    return super.getItemIcon(itemId);
-                }
-
-            });
+            asListSelectType();
         } else if (selectType == OptionGroup.class) {
-            setSelectInstance(new OptionGroup() {
-                @SuppressWarnings("unchecked")
-                @Override
-                public String getItemCaption(Object itemId) {
-                    return TypedSelect.this.getCaption((T) itemId);
-                }
-
-                @Override
-                public Resource getItemIcon(Object itemId) {
-                    if (iconGenerator != null) {
-                        return iconGenerator.getIcon((T) itemId);
-                    }
-                    return super.getItemIcon(itemId);
-                }
-
-            });
+            asOptionGroupType();
         } else if (selectType == ComboBox.class) {
-            setSelectInstance(new ComboBox() {
-                @SuppressWarnings("unchecked")
-                @Override
-                public String getItemCaption(Object itemId) {
-                    return TypedSelect.this.getCaption((T) itemId);
-                }
-
-                @Override
-                public Resource getItemIcon(Object itemId) {
-                    if (iconGenerator != null) {
-                        return iconGenerator.getIcon((T) itemId);
-                    }
-                    return super.getItemIcon(itemId);
-                }
-            });
-            LazyComboBox.fixComboBoxVaadinIssue16647((ComboBox) getSelect());
+            asComboBoxType();
         } else if (selectType == TwinColSelect.class) {
-            setSelectInstance(new TwinColSelect() {
-                @SuppressWarnings("unchecked")
-                @Override
-                public String getItemCaption(Object itemId) {
-                    return TypedSelect.this.getCaption((T) itemId);
-                }
-
-                @Override
-                public Resource getItemIcon(Object itemId) {
-                    if (iconGenerator != null) {
-                        return iconGenerator.getIcon((T) itemId);
-                    }
-                    return super.getItemIcon(itemId);
-                }
-            });
-        } else /*if (selectType == null || selectType == NativeSelect.class)*/ {
-            setSelectInstance(new NativeSelect() {
-                @SuppressWarnings("unchecked")
-                @Override
-                public String getItemCaption(Object itemId) {
-                    return TypedSelect.this.getCaption((T) itemId);
-                }
-
-                @Override
-                public Resource getItemIcon(Object itemId) {
-                    if (iconGenerator != null) {
-                        return iconGenerator.getIcon((T) itemId);
-                    }
-                    return super.getItemIcon(itemId);
-                }
-            });
+            asTwinColSelectType();
+        } else {
+            asNativeSelectType();
         }
         return this;
     }
@@ -421,7 +482,7 @@ public class TypedSelect<T> extends CustomField {
         return setOptions(options);
     }
 
-    public Collection<T> getBean() {
+    public Collection<T> getBeans() {
         return (Collection) bic.getItemIds();
     }
 
