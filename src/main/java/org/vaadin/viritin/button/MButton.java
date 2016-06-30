@@ -127,6 +127,11 @@ public class MButton extends Button {
         return this;
     }
 
+    public MButton withClickShortcut(int keycode, int... modifiers){
+        setClickShortcut(keycode, modifiers);
+        return this;
+    }
+
     /**
      * A parameterless version of ClickListener to make it easier to use method
      * references.
