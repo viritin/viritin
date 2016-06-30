@@ -482,7 +482,7 @@ public class TypedSelect<T> extends CustomField {
         return setOptions(options);
     }
 
-    public Collection<T> getBean() {
+    public Collection<T> getBeans() {
         return (Collection) bic.getItemIds();
     }
 
