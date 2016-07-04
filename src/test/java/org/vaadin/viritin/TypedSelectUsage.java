@@ -13,7 +13,6 @@ import org.vaadin.viritin.fields.MValueChangeEvent;
 import org.vaadin.viritin.fields.MValueChangeListener;
 import org.vaadin.viritin.fields.TypedSelect;
 import org.vaadin.viritin.fields.config.ComboBoxConfig;
-import org.vaadin.viritin.fields.config.TwinColSelectConfig;
 import org.vaadin.viritin.testdomain.Person;
 
 import java.util.ArrayList;
@@ -150,39 +149,6 @@ public class TypedSelectUsage {
         Assert.assertNotSame(me, selectedValue.getValue());
         typedSelect.setValue(me);
         Assert.assertSame(me, selectedValue.getValue());
-    }
-
-    @Test
-    public void testTypedSelectWithConfiguredTwinColSelectConfig() {
-        // Core vaadin select usage for a warmup
-        TwinColSelect twinColSelect = new TwinColSelect();
-        twinColSelect.addItems(getOptions());
-        twinColSelect.setLeftColumnCaption("left caption");
-        twinColSelect.setRightColumnCaption("right caption");
-        twinColSelect.setRows(5);
-
-        // other configuration's are similar to testTypedSelect...
-        // /** Actual TypedSelect usage */
-        final TypedSelect<Person> typedSelect = new TypedSelect<Person>();
-        // TypedSelect only provides configurations that are similar to all select-types (AbstractSelect)
-        // for example the TwinColSelect has some options that other AbstractSelect don't have (left + right caption)
-        // by using asTwinColSelectType instead of typedSelect.withSelectType(TwinColSelect.class)
-        // you can perform individual configurations
-        typedSelect.asTwinColSelectType(TwinColSelectConfig.build()
-                .withLeftColumnCaption("left caption")
-                .withRightColumnCaption("right caption")
-                .withRows(5));
-        // it's important that you configure the type of TypedSelect before assigning the options!
-        typedSelect.setOptions(getOptions());
-
-        typedSelect.setImmediate(true);
-        typedSelect.addMValueChangeListener(getValueChangeListener());
-
-        Assert.assertNotSame(me, selectedValue.getValue());
-        typedSelect.setValue(me);
-
-        // TODO: Found bug within vaadin? the ValueChangeListener doesn't get triggered that's why me + selectedValue not same!
-        // Assert.assertSame(me, selectedValue.getValue());
     }
 
 }

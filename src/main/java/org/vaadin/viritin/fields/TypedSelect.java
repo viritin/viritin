@@ -10,7 +10,6 @@ import org.vaadin.viritin.ListContainer;
 import org.vaadin.viritin.fields.config.ComboBoxConfig;
 import org.vaadin.viritin.fields.config.ListSelectConfig;
 import org.vaadin.viritin.fields.config.OptionGroupConfig;
-import org.vaadin.viritin.fields.config.TwinColSelectConfig;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -208,33 +207,6 @@ public class TypedSelect<T> extends CustomField {
         return this;
     }
 
-    public TypedSelect<T> asTwinColSelectType() {
-        return asTwinColSelectType(null);
-    }
-
-    public TypedSelect<T> asTwinColSelectType(TwinColSelectConfig config) {
-        TwinColSelect twinColSelect = new TwinColSelect() {
-            @SuppressWarnings("unchecked")
-            @Override
-            public String getItemCaption(Object itemId) {
-                return TypedSelect.this.getCaption((T) itemId);
-            }
-
-            @Override
-            public Resource getItemIcon(Object itemId) {
-                if (iconGenerator != null) {
-                    return iconGenerator.getIcon((T) itemId);
-                }
-                return super.getItemIcon(itemId);
-            }
-        };
-        if (config != null) {
-            config.configurateTwinColSelect(twinColSelect);
-        }
-        setSelectInstance(twinColSelect);
-        return this;
-    }
-
     public TypedSelect<T> asNativeSelectType() {
         setSelectInstance(new NativeSelect() {
             @SuppressWarnings("unchecked")
@@ -262,8 +234,6 @@ public class TypedSelect<T> extends CustomField {
             asOptionGroupType();
         } else if (selectType == ComboBox.class) {
             asComboBoxType();
-        } else if (selectType == TwinColSelect.class) {
-            asTwinColSelectType();
         } else {
             asNativeSelectType();
         }
