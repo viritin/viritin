@@ -26,6 +26,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import org.apache.commons.beanutils.*;
+import org.apache.commons.collections.comparators.ComparableComparator;
 import org.apache.commons.collections.comparators.NullComparator;
 import org.apache.commons.collections.comparators.ReverseComparator;
 import org.apache.commons.lang3.ClassUtils;
@@ -482,7 +483,7 @@ public class ListContainer<T> extends AbstractContainer implements
             for (int i = 0; i < propertyId.length; i++) {
                 String currentProperty = propertyId[i].toString();
                 Comparator underlyingComparator = getUnderlyingComparator(currentProperty);
-                Comparator currentComparator = underlyingComparator != null ? underlyingComparator : Comparator.naturalOrder();
+                Comparator currentComparator = underlyingComparator != null ? underlyingComparator : ComparableComparator.getInstance();
 
                 if (!ascending[i]) {
                     currentComparator = currentComparator.reversed();
