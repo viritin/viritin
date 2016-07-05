@@ -413,11 +413,10 @@ public class ListContainer<T> extends AbstractContainer implements
         }
         final ArrayList<String> props = new ArrayList<String>();
         for (Object a : getContainerPropertyIds()) {
-            DynaProperty db = getDynaClass().getDynaProperty(a.toString());
-            if (db != null && db.getType() != null && (db.getType().
-                    isPrimitive() || Comparable.class.isAssignableFrom(
-                            db.getType()))) {
-                props.add(db.getName());
+            String propName = a.toString();
+            Class<?> propType = getType(propName);
+            if (propType != null && (propType.isPrimitive() || Comparable.class.isAssignableFrom(propType))) {
+                props.add(propName);
             }
         }
         return props;
