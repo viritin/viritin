@@ -481,15 +481,16 @@ public class ListContainer<T> extends AbstractContainer implements
         public int compare(T o1, T o2) {
             for (int i = 0; i < propertyId.length; i++) {
                 String currentProperty = propertyId[i].toString();
-                Comparator<T> currentComparator
-                        = new BeanComparator<T>(currentProperty,
-                                getUnderlyingComparator(currentProperty));
+                Comparator underlyingComparator = getUnderlyingComparator(currentProperty);
+                Comparator currentComparator = underlyingComparator != null ? underlyingComparator : Comparator.naturalOrder();
 
                 if (!ascending[i]) {
-                    currentComparator = new ReverseComparator(currentComparator);
+                    currentComparator = currentComparator.reversed();
                 }
 
-                int compare = currentComparator.compare(o1, o2);
+                Object o1Prop = getContainerProperty(o1, currentProperty).getValue();
+                Object o2Prop = getContainerProperty(o2, currentProperty).getValue();
+                int compare = currentComparator.compare(o1Prop, o2Prop);
                 if (compare != 0) {
                     return compare;
                 }
