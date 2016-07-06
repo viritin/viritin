@@ -415,9 +415,12 @@ public class ListContainer<T> extends AbstractContainer implements
         final ArrayList<String> props = new ArrayList<String>();
         for (Object a : getContainerPropertyIds()) {
             String propName = a.toString();
-            Class<?> propType = getType(propName);
-            if (propType != null && (propType.isPrimitive() || Comparable.class.isAssignableFrom(propType))) {
-                props.add(propName);
+            try {
+                Class<?> propType = getType(propName);
+                if (propType != null && (propType.isPrimitive() || Comparable.class.isAssignableFrom(propType))) {
+                    props.add(propName);
+                }
+            } catch (Exception e) {
             }
         }
         return props;
