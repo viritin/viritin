@@ -9,7 +9,6 @@ import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.ComboBox;
 import org.apache.commons.lang3.ObjectUtils;
 import org.vaadin.viritin.LazyList;
-import org.vaadin.viritin.LazyList.CountProvider;
 import org.vaadin.viritin.ListContainer;
 
 import java.util.Collection;

@@ -124,7 +124,7 @@ public class GridUtils {
                         SortOrder soCreated = new SortOrder(propertyId,
                                 direction);
                         sortOrderList.add(soCreated);
-                    };
+                    }
                 }
                 grid.setSortOrder(sortOrderList);
             }
