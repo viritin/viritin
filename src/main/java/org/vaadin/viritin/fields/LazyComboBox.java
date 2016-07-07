@@ -50,8 +50,6 @@ public class LazyComboBox<T> extends TypedSelect<T> {
         public int size(String filter);
     }
 
-    private CountProvider countProvider;
-
     private LazyList<T> piggybackLazyList;
 
     /**

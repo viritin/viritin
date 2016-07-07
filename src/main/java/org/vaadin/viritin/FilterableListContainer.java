@@ -66,11 +66,9 @@ public class FilterableListContainer<T> extends ListContainer<T> implements
     private void applyFilters() {
         filteredItems = new ArrayList<T>();
         if (isFiltered()) {
-            boolean appliedFilter = false;
             for (T itemId : super.getBackingList()) {
                 if (passesFilters(itemId)) {
                     filteredItems.add(itemId);
-                    appliedFilter = true;
                 }
             }
         }
