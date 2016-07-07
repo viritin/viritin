@@ -2,8 +2,10 @@ package org.vaadin.viritin.it;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.data.Property;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Notification;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -84,10 +86,17 @@ public class SubSetSelectorExample extends AbstractTest {
         sss.setValue(selected);
         
         sss.addValueChangeListener((Property.ValueChangeEvent event) -> {
-            Notification.show("Value now :" + selected.toString());
+            Notification.show("Value now :" + sss.getValue());
         });
+        
+        
+        Button setNull = new Button("setValue(null)");
+        setNull.addClickListener(e->{sss.setValue(null);});
+        
+        Button setList = new Button("setValue(new ArrayList())");
+        setList.addClickListener(e->{sss.setValue(new ArrayList());});
 
-        return new MVerticalLayout(sss);
+        return new MVerticalLayout(sss, setNull, setList);
         
     }
 

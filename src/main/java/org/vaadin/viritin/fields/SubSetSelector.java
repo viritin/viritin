@@ -13,6 +13,7 @@ import com.vaadin.ui.themes.Reindeer;
 import java.util.Arrays;
 
 import com.vaadin.ui.themes.ValoTheme;
+import java.util.HashSet;
 import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.form.AbstractForm;
 import org.vaadin.viritin.layouts.MHorizontalLayout;
@@ -23,7 +24,8 @@ import org.vaadin.viritin.layouts.MVerticalLayout;
  * as "TwinColSelect", but available options are in a combobox for easy picking,
  * and selected entries are displayed in a Table. Should work with virtually any
  * collection type - not just with sets, but same bean can be only once in the
- * collection.
+ * collection. If a null is passed for the field value, it is "converted" into
+ * and empty Set or list List.
  * <p>
  * The component can be configured to create new entities as well on demand,
  * either by hitting enter with ComboBox or with a new entry form, or combined.
@@ -67,8 +69,8 @@ public class SubSetSelector<ET> extends CustomField<Collection> implements Abstr
                     com.vaadin.data.Property.ValueChangeEvent event) {
                 if (event.getProperty().getValue() != null) {
                     Object pojo = event.getProperty().getValue();
-                    cb.setValue(null);
                     cb.getBic().removeItem(pojo);
+                    cb.setValue(null);
                     table.addItem(pojo);
                     selected.add(pojo);
                     // fire value change
@@ -229,11 +231,21 @@ public class SubSetSelector<ET> extends CustomField<Collection> implements Abstr
     @Override
     protected void setInternalValue(Collection newValue) {
         selected = newValue;
+        if(selected == null) {
+            Class<Collection> clazz = getType();
+            if(clazz != null && List.class.isAssignableFrom(clazz)) {
+                selected = new ArrayList();
+            } else {
+                selected = new HashSet();
+            }
+            setValue(selected);
+            return;
+        }
         final ArrayList<ET> arrayList = new ArrayList<>(availableOptions);
         arrayList.removeAll(selected);
         cb.setOptions(arrayList);
         cb.getBic().fireItemSetChange();
-        table.setBeans(selected);
+        table.setBeans(new ArrayList(selected));
         super.setInternalValue(newValue);
     }
 
