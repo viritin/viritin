@@ -16,6 +16,18 @@ public class MGridLayout extends GridLayout {
         super.setMargin(true);
     }
 
+    public MGridLayout(int columns, int rows) {
+        super(columns, rows);
+        super.setSpacing(true);
+        super.setMargin(true);
+    }
+
+    public MGridLayout(int columns, int rows, Component... children) {
+        super(columns, rows, children);
+        super.setSpacing(true);
+        super.setMargin(true);
+    }
+    
     public MGridLayout(Component... components) {
         this();
         addComponents(components);
