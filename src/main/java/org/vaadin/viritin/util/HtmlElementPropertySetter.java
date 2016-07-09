@@ -1,13 +1,7 @@
 package org.vaadin.viritin.util;
 
-import com.vaadin.annotations.Theme;
 import com.vaadin.server.AbstractJavaScriptExtension;
 import com.vaadin.ui.AbstractComponent;
-import com.vaadin.ui.JavaScript;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.apache.commons.io.IOUtils;
 
 /**
  * A simple extension to set custom properties for the html elements used in

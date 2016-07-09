@@ -119,10 +119,6 @@ public class CheckBoxGroup<ET> extends CustomField<Collection> {
         return c;
     }
 
-    private boolean isContainerInitialized() {
-        return optionGroup.size() != 0;
-    }
-
     @Override
     protected Component initContent() {
         return optionGroup;

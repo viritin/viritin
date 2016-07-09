@@ -26,7 +26,6 @@ public class GridUtils {
     private final String HIDDEN_SETTINGS_NAME;
     private final String SORT_ORDER_SETTINGS_NAME;
     private final String COLUMNS_ORDER_SETTINGS_NAME;
-    private final List<String> columnsOrder = new ArrayList<String>();
     private final Grid grid;
 
     /**
@@ -68,12 +67,12 @@ public class GridUtils {
 
             @Override
             public void columnReorder(ColumnReorderEvent event) {
-                saveColumnOrder(event);
+                saveColumnOrder();
             }
         });
     }
 
-    private void saveColumnOrder(ColumnReorderEvent e) {
+    private void saveColumnOrder() {
         //Number of columns not more than 1000, hopefully :)
         //This operation don't need to be fast, that's why were recreate the cookie value
         //every time.
@@ -125,7 +124,7 @@ public class GridUtils {
                         SortOrder soCreated = new SortOrder(propertyId,
                                 direction);
                         sortOrderList.add(soCreated);
-                    };
+                    }
                 }
                 grid.setSortOrder(sortOrderList);
             }

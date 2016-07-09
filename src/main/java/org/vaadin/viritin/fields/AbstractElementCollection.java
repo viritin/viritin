@@ -302,8 +302,7 @@ public abstract class AbstractElementCollection<ET> extends CustomField<Collecti
     protected final Component getComponentFor(ET pojo, String property) {
         EditorStuff editorsstuff = pojoToEditor.get(pojo);
         if (editorsstuff == null) {
-            Object o = null;
-            o = createEditorInstance();
+            Object o = createEditorInstance();
             MBeanFieldGroup bfg = BeanBinder.bind(pojo, o).withEagerValidation(
                     fieldGroupListener);
             editorsstuff = new EditorStuff(bfg, o);

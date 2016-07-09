@@ -54,9 +54,7 @@ public class VaadinLocale {
         }
         this.localeNegotiationStrategey = localeNegotiationStrategey;
 
-        for (Locale locale : supportedLocales) {
-            this.supportedLocales.add(locale);
-        }
+        this.supportedLocales.addAll(Arrays.asList(supportedLocales));
     }
 
     /**

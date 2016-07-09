@@ -285,7 +285,7 @@ public class SubSetSelector<ET> extends CustomField<Collection> implements Abstr
         table.addItem(entity);
         selected.add(entity);
         if (newInstanceForm != null) {
-            newInstanceForm.closePopup();;
+            newInstanceForm.closePopup();
         }
         // fire value change
         fireValueChange(true);
