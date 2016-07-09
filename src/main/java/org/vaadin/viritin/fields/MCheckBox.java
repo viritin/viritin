@@ -7,6 +7,9 @@ import com.vaadin.ui.CheckBox;
 
 public class MCheckBox extends CheckBox {
 
+    public MCheckBox() {
+    }
+
     public MCheckBox(String caption) {
         super(caption);
     }
