@@ -8,6 +8,7 @@ import com.vaadin.ui.CheckBox;
 public class MCheckBox extends CheckBox {
 
     public MCheckBox() {
+        super();
     }
 
     public MCheckBox(String caption) {
@@ -63,7 +64,7 @@ public class MCheckBox extends CheckBox {
         return this;
     }
 
-    public MCheckBox withValueChangeListener(Property.ValueChangeListener listener) {
+    public MCheckBox withValueChangeListener(ValueChangeListener listener) {
         addValueChangeListener(listener);
         return this;
     }

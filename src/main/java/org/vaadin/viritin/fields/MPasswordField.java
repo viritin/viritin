@@ -41,6 +41,7 @@ public class MPasswordField extends PasswordField implements EagerValidateable {
     private Validator.InvalidValueException eagerValidationError;
 
     public MPasswordField() {
+        super();
         configureMaddonStuff();
     }
 
@@ -179,7 +180,7 @@ public class MPasswordField extends PasswordField implements EagerValidateable {
         return this;
     }
 
-    public MPasswordField withValueChangeListener(Property.ValueChangeListener listener) {
+    public MPasswordField withValueChangeListener(ValueChangeListener listener) {
         addValueChangeListener(listener);
         return this;
     }

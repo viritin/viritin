@@ -13,6 +13,7 @@ import org.vaadin.viritin.util.HtmlElementPropertySetter;
 public class EmailField extends MTextField {
 
     public EmailField() {
+        super();
     }
 
     public EmailField(String caption) {

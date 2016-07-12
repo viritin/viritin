@@ -29,6 +29,7 @@ import org.vaadin.viritin.MSize;
 public class MTextArea extends TextArea {
 
     public MTextArea() {
+        super();
         configureMaddonStuff();
     }
 
@@ -103,7 +104,7 @@ public class MTextArea extends TextArea {
         return this;
     }
 
-    public MTextArea withValueChangeListener(Property.ValueChangeListener listener) {
+    public MTextArea withValueChangeListener(ValueChangeListener listener) {
         addValueChangeListener(listener);
         return this;
     }
