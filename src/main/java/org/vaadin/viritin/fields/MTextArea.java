@@ -17,15 +17,13 @@ package org.vaadin.viritin.fields;
 
 import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
-import com.vaadin.server.Resource;
-import com.vaadin.ui.TextArea;
 import org.vaadin.viritin.MSize;
 
 /**
  *
  * @author mattitahvonenitmill
  */
-public class MTextArea extends TextArea {
+public class MTextArea extends FTextArea {
 
     public MTextArea() {
         configureMaddonStuff();
@@ -55,11 +53,6 @@ public class MTextArea extends TextArea {
         super(caption, value);
     }
 
-    public MTextArea withRows(int rows) {
-        setRows(rows);
-        return this;
-    }
-
     public MTextArea withFullWidth() {
         setWidth("100%");
         return this;
@@ -77,45 +70,10 @@ public class MTextArea extends TextArea {
         return this;
     }
 
-    public MTextArea withWidth(String width) {
-        setWidth(width);
-        return this;
-    }
-
-    public MTextArea withWordwrap(boolean wordwrap) {
-        setWordwrap(wordwrap);
-        return this;
-    }
-
-    public MTextArea withNullRepresentation(String nullRepresentation) {
-        setNullRepresentation(nullRepresentation);
-        return this;
-    }
-
     public MTextArea withStyleName(String... styleNames) {
         for (String styleName : styleNames) {
             addStyleName(styleName);
         }
-        return this;
-    }
-
-    public MTextArea withIcon(Resource icon) {
-        setIcon(icon);
-        return this;
-    }
-
-    public MTextArea withRequired(boolean required) {
-        setRequired(required);
-        return this;
-    }
-
-    public MTextArea withRequiredError(String requiredError) {
-        setRequiredError(requiredError);
-        return this;
-    }
-
-    public MTextArea withId(String id) {
-        setId(id);
         return this;
     }
 }

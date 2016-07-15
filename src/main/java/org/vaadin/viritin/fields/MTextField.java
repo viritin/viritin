@@ -27,15 +27,13 @@ import com.vaadin.event.FieldEvents.TextChangeEvent;
 import com.vaadin.server.AbstractErrorMessage;
 import com.vaadin.server.CompositeErrorMessage;
 import com.vaadin.server.ErrorMessage;
-import com.vaadin.server.Resource;
-import com.vaadin.ui.TextField;
 
 /**
  * A an extension to basic Vaadin TextField. Uses the only sane default for
  * "nullRepresentation" (""), adds support for "eager validation" (~ validate
  * while typing) and adds some fluent APIs.
  */
-public class MTextField extends TextField implements EagerValidateable {
+public class MTextField extends FTextField implements EagerValidateable {
 
     private boolean eagerValidation = false;
     private boolean eagerValidationStatus;
@@ -123,56 +121,10 @@ public class MTextField extends TextField implements EagerValidateable {
         return this;
     }
 
-    public MTextField withInputPrompt(String inputPrompt) {
-        setInputPrompt(inputPrompt);
-        return this;
-    }
-
-    public MTextField withReadOnly(boolean readOnly) {
-        setReadOnly(readOnly);
-        return this;
-    }
-
-    public MTextField withValidator(Validator validator) {
-        setImmediate(true);
-        addValidator(validator);
-        return this;
-    }
-
-    public MTextField withWidth(float width, Unit unit) {
-        setWidth(width, unit);
-        return this;
-    }
-
-    public MTextField withWidth(String width) {
-        setWidth(width);
-        return this;
-    }
-
-    public MTextField withNullRepresentation(String nullRepresentation) {
-        setNullRepresentation(nullRepresentation);
-        return this;
-    }
-
     public MTextField withStyleName(String... styleNames) {
         for (String styleName : styleNames) {
             addStyleName(styleName);
         }
-        return this;
-    }
-
-    public MTextField withIcon(Resource icon) {
-        setIcon(icon);
-        return this;
-    }
-
-    public MTextField withRequired(boolean required) {
-        setRequired(required);
-        return this;
-    }
-
-    public MTextField withRequiredError(String requiredError) {
-        setRequiredError(requiredError);
         return this;
     }
 
@@ -188,12 +140,6 @@ public class MTextField extends TextField implements EagerValidateable {
         setSpellcheck(false);
         return this;
     }
-    
-    public MTextField withId(String id) {
-        setId(id);
-        return this;
-    }
-
 
     public enum AutoComplete {
         on, off
@@ -205,9 +151,7 @@ public class MTextField extends TextField implements EagerValidateable {
 
     public enum AutoCapitalize {
         on, off
-    }
-    
-    
+    }   
 
     public MTextField withAutocompleteOff() {
         return setAutocomplete(AutoComplete.off);

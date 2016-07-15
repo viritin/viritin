@@ -233,7 +233,21 @@
                             <prefix>M</prefix>
 							<mapping>
 								<pkgConf>
-								<pkgName>org.vaadin.viritin.button</pkgName>
+									<pkgName>org.vaadin.viritin.fields</pkgName>
+									<ignoreMethods>
+										<param>setStyleName</param>
+										<param>setConverter</param>
+									</ignoreMethods>
+									<classNames>
+										<param>com.vaadin.ui.TextField</param>
+										<param>com.vaadin.ui.TextArea</param>
+										<!-- creates broken code
+										<param>com.vaadin.ui.DateField</param>
+										 -->
+									</classNames>
+								</pkgConf>
+								<pkgConf>
+									<pkgName>org.vaadin.viritin.button</pkgName>
 									<ignoreMethods>
 										<param>setStyleName</param>
 									</ignoreMethods>
