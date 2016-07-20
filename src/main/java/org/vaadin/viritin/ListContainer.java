@@ -489,7 +489,7 @@ public class ListContainer<T> extends AbstractContainer implements
                 Comparator currentComparator = underlyingComparator != null ? underlyingComparator : ComparableComparator.getInstance();
 
                 if (!ascending[i]) {
-                    currentComparator = currentComparator.reversed();
+                    currentComparator = new ReverseComparator(currentComparator);
                 }
 
                 Object o1Prop = getContainerProperty(o1, currentProperty).getValue();
