@@ -34,7 +34,11 @@ public abstract class AbstractNumberField<T> extends CustomField<T> implements
         @Override
         public void valueChange(Property.ValueChangeEvent event) {
             Object value = event.getProperty().getValue();
-            userInputToValue(String.valueOf(value));
+            if(value != null) {
+                userInputToValue(String.valueOf(value));
+            }else {
+                setValue(null);
+            }
         }
     };
 
