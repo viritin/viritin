@@ -33,7 +33,7 @@ import java.util.List;
  * @author mstahv
  * @param <T> the type of selects value
  */
-public class TypedSelect<T> extends CustomField {
+public class TypedSelect<T> extends CustomField<T> {
 
     private CaptionGenerator<T> captionGenerator;
     private IconGenerator<T> iconGenerator;
@@ -377,7 +377,7 @@ public class TypedSelect<T> extends CustomField {
     }
 
     @Override
-    protected void setInternalValue(Object newValue) {
+    protected void setInternalValue(T newValue) {
         super.setInternalValue(newValue);
         getSelect().setValue(newValue);
     }
@@ -472,17 +472,12 @@ public class TypedSelect<T> extends CustomField {
 
                 @Override
                 public void valueChange(Property.ValueChangeEvent event) {
-                    setValue(event.getProperty().getValue());
+                    setValue((T) event.getProperty().getValue());
                     fireEvent(new MValueChangeEventImpl<T>(TypedSelect.this));
                 }
             };
             getSelect().addValueChangeListener(piggyBackListener);
         }
-    }
-
-    @Override
-    public T getValue() {
-        return (T) super.getValue();
     }
 
     public TypedSelect<T> withFullWidth() {
