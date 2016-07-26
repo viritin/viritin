@@ -117,7 +117,7 @@ public class ElementCollectionField<ET> extends AbstractElementCollection<ET> {
 
     @Override
     public void removeInternalElement(ET v) {
-        int index = items.indexOf(v);
+        int index = itemsIdentityIndexOf(v);
         items.remove(index);
         int row = index + 1;
         layout.removeRow(row);
@@ -130,7 +130,7 @@ public class ElementCollectionField<ET> extends AbstractElementCollection<ET> {
 
     @Override
     public void setPersisted(ET v, boolean persisted) {
-        int row = items.indexOf(v) + 1;
+        int row = itemsIdentityIndexOf(v) + 1;
         if (isAllowRemovingItems()) {
             Button c = (Button) layout.getComponent(getVisibleProperties().
                     size(),
@@ -152,6 +152,15 @@ public class ElementCollectionField<ET> extends AbstractElementCollection<ET> {
             }
             c.setEnabled(persisted);
         }
+    }
+
+    private int itemsIdentityIndexOf(Object o) {
+        for (int index = 0; index < items.size(); index++) {
+            if (items.get(index) == o) {
+                return index;
+            }
+        }
+        return -1;
     }
 
     private void ensureInited() {
