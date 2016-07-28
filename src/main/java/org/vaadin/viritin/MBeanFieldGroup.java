@@ -548,4 +548,46 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
 
     }
 
+    /**
+     * Viritin does not support buffering. Calling this function
+     * will cause an UnsupportedOperationException.
+     * @see <a href="https://github.com/viritin/viritin/issues/186">Issue 186</a>
+     * @throws com.vaadin.data.fieldgroup.FieldGroup.CommitException
+     * @deprecated
+     */
+    @Override
+    @Deprecated
+    public void commit() throws CommitException {
+        throw new UnsupportedOperationException(NO_BUFFERING_SUPPORT);
+    }
+
+    /**
+     * Viritin does not support buffering. Calling this function
+     * will cause an UnsupportedOperationException.
+     * @see <a href="https://github.com/viritin/viritin/issues/186">Issue 186</a>
+     * @deprecated
+     */
+    @Override
+    @Deprecated
+    public void discard() {
+        throw new UnsupportedOperationException(NO_BUFFERING_SUPPORT);
+    }
+
+    /**
+     * Viritin does not support buffering. Calling this function with buffered=true
+     * will cause an UnsupportedOperationException.
+     * @see <a href="https://github.com/viritin/viritin/issues/186">Issue 186</a>
+     * @deprecated
+     */
+    @Override
+    @Deprecated
+    public void setBuffered(boolean buffered) {
+        if (buffered == true) {
+            throw new UnsupportedOperationException(NO_BUFFERING_SUPPORT);
+        }
+    }
+
+    private static final String NO_BUFFERING_SUPPORT = "Buffering is not supported by Viritin. "
+            + "Please, see https://github.com/viritin/viritin/issues/186 for details.";
+
 }
