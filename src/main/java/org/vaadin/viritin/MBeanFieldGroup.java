@@ -585,6 +585,7 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
         if (buffered == true) {
             throw new UnsupportedOperationException(NO_BUFFERING_SUPPORT);
         }
+        super.setBuffered(buffered);
     }
 
     private static final String NO_BUFFERING_SUPPORT = "Buffering is not supported by Viritin. "
