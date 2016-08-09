@@ -140,4 +140,22 @@ public abstract class AbstractNumberField<T> extends CustomField<T> implements
         tf.setReadOnly(readOnly);
     }
 
+    @Override
+    public void setWidth(String width) {
+    	super.setWidth(width);
+    	tf.setWidth("100%");
+    }
+    
+    @Override
+    public void setWidth(float width, Unit unit) {
+    	super.setWidth(width, unit);
+    	tf.setWidth("100%");
+    }
+    
+    @Override
+    public void setWidthUndefined() {
+    	super.setWidthUndefined();
+    	tf.setWidthUndefined();
+    }
+    
 }
