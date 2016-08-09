@@ -1,9 +1,9 @@
 package org.vaadin.viritin.it;
 
-import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.TextField;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -12,6 +12,7 @@ import org.vaadin.viritin.BeanBinder;
 import org.vaadin.viritin.MBeanFieldGroup;
 import org.vaadin.viritin.fields.IntegerField;
 import org.vaadin.viritin.fields.IntegerSliderField;
+import org.vaadin.viritin.fields.MTextField;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 
 /**
@@ -22,6 +23,7 @@ public class IntegerFieldUsage extends AbstractTest {
 
     public static class Domain {
 
+        private Integer normalInteger;
         private Integer integer;
         private int intti = 2;
         @Min(10)
@@ -65,13 +67,23 @@ public class IntegerFieldUsage extends AbstractTest {
             this.slider = slider;
         }
 
-        @Override
-        public String toString() {
-            return "Domain{" + "integer=" + integer + ", intti=" + intti + ", validatedInteger=" + validatedInteger + ", slider=" + slider + '}';
+        public Integer getNormalInteger() {
+            return normalInteger;
         }
 
+        public void setNormalInteger(Integer normalInteger) {
+            this.normalInteger = normalInteger;
+        }
+
+        @Override
+        public String toString() {
+            return "Domain{" + "normalInteger=" + normalInteger + ", integer=" + integer + ", intti=" + intti + ", validatedInteger=" + validatedInteger + ", slider=" + slider + '}';
+        }
+        
+        
     }
 
+    private TextField normalInteger = new MTextField().withCaption("Integer with basic TextField");
     private IntegerField integer = new IntegerField().withCaption("Integer");
     private IntegerField intti = new IntegerField().withCaption("int");
     private IntegerField validatedInteger = new IntegerField().withCaption(
@@ -132,6 +144,7 @@ public class IntegerFieldUsage extends AbstractTest {
                 intti,
                 validatedInteger,
                 slider,
+                normalInteger,
                 show,
                 toggleVisible
         );

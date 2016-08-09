@@ -16,6 +16,7 @@ import org.apache.commons.lang3.StringUtils;
 public class IntegerField extends AbstractNumberField<Integer> {
 
     public IntegerField() {
+        setSizeUndefined();
     }
 
     public IntegerField(String caption) {
