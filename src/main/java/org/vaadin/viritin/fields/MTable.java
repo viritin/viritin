@@ -425,6 +425,10 @@ public class MTable<T> extends Table {
         setBeans(new ArrayList<T>(Arrays.asList(beans)));
         return this;
     }
+    
+    public MTable<T> setRows(T... beansForRows) {
+        return setBeans(beansForRows);
+    }
 
     public MTable<T> setBeans(Collection<T> beans) {
 
@@ -440,6 +444,10 @@ public class MTable<T> extends Table {
             bic.setCollection(beans);
         }
         return this;
+    }
+    
+    public MTable<T> setRows(Collection<T> beansForRows) {
+        return setBeans(beansForRows);
     }
 
     /**
