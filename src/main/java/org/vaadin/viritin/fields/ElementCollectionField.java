@@ -181,6 +181,12 @@ public class ElementCollectionField<ET> extends AbstractElementCollection<ET> {
         setEditorInstantiator(instantiator);
         return this;
     }
+    
+    public ElementCollectionField<ET> withNewEditorInstantiator(
+            EditorInstantiator<?, ET> instantiator) {
+        setNewEditorInstantiator(instantiator);
+        return this;
+    }    
 
     @Override
     public void clear() {

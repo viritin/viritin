@@ -116,7 +116,8 @@ public abstract class AbstractElementCollection<ET> extends CustomField<Collecti
     }
 
     private Instantiator<ET> instantiator;
-    private Instantiator<?> editorInstantiator;
+    private Instantiator<?> oldEditorInstantiator;
+    private EditorInstantiator<?, ET> newEditorInstantiator;
 
     private final Class<ET> elementType;
 
@@ -223,6 +224,10 @@ public abstract class AbstractElementCollection<ET> extends CustomField<Collecti
 
         ET create();
     }
+    
+    public interface EditorInstantiator<T, ET> extends Serializable {
+      T create(ET entity);
+    }
 
     public AbstractElementCollection(Class<ET> elementType,
             Class<?> formType) {
@@ -253,27 +258,40 @@ public abstract class AbstractElementCollection<ET> extends CustomField<Collecti
         }
     }
 
-    protected Object createEditorInstance() {
-        if (editorInstantiator != null) {
-            return editorInstantiator.create();
+    protected Object createEditorInstance(ET pojo) {
+        if (newEditorInstantiator != null) {
+            return newEditorInstantiator.create(pojo);
         } else {
-            try {
-                return editorType.newInstance();
-            } catch (Exception ex) {
-                throw new RuntimeException(ex);
+            if (oldEditorInstantiator != null) {
+                return oldEditorInstantiator.create();              
+            } else {
+                try {
+                    return editorType.newInstance();
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         }
     }
 
+    public EditorInstantiator<?, ET> getNewEditorInstantiator() {
+      return newEditorInstantiator;
+    }
+
+    public void setNewEditorInstantiator(
+          EditorInstantiator<?, ET> editorInstantiator) {
+      this.newEditorInstantiator = editorInstantiator;
+    }
+
     public Instantiator<?> getEditorInstantiator() {
-        return editorInstantiator;
+      return oldEditorInstantiator;
     }
 
     public void setEditorInstantiator(
             Instantiator<?> editorInstantiator) {
-        this.editorInstantiator = editorInstantiator;
+        this.oldEditorInstantiator = editorInstantiator;
     }
-    
+  
     private class EditorStuff implements Serializable {
         MBeanFieldGroup<ET> bfg;
         Object editor;
@@ -289,7 +307,7 @@ public abstract class AbstractElementCollection<ET> extends CustomField<Collecti
     protected final MBeanFieldGroup<ET> getFieldGroupFor(ET pojo) {
         EditorStuff es = pojoToEditor.get(pojo);
         if (es == null) {
-            Object o = createEditorInstance();
+            Object o = createEditorInstance(pojo);
             MBeanFieldGroup bfg = BeanBinder.bind(pojo, o).withEagerValidation(
                     fieldGroupListener);
             es = new EditorStuff(bfg, o);
@@ -302,7 +320,7 @@ public abstract class AbstractElementCollection<ET> extends CustomField<Collecti
     protected final Component getComponentFor(ET pojo, String property) {
         EditorStuff editorsstuff = pojoToEditor.get(pojo);
         if (editorsstuff == null) {
-            Object o = createEditorInstance();
+            Object o = createEditorInstance(pojo);
             MBeanFieldGroup bfg = BeanBinder.bind(pojo, o).withEagerValidation(
                     fieldGroupListener);
             editorsstuff = new EditorStuff(bfg, o);
