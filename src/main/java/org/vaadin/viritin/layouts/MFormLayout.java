@@ -113,4 +113,9 @@ public class MFormLayout extends FormLayout {
         setDescription(description);
         return this;
     }
+    
+    public MFormLayout with(Component... components) {
+        addComponents(components);
+        return this;
+    }
 }
