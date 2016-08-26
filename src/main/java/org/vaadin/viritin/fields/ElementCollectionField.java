@@ -172,9 +172,7 @@ public class ElementCollectionField<ET> extends AbstractElementCollection<ET> {
             }
             layout.setColumns(columns);
             for (Object property : getVisibleProperties()) {
-                Label header = new Label(getPropertyHeader(property.
-                        toString()));
-                header.setWidthUndefined();
+                Component header = createHeader(property);
                 layout.addComponent(header);
             }
             if (isAllowRemovingItems()) {
@@ -183,6 +181,21 @@ public class ElementCollectionField<ET> extends AbstractElementCollection<ET> {
             }
             inited = true;
         }
+    }
+
+    /**
+     * Creates the header for given property. By default a simple Label is used.
+     * Override this method to style it or to replace it with something more 
+     * complex.
+     * 
+     * @param property the property for which header is to be created.
+     * @return the component used for header
+     */
+    protected Component createHeader(Object property) {
+        Label header = new Label(getPropertyHeader(property.
+                toString()));
+        header.setWidthUndefined();
+        return header;
     }
 
     public ElementCollectionField<ET> withEditorInstantiator(
