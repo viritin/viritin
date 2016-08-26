@@ -558,7 +558,10 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
     @Override
     @Deprecated
     public void commit() throws CommitException {
-        throw new UnsupportedOperationException(NO_BUFFERING_SUPPORT);
+        Logger.getLogger(getClass().getName()).
+                log(Level.WARNING, "Viritin doesn't support buffering, this "
+                        + "method might not work as expected.");
+        super.commit();
     }
 
     /**
@@ -570,7 +573,10 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
     @Override
     @Deprecated
     public void discard() {
-        throw new UnsupportedOperationException(NO_BUFFERING_SUPPORT);
+        Logger.getLogger(getClass().getName()).
+                log(Level.WARNING, "Viritin doesn't support buffering, this "
+                        + "method might not work as expected.");
+        super.discard();
     }
 
     /**
@@ -583,7 +589,9 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
     @Deprecated
     public void setBuffered(boolean buffered) {
         if (buffered == true) {
-            throw new UnsupportedOperationException(NO_BUFFERING_SUPPORT);
+            Logger.getLogger(getClass().getName()).
+                    log(Level.WARNING, "Viritin doesn't support buffering, this "
+                            + "method might not work as expected.");
         }
         super.setBuffered(buffered);
     }
