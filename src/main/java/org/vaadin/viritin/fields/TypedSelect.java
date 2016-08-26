@@ -29,6 +29,12 @@ import java.util.List;
  * <p>
  * Note, that this select is always in single select mode. See MultiSelectTable
  * for a proper "multiselect".
+ * <p>
+ * NOTE, that if your options might be empty OR you might use multiple different types of
+ * options in your select, you have to specify the common superclass for the 
+ * options either using constructor with the class parameter or using
+ * setFieldType method. Due to Java type erasure, we cannot properly detect it
+ * with generics (type parameters) only.
  *
  * @author mstahv
  * @param <T> the type of selects value
