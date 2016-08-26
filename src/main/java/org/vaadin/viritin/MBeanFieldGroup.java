@@ -588,6 +588,31 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
         super.setBuffered(buffered);
     }
 
+    /**
+     * Configures a field with the settings set for this FieldBinder.
+     * <p>
+     * By default this updates the buffered, read only and enabled state of the
+     * field. Also adds validators when applicable. Fields with read only data
+     * source are always configured as read only.
+     * <p>
+     * Unlike the default implementation in FieldGroup, MBeanFieldGroup only
+     * makes field read only based on the property's hint, not the opposite.
+     * This way developer can in form code choose to make some fields read only.
+     *
+     * @param field The field to update
+     */
+    @Override
+    protected void configureField(Field<?> field) {
+        field.setBuffered(isBuffered());
+
+        field.setEnabled(isEnabled());
+        
+        if(isReadOnly() || field.getPropertyDataSource().isReadOnly()) {
+            field.setReadOnly(true);
+        }
+    }
+
+
     private static final String NO_BUFFERING_SUPPORT = "Buffering is not supported by Viritin. "
             + "Please, see https://github.com/viritin/viritin/issues/186 for details.";
 
