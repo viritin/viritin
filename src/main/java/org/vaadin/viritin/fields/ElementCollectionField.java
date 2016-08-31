@@ -75,6 +75,8 @@ public class ElementCollectionField<ET> extends AbstractElementCollection<ET> {
     boolean inited = false;
 
     GridLayout layout = new GridLayout();
+    
+    private boolean visibleHeaders = true;
 
     public ElementCollectionField(Class<ET> elementType,
             Class<?> formType) {
@@ -171,13 +173,16 @@ public class ElementCollectionField<ET> extends AbstractElementCollection<ET> {
                 columns++;
             }
             layout.setColumns(columns);
-            for (Object property : getVisibleProperties()) {
-                Component header = createHeader(property);
-                layout.addComponent(header);
-            }
-            if (isAllowRemovingItems()) {
-                // leave last header slot empty, "actions" colunn
-                layout.newLine();
+            
+            if (visibleHeaders) {
+                for (Object property : getVisibleProperties()) {
+                    Component header = createHeader(property);
+                    layout.addComponent(header);
+                }
+                if (isAllowRemovingItems()) {
+                    // leave last header slot empty, "actions" colunn
+                    layout.newLine();
+                }
             }
             inited = true;
         }
@@ -203,7 +208,18 @@ public class ElementCollectionField<ET> extends AbstractElementCollection<ET> {
         setEditorInstantiator(instantiator);
         return this;
     }
+    
+    public ElementCollectionField<ET> withNewEditorInstantiator(
+            EditorInstantiator<?, ET> instantiator) {
+        setNewEditorInstantiator(instantiator);
+        return this;
+    }    
 
+    public ElementCollectionField<ET> withVisibleHeaders(boolean visibleHeaders) {
+        this.visibleHeaders = visibleHeaders;
+        return this;
+    }
+    
     @Override
     public void clear() {
         if (inited) {

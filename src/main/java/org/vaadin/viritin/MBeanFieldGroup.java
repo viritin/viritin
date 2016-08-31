@@ -552,7 +552,7 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
      * Viritin does not support buffering. Calling this function
      * will cause an UnsupportedOperationException.
      * @see <a href="https://github.com/viritin/viritin/issues/186">Issue 186</a>
-     * @throws com.vaadin.data.fieldgroup.FieldGroup.CommitException
+     * @throws com.vaadin.data.fieldgroup.FieldGroup.CommitException if commit fails
      * @deprecated
      */
     @Override
