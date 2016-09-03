@@ -215,6 +215,11 @@ public abstract class AbstractElementCollection<ET> extends CustomField<Collecti
         return value;
     }
 
+    /**
+     * @param allowNewItems true if a new element row should be automatically 
+     * added
+     * @return the configured field instance
+     */
     public AbstractElementCollection<ET> setAllowNewElements(
             boolean allowNewItems) {
         this.allowNewItems = allowNewItems;

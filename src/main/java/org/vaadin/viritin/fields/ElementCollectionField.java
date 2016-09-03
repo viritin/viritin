@@ -17,6 +17,7 @@ import com.vaadin.ui.Field;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.themes.ValoTheme;
+import org.vaadin.viritin.button.ConfirmButton;
 
 /**
  * A field suitable for editing collection of referenced objects tied to parent
@@ -75,8 +76,9 @@ public class ElementCollectionField<ET> extends AbstractElementCollection<ET> {
     boolean inited = false;
 
     GridLayout layout = new GridLayout();
-    
+
     private boolean visibleHeaders = true;
+    private boolean requireVerificationForRemoval;
 
     public ElementCollectionField(Class<ET> elementType,
             Class<?> formType) {
@@ -104,17 +106,29 @@ public class ElementCollectionField<ET> extends AbstractElementCollection<ET> {
             layout.setComponentAlignment(c, Alignment.MIDDLE_LEFT);
         }
         if (isAllowRemovingItems()) {
-            layout.addComponent(new MButton(FontAwesome.TRASH_O).withListener(
-                    new Button.ClickListener() {
-                @Override
-                public void buttonClick(Button.ClickEvent event) {
-                    removeElement(v);
-                }
-            }).withStyleName(ValoTheme.BUTTON_ICON_ONLY));
+            layout.addComponent(createRemoveButton(v));
         }
         if (!isAllowEditItems()) {
             fg.setReadOnly(true);
         }
+    }
+
+    protected Component createRemoveButton(final ET v) {
+        MButton b;
+        if (requireVerificationForRemoval) {
+            b = new ConfirmButton();
+        } else {
+            b = new MButton();
+        }
+        b.withIcon(FontAwesome.TRASH_O)
+                .withStyleName(ValoTheme.BUTTON_ICON_ONLY, ValoTheme.BUTTON_DANGER)
+                .withListener(new Button.ClickListener() {
+                    @Override
+                    public void buttonClick(Button.ClickEvent event) {
+                        removeElement(v);
+                    }
+                });
+        return b;
     }
 
     @Override
@@ -173,7 +187,7 @@ public class ElementCollectionField<ET> extends AbstractElementCollection<ET> {
                 columns++;
             }
             layout.setColumns(columns);
-            
+
             if (visibleHeaders) {
                 for (Object property : getVisibleProperties()) {
                     Component header = createHeader(property);
@@ -190,9 +204,9 @@ public class ElementCollectionField<ET> extends AbstractElementCollection<ET> {
 
     /**
      * Creates the header for given property. By default a simple Label is used.
-     * Override this method to style it or to replace it with something more 
+     * Override this method to style it or to replace it with something more
      * complex.
-     * 
+     *
      * @param property the property for which header is to be created.
      * @return the component used for header
      */
@@ -208,18 +222,18 @@ public class ElementCollectionField<ET> extends AbstractElementCollection<ET> {
         setEditorInstantiator(instantiator);
         return this;
     }
-    
+
     public ElementCollectionField<ET> withNewEditorInstantiator(
             EditorInstantiator<?, ET> instantiator) {
         setNewEditorInstantiator(instantiator);
         return this;
-    }    
+    }
 
     public ElementCollectionField<ET> withVisibleHeaders(boolean visibleHeaders) {
         this.visibleHeaders = visibleHeaders;
         return this;
     }
-    
+
     @Override
     public void clear() {
         if (inited) {
@@ -362,6 +376,11 @@ public class ElementCollectionField<ET> extends AbstractElementCollection<ET> {
 
     public ElementCollectionField<ET> withId(String id) {
         setId(id);
+        return this;
+    }
+
+    public ElementCollectionField<ET> setRequireVerificationForRemoving(boolean requireVerification) {
+        requireVerificationForRemoval = requireVerification;
         return this;
     }
 
