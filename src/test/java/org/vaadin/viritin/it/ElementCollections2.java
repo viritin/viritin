@@ -40,7 +40,8 @@ public class ElementCollections2 extends AbstractTest {
         private final ElementCollectionField<Address> addresses
                 = new ElementCollectionField<Address>(Address.class,
                         AddressRow.class).withCaption("Addressess").
-                setAllowRemovingItems(false);
+                setAllowRemovingItems(false).
+                setAllowNewElements(false);
 
         private Button add = new MButton("Add row", new Button.ClickListener() {
 
