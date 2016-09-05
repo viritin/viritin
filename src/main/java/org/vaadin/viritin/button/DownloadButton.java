@@ -93,7 +93,7 @@ public class DownloadButton extends MButton {
     }
 
     public String getMimeType() {
-        return streamResource.getFilename();
+        return streamResource.getMIMEType();
     }
 
     public DownloadButton setMimeType(String mimeType) {
