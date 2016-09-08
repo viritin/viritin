@@ -20,6 +20,8 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomField;
 import java.lang.reflect.Method;
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -53,7 +55,7 @@ public class CommaSeparatedCollectionField extends CustomField<Collection> {
                     // TODO null check for collection and create it if not set (e.g. null in property)
                     collection.clear();
 
-                    for (String part : parts) {
+                    for (final String part : parts) {
                         if (instantiator != null) {
                             collection.add(instantiator.instance(part));
                         } else if (elementType != null) {
@@ -61,10 +63,12 @@ public class CommaSeparatedCollectionField extends CustomField<Collection> {
                             try {
 
                                 Method declaredMethod = elementType.getDeclaredMethod("valueOf", String.class);
-                                if (declaredMethod != null) {
-                                    collection.add(declaredMethod.invoke(null, part));
-                                } else {
+                                collection.add(declaredMethod.invoke(null, part));
+                            } catch (NoSuchMethodException ex) {
+                                try {
                                     collection.add(elementType.getConstructor(String.class).newInstance(part));
+                                } catch (Exception ex1) {
+                                throw new RuntimeException("The string " + part + " could not be converted to " + elementType.getSimpleName(), ex1);
                                 }
                             } catch (Exception ex) {
                                 throw new RuntimeException("The string " + part + " could not be converted to " + elementType.getSimpleName(), ex);
