@@ -611,15 +611,11 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
      */
     @Override
     protected void configureField(Field<?> field) {
-        field.setBuffered(isBuffered());
-
-        field.setEnabled(isEnabled());
-        
-        if(isReadOnly() || field.getPropertyDataSource().isReadOnly()) {
-            field.setReadOnly(true);
-        }
+        boolean readOnlyStatus = isReadOnly() || field.getPropertyDataSource().isReadOnly();
+        super.configureField(field);
+        // reset the badly set readOnlyStatus
+        field.setReadOnly(readOnlyStatus);
     }
-
 
     private static final String NO_BUFFERING_SUPPORT = "Buffering is not supported by Viritin. "
             + "Please, see https://github.com/viritin/viritin/issues/186 for details.";
