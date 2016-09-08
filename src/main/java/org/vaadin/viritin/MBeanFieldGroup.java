@@ -422,6 +422,69 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
 
     @Override
     public boolean isValid() {
+        if(validateAllProperties) {
+            return isValidAllProperties();
+        } else {
+            return isValidLegacy();
+        }
+    }
+    
+    private boolean isValidAllProperties() {
+        // clear all MValidation errors
+        clearMValidationErrors();
+        jsr303beanLevelViolations = null;
+        beanLevelViolations = null;
+
+        // first check standard property level validators, but unlike in Vaadin
+        // core, check them all, don't stop for first error
+        boolean propertiesValid = true;
+        try {
+            for (Field<?> field : getFields()) {
+                field.validate();
+            }
+        } catch (Validator.InvalidValueException e) {
+            propertiesValid = false;
+        }
+        // then crossfield(/bean level) validators, execute them all although
+        // with per field validation Vaadin checks only until the first failed one
+        boolean ok = true;
+        for (MValidator<T> v : mValidators.keySet()) {
+            try {
+                v.validate(getItemDataSource().getBean());
+            } catch (Validator.InvalidValueException e) {
+                Collection<AbstractComponent> properties = mValidators.
+                        get(v);
+                if (!properties.isEmpty()) {
+                    for (AbstractComponent field : properties) {
+                        final ErrorMessage em = AbstractErrorMessage.
+                                getErrorMessageForException(e);
+                        mValidationErrors.put(em, field);
+                        field.setComponentError(em);
+                    }
+                } else {
+                    final ErrorMessage em = AbstractErrorMessage.
+                            getErrorMessageForException(e);
+                    AbstractComponent target = validatorToErrorTarget.get(v.
+                            getClass());
+                    if (target != null) {
+                        target.setComponentError(em);
+                    } else {
+                        // no specific "target component" for validation error
+                        // leave as bean level error
+                        if (beanLevelViolations == null) {
+                            beanLevelViolations = new HashSet<Validator.InvalidValueException>();
+                        }
+                        beanLevelViolations.add(e);
+                        mValidationErrors.put(em, null);
+                    }
+                }
+                ok = false;
+            }
+        }
+        return jsr303ValidateBean(getItemDataSource().getBean()) && ok && propertiesValid;
+    }
+
+    private boolean isValidLegacy() {
         // clear all MValidation errors
         clearMValidationErrors();
         jsr303beanLevelViolations = null;
@@ -469,6 +532,16 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
             return jsr303ValidateBean(getItemDataSource().getBean()) && ok;
         }
         return false;
+    }
+    
+    private boolean validateAllProperties = true;
+
+    /**
+     * @param validateAllProperties true if all properties should be validated,
+     * instead of stopping for the first invalid field (the default in Vaadin)
+     */
+    public void setValidateAllProperties(boolean validateAllProperties) {
+        this.validateAllProperties = validateAllProperties;
     }
 
     @Override
