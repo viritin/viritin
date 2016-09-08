@@ -46,7 +46,7 @@ public class MTextField extends TextField implements EagerValidateable {
     private AutoCapitalize autocapitalize;
     private AutoCorrect autocorrect;
     private Boolean spellcheck;
-    private boolean userValueChange;
+    boolean userValueChange;
 
     public MTextField() {
         configureMaddonStuff();
