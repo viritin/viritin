@@ -18,6 +18,8 @@ import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.themes.ValoTheme;
 import org.vaadin.viritin.button.ConfirmButton;
+import org.vaadin.viritin.form.AbstractForm;
+import org.vaadin.viritin.layouts.MGridLayout;
 
 /**
  * A field suitable for editing collection of referenced objects tied to parent
@@ -75,10 +77,11 @@ public class ElementCollectionField<ET> extends AbstractElementCollection<ET> {
 
     boolean inited = false;
 
-    GridLayout layout = new GridLayout();
+    MGridLayout layout = new MGridLayout();
 
     private boolean visibleHeaders = true;
     private boolean requireVerificationForRemoval;
+    private AbstractForm<ET> popupEditor;
 
     public ElementCollectionField(Class<ET> elementType,
             Class<?> formType) {
@@ -105,8 +108,19 @@ public class ElementCollectionField<ET> extends AbstractElementCollection<ET> {
             layout.addComponent(c);
             layout.setComponentAlignment(c, Alignment.MIDDLE_LEFT);
         }
+        if (getPopupEditor() != null) {
+            MButton b = new MButton(FontAwesome.EDIT)
+                    .withStyleName(ValoTheme.BUTTON_ICON_ONLY)
+                    .withListener(new Button.ClickListener() {
+                @Override
+                public void buttonClick(Button.ClickEvent event) {
+                    editInPopup(v);
+                }
+            });
+            layout.add(b);
+        }
         if (isAllowRemovingItems()) {
-            layout.addComponent(createRemoveButton(v));
+            layout.add(createRemoveButton(v));
         }
         if (!isAllowEditItems()) {
             fg.setReadOnly(true);
@@ -148,9 +162,7 @@ public class ElementCollectionField<ET> extends AbstractElementCollection<ET> {
     public void setPersisted(ET v, boolean persisted) {
         int row = itemsIdentityIndexOf(v) + 1;
         if (isAllowRemovingItems()) {
-            Button c = (Button) layout.getComponent(getVisibleProperties().
-                    size(),
-                    row);
+            Button c = (Button) layout.getComponent(layout.getColumns() - 1, row);
             if (persisted) {
                 c.setDescription(getDeleteElementDescription());
             } else {
@@ -184,6 +196,9 @@ public class ElementCollectionField<ET> extends AbstractElementCollection<ET> {
             layout.setSpacing(true);
             int columns = getVisibleProperties().size();
             if (isAllowRemovingItems()) {
+                columns++;
+            }
+            if(getPopupEditor() != null) {
                 columns++;
             }
             layout.setColumns(columns);
@@ -382,6 +397,42 @@ public class ElementCollectionField<ET> extends AbstractElementCollection<ET> {
     public ElementCollectionField<ET> setRequireVerificationForRemoving(boolean requireVerification) {
         requireVerificationForRemoval = requireVerification;
         return this;
+    }
+
+    public AbstractForm<ET> getPopupEditor() {
+        return popupEditor;
+    }
+
+    /**
+     * Method to set form to allow editing more properties than it would be
+     * convenient inline.
+     *
+     * @param newPopupEditor the popup editor to be used to edit instances
+     */
+    public void setPopupEditor(AbstractForm<ET> newPopupEditor) {
+        this.popupEditor = newPopupEditor;
+        if (newPopupEditor != null) {
+            newPopupEditor.setSavedHandler(new AbstractForm.SavedHandler<ET>() {
+                @Override
+                public void onSave(ET entity) {
+                    MBeanFieldGroup<ET> fg = getFieldGroupFor(entity);
+                    fg.setItemDataSource(entity);
+                    fg.setBeanModified(true);
+                    // TODO refresh binding
+                    popupEditor.getPopup().close();
+                }
+            });
+        }
+    }
+
+    /**
+     * Opens a (possibly configured) popup editor to edit given entity.
+     * 
+     * @param entity the entity to be edited
+     */
+    public void editInPopup(ET entity) {
+        getPopupEditor().setEntity(entity);
+        getPopupEditor().openInModalPopup();
     }
 
 }
