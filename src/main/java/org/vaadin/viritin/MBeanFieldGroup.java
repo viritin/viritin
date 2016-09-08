@@ -568,6 +568,7 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
     public MBeanFieldGroup(Class beanType) {
         super(beanType);
         this.nonHiddenBeanType = beanType;
+        setBuffered(false);
     }
 
     public MBeanFieldGroup<T> withEagerValidation() {
