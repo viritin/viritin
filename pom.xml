@@ -8,7 +8,7 @@
     <packaging>bundle</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <vaadin.version>7.6.2</vaadin.version>
+        <vaadin.version>7.6.8</vaadin.version>
         <vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
 
         <!-- ZIP Manifest fields -->
@@ -124,7 +124,7 @@
         <dependency>
             <groupId>org.vaadin</groupId>
             <artifactId>addon-test-helpers</artifactId>
-            <version>1.6</version>
+            <version>1.10</version>
             <scope>test</scope>
         </dependency>
         <!-- To support websocket commmunication for tests, to be kept in sync 
@@ -144,7 +144,7 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
-            <version>5.2.0.CR1</version>
+            <version>5.2.4.Final</version>
             <scope>test</scope>
         </dependency>        
         <dependency>
