@@ -27,7 +27,7 @@ public abstract class AbstractNumberField<T> extends CustomField<T> implements
         s.setProperty("type", getHtmlFieldType());
         // prevent all but numbers with a simple js
         s.setJavaScriptEventHandler("keypress",
-                "function(e) {var c = viritin.getChar(e); return c==null || /^[\\d\\n\\t\\r]+$/.test(c);}");
+                "function(e) {var c = viritin.getChar(e); return c==null || /^[-\\d\\n\\t\\r]+$/.test(c);}");
     }
     protected HtmlElementPropertySetter s = new HtmlElementPropertySetter(tf);
     protected Property.ValueChangeListener vcl = new Property.ValueChangeListener() {
