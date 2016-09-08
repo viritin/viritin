@@ -29,6 +29,7 @@ import com.vaadin.ui.TextField;
 import org.vaadin.viritin.util.HtmlElementPropertySetter;
 
 import java.util.EventObject;
+import java.util.Map;
 
 /**
  * A an extension to basic Vaadin TextField. Uses the only sane default for
@@ -45,6 +46,7 @@ public class MTextField extends TextField implements EagerValidateable {
     private AutoCapitalize autocapitalize;
     private AutoCorrect autocorrect;
     private Boolean spellcheck;
+    private boolean userValueChange;
 
     public MTextField() {
         configureMaddonStuff();
@@ -422,6 +424,21 @@ public class MTextField extends TextField implements EagerValidateable {
         } else {
             super.validate();
         }
+    }
+
+    @Override
+    public void changeVariables(Object source, Map<String, Object> variables) {
+        userValueChange = true;
+        super.changeVariables(source, variables); //To change body of generated methods, choose Tools | Templates.
+        userValueChange = false;
+    }
+
+    /**
+     * @return true if the current value change event is created by a user
+     * action.
+     */
+    public boolean isUserValueChange() {
+        return userValueChange;
     }
 
 }
