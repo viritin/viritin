@@ -58,7 +58,9 @@ public class GeneratedPropertyListContainerExample extends AbstractTest {
             if (addresses != null && !addresses.isEmpty()) {
                 displayValue.append("Addresses: ");
                 for (Address address : addresses) {
-                    if (address == null) continue;
+                    if (address == null) {
+                        continue;
+                    }
                     displayValue.append(address.getZipCode());
                     displayValue.append("; ");
                     displayValue.append(address.getCity());

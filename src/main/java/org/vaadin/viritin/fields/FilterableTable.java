@@ -67,8 +67,9 @@ public class FilterableTable<T> extends MTable<T> {
     protected void ensureBeanItemContainer(Collection<T> beans) {
         super.ensureBeanItemContainer(beans);
 
-        for (Filter filter : pendingFilters)
+        for (Filter filter : pendingFilters) {
             getContainer().addContainerFilter(filter);
+        }
         pendingFilters.clear();
     }
 
