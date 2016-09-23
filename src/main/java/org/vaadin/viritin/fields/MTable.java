@@ -69,8 +69,7 @@ public class MTable<T> extends Table {
     private String sortProperty;
     private boolean sortAscending;
 
-    public MTable() {
-    }
+    public MTable() {}
 
     /**
      * Constructs a Table with explicit bean type. Handy for example if your
@@ -78,13 +77,13 @@ public class MTable<T> extends Table {
      *
      * @param type the type of beans that are listed in this table
      */
-    public MTable(Class<T> type) {
+    public MTable(Class<? extends T> type) {
         bic = createContainer(type);
         setContainerDataSource(bic);
     }
 
     public MTable(T... beans) {
-        this(new ArrayList<T>(Arrays.asList(beans)));
+        this(new ArrayList<>(Arrays.asList(beans)));
     }
 
     /**
@@ -256,12 +255,12 @@ public class MTable<T> extends Table {
         return this;
     }
 
-    protected ListContainer<T> createContainer(Class<T> type) {
-        return new ListContainer<T>(type);
+    protected ListContainer<T> createContainer(Class<? extends T> type) {
+        return new ListContainer<>(type);
     }
 
     protected ListContainer<T> createContainer(Collection<T> beans) {
-        return new ListContainer<T>(beans);
+        return new ListContainer<>(beans);
     }
 
     protected ListContainer<T> getContainer() {

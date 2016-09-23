@@ -23,15 +23,15 @@ public class FilterableListContainer<T> extends ListContainer<T> implements
 
     private static final long serialVersionUID = 6410519255465731727L;
 
-    private Set<Filter> filters = new HashSet<Filter>();
+    private final Set<Filter> filters = new HashSet<>();
 
-    private List<T> filteredItems = new ArrayList<T>();
+    private List<T> filteredItems = new ArrayList<>();
 
-    public FilterableListContainer(Class<T> type) {
+    public FilterableListContainer(Class<? extends T> type) {
         super(type);
     }
 
-    public FilterableListContainer(Collection<T> backingList) {
+    public FilterableListContainer(Collection<? extends T> backingList) {
         super(backingList);
     }
 
@@ -64,7 +64,7 @@ public class FilterableListContainer<T> extends ListContainer<T> implements
     }
 
     private void applyFilters() {
-        filteredItems = new ArrayList<T>();
+        filteredItems = new ArrayList<>();
         if (isFiltered()) {
             for (T itemId : super.getBackingList()) {
                 if (passesFilters(itemId)) {

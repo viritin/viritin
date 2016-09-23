@@ -25,10 +25,12 @@ import java.util.List;
 /**
  * Extension of the {@link org.vaadin.viritin.fields.MTable} class which supports filtering based on
  * {@link org.vaadin.viritin.FilterableListContainer}.
+ * 
+ * @param <T> the type of the POJO listed in this Table.
  */
 public class FilterableTable<T> extends MTable<T> {
 
-    private List<Filter> pendingFilters = new ArrayList<Filter>();
+    private final List<Filter> pendingFilters = new ArrayList<>();
 
     public FilterableTable() {
 
@@ -47,13 +49,13 @@ public class FilterableTable<T> extends MTable<T> {
     }
 
     @Override
-    protected FilterableListContainer<T> createContainer(Class<T> type) {
-        return new FilterableListContainer<T>(type);
+    protected FilterableListContainer<T> createContainer(Class<? extends T> type) {
+        return new FilterableListContainer<>(type);
     }
 
     @Override
     protected FilterableListContainer<T> createContainer(Collection<T> beans) {
-        return new FilterableListContainer<T>(beans);
+        return new FilterableListContainer<>(beans);
     }
 
     @Override
@@ -61,6 +63,7 @@ public class FilterableTable<T> extends MTable<T> {
         return (FilterableListContainer<T>) super.getContainer();
     }
 
+    @Override
     protected void ensureBeanItemContainer(Collection<T> beans) {
         super.ensureBeanItemContainer(beans);
 
