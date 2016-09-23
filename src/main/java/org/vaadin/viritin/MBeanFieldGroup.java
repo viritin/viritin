@@ -93,14 +93,17 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
                             .getMessageInterpolator().interpolate(
                                 notNullAnnotation.message(),
                                 new MessageInterpolator.Context() {
+                                    @Override
                                     public ConstraintDescriptor<?> getConstraintDescriptor() {
                                         return null;
                                     }
 
+                                    @Override
                                     public Object getValidatedValue() {
                                         return null;
                                     }
 
+                                    @Override
                                     public <T> T unwrap(Class<T> type) {
                                         return null;
                                     }

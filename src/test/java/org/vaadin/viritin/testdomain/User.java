@@ -41,6 +41,7 @@ public class User
 		person = personParameter;
 	}
 
+    @Override
 	public Locale getLocale() {
 		return locale;
 	}

@@ -18,6 +18,7 @@ public class MBeanFieldGroupRequiredErrorMessage extends AbstractTest {
     private TextField street ;
 
 
+    @Override
     public Component getTestComponent() {
         street = new TextField();
         street.setLocale(getLocale());

@@ -22,6 +22,7 @@ public class CollectionSelect<T> extends CustomField<Collection<T>> {
 	private ListSelect select = new ListSelect() {
 
 		@SuppressWarnings("unchecked")
+        @Override
 		public String getItemCaption(Object option) {
 			if (captionGenerator != null) {
 				return captionGenerator.getCaption((T) option);
