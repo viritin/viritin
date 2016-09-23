@@ -680,7 +680,7 @@ public class MTable<T> extends Table {
                 setSortContainerPropertyId(sortProperty);
 
             }
-        } catch (Exception e) {
+        } catch (UnsupportedOperationException e) {
             throw new RuntimeException(e);
         } finally {
             isSorting = false;

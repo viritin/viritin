@@ -205,7 +205,7 @@ public abstract class AbstractElementCollection<ET> extends CustomField<Collecti
             } else {
                 try {
                     value = (Collection) fieldType.newInstance();
-                } catch (Exception ex) {
+                } catch (IllegalAccessException | InstantiationException ex) {
                     throw new RuntimeException(
                             "Could not instantiate the used colleciton type", ex);
                 }
@@ -258,7 +258,7 @@ public abstract class AbstractElementCollection<ET> extends CustomField<Collecti
         } else {
             try {
                 return elementType.newInstance();
-            } catch (Exception ex) {
+            } catch (IllegalAccessException | InstantiationException ex) {
                 throw new RuntimeException(ex);
             }
         }
@@ -273,7 +273,7 @@ public abstract class AbstractElementCollection<ET> extends CustomField<Collecti
             } else {
                 try {
                     return editorType.newInstance();
-                } catch (Exception ex) {
+                } catch (IllegalAccessException | InstantiationException ex) {
                     throw new RuntimeException(ex);
                 }
             }

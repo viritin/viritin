@@ -12,6 +12,7 @@ import com.vaadin.ui.Layout;
 import com.vaadin.ui.TextField;
 import com.vaadin.util.ReflectTools;
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -172,7 +173,7 @@ public class MapField<K, V> extends CustomField<Map> {
             } else {
                 try {
                     value = (Map) fieldType.newInstance();
-                } catch (Exception ex) {
+                } catch (IllegalAccessException | InstantiationException ex) {
                     throw new RuntimeException(
                             "Could not instantiate the used colleciton type", ex);
                 }
@@ -213,7 +214,7 @@ public class MapField<K, V> extends CustomField<Map> {
         } catch (ClassCastException e) {
             try {
                 tKey = keyType.getConstructor(String.class).newInstance(key);
-            } catch (Exception ex) {
+            } catch (IllegalAccessException | IllegalArgumentException | InstantiationException | NoSuchMethodException | SecurityException | InvocationTargetException ex) {
                 throw new RuntimeException("No suitable constructor found", ex);
             }
         }
@@ -223,7 +224,7 @@ public class MapField<K, V> extends CustomField<Map> {
         } catch (ClassCastException e) {
             try {
                 tVal = valueType.getConstructor(String.class).newInstance(value);
-            } catch (Exception ex) {
+            } catch (IllegalAccessException | IllegalArgumentException | InstantiationException | NoSuchMethodException | SecurityException | InvocationTargetException ex) {
                 throw new RuntimeException("No suitable constructor found", ex);
             }
         }
@@ -239,7 +240,7 @@ public class MapField<K, V> extends CustomField<Map> {
         } catch (ClassCastException e) {
             try {
                 tKey = keyType.getConstructor(String.class).newInstance(key);
-            } catch (Exception ex) {
+            } catch (IllegalAccessException | IllegalArgumentException | InstantiationException | NoSuchMethodException | SecurityException | InvocationTargetException ex) {
                 throw new RuntimeException("No suitable constructor found", ex);
             }
         }
@@ -257,7 +258,7 @@ public class MapField<K, V> extends CustomField<Map> {
             } catch (ClassCastException ex) {
                 try {
                     value = valueType.getConstructor(String.class).newInstance(strValue);
-                } catch (Exception ex1) {
+                } catch (IllegalAccessException | IllegalArgumentException | InstantiationException | NoSuchMethodException | SecurityException | InvocationTargetException ex1) {
                     value = null;
                 }
             }

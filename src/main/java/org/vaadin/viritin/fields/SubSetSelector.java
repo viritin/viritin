@@ -13,6 +13,7 @@ import com.vaadin.ui.themes.Reindeer;
 import java.util.Arrays;
 
 import com.vaadin.ui.themes.ValoTheme;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
 import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.form.AbstractForm;
@@ -202,7 +203,7 @@ public class SubSetSelector<ET> extends CustomField<Collection> implements Abstr
     protected ET instantiateOption(String stringInput) {
         try {
             return elementType.getConstructor().newInstance();
-        } catch (Exception e) {
+        } catch (IllegalAccessException | IllegalArgumentException | InstantiationException | NoSuchMethodException | SecurityException | InvocationTargetException e) {
             throw new RuntimeException(e);
         }
     }

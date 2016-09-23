@@ -2,6 +2,7 @@ package org.vaadin.viritin;
 
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -47,7 +48,7 @@ public class DynaBeanItem<T> implements Item {
             } catch (Exception e) {
                 try {
                     return PropertyUtils.getProperty(bean, propertyName);
-                } catch (Exception ex) {
+                } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException ex) {
                     throw new RuntimeException(ex);
                 }
             }
@@ -80,7 +81,7 @@ public class DynaBeanItem<T> implements Item {
                     return org.vaadin.viritin.ListContainer.
                             getNestedPropertyType(getDynaBean().getDynaClass(),
                                     propertyName);
-                } catch (Exception ex) {
+                } catch (ClassNotFoundException | IllegalAccessException | NoSuchFieldException | NoSuchMethodException | InvocationTargetException ex) {
                     throw new RuntimeException(ex);
                 }
             }

@@ -192,7 +192,7 @@ public class MultiSelectTable<ET> extends CustomField<Collection> {
             } else {
                 try {
                     c = (Collection) fieldType.newInstance();
-                } catch (Exception ex) {
+                } catch (IllegalAccessException | InstantiationException ex) {
                     throw new RuntimeException(
                             "Could not instantiate the used colleciton type", ex);
                 }

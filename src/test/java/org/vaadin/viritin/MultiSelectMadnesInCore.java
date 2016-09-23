@@ -67,7 +67,7 @@ public class MultiSelectMadnesInCore {
                             try {
                                 originalCollection = (Collection) c.
                                         newInstance();
-                            } catch (Exception ex) {
+                            } catch (IllegalAccessException | InstantiationException ex) {
                                 throw new RuntimeException(
                                         "Unsupported collection type", ex);
                             }
@@ -133,7 +133,7 @@ public class MultiSelectMadnesInCore {
                                     newInstance();
                             col.addAll(set);
                             return col;
-                        } catch (Exception ex) {
+                        } catch (IllegalAccessException | InstantiationException ex) {
                             throw new RuntimeException(
                                     "Unsupported collection type",
                                     ex);

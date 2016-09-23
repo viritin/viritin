@@ -18,6 +18,7 @@ package org.vaadin.viritin.fields;
 import com.vaadin.data.Property;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomField;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.logging.Level;
@@ -67,10 +68,10 @@ public class CommaSeparatedCollectionField extends CustomField<Collection> {
                             } catch (NoSuchMethodException ex) {
                                 try {
                                     collection.add(elementType.getConstructor(String.class).newInstance(part));
-                                } catch (Exception ex1) {
+                                } catch (IllegalAccessException | IllegalArgumentException | InstantiationException | NoSuchMethodException | SecurityException | InvocationTargetException ex1) {
                                 throw new RuntimeException("The string " + part + " could not be converted to " + elementType.getSimpleName(), ex1);
                                 }
-                            } catch (Exception ex) {
+                            } catch (IllegalAccessException | IllegalArgumentException | SecurityException | InvocationTargetException ex) {
                                 throw new RuntimeException("The string " + part + " could not be converted to " + elementType.getSimpleName(), ex);
                             }
                         } else {
