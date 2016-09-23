@@ -312,7 +312,7 @@ public class TypedSelect<T> extends CustomField<T> {
 
         if (fieldType == null) {
             try {
-                fieldType = (Class<T>) ((Container.Sortable) select
+                fieldType = (Class<T>) ((Container.Ordered) select
                         .getContainerDataSource()).firstItemId().getClass();
             } catch (Exception e) {
                 // If field type isn't set or can't be detected just report

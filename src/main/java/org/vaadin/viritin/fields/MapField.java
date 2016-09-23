@@ -210,7 +210,7 @@ public class MapField<K, V> extends CustomField<Map> {
         }
         K tKey;
         try {
-            tKey = (K) key;
+            tKey = key;
         } catch (ClassCastException e) {
             try {
                 tKey = keyType.getConstructor(String.class).newInstance(key);
@@ -436,7 +436,7 @@ public class MapField<K, V> extends CustomField<Map> {
                     while(iterator.next() != keyEditor) {
                         idx++;
                     }
-                    mainLayout.removeRow((int) idx/3);
+                    mainLayout.removeRow(idx/3);
                 }
             });
 
@@ -459,7 +459,7 @@ public class MapField<K, V> extends CustomField<Map> {
             valueEditor.addValueChangeListener(new Property.ValueChangeListener() {
                 @Override
                 public void valueChange(Property.ValueChangeEvent event) {
-                    replaceValue((K) EntryEditor.this.oldKey, EntryEditor.this.valueEditor.getValue());
+                    replaceValue(EntryEditor.this.oldKey, EntryEditor.this.valueEditor.getValue());
                 }
 
             });
