@@ -23,10 +23,10 @@ public class GeneratedPropertyListContainer<T> extends ListContainer<T> {
      */
     protected static class GeneratedProperty<T> implements Property<T>  {
 
-        private Item item;
-        private Object itemId;
-        private Object propertyId;
-        private PropertyValueGenerator<T> generator;
+        private final Item item;
+        private final Object itemId;
+        private final Object propertyId;
+        private final PropertyValueGenerator<T> generator;
 
         public GeneratedProperty(Item item, Object propertyId, Object itemId,
                                  PropertyValueGenerator<T> generator) {
@@ -72,8 +72,8 @@ public class GeneratedPropertyListContainer<T> extends ListContainer<T> {
      */
     protected class GeneratedPropertyItem implements Item {
 
-        private Item wrappedItem;
-        private Object itemId;
+        private final Item wrappedItem;
+        private final Object itemId;
 
         protected GeneratedPropertyItem(Object itemId, Item item) {
             this.itemId = itemId;

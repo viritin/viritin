@@ -72,7 +72,7 @@ public class ElementCollections extends AbstractTest {
                 addElementAddedListener(addedListener).
                 addElementRemovedListener(removeListener);
 
-        private Button add = new MButton("Add row", new Button.ClickListener() {
+        private final Button add = new MButton("Add row", new Button.ClickListener() {
 
             @Override
             public void buttonClick(Button.ClickEvent event) {
@@ -80,7 +80,7 @@ public class ElementCollections extends AbstractTest {
                 addresses.addElement(a);
             }
         });
-        private Button remove = new MButton("Remove first",
+        private final Button remove = new MButton("Remove first",
                 new Button.ClickListener() {
 
                     @Override

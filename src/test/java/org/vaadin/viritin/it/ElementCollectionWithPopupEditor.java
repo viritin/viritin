@@ -61,7 +61,7 @@ public class ElementCollectionWithPopupEditor extends AbstractTest {
                 setRequireVerificationForRemoving(true)
                 .setAllowNewElements(false);
 
-        private Button add = new MButton("Add row", new Button.ClickListener() {
+        private final Button add = new MButton("Add row", new Button.ClickListener() {
 
             @Override
             public void buttonClick(Button.ClickEvent event) {

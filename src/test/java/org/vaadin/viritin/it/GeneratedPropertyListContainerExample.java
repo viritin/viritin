@@ -21,7 +21,7 @@ import org.vaadin.viritin.testdomain.Service;
 @Theme("valo")
 public class GeneratedPropertyListContainerExample extends AbstractTest {
 
-    private MGrid<Person> fashionableApiGrid = new MGrid<>(Person.class)
+    private final MGrid<Person> fashionableApiGrid = new MGrid<>(Person.class)
             .setRows(Service.getListOfPersons(100))
             .withGeneratedColumn("fullname", p -> p.getFirstName() + " " + p.getLastName())
             .withGeneratedColumn("groupnumber", Integer.class, p -> p.getGroups() != null ? p.getGroups().size() : 0)
@@ -29,7 +29,7 @@ public class GeneratedPropertyListContainerExample extends AbstractTest {
             .withProperties("id", "fullname", "groupnumber", "details")
             .withFullWidth();
 
-    private MGrid<Person> legacyApiGrid = new MGrid<>();
+    private final MGrid<Person> legacyApiGrid = new MGrid<>();
 
     @Override
     public Component getTestComponent() {

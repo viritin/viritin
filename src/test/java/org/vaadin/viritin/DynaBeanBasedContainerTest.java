@@ -42,7 +42,7 @@ public class DynaBeanBasedContainerTest {
 
     final static int amount = 1000000;
 
-    private List<Person> persons = Service.getListOfPersons(amount);
+    private final List<Person> persons = Service.getListOfPersons(amount);
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();

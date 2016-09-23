@@ -359,7 +359,7 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
         }
     }
 
-    private LinkedHashMap<MValidator<T>, Collection<AbstractComponent>> mValidators = new LinkedHashMap<>();
+    private final LinkedHashMap<MValidator<T>, Collection<AbstractComponent>> mValidators = new LinkedHashMap<>();
 
     /**
      * EXPERIMENTAL: The cross field validation support is still experimental

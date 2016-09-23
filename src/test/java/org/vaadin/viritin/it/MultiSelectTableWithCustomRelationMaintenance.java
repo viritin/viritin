@@ -30,9 +30,9 @@ public class MultiSelectTableWithCustomRelationMaintenance extends AbstractTest 
 
     public static class PersonForm extends AbstractForm<Person> {
 
-        private MTextField firstName = new MTextField("Name");
+        private final MTextField firstName = new MTextField("Name");
 
-        private MTextField age = new MTextField("Age");
+        private final MTextField age = new MTextField("Age");
 
         LabelField<Integer> id = new LabelField<>(Integer.class)
                 .withCaption("ID");

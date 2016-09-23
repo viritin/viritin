@@ -23,7 +23,7 @@ public class EditPersonWithDisabledField extends AbstractTest {
     
     public class CustomPerson extends Person {
         
-        private String readOnlyFieldInPojo = "fixedValue";
+        private final String readOnlyFieldInPojo = "fixedValue";
 
         public String getReadOnlyFieldInPojo() {
             return readOnlyFieldInPojo;
@@ -33,13 +33,13 @@ public class EditPersonWithDisabledField extends AbstractTest {
 
     public static class PersonForm extends AbstractForm<CustomPerson> {
 
-        private MTextField firstName = new MTextField("Name");
+        private final MTextField firstName = new MTextField("Name");
         
-        private MTextField readOnlyFieldInPojo = new MTextField("Should be RO");
+        private final MTextField readOnlyFieldInPojo = new MTextField("Should be RO");
 
-        private IntegerField age = new IntegerField("Age");
+        private final IntegerField age = new IntegerField("Age");
 
-        private LabelField<Integer> id = new LabelField<>(Integer.class)
+        private final LabelField<Integer> id = new LabelField<>(Integer.class)
                 .withCaption("ID");
 
         public PersonForm() {

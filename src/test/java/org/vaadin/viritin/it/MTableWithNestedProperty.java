@@ -18,9 +18,9 @@ public class MTableWithNestedProperty extends AbstractTest {
 
     public static class Form extends AbstractForm<NestedPropertyTest.Entity> {
 
-        private TextField property = new MTextField("property");
+        private final TextField property = new MTextField("property");
         // Appears not to work, core issue!? @PropertyId("detail.property")
-        private TextField nestedPropertyField = new MTextField("detail.property");
+        private final TextField nestedPropertyField = new MTextField("detail.property");
 
         @Override
         protected Component createContent() {

@@ -83,12 +83,12 @@ public class IntegerFieldUsage extends AbstractTest {
         
     }
 
-    private TextField normalInteger = new MTextField().withCaption("Integer with basic TextField");
-    private IntegerField integer = new IntegerField().withCaption("Integer");
-    private IntegerField intti = new IntegerField().withCaption("int");
-    private IntegerField validatedInteger = new IntegerField().withCaption(
+    private final TextField normalInteger = new MTextField().withCaption("Integer with basic TextField");
+    private final IntegerField integer = new IntegerField().withCaption("Integer");
+    private final IntegerField intti = new IntegerField().withCaption("int");
+    private final IntegerField validatedInteger = new IntegerField().withCaption(
             "validated");
-    private IntegerSliderField slider = new IntegerSliderField()
+    private final IntegerSliderField slider = new IntegerSliderField()
             .withCaption("Slider")
             .withStep(5) // .withMax(69) // Set automatically from BeanValidation annotations
             // .withMin(-69) // Set automatically from BeanValidation annotations

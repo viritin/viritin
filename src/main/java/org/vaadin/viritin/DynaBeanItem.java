@@ -31,7 +31,7 @@ public class DynaBeanItem<T> implements Item {
     /* Container-Item-Property specifications don't say item should always return
      the same property instance, but some components depend on this :-(
      */
-    private Map<Object, DynaProperty> propertyIdToProperty = new HashMap<>();
+    private final Map<Object, DynaProperty> propertyIdToProperty = new HashMap<>();
 
     private class DynaProperty implements Property {
 
@@ -100,7 +100,7 @@ public class DynaBeanItem<T> implements Item {
 
     }
 
-    private T bean;
+    private final T bean;
 
     private transient DynaBean db;
 

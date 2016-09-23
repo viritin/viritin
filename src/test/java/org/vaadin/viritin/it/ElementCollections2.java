@@ -43,7 +43,7 @@ public class ElementCollections2 extends AbstractTest {
                 setAllowRemovingItems(false).
                 setAllowNewElements(false);
 
-        private Button add = new MButton("Add row", new Button.ClickListener() {
+        private final Button add = new MButton("Add row", new Button.ClickListener() {
 
             @Override
             public void buttonClick(Button.ClickEvent event) {

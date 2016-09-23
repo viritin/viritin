@@ -28,7 +28,7 @@ public class MTableWithTraditionalPaging extends AbstractTest {
      */
     public static class PaginationBar extends MHorizontalLayout {
 
-        private ClickListener handler = new Button.ClickListener() {
+        private final ClickListener handler = new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 if (event.getButton() == first) {

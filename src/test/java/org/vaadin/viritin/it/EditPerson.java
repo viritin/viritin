@@ -53,16 +53,16 @@ public class EditPerson extends AbstractTest {
 
     public static class PersonForm extends AbstractForm<Person> {
 
-        private MTextField firstName = new MTextField("Name")
+        private final MTextField firstName = new MTextField("Name")
                 .withAutocompleteOff()
                 .withAutoCorrectOff()
                 .withAutoCapitalizeOff()
                 .withSpellCheckOff()
                 ;
 
-        private IntegerField age = new IntegerField("Age");
+        private final IntegerField age = new IntegerField("Age");
 
-        private LabelField<Integer> id = new LabelField<>(Integer.class)
+        private final LabelField<Integer> id = new LabelField<>(Integer.class)
                 .withCaption("ID");
         private final ElementCollectionField<Address> addresses = new ElementCollectionField<>(
                 Address.class, AddressRow.class).withCaption("Addressess")

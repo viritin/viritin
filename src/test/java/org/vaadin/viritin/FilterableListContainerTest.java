@@ -62,9 +62,9 @@ public class FilterableListContainerTest {
     final static int amount = 1000000;
     //final static int amount = 100000;
 
-    private Filter ageFilter = new Between("age", 30, 40);
+    private final Filter ageFilter = new Between("age", 30, 40);
 
-    private List<Person> persons = getListOfPersons(amount);
+    private final List<Person> persons = getListOfPersons(amount);
 
     @Test
     public void clearFilters() {

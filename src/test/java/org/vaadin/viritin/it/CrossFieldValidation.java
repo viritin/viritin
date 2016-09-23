@@ -123,14 +123,14 @@ public class CrossFieldValidation extends AbstractTest {
 
     public static class ReservationForm extends AbstractForm<Reservation> {
 
-        private MTextField comment = new MTextField("Comment");
-        private DateField start = new MDateField("Start")
+        private final MTextField comment = new MTextField("Comment");
+        private final DateField start = new MDateField("Start")
                 .withResolution(Resolution.MINUTE);
-        private DateField end = new MDateField("End")
+        private final DateField end = new MDateField("End")
                 .withResolution(Resolution.MINUTE);
-        private MTextField email = new MTextField("Email");
-        private MTextField verifyEmail = new MTextField("Verify email");
-        private EnumSelect testEnum = new EnumSelect("Test enum");
+        private final MTextField email = new MTextField("Email");
+        private final MTextField verifyEmail = new MTextField("Verify email");
+        private final EnumSelect testEnum = new EnumSelect("Test enum");
 
         public ReservationForm() {
             // In this test using via AbstractForm but can be used with raw
