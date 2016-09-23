@@ -32,14 +32,14 @@ public class NullEntryComparator {
     
     @Test
     public void test() {
-        ArrayList<Person> arrayList = new ArrayList<Person>();
+        ArrayList<Person> arrayList = new ArrayList<>();
         Person person = new Person();
         person.setFirstName("Matti");
         arrayList.add(person);
         person = new Person();
         person.setFirstName(null);
         arrayList.add(person);
-        ListContainer<Person> listContainer = new ListContainer<Person>(arrayList);
+        ListContainer<Person> listContainer = new ListContainer<>(arrayList);
         listContainer.sort(new Object[]{"firstName"}, new boolean[]{false});
         
     }

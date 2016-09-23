@@ -21,8 +21,8 @@ public class ElementCollectionFieldExample extends AbstractTest {
 
     @Override
     public Component getTestComponent() {
-        ElementCollectionField<Person> ecf = new ElementCollectionField<Person>(Person.class, PersonRow.class);
-        ecf.setValue(new ArrayList<Person>());
+        ElementCollectionField<Person> ecf = new ElementCollectionField<>(Person.class, PersonRow.class);
+        ecf.setValue(new ArrayList<>());
         return ecf;
     }
 

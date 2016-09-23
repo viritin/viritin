@@ -88,7 +88,7 @@ public class LazyComboBox<T> extends TypedSelect<T> {
             final FilterablePagingProvider filterablePageProvider,
             final FilterableCountProvider countProvider1, int pageLength) {
         // piggyback to simple paging provider
-        piggybackLazyList = new LazyList<T>(new LazyList.PagingProvider() {
+        piggybackLazyList = new LazyList<>(new LazyList.PagingProvider() {
 
             @Override
             public List findEntities(int firstRow) {
@@ -146,7 +146,7 @@ public class LazyComboBox<T> extends TypedSelect<T> {
 
         };
 
-        setBic(new DummyFilterableListContainer<T>(elementType,
+        setBic(new DummyFilterableListContainer<>(elementType,
                 piggybackLazyList));
         comboBox.setContainerDataSource(getBic());
         if(Version.getMajorVersion() >= 7  && Version.getMinorVersion() >= 5 ) {

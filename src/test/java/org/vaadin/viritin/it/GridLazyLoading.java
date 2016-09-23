@@ -19,7 +19,7 @@ public class GridLazyLoading extends AbstractTest {
     @Override
     public Component getTestComponent() {
 
-        MGrid<Person> g = new MGrid<Person>(
+        MGrid<Person> g = new MGrid<>(
                 new LazyList.PagingProvider<Person>() {
 
                     @Override

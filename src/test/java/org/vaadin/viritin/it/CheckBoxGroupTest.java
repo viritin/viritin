@@ -28,7 +28,7 @@ public class CheckBoxGroupTest extends AbstractTest {
         
         private MTextField age = new MTextField("Age");
         
-        private LabelField<Integer> id = new LabelField<Integer>(Integer.class)
+        private LabelField<Integer> id = new LabelField<>(Integer.class)
                 .withCaption("ID");
         
         private final CheckBoxGroup<Group> groups = new CheckBoxGroup<Group>()

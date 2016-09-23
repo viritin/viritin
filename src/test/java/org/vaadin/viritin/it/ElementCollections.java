@@ -65,7 +65,7 @@ public class ElementCollections extends AbstractTest {
     public static class PersonFormManualAddressAddition<Person> extends AbstractForm {
 
         private final ElementCollectionField<Address> addresses
-                = new ElementCollectionField<Address>(Address.class,
+                = new ElementCollectionField<>(Address.class,
                         AddressRow2.class).withCaption("Addressess").
                 setAllowNewElements(false).
                 setAllowRemovingItems(false).
@@ -159,7 +159,7 @@ public class ElementCollections extends AbstractTest {
         });
 
         Person p2 = Service.getPerson();
-        PersonForm2<Person> form2 = new PersonForm2<Person>();
+        PersonForm2<Person> form2 = new PersonForm2<>();
         form2.setEntity(p2);
 
         form2.setSavedHandler(new AbstractForm.SavedHandler<Person>() {

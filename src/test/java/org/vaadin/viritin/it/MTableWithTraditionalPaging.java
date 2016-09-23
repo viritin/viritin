@@ -109,7 +109,7 @@ public class MTableWithTraditionalPaging extends AbstractTest {
         final int pageSize = 10;
         final long results = Service.count();
 
-        final MTable<Person> table = new MTable<Person>(Person.class);
+        final MTable<Person> table = new MTable<>(Person.class);
         table.setPageLength(10);
         // set the initial content
         table.setBeans(Service.findAll(0, pageSize));

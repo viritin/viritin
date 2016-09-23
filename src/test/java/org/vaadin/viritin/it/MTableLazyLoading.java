@@ -20,7 +20,7 @@ public class MTableLazyLoading extends AbstractTest {
     @Override
     public Component getTestComponent() {
 
-        MTable<Person> g = new MTable<Person>(
+        MTable<Person> g = new MTable<>(
                 new LazyList.PagingProvider<Person>() {
 
                     @Override

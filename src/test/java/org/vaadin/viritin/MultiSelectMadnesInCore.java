@@ -34,7 +34,7 @@ public class MultiSelectMadnesInCore {
         public PersonFormWithCoreTable() {
             setEagerValidation(true);
             groups.setMultiSelect(true);
-            groups.setContainerDataSource(new ListContainer<Group>(Service.
+            groups.setContainerDataSource(new ListContainer<>(Service.
                     getAvailableGroups()));
             Class c = groups.getType();
 

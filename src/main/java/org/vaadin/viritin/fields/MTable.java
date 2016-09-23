@@ -421,7 +421,7 @@ public class MTable<T> extends Table {
     }
 
     public MTable<T> setBeans(T... beans) {
-        setBeans(new ArrayList<T>(Arrays.asList(beans)));
+        setBeans(new ArrayList<>(Arrays.asList(beans)));
         return this;
     }
     

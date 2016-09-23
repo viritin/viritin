@@ -21,7 +21,7 @@ public class MTableLazyLoadingEmptyList extends AbstractTest {
         
         final List<Person> backingList = Service.getListOfPersons(0);
         
-        MTable<Person> mTable = new MTable<Person>(
+        MTable<Person> mTable = new MTable<>(
                 new LazyList.PagingProvider<Person>() {
                     
                     @Override

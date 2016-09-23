@@ -34,7 +34,7 @@ public class MultiSelectTableWithCustomRelationMaintenance extends AbstractTest 
 
         private MTextField age = new MTextField("Age");
 
-        LabelField<Integer> id = new LabelField<Integer>(Integer.class)
+        LabelField<Integer> id = new LabelField<>(Integer.class)
                 .withCaption("ID");
         
         private final MultiSelectTable<Group> groups = new MultiSelectTable<Group>(){

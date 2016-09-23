@@ -48,7 +48,7 @@ public class FilterableListContainerTest {
     Random r = new Random(0);
 
     private List<Person> getListOfPersons(int total) {
-        List<Person> l = new ArrayList<Person>(total);
+        List<Person> l = new ArrayList<>(total);
         for (int i = 0; i < total; i++) {
             Person p = new Person();
             p.setFirstName("First" + i);
@@ -69,7 +69,7 @@ public class FilterableListContainerTest {
     @Test
     public void clearFilters() {
         final List<Person> listOfPersons = getListOfPersons(100);
-        FilterableListContainer<Person> container = new FilterableListContainer<Person>(
+        FilterableListContainer<Person> container = new FilterableListContainer<>(
                 listOfPersons);
         container.addContainerFilter(new SimpleStringFilter("firstName",
                 "First1", true, true));
@@ -101,7 +101,7 @@ public class FilterableListContainerTest {
         long initial = reportMemoryUsage();
 
         long ms = System.currentTimeMillis();
-        FilterableListContainer<Person> lc = new FilterableListContainer<Person>(
+        FilterableListContainer<Person> lc = new FilterableListContainer<>(
                 persons);
         System.out.println(
                 "After creation with " + amount + " beans (took " + (System.
@@ -122,7 +122,7 @@ public class FilterableListContainerTest {
         long initial = reportMemoryUsage();
 
         long ms = System.currentTimeMillis();
-        BeanItemContainer<Person> lc = new BeanItemContainer<Person>(
+        BeanItemContainer<Person> lc = new BeanItemContainer<>(
                 Person.class, persons);
         System.out.println(
                 "After creation with " + amount + " beans (took " + (System.
@@ -137,7 +137,7 @@ public class FilterableListContainerTest {
 
     @Test
     public void testSortingWhenFiltered() {
-        FilterableListContainer<Person> lc = new FilterableListContainer<Person>(
+        FilterableListContainer<Person> lc = new FilterableListContainer<>(
                 persons);
         lc.addContainerFilter(new SimpleStringFilter("firstName",
                 "First10000", true, true));
@@ -209,8 +209,8 @@ public class FilterableListContainerTest {
 
    @Test
    public void testFirstLast() {
-       FilterableListContainer<Person> lc = new FilterableListContainer<Person>(
-               new ArrayList<Person>(Arrays.asList(
+       FilterableListContainer<Person> lc = new FilterableListContainer<>(
+               new ArrayList<>(Arrays.asList(
                    new Person(0, "1", "1", 1),
                    new Person(0, "2", "2", 2),
                    new Person(0, "3", "3", 3)
@@ -229,8 +229,8 @@ public class FilterableListContainerTest {
 
   @Test
   public void testMultiLevelSort() throws Exception {
-    FilterableListContainer<Person> lc = new FilterableListContainer<Person>(
-          new ArrayList<Person>(Arrays.asList(
+    FilterableListContainer<Person> lc = new FilterableListContainer<>(
+          new ArrayList<>(Arrays.asList(
                 new Person(0, "2", "2", 3),
                 new Person(0, "3", "2", 2),
                 new Person(0, "1", "2", 2),

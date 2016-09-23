@@ -157,7 +157,7 @@ public class MButton extends Button {
 
     public MButton addClickListener(MClickListener listener) {
         if (mClickListeners == null) {
-            mClickListeners = new LinkedHashSet<MClickListener>();
+            mClickListeners = new LinkedHashSet<>();
         }
         mClickListeners.add(listener);
         return this;

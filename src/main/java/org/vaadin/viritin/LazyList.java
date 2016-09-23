@@ -228,7 +228,7 @@ public class LazyList<T> extends AbstractList<T> implements Serializable {
 
     private Map<T, Integer> getIndexCache() {
         if (indexCache == null) {
-            indexCache = new WeakHashMap<T, Integer>();
+            indexCache = new WeakHashMap<>();
         }
         return indexCache;
     }
@@ -284,7 +284,7 @@ public class LazyList<T> extends AbstractList<T> implements Serializable {
             // Increase the amount of cached pages if necessary
             maxPages = sizeOfSublist/pageSize + 1;
         }
-        return new ArrayList<T>(super.subList(fromIndex, toIndex));
+        return new ArrayList<>(super.subList(fromIndex, toIndex));
     }
 
     @Override

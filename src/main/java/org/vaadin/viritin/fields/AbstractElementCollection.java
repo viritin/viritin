@@ -308,7 +308,7 @@ public abstract class AbstractElementCollection<ET> extends CustomField<Collecti
         }
     }
 
-    private final Map<ET, EditorStuff> pojoToEditor = new IdentityHashMap<ET, EditorStuff>();
+    private final Map<ET, EditorStuff> pojoToEditor = new IdentityHashMap<>();
 
     protected final MBeanFieldGroup<ET> getFieldGroupFor(ET pojo) {
         EditorStuff es = pojoToEditor.get(pojo);
@@ -366,14 +366,14 @@ public abstract class AbstractElementCollection<ET> extends CustomField<Collecti
         getAndEnsureValue().add(instance);
         addInternalElement(instance);
         fireValueChange(false);
-        fireEvent(new ElementAddedEvent<ET>(this, instance));
+        fireEvent(new ElementAddedEvent<>(this, instance));
     }
 
     public void removeElement(ET elemnentToBeRemoved) {
         removeInternalElement(elemnentToBeRemoved);
         getAndEnsureValue().remove(elemnentToBeRemoved);
         fireValueChange(false);
-        fireEvent(new ElementRemovedEvent<ET>(this, elemnentToBeRemoved));
+        fireEvent(new ElementRemovedEvent<>(this, elemnentToBeRemoved));
     }
 
     public AbstractElementCollection<ET> setVisibleProperties(
@@ -385,7 +385,7 @@ public abstract class AbstractElementCollection<ET> extends CustomField<Collecti
     public List<String> getVisibleProperties() {
         if (visibleProperties == null) {
 
-            visibleProperties = new ArrayList<String>();
+            visibleProperties = new ArrayList<>();
 
             for (java.lang.reflect.Field f : editorType.getDeclaredFields()) {
                 // field order can be counted since jdk6 
@@ -408,7 +408,7 @@ public abstract class AbstractElementCollection<ET> extends CustomField<Collecti
         return this;
     }
 
-    private final Map<String, String> propertyToHeader = new HashMap<String, String>();
+    private final Map<String, String> propertyToHeader = new HashMap<>();
 
     public AbstractElementCollection<ET> setPropertyHeader(String propertyName,
             String propertyHeader) {

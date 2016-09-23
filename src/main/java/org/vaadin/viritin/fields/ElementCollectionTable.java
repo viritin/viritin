@@ -73,7 +73,7 @@ public class ElementCollectionTable<ET> extends AbstractElementCollection<ET> {
                 }
             });
 
-    private IdentityHashMap<ET, MButton> elementToDelButton = new IdentityHashMap<ET, MButton>();
+    private IdentityHashMap<ET, MButton> elementToDelButton = new IdentityHashMap<>();
 
     boolean inited = false;
 

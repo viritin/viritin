@@ -69,7 +69,7 @@ public class MapField<K, V> extends CustomField<Map> {
     private boolean allowNewItems = true;
     private boolean allowRemovingItems = true;
     private boolean allowEditItems = true;
-    private final Map<K, EntryEditor> pojoToEditor = new HashMap<K, EntryEditor>();
+    private final Map<K, EntryEditor> pojoToEditor = new HashMap<>();
     private EntryEditor newEntryEditor;
 
     public MapField() {
@@ -291,14 +291,14 @@ public class MapField<K, V> extends CustomField<Map> {
         getAndEnsureValue().put(key, value);
         addInternalElement(key, value);
         fireValueChange(false);
-        fireEvent(new ElementAddedEvent<K>(this, key));
+        fireEvent(new ElementAddedEvent<>(this, key));
     }
 
     public void removeElement(K keyToBeRemoved) {
         removeInternalElement(keyToBeRemoved);
         getAndEnsureValue().remove(keyToBeRemoved);
         fireValueChange(false);
-        fireEvent(new ElementRemovedEvent<K>(this, keyToBeRemoved));
+        fireEvent(new ElementRemovedEvent<>(this, keyToBeRemoved));
     }
 
     @Override

@@ -113,7 +113,7 @@ public class GridUtils {
         Callback saveFunc = new Callback() {
             @Override
             public void onValueDetected(String value) {
-                List<SortOrder> sortOrderList = new ArrayList<SortOrder>();
+                List<SortOrder> sortOrderList = new ArrayList<>();
                 if (!StringUtils.isEmpty(value)) {
                     String[] sortOrder = value.split(SEMI_COLOMN_DELIMITER);
                     for (String so : sortOrder) {

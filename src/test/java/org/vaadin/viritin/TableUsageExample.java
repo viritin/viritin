@@ -14,7 +14,7 @@ public class TableUsageExample {
 
     public void tableAsBeanSelector() {
         Table table = new Table();
-        BeanItemContainer<Entity> beanItemContainer = new BeanItemContainer<Entity>(Entity.class);
+        BeanItemContainer<Entity> beanItemContainer = new BeanItemContainer<>(Entity.class);
         beanItemContainer.addAll(findBeans());
         table.setContainerDataSource(beanItemContainer);
         table.setVisibleColumns("property", "another");

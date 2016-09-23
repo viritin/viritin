@@ -91,7 +91,7 @@ public class TypedSelectUsage {
         /** Actual TypedSelect usage */
 
         // Better typed alternative for Vaadin select
-        final TypedSelect<Person> typedSelect = new TypedSelect<Person>();
+        final TypedSelect<Person> typedSelect = new TypedSelect<>();
         // Uses "NativeSelect" as impl. by default, but all core select types are
         // supported. E.g.: withSelectType(ListSelect.class);
 
@@ -132,7 +132,7 @@ public class TypedSelectUsage {
         // other configuration's are similar to testTypedSelect...
 
         /** Actual TypedSelect usage */
-        final TypedSelect<Person> typedSelect = new TypedSelect<Person>();
+        final TypedSelect<Person> typedSelect = new TypedSelect<>();
         // TypedSelect only provides configurations that are similar to all select-types (AbstractSelect)
         // for example the ComboBox has some options that other AbstractSelect don't have
         // by using asComboBoxType instead of typedSelect.withSelectType(ComboBox.class)

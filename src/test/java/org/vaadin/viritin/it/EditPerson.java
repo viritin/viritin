@@ -31,7 +31,7 @@ public class EditPerson extends AbstractTest {
 
     public static class AddressRow {
 
-        EnumSelect<Address.AddressType> type = new EnumSelect<Address.AddressType>();
+        EnumSelect<Address.AddressType> type = new EnumSelect<>();
         MTextField street = new MTextField().withInputPrompt("street");
         MTextField city = new MTextField().withInputPrompt("city");
         MTextField zipCode = new MTextField().withInputPrompt("zip");

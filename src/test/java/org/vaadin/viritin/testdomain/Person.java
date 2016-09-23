@@ -36,9 +36,9 @@ public class Person {
     @NotNull
     private Integer age;
 
-    private List<Address> addresses = new ArrayList<Address>();
+    private List<Address> addresses = new ArrayList<>();
 
-    private List<Group> groups = new ArrayList<Group>();
+    private List<Group> groups = new ArrayList<>();
 
     public Person() {
     }

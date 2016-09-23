@@ -38,7 +38,7 @@ public class ElementCollections2 extends AbstractTest {
     public static class PersonFormManualAddressAddition<Person> extends AbstractForm {
 
         private final ElementCollectionField<Address> addresses
-                = new ElementCollectionField<Address>(Address.class,
+                = new ElementCollectionField<>(Address.class,
                         AddressRow.class).withCaption("Addressess").
                 setAllowRemovingItems(false).
                 setAllowNewElements(false);

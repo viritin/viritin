@@ -73,7 +73,7 @@ import org.vaadin.viritin.layouts.MGridLayout;
  */
 public class ElementCollectionField<ET> extends AbstractElementCollection<ET> {
 
-    List<ET> items = new ArrayList<ET>();
+    List<ET> items = new ArrayList<>();
 
     boolean inited = false;
 

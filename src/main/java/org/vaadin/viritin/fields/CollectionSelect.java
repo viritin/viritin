@@ -50,7 +50,7 @@ public class CollectionSelect<T> extends CustomField<Collection<T>> {
 				 */
 
 				Collection<T> collection = getInternalValue();
-				HashSet<T> orphaned = new HashSet<T>(collection);
+				HashSet<T> orphaned = new HashSet<>(collection);
 
 				@SuppressWarnings("unchecked")
 				Collection<T> newValueSet = (Collection<T>) select.getValue();
@@ -83,7 +83,7 @@ public class CollectionSelect<T> extends CustomField<Collection<T>> {
 
 	@SuppressWarnings("deprecation")
 	public void setOptions(Collection<T> options) {
-		select.setContainerDataSource(new BeanItemContainer<T>(options));
+		select.setContainerDataSource(new BeanItemContainer<>(options));
 	}
 
 	@SuppressWarnings("unchecked")

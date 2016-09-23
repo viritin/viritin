@@ -203,7 +203,7 @@ public class GeneratedPropertyListContainer<T> extends ListContainer<T> {
     private <T> Property<T> createProperty(final Item item,
                                            final Object propertyId, final Object itemId,
                                            final PropertyValueGenerator<T> generator) {
-        return new GeneratedProperty<T>(item, propertyId, itemId, generator);
+        return new GeneratedProperty<>(item, propertyId, itemId, generator);
     }
 
     private Item createGeneratedPropertyItem(final Object itemId,

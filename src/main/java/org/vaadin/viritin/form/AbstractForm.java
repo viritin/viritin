@@ -524,9 +524,9 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     }
 
     private final LinkedHashMap<MBeanFieldGroup.MValidator<T>, Collection<AbstractComponent>> mValidators
-            = new LinkedHashMap<MBeanFieldGroup.MValidator<T>, Collection<AbstractComponent>>();
+            = new LinkedHashMap<>();
 
-    private final Map<Class, AbstractComponent> validatorToErrorTarget = new LinkedHashMap<Class, AbstractComponent>();
+    private final Map<Class, AbstractComponent> validatorToErrorTarget = new LinkedHashMap<>();
 
     private Class<?>[] validationGroups;
 

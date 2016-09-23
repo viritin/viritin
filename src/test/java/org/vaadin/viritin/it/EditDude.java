@@ -30,11 +30,11 @@ public class EditDude extends AbstractTest {
 
         private MTextField age = new MTextField("Age");
 
-        LabelField<Integer> id = new LabelField<Integer>(Integer.class)
+        LabelField<Integer> id = new LabelField<>(Integer.class)
                 .withCaption("ID");
         
         @PropertyId("address.type")
-        EnumSelect<Address.AddressType> type = new EnumSelect<Address.AddressType>();
+        EnumSelect<Address.AddressType> type = new EnumSelect<>();
         @PropertyId("address.street")
         MTextField street = new MTextField().withInputPrompt("street");
         @PropertyId("address.city")

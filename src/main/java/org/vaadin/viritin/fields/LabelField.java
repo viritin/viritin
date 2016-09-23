@@ -40,7 +40,7 @@ public class LabelField<T> extends CustomField<T> {
         setCaption(caption);
     }
 
-    private CaptionGenerator<T> captionGenerator = new ToStringCaptionGenerator<T>();
+    private CaptionGenerator<T> captionGenerator = new ToStringCaptionGenerator<>();
     private Label label = new RichText();
 
     public LabelField(Class<T> type) {

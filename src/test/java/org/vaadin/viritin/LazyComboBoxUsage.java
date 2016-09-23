@@ -69,7 +69,7 @@ public class LazyComboBoxUsage {
             if(last > list.size()) {
                 last = list.size();
             }
-            return new ArrayList<Person>(list.subList(startIndex, last));
+            return new ArrayList<>(list.subList(startIndex, last));
         }
         
         private List<Person> findPersons(String filter) {

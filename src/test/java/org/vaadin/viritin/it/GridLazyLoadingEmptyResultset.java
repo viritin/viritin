@@ -24,7 +24,7 @@ public class GridLazyLoadingEmptyResultset extends AbstractTest {
     public Component getTestComponent() {
         final List<Person> listOfPersons = Service.getListOfPersons(0);
 
-        MGrid<Person> g = new MGrid<Person>(Person.class)
+        MGrid<Person> g = new MGrid<>(Person.class)
                 .lazyLoadFrom(
                         new SortableLazyList.SortablePagingProvider<Person>() {
                     @Override
@@ -34,7 +34,7 @@ public class GridLazyLoadingEmptyResultset extends AbstractTest {
                         if (property != null) {
 
                             Collections.sort(listOfPersons,
-                                    new BeanComparator<Person>(
+                                    new BeanComparator<>(
                                             property));
                             if (!sortAscending) {
                                 Collections.reverse(listOfPersons);
@@ -44,7 +44,7 @@ public class GridLazyLoadingEmptyResultset extends AbstractTest {
                         if (last > listOfPersons.size()) {
                             last = listOfPersons.size();
                         }
-                        return new ArrayList<Person>(listOfPersons.subList(
+                        return new ArrayList<>(listOfPersons.subList(
                                 firstRow,
                                 last));
                     }

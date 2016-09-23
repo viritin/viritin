@@ -13,7 +13,7 @@ public class Java7LocaleNegotiationStrategy implements
     public Locale negotiate(final List<Locale> supportedLocales,
             VaadinRequest vaadinRequest) {
         String languages = vaadinRequest.getHeader("Accept-Language");
-        ArrayList<Locale> preferredArray = new ArrayList<Locale>(
+        ArrayList<Locale> preferredArray = new ArrayList<>(
                 supportedLocales);
         if (languages != null) {
             final String[] priorityList = languages.split(",");

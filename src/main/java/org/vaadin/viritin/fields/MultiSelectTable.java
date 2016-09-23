@@ -67,12 +67,12 @@ public class MultiSelectTable<ET> extends CustomField<Collection> {
                 // TODO add strategies for maintaining the order in case of List
                 // e.g. same as listing, selection order ...
                 Set newvalue = (Set) getValue();
-                Set<ET> orphaned = new HashSet<ET>(oldvalue);
+                Set<ET> orphaned = new HashSet<>(oldvalue);
                 orphaned.removeAll(newvalue);
                 removeRelation(orphaned);
                 allRemovedRelations.addAll(orphaned);
                 allAddedRelations.removeAll(orphaned);
-                Set<ET> newValues = new LinkedHashSet<ET>(newvalue);
+                Set<ET> newValues = new LinkedHashSet<>(newvalue);
                 newValues.removeAll(oldvalue);
                 addRelation(newValues);
                 allAddedRelations.addAll(newValues);
@@ -84,8 +84,8 @@ public class MultiSelectTable<ET> extends CustomField<Collection> {
     };
     private Class<ET> optionType;
 
-    private Set<ET> allAddedRelations = new HashSet<ET>();
-    private Set<ET> allRemovedRelations = new HashSet<ET>();
+    private Set<ET> allAddedRelations = new HashSet<>();
+    private Set<ET> allRemovedRelations = new HashSet<>();
 
     public MultiSelectTable(Class<ET> optionType) {
         this();
@@ -151,7 +151,7 @@ public class MultiSelectTable<ET> extends CustomField<Collection> {
      * set by e.g. FieldGroup) or explicit call to clearModifiedRelations().
      */
     public Set<ET> getAllModifiedRelations() {
-        HashSet<ET> all = new HashSet<ET>(allAddedRelations);
+        HashSet<ET> all = new HashSet<>(allAddedRelations);
         all.addAll(allRemovedRelations);
         return all;
     }
