@@ -1,15 +1,15 @@
 package org.vaadin.viritin;
 
+import com.vaadin.data.Container;
+import com.vaadin.data.Container.Filterable;
+import com.vaadin.data.Item;
+import com.vaadin.data.util.filter.UnsupportedFilterException;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import com.vaadin.data.Container;
-import com.vaadin.data.Container.Filterable;
-import com.vaadin.data.Item;
-import com.vaadin.data.util.filter.UnsupportedFilterException;
 
 /**
  * A filterable ({@link Container.Filterable}) version of {@link ListContainer}.

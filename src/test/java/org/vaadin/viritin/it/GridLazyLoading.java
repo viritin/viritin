@@ -1,6 +1,5 @@
 package org.vaadin.viritin.it;
 
-import com.vaadin.annotations.Theme;
 import com.vaadin.ui.Component;
 import java.util.List;
 import org.vaadin.addonhelpers.AbstractTest;
@@ -16,11 +15,14 @@ import org.vaadin.viritin.testdomain.Service;
 //@Theme("valo")
 public class GridLazyLoading extends AbstractTest {
 
+    private static final long serialVersionUID = 7741969263616707523L;
+
     @Override
     public Component getTestComponent() {
 
         MGrid<Person> g = new MGrid<>(
                 new LazyList.PagingProvider<Person>() {
+                    private static final long serialVersionUID = -9072230332041322210L;
 
                     @Override
                     public List<Person> findEntities(int firstRow) {
@@ -29,6 +31,7 @@ public class GridLazyLoading extends AbstractTest {
                     }
                 },
                 new LazyList.CountProvider() {
+                    private static final long serialVersionUID = -6915320247020779461L;
 
                     @Override
                     public int size() {
@@ -36,8 +39,7 @@ public class GridLazyLoading extends AbstractTest {
                     }
                 }
         );
-        //g.setSizeFull();
+        
         return g;
     }
-
 }

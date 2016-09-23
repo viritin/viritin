@@ -17,12 +17,13 @@ package org.vaadin.viritin.label;
 
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Label;
-import java.io.IOException;
-import java.io.InputStream;
 import org.apache.commons.io.IOUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 import org.markdown4j.Markdown4jProcessor;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * XSS safe rich text label with either Markdown syntax or raw html (sanitized

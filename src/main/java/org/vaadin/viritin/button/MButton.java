@@ -15,18 +15,20 @@
  */
 package org.vaadin.viritin.button;
 
-import java.util.LinkedHashSet;
-
 import com.vaadin.server.Resource;
 import com.vaadin.shared.MouseEventDetails;
 import com.vaadin.ui.Button;
 import org.vaadin.viritin.MSize;
+
+import java.util.LinkedHashSet;
 
 /**
  * An extension to basic Vaadin button that adds some handy constructors and
  * fluent API.
  */
 public class MButton extends Button {
+
+    private static final long serialVersionUID = 3859208260278798872L;
 
     public MButton() {
     }

@@ -32,6 +32,8 @@ public class SubSetSelectorExample extends AbstractTest {
     @Override
     public Component getTestComponent() {
         SubSetSelector<Person> sss = new SubSetSelector<Person>(Person.class) {
+            private static final long serialVersionUID = 3761463604053463442L;
+
             @Override
             protected Person instantiateOption(String stringInput) {
                 Person person = new Person();
@@ -58,6 +60,7 @@ public class SubSetSelectorExample extends AbstractTest {
         // This is optional and can replace setNewItemsAllowed as well (then new items using + button)
         sss.setNewInstanceForm(new AbstractForm<Person>() {
 
+            private static final long serialVersionUID = 2112187966786117814L;
             MTextField firstName = new MTextField("First name");
             MTextField lastName = new MTextField("Last name");
 

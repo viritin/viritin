@@ -1,6 +1,18 @@
 package org.vaadin.viritin.grid;
 
-import static org.vaadin.viritin.LazyList.DEFAULT_PAGE_SIZE;
+import com.vaadin.data.Container;
+import com.vaadin.data.Item;
+import com.vaadin.data.fieldgroup.FieldGroup;
+import com.vaadin.data.util.PropertyValueGenerator;
+import com.vaadin.event.SortEvent;
+import com.vaadin.event.SortEvent.SortListener;
+import com.vaadin.server.Extension;
+import com.vaadin.ui.Grid;
+import org.vaadin.viritin.LazyList;
+import org.vaadin.viritin.ListContainer;
+import org.vaadin.viritin.MSize;
+import org.vaadin.viritin.SortableLazyList;
+import org.vaadin.viritin.grid.utils.GridUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -10,26 +22,15 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.vaadin.viritin.LazyList;
-import org.vaadin.viritin.ListContainer;
-import org.vaadin.viritin.MSize;
-import org.vaadin.viritin.SortableLazyList;
-import org.vaadin.viritin.grid.utils.GridUtils;
-
-import com.vaadin.data.util.PropertyValueGenerator;
-import com.vaadin.data.Container;
-import com.vaadin.data.Item;
-import com.vaadin.data.fieldgroup.FieldGroup;
-import com.vaadin.event.SortEvent;
-import com.vaadin.event.SortEvent.SortListener;
-import com.vaadin.server.Extension;
-import com.vaadin.ui.Grid;
+import static org.vaadin.viritin.LazyList.DEFAULT_PAGE_SIZE;
 
 /**
  *
  * @param <T> the entity type listed in the Grid
  */
 public class MGrid<T> extends Grid {
+
+    private static final long serialVersionUID = -7821775220281254054L;
 
     private Class<T> typeOfRows;
 
@@ -123,6 +124,8 @@ public class MGrid<T> extends Grid {
     private void ensureSortListener() {
         if (sortListener == null) {
             sortListener = new SortEvent.SortListener() {
+                private static final long serialVersionUID = -8850456663417023533L;
+                
                 @Override
                 public void sort(SortEvent event) {
                     refreshVisibleRows();
@@ -282,6 +285,8 @@ public class MGrid<T> extends Grid {
     protected void ensureRowRefreshListener(boolean isEnabled) {
         if (isEnabled && reloadDataEfficientlyAfterEditor == null) {
             reloadDataEfficientlyAfterEditor = new FieldGroup.CommitHandler() {
+                private static final long serialVersionUID = -9107206992771475209L;
+                
                 @Override
                 public void preCommit(FieldGroup.CommitEvent commitEvent) throws FieldGroup.CommitException {
                 }

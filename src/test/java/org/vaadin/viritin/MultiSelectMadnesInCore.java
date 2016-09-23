@@ -29,6 +29,7 @@ public class MultiSelectMadnesInCore {
 
     public static class PersonFormWithCoreTable extends AbstractForm {
 
+        private static final long serialVersionUID = -4766609148902175465L;
         private Table groups = new Table();
 
         public PersonFormWithCoreTable() {
@@ -179,6 +180,7 @@ public class MultiSelectMadnesInCore {
 
     public static class PersonForm extends AbstractForm<Person> {
 
+        private static final long serialVersionUID = 6410815033625409608L;
         MultiSelectTable<Group> groups = new MultiSelectTable()
                 .setOptions(Service.getAvailableGroups());
 

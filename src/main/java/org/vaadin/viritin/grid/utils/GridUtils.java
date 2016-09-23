@@ -1,11 +1,5 @@
 package org.vaadin.viritin.grid.utils;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.vaadin.viritin.util.BrowserCookie;
-import org.vaadin.viritin.util.BrowserCookie.Callback;
-
 import com.vaadin.data.sort.SortOrder;
 import com.vaadin.event.SortEvent;
 import com.vaadin.shared.data.sort.SortDirection;
@@ -13,6 +7,11 @@ import com.vaadin.ui.Grid;
 import com.vaadin.ui.Grid.Column;
 import com.vaadin.ui.Grid.ColumnReorderEvent;
 import org.apache.commons.lang3.StringUtils;
+import org.vaadin.viritin.util.BrowserCookie;
+import org.vaadin.viritin.util.BrowserCookie.Callback;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Use this class to save grid hidden columns to cookies. Use {@link #attachToGrid(Grid, String)

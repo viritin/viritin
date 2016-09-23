@@ -23,8 +23,11 @@ import org.vaadin.viritin.testdomain.Dude;
 @Theme("valo")
 public class EditDude extends AbstractTest {
 
+    private static final long serialVersionUID = -1808409887708900997L;
 
     public static class DudeForm extends AbstractForm<Dude> {
+
+        private static final long serialVersionUID = -3578950068291730479L;
 
         private final MTextField firstName = new MTextField("Name");
 
@@ -66,6 +69,7 @@ public class EditDude extends AbstractTest {
         form.setEntity(p);
 
         form.setSavedHandler(new AbstractForm.SavedHandler<Dude>() {
+            private static final long serialVersionUID = 6646955460224852274L;
 
             @Override
             public void onSave(Dude entity) {

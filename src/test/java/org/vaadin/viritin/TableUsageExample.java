@@ -35,6 +35,8 @@ public class TableUsageExample {
                 .withColumnHeaders("Property 1", "Second");
         t.addMValueChangeListener(new MValueChangeListener<Entity>() {
 
+            private static final long serialVersionUID = 382491506910830168L;
+
             @Override
             public void valueChange(MValueChangeEvent<Entity> event) {
                 editEntity(event.getValue());

@@ -1,24 +1,22 @@
 package org.vaadin.viritin.fields;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import com.vaadin.data.Property;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.themes.Reindeer;
-
-import java.util.Arrays;
-
 import com.vaadin.ui.themes.ValoTheme;
-import java.lang.reflect.InvocationTargetException;
-import java.util.HashSet;
 import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.form.AbstractForm;
 import org.vaadin.viritin.layouts.MHorizontalLayout;
 import org.vaadin.viritin.layouts.MVerticalLayout;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 
 /**
  * Selects a set of beans from a larger set of choices. Bit similar UI component

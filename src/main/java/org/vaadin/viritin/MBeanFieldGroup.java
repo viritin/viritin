@@ -576,6 +576,8 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
 
     public MBeanFieldGroup<T> withEagerValidation() {
         return withEagerValidation(new FieldGroupListener() {
+            private static final long serialVersionUID = 2706724523369882782L;
+
             @Override
             public void onFieldGroupChange(MBeanFieldGroup beanFieldGroup) {
             }

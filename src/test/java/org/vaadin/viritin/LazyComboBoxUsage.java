@@ -43,6 +43,8 @@ public class LazyComboBoxUsage {
         
         cb.addMValueChangeListener(new MValueChangeListener<Person>() {
 
+            private static final long serialVersionUID = -659661563076688180L;
+
             @Override
             public void valueChange(MValueChangeEvent<Person> event) {
                 selectedValue.setValue(event.getValue());

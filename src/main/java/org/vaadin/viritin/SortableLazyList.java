@@ -1,8 +1,7 @@
 package org.vaadin.viritin;
 
 import java.io.Serializable;
-import java.util.*;
-import org.vaadin.viritin.LazyList.CountProvider;
+import java.util.List;
 
 /**
  * A general purpose helper class to us MTable/ListContainer for service layers
@@ -15,6 +14,8 @@ import org.vaadin.viritin.LazyList.CountProvider;
  * @param <T> The type of the objects in the list
  */
 public class SortableLazyList<T> extends LazyList<T> implements Serializable {
+
+    private static final long serialVersionUID = 6271514642253054989L;
 
     public void sort(boolean ascending, String property) {
         sortAscending = ascending;

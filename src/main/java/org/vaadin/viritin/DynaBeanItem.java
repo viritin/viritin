@@ -2,16 +2,17 @@ package org.vaadin.viritin;
 
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 import org.apache.commons.beanutils.DynaBean;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.beanutils.WrapDynaBean;
 import org.apache.commons.beanutils.expression.DefaultResolver;
 import org.apache.commons.lang3.ClassUtils;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A standalone version of the DynaBeanItem originally introduced in

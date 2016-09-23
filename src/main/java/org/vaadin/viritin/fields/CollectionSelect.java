@@ -1,12 +1,12 @@
 package org.vaadin.viritin.fields;
 
-import java.util.Collection;
-import java.util.HashSet;
-
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomField;
 import com.vaadin.ui.ListSelect;
+
+import java.util.Collection;
+import java.util.HashSet;
 
 /**
  * TODO improve this, just copy pasted from archived SmartFields addon.

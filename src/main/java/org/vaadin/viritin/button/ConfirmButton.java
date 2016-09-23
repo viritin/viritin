@@ -18,7 +18,6 @@ package org.vaadin.viritin.button;
 import com.vaadin.server.Resource;
 import com.vaadin.shared.MouseEventDetails;
 import org.vaadin.dialogs.ConfirmDialog;
-import org.vaadin.viritin.button.MButton.MClickListener;
 
 /**
  *

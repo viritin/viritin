@@ -18,6 +18,7 @@ public class MTableWithNestedProperty extends AbstractTest {
 
     public static class Form extends AbstractForm<NestedPropertyTest.Entity> {
 
+        private static final long serialVersionUID = -3164966078873765005L;
         private final TextField property = new MTextField("property");
         // Appears not to work, core issue!? @PropertyId("detail.property")
         private final TextField nestedPropertyField = new MTextField("detail.property");
@@ -56,13 +57,17 @@ public class MTableWithNestedProperty extends AbstractTest {
         form.setSavedHandler(
                 new AbstractForm.SavedHandler<NestedPropertyTest.Entity>() {
 
-            @Override
+                    private static final long serialVersionUID = 5142651230686909799L;
+
+                    @Override
             public void onSave(NestedPropertyTest.Entity entity) {
                 table.refreshRowCache();
             }
         });
         
         table.addMValueChangeListener(new MValueChangeListener<NestedPropertyTest.Entity>() {
+
+            private static final long serialVersionUID = -2918207986940924806L;
 
             @Override
             public void valueChange(

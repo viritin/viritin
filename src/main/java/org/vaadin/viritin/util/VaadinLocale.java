@@ -1,9 +1,14 @@
 package org.vaadin.viritin.util;
 
-import java.util.*;
-
 import com.vaadin.server.*;
 import com.vaadin.ui.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Stack;
 
 /**
  * This class handles the locale for a vaadin application. It negotiates the

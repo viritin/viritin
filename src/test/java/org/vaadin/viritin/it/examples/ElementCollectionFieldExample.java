@@ -13,6 +13,8 @@ import com.vaadin.ui.Component;
 @Theme("valo")
 public class ElementCollectionFieldExample extends AbstractTest {
 
+    private static final long serialVersionUID = 7350047443363548232L;
+
     public static class PersonRow {
         MTextField firstName = new MTextField();
         MTextField lastName = new MTextField();

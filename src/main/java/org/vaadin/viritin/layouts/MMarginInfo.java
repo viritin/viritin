@@ -5,6 +5,8 @@ import com.vaadin.shared.ui.MarginInfo;
 
 public class MMarginInfo extends MarginInfo {
 
+    private static final long serialVersionUID = -3559703824387291269L;
+
     public MMarginInfo(boolean enabled) {
         super(enabled);
     }

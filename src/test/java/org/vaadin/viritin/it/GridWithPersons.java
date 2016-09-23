@@ -13,6 +13,8 @@ import org.vaadin.viritin.testdomain.Service;
  */
 public class GridWithPersons extends AbstractTest {
 
+    private static final long serialVersionUID = 503365638639247756L;
+
     @Override
     public Component getTestComponent() {
 

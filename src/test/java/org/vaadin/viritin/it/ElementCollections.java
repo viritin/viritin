@@ -28,6 +28,8 @@ public class ElementCollections extends AbstractTest {
 
     static AbstractElementCollection.ElementAddedListener<Address> addedListener = new AbstractElementCollection.ElementAddedListener<Address>() {
 
+        private static final long serialVersionUID = 9185802788725574433L;
+
         @Override
         public void elementAdded(
                 AbstractElementCollection.ElementAddedEvent<Address> e) {
@@ -36,6 +38,8 @@ public class ElementCollections extends AbstractTest {
     };
 
     static AbstractElementCollection.ElementRemovedListener<Address> removeListener = new AbstractElementCollection.ElementRemovedListener<Address>() {
+
+        private static final long serialVersionUID = -3928632995123662365L;
 
         @Override
         public void elementRemoved(
@@ -64,6 +68,7 @@ public class ElementCollections extends AbstractTest {
 
     public static class PersonFormManualAddressAddition<Person> extends AbstractForm {
 
+        private static final long serialVersionUID = 8579572690133496196L;
         private final ElementCollectionField<Address> addresses
                 = new ElementCollectionField<>(Address.class,
                         AddressRow2.class).withCaption("Addressess").
@@ -105,6 +110,8 @@ public class ElementCollections extends AbstractTest {
             addresses.setEditorInstantiator(
                     new AbstractElementCollection.Instantiator<AddressRow2>() {
 
+                        private static final long serialVersionUID = -5211408262496520519L;
+
                         @Override
                         public AddressRow2 create() {
                             AddressRow2 addressRow = new AddressRow2();
@@ -127,6 +134,7 @@ public class ElementCollections extends AbstractTest {
 
     public static class PersonForm2<Person> extends AbstractForm {
 
+        private static final long serialVersionUID = 1463453706744010258L;
         private final ElementCollectionTable<Address> addresses
                 = new ElementCollectionTable<Address>(Address.class,
                         AddressRow.class).withCaption(
@@ -152,6 +160,8 @@ public class ElementCollections extends AbstractTest {
 
         form.setSavedHandler(new AbstractForm.SavedHandler<Person>() {
 
+            private static final long serialVersionUID = 2098273655384131557L;
+
             @Override
             public void onSave(Person entity) {
                 Notification.show(entity.toString());
@@ -163,6 +173,8 @@ public class ElementCollections extends AbstractTest {
         form2.setEntity(p2);
 
         form2.setSavedHandler(new AbstractForm.SavedHandler<Person>() {
+
+            private static final long serialVersionUID = -4210316283038307410L;
 
             @Override
             public void onSave(Person entity) {

@@ -21,6 +21,8 @@ import org.vaadin.viritin.testdomain.Service;
 @Theme("valo")
 public class GeneratedPropertyListContainerExample extends AbstractTest {
 
+    private static final long serialVersionUID = -902463931733502192L;
+
     private final MGrid<Person> fashionableApiGrid = new MGrid<>(Person.class)
             .setRows(Service.getListOfPersons(100))
             .withGeneratedColumn("fullname", p -> p.getFirstName() + " " + p.getLastName())
@@ -49,6 +51,8 @@ public class GeneratedPropertyListContainerExample extends AbstractTest {
     }
 
     public class DetailsGenerator extends PropertyValueGenerator<String> {
+
+        private static final long serialVersionUID = 8617881785960630559L;
 
         @Override
         public String getValue(Item item, Object itemId, Object propertyId) {

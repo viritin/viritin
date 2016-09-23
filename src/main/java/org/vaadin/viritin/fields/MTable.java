@@ -15,21 +15,6 @@
  */
 package org.vaadin.viritin.fields;
 
-import static org.vaadin.viritin.LazyList.DEFAULT_PAGE_SIZE;
-
-import java.io.Serializable;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-
-import org.apache.commons.lang3.StringUtils;
-import org.vaadin.viritin.LazyList;
-import org.vaadin.viritin.ListContainer;
-import org.vaadin.viritin.MSize;
-import org.vaadin.viritin.SortableLazyList;
-
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.event.ItemClickEvent.ItemClickListener;
 import com.vaadin.event.MouseEvents;
@@ -38,7 +23,21 @@ import com.vaadin.shared.MouseEventDetails;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Table;
 import com.vaadin.util.ReflectTools;
+import org.apache.commons.lang3.StringUtils;
+import org.vaadin.viritin.LazyList;
+import org.vaadin.viritin.ListContainer;
+import org.vaadin.viritin.MSize;
+import org.vaadin.viritin.SortableLazyList;
+
+import java.io.Serializable;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+
+import static org.vaadin.viritin.LazyList.DEFAULT_PAGE_SIZE;
 
 /**
  * A better typed version of the Table component in Vaadin. Expects that users
@@ -57,6 +56,8 @@ import java.util.List;
  * @param <T> the type of the POJO listed in this Table.
  */
 public class MTable<T> extends Table {
+
+    private static final long serialVersionUID = 3330985834015680723L;
 
     private ListContainer<T> bic;
     private String[] pendingProperties;
@@ -537,6 +538,7 @@ public class MTable<T> extends Table {
     private void ensureTypedItemClickPiggybackListener() {
         if (itemClickPiggyback == null) {
             itemClickPiggyback = new ItemClickListener() {
+                private static final long serialVersionUID = -2318797984292753676L;
                 @Override
                 public void itemClick(ItemClickEvent event) {
                     fireEvent(new RowClickEvent<T>(event));
@@ -558,6 +560,7 @@ public class MTable<T> extends Table {
     public MTable<T> withGeneratedColumn(String columnId,
             final SimpleColumnGenerator<T> columnGenerator) {
         addGeneratedColumn(columnId, new ColumnGenerator() {
+            private static final long serialVersionUID = 2855441121974230973L;
             @Override
             public Object generateCell(Table source, Object itemId,
                     Object columnId) {
@@ -568,6 +571,8 @@ public class MTable<T> extends Table {
     }
 
     public static class SortEvent extends Component.Event {
+
+        private static final long serialVersionUID = 267382182533317834L;
 
         private boolean preventContainerSort = false;
         private final boolean sortAscending;
@@ -696,9 +701,10 @@ public class MTable<T> extends Table {
      * @param <T> the type of the row 
      */
     public static class RowClickEvent<T> extends MouseEvents.ClickEvent {
-
+        private static final long serialVersionUID = -73902815731458960L;
+        
         public static final Method TYPED_ITEM_CLICK_METHOD;
-
+        
         static {
             try {
                 TYPED_ITEM_CLICK_METHOD = RowClickListener.class.

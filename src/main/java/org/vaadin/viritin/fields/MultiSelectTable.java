@@ -1,5 +1,15 @@
 package org.vaadin.viritin.fields;
 
+import com.vaadin.data.Property;
+import com.vaadin.data.util.converter.Converter;
+import com.vaadin.server.Resource;
+import com.vaadin.shared.ui.MultiSelectMode;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.CustomField;
+import com.vaadin.ui.Table;
+import org.vaadin.viritin.ListContainer;
+import org.vaadin.viritin.MSize;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -9,17 +19,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-
-import org.vaadin.viritin.ListContainer;
-
-import com.vaadin.data.Property;
-import com.vaadin.data.util.converter.Converter;
-import com.vaadin.server.Resource;
-import com.vaadin.shared.ui.MultiSelectMode;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.CustomField;
-import com.vaadin.ui.Table;
-import org.vaadin.viritin.MSize;
 
 /**
  * A Table that can be used as a field to modify List&gt;YourDomainObject&lt; or
@@ -37,10 +36,13 @@ import org.vaadin.viritin.MSize;
  */
 public class MultiSelectTable<ET> extends CustomField<Collection> {
 
+    private static final long serialVersionUID = -3245403481676039947L;
+
     private String[] visProps;
     private String[] pendingHeaders;
 
     Table table = new Table() {
+        private static final long serialVersionUID = -770469825702542170L;
 
         {
             setSelectable(true);
@@ -292,6 +294,7 @@ public class MultiSelectTable<ET> extends CustomField<Collection> {
         setHeight("230px");
         // TODO verify if this is needed in real usage, but at least to pass the test
         setConverter(new Converter<Collection, Collection>() {
+            private static final long serialVersionUID = -20358585168853508L;
 
             @Override
             public Collection convertToModel(Collection value,

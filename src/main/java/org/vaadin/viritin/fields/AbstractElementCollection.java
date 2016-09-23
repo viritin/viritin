@@ -8,6 +8,10 @@ import com.vaadin.ui.Field;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
 import com.vaadin.util.ReflectTools;
+import org.vaadin.viritin.BeanBinder;
+import org.vaadin.viritin.MBeanFieldGroup;
+import org.vaadin.viritin.MBeanFieldGroup.FieldGroupListener;
+
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -20,9 +24,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.vaadin.viritin.BeanBinder;
-import org.vaadin.viritin.MBeanFieldGroup;
-import org.vaadin.viritin.MBeanFieldGroup.FieldGroupListener;
 
 /**
  * A superclass for fields suitable for editing collection of referenced objects tied to parent
@@ -42,7 +43,11 @@ import org.vaadin.viritin.MBeanFieldGroup.FieldGroupListener;
  */
 public abstract class AbstractElementCollection<ET> extends CustomField<Collection> {
 
+    private static final long serialVersionUID = 7785110162928180695L;
+
     public static class ElementAddedEvent<ET> extends Component.Event {
+
+        private static final long serialVersionUID = 2263765199849601501L;
 
         private final ET element;
 
@@ -58,6 +63,8 @@ public abstract class AbstractElementCollection<ET> extends CustomField<Collecti
     }
 
     public static class ElementRemovedEvent<ET> extends Component.Event {
+
+        private static final long serialVersionUID = 574545902966053269L;
 
         private final ET element;
 
@@ -126,6 +133,8 @@ public abstract class AbstractElementCollection<ET> extends CustomField<Collecti
     protected ET newInstance;
 
     private final FieldGroupListener fieldGroupListener = new FieldGroupListener() {
+
+        private static final long serialVersionUID = 2498166986711639744L;
 
         @Override
         public void onFieldGroupChange(MBeanFieldGroup beanFieldGroup) {
@@ -299,6 +308,7 @@ public abstract class AbstractElementCollection<ET> extends CustomField<Collecti
     }
   
     private class EditorStuff implements Serializable {
+        private static final long serialVersionUID = 5132645136059482705L;
         MBeanFieldGroup<ET> bfg;
         Object editor;
 

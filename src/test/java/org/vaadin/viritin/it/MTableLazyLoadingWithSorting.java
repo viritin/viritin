@@ -29,7 +29,9 @@ public class MTableLazyLoadingWithSorting extends AbstractTest {
 
         MTable<Person> g = new MTable<>(
                 new SortableLazyList.SortablePagingProvider<Person>() {
-            @Override
+                    private static final long serialVersionUID = 5276735386651186011L;
+
+                    @Override
             public List<Person> findEntities(int firstRow, boolean sortAscending,
                     String property) {
                 List<Person> listOfPersons = new ArrayList<>(orig);
@@ -51,7 +53,9 @@ public class MTableLazyLoadingWithSorting extends AbstractTest {
         },
                 new LazyList.CountProvider() {
 
-            @Override
+                    private static final long serialVersionUID = -3920880835334547231L;
+
+                    @Override
             public int size() {
                 return (int) Service.count();
             }

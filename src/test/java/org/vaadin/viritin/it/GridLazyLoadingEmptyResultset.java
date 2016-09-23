@@ -27,7 +27,9 @@ public class GridLazyLoadingEmptyResultset extends AbstractTest {
         MGrid<Person> g = new MGrid<>(Person.class)
                 .lazyLoadFrom(
                         new SortableLazyList.SortablePagingProvider<Person>() {
-                    @Override
+                            private static final long serialVersionUID = 7430568834619612967L;
+
+                            @Override
                     public List<Person> findEntities(int firstRow,
                             boolean sortAscending,
                             String property) {
@@ -51,7 +53,9 @@ public class GridLazyLoadingEmptyResultset extends AbstractTest {
                 },
                         new LazyList.CountProvider() {
 
-                    @Override
+                            private static final long serialVersionUID = 6199527117644735431L;
+
+                            @Override
                     public int size() {
                         return listOfPersons.size();
                     }

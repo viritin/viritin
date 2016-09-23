@@ -21,6 +21,8 @@ import org.vaadin.viritin.layouts.MVerticalLayout;
  */
 public class IntegerFieldUsage extends AbstractTest {
 
+    private static final long serialVersionUID = -1841759044439831663L;
+
     public static class Domain {
 
         private Integer normalInteger;
@@ -101,6 +103,7 @@ public class IntegerFieldUsage extends AbstractTest {
 
         BeanBinder.bind(domain, this).withEagerValidation(
                 new MBeanFieldGroup.FieldGroupListener<Domain>() {
+            private static final long serialVersionUID = 1901097967848065661L;
 
             boolean wasvalid = true;
 
@@ -120,6 +123,8 @@ public class IntegerFieldUsage extends AbstractTest {
         });
 
         Button show = new Button("Show value", new Button.ClickListener() {
+            private static final long serialVersionUID = 5019806363620874205L;
+            
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 Notification.show(domain.toString());
@@ -128,6 +133,7 @@ public class IntegerFieldUsage extends AbstractTest {
 
         Button toggleVisible = new Button("Toggle visibility",
                 new Button.ClickListener() {
+            private static final long serialVersionUID = 5019806363620874205L;
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 integer.setVisible(!integer.isVisible());

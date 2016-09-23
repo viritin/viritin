@@ -5,7 +5,11 @@ import com.vaadin.data.Property;
 import com.vaadin.data.util.PropertyValueGenerator;
 import org.vaadin.viritin.ListContainer;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -15,6 +19,8 @@ import java.util.*;
  */
 public class GeneratedPropertyListContainer<T> extends ListContainer<T> {
 
+    private static final long serialVersionUID = -8384723868776183241L;
+
     private final Map<String, PropertyValueGenerator<?>> propertyGenerators = new HashMap();
     protected final Class<T> type;
 
@@ -23,6 +29,8 @@ public class GeneratedPropertyListContainer<T> extends ListContainer<T> {
      * @param <T>  property data type
      */
     protected static class GeneratedProperty<T> implements Property<T>  {
+
+        private static final long serialVersionUID = -538857801793925329L;
 
         private final Item item;
         private final Object itemId;
@@ -72,6 +80,8 @@ public class GeneratedPropertyListContainer<T> extends ListContainer<T> {
      * Item implementation for generated properties.
      */
     protected class GeneratedPropertyItem implements Item {
+
+        private static final long serialVersionUID = 8231832690836075843L;
 
         private final Item wrappedItem;
         private final Object itemId;

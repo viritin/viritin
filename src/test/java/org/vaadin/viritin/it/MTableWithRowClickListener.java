@@ -16,6 +16,7 @@ public class MTableWithRowClickListener extends AbstractTest {
 
     public static class Form extends AbstractForm<NestedPropertyTest.Entity> {
 
+        private static final long serialVersionUID = -8683293957823897252L;
         private final TextField property = new MTextField("property");
         // Appears not to work, core issue!? @PropertyId("detail.property")
         private final TextField nestedPropertyField = new MTextField("detail.property");
@@ -58,6 +59,8 @@ public class MTableWithRowClickListener extends AbstractTest {
         form.setSavedHandler(
                 new AbstractForm.SavedHandler<NestedPropertyTest.Entity>() {
 
+                    private static final long serialVersionUID = 5841730427136575503L;
+
                     @Override
                     public void onSave(NestedPropertyTest.Entity entity) {
                         table.refreshRowCache();
@@ -66,6 +69,8 @@ public class MTableWithRowClickListener extends AbstractTest {
 
         table.addRowClickListener(
                 new MTable.RowClickListener<NestedPropertyTest.Entity>() {
+
+                    private static final long serialVersionUID = -5651811812313380992L;
 
                     @Override
                     public void rowClick(

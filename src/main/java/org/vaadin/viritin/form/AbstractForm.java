@@ -3,22 +3,22 @@ package org.vaadin.viritin.form;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import com.vaadin.util.ReflectTools;
-import java.io.Serializable;
 import org.vaadin.viritin.BeanBinder;
 import org.vaadin.viritin.MBeanFieldGroup;
 import org.vaadin.viritin.MBeanFieldGroup.FieldGroupListener;
 import org.vaadin.viritin.button.DeleteButton;
 import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.button.PrimaryButton;
+import org.vaadin.viritin.label.RichText;
 import org.vaadin.viritin.layouts.MHorizontalLayout;
 
+import javax.validation.groups.Default;
+import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import javax.validation.groups.Default;
-import org.vaadin.viritin.label.RichText;
 
 /**
  * Abstract super class for simple editor forms.
@@ -33,6 +33,7 @@ import org.vaadin.viritin.label.RichText;
 public abstract class AbstractForm<T> extends CustomComponent implements
         FieldGroupListener {
 
+    private static final long serialVersionUID = -2368496151988753088L;
     private String modalWindowTitle = "Edit entry";
     private String saveCaption = "Save";
     private String deleteCaption = "Delete";

@@ -4,19 +4,14 @@ import com.vaadin.annotations.Theme;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Notification;
-import com.vaadin.ui.themes.ValoTheme;
 import java.util.Set;
 
 import org.vaadin.addonhelpers.AbstractTest;
-import org.vaadin.viritin.fields.CaptionGenerator;
-import org.vaadin.viritin.fields.EnumSelect;
-import org.vaadin.viritin.fields.ElementCollectionField;
 import org.vaadin.viritin.fields.LabelField;
 import org.vaadin.viritin.fields.MTextField;
 import org.vaadin.viritin.fields.MultiSelectTable;
 import org.vaadin.viritin.form.AbstractForm;
 import org.vaadin.viritin.layouts.MVerticalLayout;
-import org.vaadin.viritin.testdomain.Address;
 import org.vaadin.viritin.testdomain.Group;
 import org.vaadin.viritin.testdomain.Person;
 import org.vaadin.viritin.testdomain.Service;
@@ -28,7 +23,11 @@ import org.vaadin.viritin.testdomain.Service;
 @Theme("valo")
 public class MultiSelectTableWithCustomRelationMaintenance extends AbstractTest {
 
+    private static final long serialVersionUID = -2682172644856319883L;
+
     public static class PersonForm extends AbstractForm<Person> {
+
+        private static final long serialVersionUID = 4144805837285124445L;
 
         private final MTextField firstName = new MTextField("Name");
 
@@ -38,6 +37,7 @@ public class MultiSelectTableWithCustomRelationMaintenance extends AbstractTest 
                 .withCaption("ID");
         
         private final MultiSelectTable<Group> groups = new MultiSelectTable<Group>(){
+            private static final long serialVersionUID = 1229334178491680961L;
             @Override
             protected void addRelation(Set<Group> newValues) {
                 super.addRelation(newValues);
@@ -83,6 +83,7 @@ public class MultiSelectTableWithCustomRelationMaintenance extends AbstractTest 
 
         form.addValidityChangedListener(
                 new AbstractForm.ValidityChangedListener<Person>() {
+                    private static final long serialVersionUID = -3688956596748617476L;
                     @Override
                     public void onValidityChanged(
                             AbstractForm.ValidityChangedEvent<Person> event) {
@@ -100,6 +101,7 @@ public class MultiSelectTableWithCustomRelationMaintenance extends AbstractTest 
         form.setEntity(p);
 
         form.setSavedHandler(new AbstractForm.SavedHandler<Person>() {
+            private static final long serialVersionUID = 1008970415395369248L;
 
             @Override
             public void onSave(Person entity) {
@@ -118,6 +120,7 @@ public class MultiSelectTableWithCustomRelationMaintenance extends AbstractTest 
         });
 
         form.setDeleteHandler(new AbstractForm.DeleteHandler<Person>() {
+            private static final long serialVersionUID = -6298152846013943120L;
 
             @Override
             public void onDelete(Person entity) {
@@ -127,6 +130,7 @@ public class MultiSelectTableWithCustomRelationMaintenance extends AbstractTest 
 
         Button openInPopup = new Button("Open in popup");
         openInPopup.addClickListener(new Button.ClickListener() {
+            private static final long serialVersionUID = 5019806363620874205L;
 
             @Override
             public void buttonClick(Button.ClickEvent event) {
@@ -136,6 +140,7 @@ public class MultiSelectTableWithCustomRelationMaintenance extends AbstractTest 
                 form.setEntity(p);
 
                 form.setSavedHandler(new AbstractForm.SavedHandler<Person>() {
+                    private static final long serialVersionUID = 1008970415395369248L;
 
                     @Override
                     public void onSave(Person entity) {
@@ -144,6 +149,7 @@ public class MultiSelectTableWithCustomRelationMaintenance extends AbstractTest 
                 });
 
                 form.setDeleteHandler(new AbstractForm.DeleteHandler<Person>() {
+                    private static final long serialVersionUID = -6298152846013943120L;
 
                     @Override
                     public void onDelete(Person entity) {
@@ -151,6 +157,7 @@ public class MultiSelectTableWithCustomRelationMaintenance extends AbstractTest 
                     }
                 });
                 form.setResetHandler(new AbstractForm.ResetHandler<Person>() {
+                    private static final long serialVersionUID = -1695108652595021734L;
 
                     @Override
                     public void onReset(Person entity) {

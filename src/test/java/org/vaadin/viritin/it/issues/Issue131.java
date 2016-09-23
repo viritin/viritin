@@ -29,6 +29,7 @@ public class Issue131 extends AbstractTest {
     public class Member implements Serializable {
 
         private static final String MEMBER_CODE = "MEM";
+        private static final long serialVersionUID = -4051512128345987991L;
 
         private Long id;
 
@@ -102,6 +103,7 @@ public class Issue131 extends AbstractTest {
 
     public class MemberForm2 extends AbstractForm<Member> {
 
+        private static final long serialVersionUID = 2115224810575804578L;
         final MBeanFieldGroup<Member> fieldGroup;
 
         @PropertyId("initials")
@@ -197,6 +199,8 @@ public class Issue131 extends AbstractTest {
         m.lastName = "Tahvonen";
         final MemberForm2 memberForm2 = new MemberForm2(m);
         memberForm2.setSavedHandler(new AbstractForm.SavedHandler<Member>() {
+            private static final long serialVersionUID = -4100482203816246947L;
+
             @Override
             public void onSave(Member entity) {
                 Notification.show(entity.toString());

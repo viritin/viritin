@@ -29,7 +29,9 @@ public class GridLazyLoadingAndSorting extends AbstractTest {
 
         final MGrid<Person> g = new MGrid<>(
                 new SortableLazyList.SortablePagingProvider<Person>() {
-            @Override
+                    private static final long serialVersionUID = 8990276045925275684L;
+
+                    @Override
             public List<Person> findEntities(int firstRow, boolean sortAscending,
                     String property) {
                 List<Person> listOfPersons = new ArrayList<>(orig);
@@ -51,7 +53,9 @@ public class GridLazyLoadingAndSorting extends AbstractTest {
         },
                 new LazyList.CountProvider() {
 
-            @Override
+                    private static final long serialVersionUID = 6575441260380762210L;
+
+                    @Override
             public int size() {
                 return orig.size();
             }
@@ -61,7 +65,9 @@ public class GridLazyLoadingAndSorting extends AbstractTest {
         final MGrid<Person> g2 = new MGrid<>(Person.class);
         g2.lazyLoadFrom(
                 new SortableLazyList.SortablePagingProvider<Person>() {
-            @Override
+                    private static final long serialVersionUID = 6584091430092559501L;
+
+                    @Override
             public List<Person> findEntities(int firstRow, boolean sortAscending,
                     String property) {
                 List<Person> listOfPersons = new ArrayList<>(orig);
@@ -83,7 +89,9 @@ public class GridLazyLoadingAndSorting extends AbstractTest {
         },
                 new LazyList.CountProvider() {
 
-            @Override
+                    private static final long serialVersionUID = -7613809143021239619L;
+
+                    @Override
             public int size() {
                 return orig.size();
             }

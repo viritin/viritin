@@ -23,12 +23,18 @@ import org.vaadin.viritin.testdomain.Service;
 @Theme("valo")
 public class MTableWithTraditionalPaging extends AbstractTest {
 
+    private static final long serialVersionUID = -3645542297869930694L;
+
     /**
      * A quickly drafted version of pagination bar.
      */
     public static class PaginationBar extends MHorizontalLayout {
 
+        private static final long serialVersionUID = 7799263034212965499L;
+
         private final ClickListener handler = new Button.ClickListener() {
+            private static final long serialVersionUID = 5019806363620874205L;
+            
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 if (event.getButton() == first) {

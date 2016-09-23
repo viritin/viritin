@@ -20,21 +20,28 @@ import com.vaadin.data.Container.ItemSetChangeNotifier;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.AbstractContainer;
+import org.apache.commons.beanutils.*;
+import org.apache.commons.beanutils.expression.DefaultResolver;
+import org.apache.commons.beanutils.expression.Resolver;
+import org.apache.commons.collections.comparators.NullComparator;
+import org.apache.commons.collections.comparators.ReverseComparator;
+import org.apache.commons.lang3.ClassUtils;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import org.apache.commons.beanutils.*;
-import org.apache.commons.collections.comparators.NullComparator;
-import org.apache.commons.collections.comparators.ReverseComparator;
-import org.apache.commons.lang3.ClassUtils;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.apache.commons.beanutils.expression.DefaultResolver;
-import org.apache.commons.beanutils.expression.Resolver;
 
 /**
  * A replacement for BeanItemContainer from the core
@@ -47,6 +54,8 @@ import org.apache.commons.beanutils.expression.Resolver;
  */
 public class ListContainer<T> extends AbstractContainer implements
         Container.Indexed, Container.Sortable, ItemSetChangeNotifier {
+
+    private static final long serialVersionUID = -6709228455051205922L;
 
     private List<T> backingList;
     private List<String> properties;

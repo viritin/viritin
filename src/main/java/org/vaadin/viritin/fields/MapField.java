@@ -11,14 +11,15 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.TextField;
 import com.vaadin.util.ReflectTools;
+import org.vaadin.viritin.MBeanFieldGroup;
+import org.vaadin.viritin.MBeanFieldGroup.FieldGroupListener;
+
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import org.vaadin.viritin.MBeanFieldGroup;
-import org.vaadin.viritin.MBeanFieldGroup.FieldGroupListener;
 
 /**
  * A field to edit simple map structures like string to Integer/Double/Float 
@@ -50,6 +51,8 @@ public class MapField<K, V> extends CustomField<Map> {
     protected K newInstance;
 
     private final FieldGroupListener fieldGroupListener = new FieldGroupListener() {
+
+        private static final long serialVersionUID = 1741634663680831911L;
 
         @Override
         public void onFieldGroupChange(MBeanFieldGroup beanFieldGroup) {
@@ -417,6 +420,7 @@ public class MapField<K, V> extends CustomField<Map> {
 
     private class EntryEditor implements Serializable {
 
+        private static final long serialVersionUID = 5710635901082609223L;
         TextField keyEditor;
         TextField valueEditor;
         Button delete;

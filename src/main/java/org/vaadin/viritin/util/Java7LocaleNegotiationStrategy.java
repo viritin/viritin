@@ -1,10 +1,13 @@
 package org.vaadin.viritin.util;
 
-import java.util.*;
-
+import com.vaadin.server.VaadinRequest;
 import org.vaadin.viritin.util.VaadinLocale.LocaleNegotiationStrategey;
 
-import com.vaadin.server.VaadinRequest;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Locale;
 
 public class Java7LocaleNegotiationStrategy implements
         LocaleNegotiationStrategey {

@@ -10,10 +10,10 @@ import com.vaadin.ui.ComboBox;
 import org.apache.commons.lang3.ObjectUtils;
 import org.vaadin.viritin.LazyList;
 import org.vaadin.viritin.ListContainer;
+import org.vaadin.viritin.util.HtmlElementPropertySetter;
 
 import java.util.Collection;
 import java.util.List;
-import org.vaadin.viritin.util.HtmlElementPropertySetter;
 
 /**
  * This class tries to provide a simple lazy loading connection form ComboBox to
@@ -90,6 +90,8 @@ public class LazyComboBox<T> extends TypedSelect<T> {
         // piggyback to simple paging provider
         piggybackLazyList = new LazyList<>(new LazyList.PagingProvider() {
 
+            private static final long serialVersionUID = 1027614132444478021L;
+
             @Override
             public List findEntities(int firstRow) {
                 return filterablePageProvider.findEntities(firstRow,
@@ -97,6 +99,8 @@ public class LazyComboBox<T> extends TypedSelect<T> {
             }
         },
                 new LazyList.CountProvider() {
+                    private static final long serialVersionUID = -7339189124024626177L;
+
                     @Override
                     public int size() {
                         return countProvider1.size(getCurrentFilter());
@@ -176,6 +180,8 @@ public class LazyComboBox<T> extends TypedSelect<T> {
      */
     protected LazyComboBox() {
         setCaptionGenerator(new CaptionGenerator<T>() {
+            private static final long serialVersionUID = 9213991656985157568L;
+
             @Override
             public String getCaption(T option) {
                 return option.toString();

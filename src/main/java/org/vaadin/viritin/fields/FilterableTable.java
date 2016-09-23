@@ -30,6 +30,8 @@ import java.util.List;
  */
 public class FilterableTable<T> extends MTable<T> {
 
+    private static final long serialVersionUID = -8345842706524882553L;
+
     private final List<Filter> pendingFilters = new ArrayList<>();
 
     public FilterableTable() {
