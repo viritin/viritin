@@ -31,13 +31,13 @@ import org.vaadin.viritin.MBeanFieldGroup.FieldGroupListener;
  */
 public class MapField<K, V> extends CustomField<Map> {
 
-    private static final Method addedMethod;
-    private static final Method removedMethod;
+    private static final Method ADDED_METHOD;
+    private static final Method REMOVED_METHOD;
 
     static {
-        addedMethod = ReflectTools.findMethod(ElementAddedListener.class,
+        ADDED_METHOD = ReflectTools.findMethod(ElementAddedListener.class,
                 "elementAdded", ElementAddedEvent.class);
-        removedMethod = ReflectTools.findMethod(ElementRemovedListener.class,
+        REMOVED_METHOD = ReflectTools.findMethod(ElementRemovedListener.class,
                 "elementRemoved", ElementRemovedEvent.class);
     }
 
@@ -97,25 +97,25 @@ public class MapField<K, V> extends CustomField<Map> {
 
     public MapField<K, V> addElementAddedListener(
             ElementAddedListener<K> listener) {
-        addListener(ElementAddedEvent.class, listener, addedMethod);
+        addListener(ElementAddedEvent.class, listener, ADDED_METHOD);
         return this;
     }
 
     public MapField<K, V> removeElementAddedListener(
             ElementAddedListener listener) {
-        removeListener(ElementAddedEvent.class, listener, addedMethod);
+        removeListener(ElementAddedEvent.class, listener, ADDED_METHOD);
         return this;
     }
 
     public MapField<K, V> addElementRemovedListener(
             ElementRemovedListener<K> listener) {
-        addListener(ElementRemovedEvent.class, listener, removedMethod);
+        addListener(ElementRemovedEvent.class, listener, REMOVED_METHOD);
         return this;
     }
 
     public MapField<K, V> removeElementRemovedListener(
             ElementRemovedListener listener) {
-        removeListener(ElementRemovedEvent.class, listener, removedMethod);
+        removeListener(ElementRemovedEvent.class, listener, REMOVED_METHOD);
         return this;
     }
 
@@ -233,7 +233,7 @@ public class MapField<K, V> extends CustomField<Map> {
 
     }
 
-    private void renameValue(Object oldKey, String key) {
+    private void renameValue(K oldKey, String key) {
         K tKey;
         try {
             tKey = (K) key;
@@ -272,7 +272,7 @@ public class MapField<K, V> extends CustomField<Map> {
 
     }
 
-    protected final EntryEditor getFieldGroupFor(K key) {
+    private EntryEditor getFieldGroupFor(K key) {
         EntryEditor ee = pojoToEditor.get(key);
         if (ee == null) {
             final TextField k = createKeyEditorInstance();
@@ -420,9 +420,9 @@ public class MapField<K, V> extends CustomField<Map> {
         TextField keyEditor;
         TextField valueEditor;
         Button delete;
-        Object oldKey;
+        K oldKey;
 
-        public EntryEditor(TextField ke, TextField valueEditor, Object k) {
+        public EntryEditor(TextField ke, TextField valueEditor, K k) {
             this.keyEditor = ke;
             this.valueEditor = valueEditor;
             delete = new Button(FontAwesome.TRASH);
