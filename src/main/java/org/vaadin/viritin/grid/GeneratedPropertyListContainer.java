@@ -20,6 +20,7 @@ public class GeneratedPropertyListContainer<T> extends ListContainer<T> {
 
     /**
      * Property implementation for generated properties
+     * @param <T>  property data type
      */
     protected static class GeneratedProperty<T> implements Property<T>  {
 

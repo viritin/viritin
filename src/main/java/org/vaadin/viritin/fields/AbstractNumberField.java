@@ -9,6 +9,7 @@ import org.vaadin.viritin.util.HtmlElementPropertySetter;
 /**
  *
  * @author Matti Tahvonen
+ * @param <T>  field value type
  */
 public abstract class AbstractNumberField<T> extends CustomField<T> implements
         EagerValidateable, FieldEvents.TextChangeNotifier {
