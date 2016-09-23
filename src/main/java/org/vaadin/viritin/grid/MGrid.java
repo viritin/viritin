@@ -326,19 +326,7 @@ public class MGrid<T> extends Grid {
                             "updateRowData", Object.class);
                     method.invoke(extension, bean);
                     break;
-                } catch (NoSuchMethodException ex) {
-                    Logger.getLogger(MGrid.class.getName()).
-                            log(Level.SEVERE, null, ex);
-                } catch (SecurityException ex) {
-                    Logger.getLogger(MGrid.class.getName()).
-                            log(Level.SEVERE, null, ex);
-                } catch (IllegalAccessException ex) {
-                    Logger.getLogger(MGrid.class.getName()).
-                            log(Level.SEVERE, null, ex);
-                } catch (IllegalArgumentException ex) {
-                    Logger.getLogger(MGrid.class.getName()).
-                            log(Level.SEVERE, null, ex);
-                } catch (InvocationTargetException ex) {
+                } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
                     Logger.getLogger(MGrid.class.getName()).
                             log(Level.SEVERE, null, ex);
                 }
@@ -378,19 +366,7 @@ public class MGrid<T> extends Grid {
                             "refreshCache");
                     method.invoke(extension);
                     break;
-                } catch (NoSuchMethodException ex) {
-                    Logger.getLogger(MGrid.class.getName()).
-                            log(Level.SEVERE, null, ex);
-                } catch (SecurityException ex) {
-                    Logger.getLogger(MGrid.class.getName()).
-                            log(Level.SEVERE, null, ex);
-                } catch (IllegalAccessException ex) {
-                    Logger.getLogger(MGrid.class.getName()).
-                            log(Level.SEVERE, null, ex);
-                } catch (IllegalArgumentException ex) {
-                    Logger.getLogger(MGrid.class.getName()).
-                            log(Level.SEVERE, null, ex);
-                } catch (InvocationTargetException ex) {
+                } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
                     Logger.getLogger(MGrid.class.getName()).
                             log(Level.SEVERE, null, ex);
                 }

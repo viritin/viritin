@@ -48,16 +48,7 @@ public class IntegerSliderField extends IntegerField {
                 if(min != null) {
                     setMin((int) min.value());
                 }
-            } catch (NoSuchFieldException ex) {
-                Logger.getLogger(IntegerSliderField.class.getName()).
-                        log(Level.SEVERE, null, ex);
-            } catch (SecurityException ex) {
-                Logger.getLogger(IntegerSliderField.class.getName()).
-                        log(Level.SEVERE, null, ex);
-            } catch (IllegalArgumentException ex) {
-                Logger.getLogger(IntegerSliderField.class.getName()).
-                        log(Level.SEVERE, null, ex);
-            } catch (IllegalAccessException ex) {
+            } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
                 Logger.getLogger(IntegerSliderField.class.getName()).
                         log(Level.SEVERE, null, ex);
             }

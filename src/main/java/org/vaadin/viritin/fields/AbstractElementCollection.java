@@ -340,16 +340,7 @@ public abstract class AbstractElementCollection<ET> extends CustomField<Collecti
                 java.lang.reflect.Field f = editorType.getDeclaredField(property);
                 f.setAccessible(true);
                 c = (Component) f.get(editorsstuff.editor);
-            } catch (NoSuchFieldException ex) {
-                Logger.getLogger(AbstractElementCollection.class.getName()).
-                        log(Level.SEVERE, null, ex);
-            } catch (SecurityException ex) {
-                Logger.getLogger(AbstractElementCollection.class.getName()).
-                        log(Level.SEVERE, null, ex);
-            } catch (IllegalArgumentException ex) {
-                Logger.getLogger(AbstractElementCollection.class.getName()).
-                        log(Level.SEVERE, null, ex);
-            } catch (IllegalAccessException ex) {
+            } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
                 Logger.getLogger(AbstractElementCollection.class.getName()).
                         log(Level.SEVERE, null, ex);
             }
