@@ -422,7 +422,7 @@ public class MapField<K, V> extends CustomField<Map> {
         Button delete;
         K oldKey;
 
-        public EntryEditor(TextField ke, TextField valueEditor, K k) {
+        EntryEditor(TextField ke, TextField valueEditor, K k) {
             this.keyEditor = ke;
             this.valueEditor = valueEditor;
             delete = new Button(FontAwesome.TRASH);

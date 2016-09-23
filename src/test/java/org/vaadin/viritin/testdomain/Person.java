@@ -117,10 +117,7 @@ public class Person {
             return false;
         }
         Person other = (Person) obj;
-        if (id != other.id) {
-            return false;
-        }
-        return true;
+        return id == other.id;
     }
 
     @Override

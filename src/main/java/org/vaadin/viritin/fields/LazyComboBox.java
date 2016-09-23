@@ -204,7 +204,7 @@ public class LazyComboBox<T> extends TypedSelect<T> {
     private static class DummyFilterableListContainer<T> extends ListContainer<T>
             implements Filterable {
 
-        public DummyFilterableListContainer(Class<T> type,
+        DummyFilterableListContainer(Class<T> type,
                 Collection<T> backingList) {
             super(type, backingList);
         }

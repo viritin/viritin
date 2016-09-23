@@ -526,7 +526,7 @@ public class ListContainer<T> extends AbstractContainer implements
 
             private final String propertyName;
 
-            public DynaProperty(String property) {
+            DynaProperty(String property) {
                 propertyName = property;
             }
 
