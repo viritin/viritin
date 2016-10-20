@@ -25,8 +25,9 @@ import java.util.Map;
  *
  * See {@link #createContent()} for usage information.
  *
- * 
- * @see <a href="https://github.com/viritin/viritin/wiki/AbstractForm">The wiki</a>
+ *
+ * @see <a href="https://github.com/viritin/viritin/wiki/AbstractForm">The
+ * wiki</a>
  *
  * @param <T> the type of the bean edited
  */
@@ -38,7 +39,6 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     private String saveCaption = "Save";
     private String deleteCaption = "Delete";
     private String cancelCaption = "Cancel";
-
 
     public static class ValidityChangedEvent<T> extends Component.Event {
 
@@ -213,9 +213,21 @@ public abstract class AbstractForm<T> extends CustomComponent implements
         this.eagerValidation = eagerValidation;
     }
 
+    /**
+     * Sets the object to be edited by this form. This method binds all fields
+     * from this form to given objects.
+     * <p>
+     * If your form needs to manually configure something based on the state of
+     * the edited object, you can override this method to do that either before
+     * the object is bound to fields or to do something after the bean binding.
+     *
+     * @param entity the object to be edited by this form
+     * @return the MBeanFieldGroup that is used to do the binding. Most often
+     * you don't need to do anything with it.
+     */
     public MBeanFieldGroup<T> setEntity(T entity) {
-        lazyInit();
         this.entity = entity;
+        lazyInit();
         if (entity != null) {
             if (isBound()) {
                 fieldGroup.unbind();
@@ -342,12 +354,11 @@ public abstract class AbstractForm<T> extends CustomComponent implements
      * you can use this method to close the popup.
      */
     public void closePopup() {
-        if(popup != null) {
+        if (popup != null) {
             popup.close();
             popup = null;
         }
     }
-
 
     /**
      * @return A default toolbar containing save/cancel/delete buttons
@@ -453,9 +464,8 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     }
 
     /**
-     * Focuses the first field found from the form. It often improves UX to
-     * call this method, or focus another field, when you assign a bean for
-     * editing.
+     * Focuses the first field found from the form. It often improves UX to call
+     * this method, or focus another field, when you assign a bean for editing.
      */
     public void focusFirst() {
         Component compositionRoot = getCompositionRoot();
@@ -491,8 +501,9 @@ public abstract class AbstractForm<T> extends CustomComponent implements
      * This method should return the actual content of the form, including
      * possible toolbar.
      *
-     * Use setEntity(T entity) to fill in the data.
-     * Am example implementation could look like this: <pre><code>
+     * Use setEntity(T entity) to fill in the data. Am example implementation
+     * could look like this:
+     * <pre><code>
      * public class PersonForm extends AbstractForm&lt;Person&gt; {
      *
      *     private TextField firstName = new MTextField(&quot;First Name&quot;);
@@ -532,8 +543,8 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     private Class<?>[] validationGroups;
 
     /**
-     * @return the JSR 303 bean validation groups that should be
-     * used to validate the bean
+     * @return the JSR 303 bean validation groups that should be used to
+     * validate the bean
      */
     public Class<?>[] getValidationGroups() {
         if (validationGroups == null) {
@@ -549,7 +560,7 @@ public abstract class AbstractForm<T> extends CustomComponent implements
      */
     public void setValidationGroups(Class<?>... validationGroups) {
         this.validationGroups = validationGroups;
-        if(getFieldGroup() != null) {
+        if (getFieldGroup() != null) {
             getFieldGroup().setValidationGroups(validationGroups);
         }
     }
@@ -643,7 +654,6 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     public void setDeleteCaption(String deleteCaption) {
         this.deleteCaption = deleteCaption;
     }
-
 
     public AbstractForm<T> withI18NCaption(String saveCaption, String deleteCaption, String cancelCaption) {
         this.saveCaption = saveCaption;
