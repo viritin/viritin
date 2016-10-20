@@ -13,6 +13,7 @@ import org.vaadin.viritin.ListContainer;
 import org.vaadin.viritin.util.HtmlElementPropertySetter;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -25,6 +26,8 @@ import java.util.List;
 public class LazyComboBox<T> extends TypedSelect<T> {
 
     private String currentFilter;
+    private FilterablePagingProvider fpp;
+    private FilterableCountProvider fcp;
 
     /**
      * Interface via the LazyComboBox communicates with the "backend"
@@ -50,6 +53,28 @@ public class LazyComboBox<T> extends TypedSelect<T> {
     }
 
     private LazyList<T> piggybackLazyList;
+
+    /* Instantiates a memory and CPU efficient ComboBox, typically wired to EJB
+     * or Spring Data repository. By default page size of
+     * LazyList.DEFAULT_PAGE_SIZE (30) is used.
+     * If you use this constructor, be sure to call loadFrom method as well
+     * to define how options should be loaded from the backend.
+     *
+     * @param elementType the type of options in the select
+     */
+    public LazyComboBox(Class<T> aClass) {
+        this(aClass, new FilterablePagingProvider<T>() {
+            @Override
+            public List<T> findEntities(int firstRow, String filter) {
+                return Collections.emptyList();
+            }
+        }, new FilterableCountProvider() {
+            @Override
+            public int size(String filter) {
+                return 0;
+            }
+        });
+    }
 
     /**
      * Instantiates a memory and CPU efficient ComboBox, typically wired to EJB
@@ -85,8 +110,12 @@ public class LazyComboBox<T> extends TypedSelect<T> {
 
     protected final ComboBox initList(
             Class<T> elementType,
-            final FilterablePagingProvider filterablePageProvider,
-            final FilterableCountProvider countProvider1, int pageLength) {
+            FilterablePagingProvider filterablePageProvider,
+            FilterableCountProvider countProvider1, int pageLength) {
+
+        this.fpp = filterablePageProvider;
+        this.fcp = countProvider1;
+
         // piggyback to simple paging provider
         piggybackLazyList = new LazyList<>(new LazyList.PagingProvider() {
 
@@ -94,18 +123,19 @@ public class LazyComboBox<T> extends TypedSelect<T> {
 
             @Override
             public List findEntities(int firstRow) {
-                return filterablePageProvider.findEntities(firstRow,
+                return fpp.findEntities(firstRow,
                         getCurrentFilter());
             }
         },
                 new LazyList.CountProvider() {
-                    private static final long serialVersionUID = -7339189124024626177L;
+            private static final long serialVersionUID = -7339189124024626177L;
 
-                    @Override
-                    public int size() {
-                        return countProvider1.size(getCurrentFilter());
-                    }
-                }, pageLength);
+            @Override
+            public int size() {
+                return fcp.size(getCurrentFilter());
+            }
+        }, pageLength);
+
         final ComboBox comboBox = new ComboBox() {
             @SuppressWarnings("unchecked")
             @Override
@@ -115,7 +145,7 @@ public class LazyComboBox<T> extends TypedSelect<T> {
 
             @Override
             public Resource getItemIcon(Object itemId) {
-                if(getIconGenerator() != null) {
+                if (getIconGenerator() != null) {
                     return LazyComboBox.this.getIcon((T) itemId);
                 }
                 return super.getItemIcon(itemId);
@@ -153,17 +183,63 @@ public class LazyComboBox<T> extends TypedSelect<T> {
         setBic(new DummyFilterableListContainer<>(elementType,
                 piggybackLazyList));
         comboBox.setContainerDataSource(getBic());
-        if(Version.getMajorVersion() >= 7  && Version.getMinorVersion() >= 5 ) {
+        if (Version.getMajorVersion() >= 7 && Version.getMinorVersion() >= 5) {
             // broken in earler Vaadin versions, so skip otherwise
             // Set to false for much better performance if selection is in
             // large index
             comboBox.setScrollToSelectedItem(false);
         }
-        
+
         fixComboBoxVaadinIssue16647(comboBox);
         setSelectInstance(comboBox);
 
         return comboBox;
+    }
+
+    /**
+     * Set a new strategies how to load options.
+     * 
+     * @param filterablePagingProvider the paging provider that gives the actual options in pages
+     * @param filterableCountProvider the count provider to give the total about of options with current filter
+     */
+    public void loadFrom(FilterablePagingProvider<T> filterablePagingProvider, FilterableCountProvider filterableCountProvider) {
+        this.fpp = filterablePagingProvider;
+        this.fcp = filterableCountProvider;
+        refresh();
+    }
+
+    /**
+     * Set a new strategies how to load options.
+     *
+     * @param filterablePagingProvider the paging provider that gives the actual options in pages
+     * @param filterableCountProvider the count provider to give the total about of options with current filter
+     * @param pageLength the length of the pages that component should use to access providers
+     */
+    public void loadFrom(FilterablePagingProvider<T> filterablePagingProvider, FilterableCountProvider filterableCountProvider, int pageLength) {
+        this.fpp = filterablePagingProvider;
+        this.fcp = filterableCountProvider;
+        // Need to re-create the piggybackList & set container, some refactoring should be done here
+        piggybackLazyList = new LazyList<>(new LazyList.PagingProvider() {
+
+            private static final long serialVersionUID = 1027614132444478021L;
+
+            @Override
+            public List findEntities(int firstRow) {
+                return fpp.findEntities(firstRow,
+                        getCurrentFilter());
+            }
+        },
+                new LazyList.CountProvider() {
+            private static final long serialVersionUID = -7339189124024626177L;
+
+            @Override
+            public int size() {
+                return fcp.size(getCurrentFilter());
+            }
+        }, pageLength);
+        setBic(new DummyFilterableListContainer<>(getType(),
+                piggybackLazyList));
+        getSelect().setContainerDataSource(getBic());
     }
 
     public static void fixComboBoxVaadinIssue16647(final ComboBox comboBox) {
@@ -174,8 +250,7 @@ public class LazyComboBox<T> extends TypedSelect<T> {
     }
 
     /**
-     * Instantiates a new LazyCombobox. Be sure to call
-     * preparePiggybackLazyList
+     * Instantiates a new LazyCombobox. Be sure to call preparePiggybackLazyList
      *
      */
     protected LazyComboBox() {
@@ -188,7 +263,7 @@ public class LazyComboBox<T> extends TypedSelect<T> {
             }
         });
     }
-    
+
     /**
      * Refreshes entities cached in the lazy backing list.
      */
@@ -276,7 +351,7 @@ public class LazyComboBox<T> extends TypedSelect<T> {
             CaptionGenerator<T> captionGenerator) {
         return (LazyComboBox<T>) super.setCaptionGenerator(captionGenerator);
     }
-    
+
     @Override
     public LazyComboBox<T> setIconGenerator(IconGenerator<T> generator) {
         return (LazyComboBox<T>) super.setIconGenerator(generator);

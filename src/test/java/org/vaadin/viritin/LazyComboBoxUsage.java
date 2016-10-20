@@ -11,6 +11,7 @@ import org.vaadin.viritin.testdomain.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -24,7 +25,7 @@ public class LazyComboBoxUsage {
     public void testTypedSelect() {
 
         final LazyService service = new LazyService();
-        
+
         // This is naturally much cleaner with Java 8
         LazyComboBox<Person> cb = new LazyComboBox(Person.class, new LazyComboBox.FilterablePagingProvider() {
 
@@ -38,9 +39,9 @@ public class LazyComboBoxUsage {
             public int size(String filter) {
                 return service.countPersons(filter);
             }
-        
+
         });
-        
+
         cb.addMValueChangeListener(new MValueChangeListener<Person>() {
 
             private static final long serialVersionUID = -659661563076688180L;
@@ -52,9 +53,8 @@ public class LazyComboBoxUsage {
         });
         final Person fourth = service.all.get(4);
         cb.setValue(fourth);
-        
+
         Assert.assertEquals(fourth, selectedValue.getValue());
-        
 
     }
 
@@ -68,23 +68,51 @@ public class LazyComboBoxUsage {
         public List<Person> findPersons(String filter, int startIndex, int maxResults) {
             List<Person> list = findPersons(filter);
             int last = startIndex + maxResults;
-            if(last > list.size()) {
+            if (last > list.size()) {
                 last = list.size();
             }
             return new ArrayList<>(list.subList(startIndex, last));
         }
-        
+
+        public List<Person> findYoungPersons(String filter, int startIndex, int maxResults) {
+            List<Person> list = findYoungPersons(filter);
+            int last = startIndex + maxResults;
+            if (last > list.size()) {
+                last = list.size();
+            }
+            return new ArrayList<>(list.subList(startIndex, last));
+        }
+
         private List<Person> findPersons(String filter) {
-            if(filter == null || filter.isEmpty()) {
+            if (filter == null || filter.isEmpty()) {
                 return all;
             }
             ArrayList<Person> filtered = new ArrayList();
             for (Person p : all) {
-                if(p.toString().toLowerCase().contains(filter)) {
+                if (p.toString().toLowerCase().contains(filter)) {
                     filtered.add(p);
                 }
             }
             return filtered;
+        }
+
+        private List<Person> findYoungPersons(String filter) {
+            List<Person> all = this.all.stream().filter(p->p.getAge() < 20)
+                    .collect(Collectors.toList());
+            if (filter == null || filter.isEmpty()) {
+                return all;
+            }
+            ArrayList<Person> filtered = new ArrayList();
+            for (Person p : all) {
+                if (p.toString().toLowerCase().contains(filter)) {
+                    filtered.add(p);
+                }
+            }
+            return filtered;
+        }
+
+        public int countYoungPersons(String filter) {
+            return findYoungPersons(filter).size();
         }
 
         public int countPersons(String filter) {
