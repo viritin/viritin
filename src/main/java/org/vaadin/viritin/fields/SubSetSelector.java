@@ -224,7 +224,9 @@ public class SubSetSelector<ET> extends CustomField<Collection> implements Abstr
 
     @Override
     public void setPropertyDataSource(Property newDataSource) {
-        type = newDataSource.getType();
+        if(newDataSource != null) {
+            type = newDataSource.getType();
+        }
         super.setPropertyDataSource(newDataSource);
     }
 
