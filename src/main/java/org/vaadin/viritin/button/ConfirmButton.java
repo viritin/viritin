@@ -18,7 +18,6 @@ package org.vaadin.viritin.button;
 import com.vaadin.server.Resource;
 import com.vaadin.shared.MouseEventDetails;
 import org.vaadin.dialogs.ConfirmDialog;
-import org.vaadin.viritin.button.MButton.MClickListener;
 
 /**
  *
@@ -30,6 +29,8 @@ public class ConfirmButton extends MButton {
     private String confirmationText = "Are you sure?";
     private String okCaption = "OK";
     private String cancelCaption = "Cancel";
+
+	private String confirmWindowOkButtonStyle;
 
     public ConfirmButton() {
     }
@@ -52,20 +53,18 @@ public class ConfirmButton extends MButton {
         this.confirmationText = confirmationText;
     }
 
-    @Override
-    protected void fireClick(final MouseEventDetails details) {
-        ConfirmDialog.show(getUI(), getConfirmWindowCaption(),
-                getConfirmationText(), getOkCaption(), getCancelCaption(),
-                new Runnable() {
+	@Override
+	protected void fireClick(final MouseEventDetails details) {
+		ConfirmDialog dialog = ConfirmDialog.show(getUI(), getConfirmWindowCaption(),
+			getConfirmationText(), getOkCaption(), getCancelCaption(), new Runnable() {
+				@Override
+				public void run() {
+					doFireClickListener(details);
+				}
+			});
 
-                    @Override
-                    public void run() {
-                        doFireClickListener(details);
-                    }
-
-                });
-
-    }
+		dialog.getOkButton().addStyleName(confirmWindowOkButtonStyle);
+	}
 
     @Override
     public ConfirmButton removeClickListener(MClickListener listener) {
@@ -223,4 +222,8 @@ public class ConfirmButton extends MButton {
         setClickShortcut(keycode, modifiers);
         return this;
     }
+
+	public void setConfirmWindowOkButtonStyle(String confirmWindowOkButtonStyle) {
+		this.confirmWindowOkButtonStyle = confirmWindowOkButtonStyle;
+	}
 }

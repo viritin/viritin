@@ -45,6 +45,7 @@ public class DeleteButton extends ConfirmButton {
 
     private void setupDeleteButton() {
         setStyleName("danger default");
+		setConfirmWindowOkButtonStyle("danger default");
     }
 
     @Override
