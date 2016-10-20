@@ -50,8 +50,8 @@ public class LazyComboBoxUsageSample extends AbstractTest {
 
         };
 
-        final LazyComboBox<Person> cb = new LazyComboBox(Person.class,
-                filterablePagingProvider, filterableCountProvider)
+        final LazyComboBox<Person> cb = new LazyComboBox(Person.class);
+         cb.loadFrom(filterablePagingProvider, filterableCountProvider)
                 .setCaptionGenerator(new CaptionGenerator<Person>() {
 
                     private static final long serialVersionUID = 5611804984518152177L;

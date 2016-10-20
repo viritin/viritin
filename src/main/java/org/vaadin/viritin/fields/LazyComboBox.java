@@ -13,6 +13,7 @@ import org.vaadin.viritin.ListContainer;
 import org.vaadin.viritin.util.HtmlElementPropertySetter;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -25,6 +26,7 @@ import java.util.List;
 public class LazyComboBox<T> extends TypedSelect<T> {
 
     private String currentFilter;
+    private Class<T> elementType;
 
     /**
      * Interface via the LazyComboBox communicates with the "backend"
@@ -57,55 +59,21 @@ public class LazyComboBox<T> extends TypedSelect<T> {
      * LazyList.DEFAULT_PAGE_SIZE (30) is used.
      *
      * @param elementType the type of options in the select
-     * @param filterablePageProvider the interface via entities are fetched
-     * @param countProvider the interface via the count of items is detected
      */
-    public LazyComboBox(Class<T> elementType,
-            final FilterablePagingProvider filterablePageProvider,
-            final FilterableCountProvider countProvider) {
-        this(elementType, filterablePageProvider, countProvider,
-                LazyList.DEFAULT_PAGE_SIZE);
-    }
-
-    /**
-     * Instantiates a memory and CPU efficient ComboBox, typically wired to EJB
-     * or Spring Data repository.
-     *
-     * @param elementType the type of options in the select
-     * @param filterablePageProvider the interface via entities are fetched
-     * @param countProvider the interface via the count of items is detected
-     * @param pageLength the maximum page size to be used with service calls
-     */
-    public LazyComboBox(Class<T> elementType,
-            final FilterablePagingProvider filterablePageProvider,
-            final FilterableCountProvider countProvider, int pageLength) {
-        this();
-        initList(elementType, filterablePageProvider, countProvider, pageLength);
-    }
-
-    protected final ComboBox initList(
-            Class<T> elementType,
-            final FilterablePagingProvider filterablePageProvider,
-            final FilterableCountProvider countProvider1, int pageLength) {
-        // piggyback to simple paging provider
-        piggybackLazyList = new LazyList<>(new LazyList.PagingProvider() {
-
-            private static final long serialVersionUID = 1027614132444478021L;
+    public LazyComboBox(Class<T> elementType) {
+        this.elementType = elementType;
+        setCaptionGenerator(new CaptionGenerator<T>() {
+            private static final long serialVersionUID = 9213991656985157568L;
 
             @Override
-            public List findEntities(int firstRow) {
-                return filterablePageProvider.findEntities(firstRow,
-                        getCurrentFilter());
+            public String getCaption(T option) {
+                return option.toString();
             }
-        },
-                new LazyList.CountProvider() {
-                    private static final long serialVersionUID = -7339189124024626177L;
+        });
+        initList();
+    }
 
-                    @Override
-                    public int size() {
-                        return countProvider1.size(getCurrentFilter());
-                    }
-                }, pageLength);
+    protected final ComboBox initList() {
         final ComboBox comboBox = new ComboBox() {
             @SuppressWarnings("unchecked")
             @Override
@@ -150,9 +118,6 @@ public class LazyComboBox<T> extends TypedSelect<T> {
 
         };
 
-        setBic(new DummyFilterableListContainer<>(elementType,
-                piggybackLazyList));
-        comboBox.setContainerDataSource(getBic());
         if(Version.getMajorVersion() >= 7  && Version.getMinorVersion() >= 5 ) {
             // broken in earler Vaadin versions, so skip otherwise
             // Set to false for much better performance if selection is in
@@ -163,7 +128,68 @@ public class LazyComboBox<T> extends TypedSelect<T> {
         fixComboBoxVaadinIssue16647(comboBox);
         setSelectInstance(comboBox);
 
+        setPiggybackLazyList(new LazyList<T>(new LazyList.EntityProvider<T>() {
+            @Override
+            public int size() {
+                return 0;
+            }
+
+            @Override
+            public List<T> findEntities(int firstRow) {
+                return Collections.emptyList();
+            }
+        }));
+
         return comboBox;
+    }
+
+    public LazyComboBox<T> loadFrom(
+        FilterablePagingProvider filterablePageProvider,
+        FilterableCountProvider countProvider
+    ) {
+        return loadFrom(filterablePageProvider, countProvider, LazyList.DEFAULT_PAGE_SIZE);
+    }
+
+    public LazyComboBox<T> loadFrom(
+        FilterablePagingProvider filterablePageProvider,
+        FilterableCountProvider countProvider, 
+        int pageLength
+    ) {
+        // piggyback to simple paging provider
+        setPiggybackLazyList(getLazyList(filterablePageProvider, countProvider, pageLength));
+        return this;
+    }
+
+    private void setPiggybackLazyList(LazyList<T> piggybackLazyList) {
+        this.piggybackLazyList = piggybackLazyList;
+        setBic(new DummyFilterableListContainer<>(elementType, piggybackLazyList));
+        getSelect().setContainerDataSource(getBic());
+    }
+
+    private LazyList<T> getLazyList(
+            final FilterablePagingProvider filterablePageProvider,
+                final FilterableCountProvider countProvider1, int pageLength) {
+        return new LazyList<>(
+            new LazyList.PagingProvider() {
+
+                private static final long serialVersionUID = 1027614132444478021L;
+
+                @Override
+                public List findEntities(int firstRow) {
+                    return filterablePageProvider.findEntities(firstRow,
+                            getCurrentFilter());
+                }
+            },
+            new LazyList.CountProvider() {
+                private static final long serialVersionUID = -7339189124024626177L;
+
+                @Override
+                public int size() {
+                    return countProvider1.size(getCurrentFilter());
+                }
+            },
+            pageLength
+        );
     }
 
     public static void fixComboBoxVaadinIssue16647(final ComboBox comboBox) {
@@ -173,22 +199,6 @@ public class LazyComboBox<T> extends TypedSelect<T> {
         heps.setProperty("./input", "autocapitalize", "off");
     }
 
-    /**
-     * Instantiates a new LazyCombobox. Be sure to call
-     * preparePiggybackLazyList
-     *
-     */
-    protected LazyComboBox() {
-        setCaptionGenerator(new CaptionGenerator<T>() {
-            private static final long serialVersionUID = 9213991656985157568L;
-
-            @Override
-            public String getCaption(T option) {
-                return option.toString();
-            }
-        });
-    }
-    
     /**
      * Refreshes entities cached in the lazy backing list.
      */

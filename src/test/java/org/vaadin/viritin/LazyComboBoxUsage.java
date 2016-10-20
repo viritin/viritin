@@ -26,7 +26,8 @@ public class LazyComboBoxUsage {
         final LazyService service = new LazyService();
         
         // This is naturally much cleaner with Java 8
-        LazyComboBox<Person> cb = new LazyComboBox(Person.class, new LazyComboBox.FilterablePagingProvider() {
+        LazyComboBox<Person> cb = new LazyComboBox(Person.class);
+        cb.loadFrom(new LazyComboBox.FilterablePagingProvider() {
 
             @Override
             public List findEntities(int firstRow, String filter) {
