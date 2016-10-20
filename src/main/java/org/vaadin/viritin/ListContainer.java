@@ -75,7 +75,7 @@ public class ListContainer<T> extends AbstractContainer implements
         if (backingList1 instanceof List<?>) {
             this.backingList = (List<T>) backingList1;
         } else {
-            this.backingList = new ArrayList<>(backingList1);
+            this.backingList = new ArrayList<T>(backingList1); // Type parameter to keep NB happy
         }
         
         fireItemSetChange();

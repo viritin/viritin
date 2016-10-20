@@ -257,7 +257,7 @@ public class MTable<T> extends Table {
     }
 
     protected ListContainer<T> createContainer(Class<? extends T> type) {
-        return new ListContainer<>(type);
+        return new ListContainer<T>(type); // Type parameter just to keep NB happy
     }
 
     protected ListContainer<T> createContainer(Collection<T> beans) {

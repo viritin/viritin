@@ -52,7 +52,7 @@ public class FilterableTable<T> extends MTable<T> {
 
     @Override
     protected FilterableListContainer<T> createContainer(Class<? extends T> type) {
-        return new FilterableListContainer<>(type);
+        return new FilterableListContainer<T>(type); // Type parameter just to keep NB happy
     }
 
     @Override
