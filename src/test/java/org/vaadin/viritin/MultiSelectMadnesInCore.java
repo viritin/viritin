@@ -29,12 +29,13 @@ public class MultiSelectMadnesInCore {
 
     public static class PersonFormWithCoreTable extends AbstractForm {
 
+        private static final long serialVersionUID = -4766609148902175465L;
         private Table groups = new Table();
 
         public PersonFormWithCoreTable() {
             setEagerValidation(true);
             groups.setMultiSelect(true);
-            groups.setContainerDataSource(new ListContainer<Group>(Service.
+            groups.setContainerDataSource(new ListContainer<>(Service.
                     getAvailableGroups()));
             Class c = groups.getType();
 
@@ -67,7 +68,7 @@ public class MultiSelectMadnesInCore {
                             try {
                                 originalCollection = (Collection) c.
                                         newInstance();
-                            } catch (Exception ex) {
+                            } catch (IllegalAccessException | InstantiationException ex) {
                                 throw new RuntimeException(
                                         "Unsupported collection type", ex);
                             }
@@ -133,7 +134,7 @@ public class MultiSelectMadnesInCore {
                                     newInstance();
                             col.addAll(set);
                             return col;
-                        } catch (Exception ex) {
+                        } catch (IllegalAccessException | InstantiationException ex) {
                             throw new RuntimeException(
                                     "Unsupported collection type",
                                     ex);
@@ -179,6 +180,7 @@ public class MultiSelectMadnesInCore {
 
     public static class PersonForm extends AbstractForm<Person> {
 
+        private static final long serialVersionUID = 6410815033625409608L;
         MultiSelectTable<Group> groups = new MultiSelectTable()
                 .setOptions(Service.getAvailableGroups());
 

@@ -15,6 +15,8 @@ import java.io.Serializable;
  */
 public class TypedPropertyValueGenerator<M, P> extends PropertyValueGenerator<P> {
 
+    private static final long serialVersionUID = 1250403117667296988L;
+
     protected Class<M> modelType;
     protected Class<P> presentationType;
     protected ValueGenerator<M, P> valueGenerator;

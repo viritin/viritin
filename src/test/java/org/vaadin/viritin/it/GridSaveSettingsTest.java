@@ -19,7 +19,7 @@ public class GridSaveSettingsTest extends AbstractTest {
                 + " Grid will save your settings in the browser cookies."
                 + " And load them next time you open the view");
 
-        MGrid<Person> table = new MGrid<Person>();
+        MGrid<Person> table = new MGrid<>();
         table.setRows(
                 new Person(1, "Some", "One", 13),
                 new Person(2, "Arni", "Red", 83),

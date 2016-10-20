@@ -27,15 +27,17 @@ public class MTableLazyLoadingWithSorting extends AbstractTest {
 
         final List<Person> orig = Service.getListOfPersons(1000);
 
-        MTable<Person> g = new MTable<Person>(
+        MTable<Person> g = new MTable<>(
                 new SortableLazyList.SortablePagingProvider<Person>() {
-            @Override
+                    private static final long serialVersionUID = 5276735386651186011L;
+
+                    @Override
             public List<Person> findEntities(int firstRow, boolean sortAscending,
                     String property) {
                 List<Person> listOfPersons = new ArrayList<>(orig);
                 if (property != null) {
 
-                    Collections.sort(listOfPersons, new BeanComparator<Person>(
+                    Collections.sort(listOfPersons, new BeanComparator<>(
                             property));
                     if (!sortAscending) {
                         Collections.reverse(listOfPersons);
@@ -45,13 +47,15 @@ public class MTableLazyLoadingWithSorting extends AbstractTest {
                 if (last > listOfPersons.size()) {
                     last = listOfPersons.size();
                 }
-                return new ArrayList<Person>(listOfPersons.subList(firstRow,
+                return new ArrayList<>(listOfPersons.subList(firstRow,
                         last));
             }
         },
                 new LazyList.CountProvider() {
 
-            @Override
+                    private static final long serialVersionUID = -3920880835334547231L;
+
+                    @Override
             public int size() {
                 return (int) Service.count();
             }

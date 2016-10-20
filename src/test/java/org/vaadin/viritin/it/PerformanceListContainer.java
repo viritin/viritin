@@ -19,7 +19,7 @@ public class PerformanceListContainer extends AbstractTest {
  
     @Override
     public Component getTestComponent() {
-        MTable<Person> mTable = new MTable<Person>(Person.class).withProperties("firstName", "lastName");
+        MTable<Person> mTable = new MTable<>(Person.class).withProperties("firstName", "lastName");
         mTable.setBeans(LIST_OF_PERSONS);
         return mTable;
     }

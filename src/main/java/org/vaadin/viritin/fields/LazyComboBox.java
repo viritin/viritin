@@ -10,10 +10,10 @@ import com.vaadin.ui.ComboBox;
 import org.apache.commons.lang3.ObjectUtils;
 import org.vaadin.viritin.LazyList;
 import org.vaadin.viritin.ListContainer;
+import org.vaadin.viritin.util.HtmlElementPropertySetter;
 
 import java.util.Collection;
 import java.util.List;
-import org.vaadin.viritin.util.HtmlElementPropertySetter;
 
 /**
  * This class tries to provide a simple lazy loading connection form ComboBox to
@@ -88,7 +88,9 @@ public class LazyComboBox<T> extends TypedSelect<T> {
             final FilterablePagingProvider filterablePageProvider,
             final FilterableCountProvider countProvider1, int pageLength) {
         // piggyback to simple paging provider
-        piggybackLazyList = new LazyList<T>(new LazyList.PagingProvider() {
+        piggybackLazyList = new LazyList<>(new LazyList.PagingProvider() {
+
+            private static final long serialVersionUID = 1027614132444478021L;
 
             @Override
             public List findEntities(int firstRow) {
@@ -97,6 +99,8 @@ public class LazyComboBox<T> extends TypedSelect<T> {
             }
         },
                 new LazyList.CountProvider() {
+                    private static final long serialVersionUID = -7339189124024626177L;
+
                     @Override
                     public int size() {
                         return countProvider1.size(getCurrentFilter());
@@ -146,7 +150,7 @@ public class LazyComboBox<T> extends TypedSelect<T> {
 
         };
 
-        setBic(new DummyFilterableListContainer<T>(elementType,
+        setBic(new DummyFilterableListContainer<>(elementType,
                 piggybackLazyList));
         comboBox.setContainerDataSource(getBic());
         if(Version.getMajorVersion() >= 7  && Version.getMinorVersion() >= 5 ) {
@@ -176,6 +180,8 @@ public class LazyComboBox<T> extends TypedSelect<T> {
      */
     protected LazyComboBox() {
         setCaptionGenerator(new CaptionGenerator<T>() {
+            private static final long serialVersionUID = 9213991656985157568L;
+
             @Override
             public String getCaption(T option) {
                 return option.toString();
@@ -204,7 +210,7 @@ public class LazyComboBox<T> extends TypedSelect<T> {
     private static class DummyFilterableListContainer<T> extends ListContainer<T>
             implements Filterable {
 
-        public DummyFilterableListContainer(Class<T> type,
+        DummyFilterableListContainer(Class<T> type,
                 Collection<T> backingList) {
             super(type, backingList);
         }

@@ -12,6 +12,8 @@ import java.util.Collection;
 
 public class MHorizontalLayout extends HorizontalLayout {
 
+    private static final long serialVersionUID = 524957578263653250L;
+
     public MHorizontalLayout() {
         super.setSpacing(true);
     }

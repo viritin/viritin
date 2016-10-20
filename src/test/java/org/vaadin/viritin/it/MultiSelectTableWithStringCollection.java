@@ -25,7 +25,7 @@ public class MultiSelectTableWithStringCollection extends AbstractTest {
     
     public static class Beani {
         
-        private List<String> strings = new ArrayList<String>();
+        private List<String> strings = new ArrayList<>();
 
         public List<String> getStrings() {
             return strings;

@@ -21,6 +21,8 @@ import org.vaadin.viritin.layouts.MVerticalLayout;
  */
 public class IntegerFieldUsage extends AbstractTest {
 
+    private static final long serialVersionUID = -1841759044439831663L;
+
     public static class Domain {
 
         private Integer normalInteger;
@@ -83,12 +85,12 @@ public class IntegerFieldUsage extends AbstractTest {
         
     }
 
-    private TextField normalInteger = new MTextField().withCaption("Integer with basic TextField");
-    private IntegerField integer = new IntegerField().withCaption("Integer");
-    private IntegerField intti = new IntegerField().withCaption("int");
-    private IntegerField validatedInteger = new IntegerField().withCaption(
+    private final TextField normalInteger = new MTextField().withCaption("Integer with basic TextField");
+    private final IntegerField integer = new IntegerField().withCaption("Integer");
+    private final IntegerField intti = new IntegerField().withCaption("int");
+    private final IntegerField validatedInteger = new IntegerField().withCaption(
             "validated");
-    private IntegerSliderField slider = new IntegerSliderField()
+    private final IntegerSliderField slider = new IntegerSliderField()
             .withCaption("Slider")
             .withStep(5) // .withMax(69) // Set automatically from BeanValidation annotations
             // .withMin(-69) // Set automatically from BeanValidation annotations
@@ -101,6 +103,7 @@ public class IntegerFieldUsage extends AbstractTest {
 
         BeanBinder.bind(domain, this).withEagerValidation(
                 new MBeanFieldGroup.FieldGroupListener<Domain>() {
+            private static final long serialVersionUID = 1901097967848065661L;
 
             boolean wasvalid = true;
 
@@ -120,6 +123,8 @@ public class IntegerFieldUsage extends AbstractTest {
         });
 
         Button show = new Button("Show value", new Button.ClickListener() {
+            private static final long serialVersionUID = 5019806363620874205L;
+            
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 Notification.show(domain.toString());
@@ -128,6 +133,7 @@ public class IntegerFieldUsage extends AbstractTest {
 
         Button toggleVisible = new Button("Toggle visibility",
                 new Button.ClickListener() {
+            private static final long serialVersionUID = 5019806363620874205L;
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 integer.setVisible(!integer.isVisible());

@@ -1,12 +1,12 @@
 package org.vaadin.viritin.fields;
 
-import java.util.Collection;
-import java.util.HashSet;
-
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomField;
 import com.vaadin.ui.ListSelect;
+
+import java.util.Collection;
+import java.util.HashSet;
 
 /**
  * TODO improve this, just copy pasted from archived SmartFields addon.
@@ -22,6 +22,7 @@ public class CollectionSelect<T> extends CustomField<Collection<T>> {
 	private ListSelect select = new ListSelect() {
 
 		@SuppressWarnings("unchecked")
+        @Override
 		public String getItemCaption(Object option) {
 			if (captionGenerator != null) {
 				return captionGenerator.getCaption((T) option);
@@ -49,7 +50,7 @@ public class CollectionSelect<T> extends CustomField<Collection<T>> {
 				 */
 
 				Collection<T> collection = getInternalValue();
-				HashSet<T> orphaned = new HashSet<T>(collection);
+				HashSet<T> orphaned = new HashSet<>(collection);
 
 				@SuppressWarnings("unchecked")
 				Collection<T> newValueSet = (Collection<T>) select.getValue();
@@ -82,7 +83,7 @@ public class CollectionSelect<T> extends CustomField<Collection<T>> {
 
 	@SuppressWarnings("deprecation")
 	public void setOptions(Collection<T> options) {
-		select.setContainerDataSource(new BeanItemContainer<T>(options));
+		select.setContainerDataSource(new BeanItemContainer<>(options));
 	}
 
 	@SuppressWarnings("unchecked")

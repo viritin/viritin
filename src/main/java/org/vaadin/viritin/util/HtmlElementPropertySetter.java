@@ -16,6 +16,8 @@ import com.vaadin.ui.AbstractComponent;
 @com.vaadin.annotations.JavaScript("viritin.js")
 public class HtmlElementPropertySetter extends AbstractJavaScriptExtension {
 
+    private static final long serialVersionUID = 6463148772177927232L;
+
     public HtmlElementPropertySetter(AbstractComponent c) {
         extend(c);
     }

@@ -26,7 +26,7 @@ public class OptionGroupConfig {
 
     public OptionGroupConfig withDisabledItemIds(List<Object> objectList) {
         if (disabledItemIds == null) {
-            disabledItemIds = new HashSet<Object>();
+            disabledItemIds = new HashSet<>();
         }
         disabledItemIds.add(objectList);
         return this;

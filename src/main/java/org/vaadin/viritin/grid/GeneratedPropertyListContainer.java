@@ -5,7 +5,11 @@ import com.vaadin.data.Property;
 import com.vaadin.data.util.PropertyValueGenerator;
 import org.vaadin.viritin.ListContainer;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -15,20 +19,25 @@ import java.util.*;
  */
 public class GeneratedPropertyListContainer<T> extends ListContainer<T> {
 
+    private static final long serialVersionUID = -8384723868776183241L;
+
     private final Map<String, PropertyValueGenerator<?>> propertyGenerators = new HashMap();
     protected final Class<T> type;
 
     /**
      * Property implementation for generated properties
+     * @param <T>  property data type
      */
     protected static class GeneratedProperty<T> implements Property<T>  {
 
-        private Item item;
-        private Object itemId;
-        private Object propertyId;
-        private PropertyValueGenerator<T> generator;
+        private static final long serialVersionUID = -538857801793925329L;
 
-        public GeneratedProperty(Item item, Object propertyId, Object itemId,
+        private final Item item;
+        private final Object itemId;
+        private final Object propertyId;
+        private final PropertyValueGenerator<T> generator;
+
+        GeneratedProperty(Item item, Object propertyId, Object itemId,
                                  PropertyValueGenerator<T> generator) {
             this.item = item;
             this.itemId = itemId;
@@ -72,8 +81,10 @@ public class GeneratedPropertyListContainer<T> extends ListContainer<T> {
      */
     protected class GeneratedPropertyItem implements Item {
 
-        private Item wrappedItem;
-        private Object itemId;
+        private static final long serialVersionUID = 8231832690836075843L;
+
+        private final Item wrappedItem;
+        private final Object itemId;
 
         protected GeneratedPropertyItem(Object itemId, Item item) {
             this.itemId = itemId;
@@ -203,7 +214,7 @@ public class GeneratedPropertyListContainer<T> extends ListContainer<T> {
     private <T> Property<T> createProperty(final Item item,
                                            final Object propertyId, final Object itemId,
                                            final PropertyValueGenerator<T> generator) {
-        return new GeneratedProperty<T>(item, propertyId, itemId, generator);
+        return new GeneratedProperty<>(item, propertyId, itemId, generator);
     }
 
     private Item createGeneratedPropertyItem(final Object itemId,

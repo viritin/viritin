@@ -1,10 +1,13 @@
 package org.vaadin.viritin.util;
 
-import java.util.*;
-
+import com.vaadin.server.VaadinRequest;
 import org.vaadin.viritin.util.VaadinLocale.LocaleNegotiationStrategey;
 
-import com.vaadin.server.VaadinRequest;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Locale;
 
 public class Java7LocaleNegotiationStrategy implements
         LocaleNegotiationStrategey {
@@ -13,7 +16,7 @@ public class Java7LocaleNegotiationStrategy implements
     public Locale negotiate(final List<Locale> supportedLocales,
             VaadinRequest vaadinRequest) {
         String languages = vaadinRequest.getHeader("Accept-Language");
-        ArrayList<Locale> preferredArray = new ArrayList<Locale>(
+        ArrayList<Locale> preferredArray = new ArrayList<>(
                 supportedLocales);
         if (languages != null) {
             final String[] priorityList = languages.split(",");

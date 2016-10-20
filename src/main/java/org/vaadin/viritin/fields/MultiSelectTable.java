@@ -1,5 +1,15 @@
 package org.vaadin.viritin.fields;
 
+import com.vaadin.data.Property;
+import com.vaadin.data.util.converter.Converter;
+import com.vaadin.server.Resource;
+import com.vaadin.shared.ui.MultiSelectMode;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.CustomField;
+import com.vaadin.ui.Table;
+import org.vaadin.viritin.ListContainer;
+import org.vaadin.viritin.MSize;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -9,17 +19,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-
-import org.vaadin.viritin.ListContainer;
-
-import com.vaadin.data.Property;
-import com.vaadin.data.util.converter.Converter;
-import com.vaadin.server.Resource;
-import com.vaadin.shared.ui.MultiSelectMode;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.CustomField;
-import com.vaadin.ui.Table;
-import org.vaadin.viritin.MSize;
 
 /**
  * A Table that can be used as a field to modify List&gt;YourDomainObject&lt; or
@@ -37,10 +36,13 @@ import org.vaadin.viritin.MSize;
  */
 public class MultiSelectTable<ET> extends CustomField<Collection> {
 
+    private static final long serialVersionUID = -3245403481676039947L;
+
     private String[] visProps;
     private String[] pendingHeaders;
 
     Table table = new Table() {
+        private static final long serialVersionUID = -770469825702542170L;
 
         {
             setSelectable(true);
@@ -67,12 +69,12 @@ public class MultiSelectTable<ET> extends CustomField<Collection> {
                 // TODO add strategies for maintaining the order in case of List
                 // e.g. same as listing, selection order ...
                 Set newvalue = (Set) getValue();
-                Set<ET> orphaned = new HashSet<ET>(oldvalue);
+                Set<ET> orphaned = new HashSet<>(oldvalue);
                 orphaned.removeAll(newvalue);
                 removeRelation(orphaned);
                 allRemovedRelations.addAll(orphaned);
                 allAddedRelations.removeAll(orphaned);
-                Set<ET> newValues = new LinkedHashSet<ET>(newvalue);
+                Set<ET> newValues = new LinkedHashSet<>(newvalue);
                 newValues.removeAll(oldvalue);
                 addRelation(newValues);
                 allAddedRelations.addAll(newValues);
@@ -84,8 +86,8 @@ public class MultiSelectTable<ET> extends CustomField<Collection> {
     };
     private Class<ET> optionType;
 
-    private Set<ET> allAddedRelations = new HashSet<ET>();
-    private Set<ET> allRemovedRelations = new HashSet<ET>();
+    private Set<ET> allAddedRelations = new HashSet<>();
+    private Set<ET> allRemovedRelations = new HashSet<>();
 
     public MultiSelectTable(Class<ET> optionType) {
         this();
@@ -151,7 +153,7 @@ public class MultiSelectTable<ET> extends CustomField<Collection> {
      * set by e.g. FieldGroup) or explicit call to clearModifiedRelations().
      */
     public Set<ET> getAllModifiedRelations() {
-        HashSet<ET> all = new HashSet<ET>(allAddedRelations);
+        HashSet<ET> all = new HashSet<>(allAddedRelations);
         all.addAll(allRemovedRelations);
         return all;
     }
@@ -192,7 +194,7 @@ public class MultiSelectTable<ET> extends CustomField<Collection> {
             } else {
                 try {
                     c = (Collection) fieldType.newInstance();
-                } catch (Exception ex) {
+                } catch (IllegalAccessException | InstantiationException ex) {
                     throw new RuntimeException(
                             "Could not instantiate the used colleciton type", ex);
                 }
@@ -292,6 +294,7 @@ public class MultiSelectTable<ET> extends CustomField<Collection> {
         setHeight("230px");
         // TODO verify if this is needed in real usage, but at least to pass the test
         setConverter(new Converter<Collection, Collection>() {
+            private static final long serialVersionUID = -20358585168853508L;
 
             @Override
             public Collection convertToModel(Collection value,

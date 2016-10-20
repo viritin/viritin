@@ -2,15 +2,17 @@ package org.vaadin.viritin;
 
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 import org.apache.commons.beanutils.DynaBean;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.beanutils.WrapDynaBean;
 import org.apache.commons.beanutils.expression.DefaultResolver;
 import org.apache.commons.lang3.ClassUtils;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A standalone version of the DynaBeanItem originally introduced in
@@ -30,13 +32,13 @@ public class DynaBeanItem<T> implements Item {
     /* Container-Item-Property specifications don't say item should always return
      the same property instance, but some components depend on this :-(
      */
-    private Map<Object, DynaProperty> propertyIdToProperty = new HashMap<Object, DynaProperty>();
+    private final Map<Object, DynaProperty> propertyIdToProperty = new HashMap<>();
 
     private class DynaProperty implements Property {
 
         private final String propertyName;
 
-        public DynaProperty(String property) {
+        DynaProperty(String property) {
             propertyName = property;
         }
 
@@ -47,7 +49,7 @@ public class DynaBeanItem<T> implements Item {
             } catch (Exception e) {
                 try {
                     return PropertyUtils.getProperty(bean, propertyName);
-                } catch (Exception ex) {
+                } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException ex) {
                     throw new RuntimeException(ex);
                 }
             }
@@ -80,7 +82,7 @@ public class DynaBeanItem<T> implements Item {
                     return org.vaadin.viritin.ListContainer.
                             getNestedPropertyType(getDynaBean().getDynaClass(),
                                     propertyName);
-                } catch (Exception ex) {
+                } catch (ClassNotFoundException | IllegalAccessException | NoSuchFieldException | NoSuchMethodException | InvocationTargetException ex) {
                     throw new RuntimeException(ex);
                 }
             }
@@ -99,7 +101,7 @@ public class DynaBeanItem<T> implements Item {
 
     }
 
-    private T bean;
+    private final T bean;
 
     private transient DynaBean db;
 

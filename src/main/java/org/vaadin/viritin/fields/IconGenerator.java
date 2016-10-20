@@ -1,6 +1,7 @@
 package org.vaadin.viritin.fields;
 
 import com.vaadin.server.Resource;
+
 import java.io.Serializable;
 
 /**

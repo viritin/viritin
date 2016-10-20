@@ -16,7 +16,7 @@ public class DynaBeanItemTest {
     public void testReturnedPropertyInstances() {
         final Person robin = new Person(0, "Dick", "Grayson", 12);
         final ListContainer<Person> listContainer =
-                new ListContainer<Person>(
+                new ListContainer<>(
                         Person.class,
                         Arrays.asList(robin));
 

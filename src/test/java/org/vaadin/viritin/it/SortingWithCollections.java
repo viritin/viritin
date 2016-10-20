@@ -46,7 +46,7 @@ public class SortingWithCollections extends AbstractTest {
                          * You could do anything you want here. Here just
                          * use BeanComparator from commons-beanutils
                          */
-                        BeanComparator<Person> beanComparator = new BeanComparator<Person>();
+                        BeanComparator<Person> beanComparator = new BeanComparator<>();
                         beanComparator.setProperty(sortProperty);
                         if(event.isSortAscending()) {
                             return beanComparator.compare(o1, o2);

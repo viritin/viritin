@@ -18,7 +18,7 @@ import org.vaadin.viritin.testdomain.Person;
 public class PerformanceBeanItemContainer extends AbstractTest {
     @Override
     public Component getTestComponent() {
-        BeanItemContainer<Person> beanItemContainer = new BeanItemContainer<Person>(Person.class, PerformanceListContainer.LIST_OF_PERSONS);
+        BeanItemContainer<Person> beanItemContainer = new BeanItemContainer<>(Person.class, PerformanceListContainer.LIST_OF_PERSONS);
         Table table = new Table();
         table.setContainerDataSource(beanItemContainer, Arrays.asList("firstName", "lastName"));
         return table;

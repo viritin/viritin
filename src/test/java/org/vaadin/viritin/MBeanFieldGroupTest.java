@@ -37,7 +37,7 @@ public class MBeanFieldGroupTest {
         // Force en_US as default for test purpose
         Locale.setDefault(Locale.US);
 
-        MBeanFieldGroup fieldGroup = new MBeanFieldGroup<Tester>(Tester.class);
+        MBeanFieldGroup fieldGroup = new MBeanFieldGroup<>(Tester.class);
         Field<?> defaultMessageField = fieldGroup.buildAndBind("defaultMessage");
         Field<?> customMessageKeyField = fieldGroup.buildAndBind("customMessageKey");
         Field<?> customMessageField = fieldGroup.buildAndBind("customMessage");
@@ -50,7 +50,7 @@ public class MBeanFieldGroupTest {
     @Test
     public void notNullAnnotatedFieldsShouldHaveInterpolatedErrorMessageWithLocale() {
         Locale locale = Locale.ITALIAN;
-        MBeanFieldGroup fieldGroup = new MBeanFieldGroup<Tester>(Tester.class);
+        MBeanFieldGroup fieldGroup = new MBeanFieldGroup<>(Tester.class);
         Field<?> defaultMessageField = fieldGroup.buildAndBind("defaultMessage");
         Field<?> customMessageKeyField = fieldGroup.buildAndBind("customMessageKey");
         Field<?> customMessageField = fieldGroup.buildAndBind("customMessage");

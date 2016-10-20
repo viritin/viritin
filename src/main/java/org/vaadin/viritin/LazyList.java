@@ -1,7 +1,12 @@
 package org.vaadin.viritin;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.AbstractList;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.WeakHashMap;
 
 /**
  * A general purpose helper class to us MTable/ListContainer for service layers
@@ -14,6 +19,8 @@ import java.util.*;
  * @param <T> The type of the objects in the list
  */
 public class LazyList<T> extends AbstractList<T> implements Serializable {
+
+    private static final long serialVersionUID = 2423832460602269469L;
 
     private List<T> findPageFromCache(int pageIndexForReqest) {
         int p = pageIndexForReqest - pageIndex;
@@ -228,7 +235,7 @@ public class LazyList<T> extends AbstractList<T> implements Serializable {
 
     private Map<T, Integer> getIndexCache() {
         if (indexCache == null) {
-            indexCache = new WeakHashMap<T, Integer>();
+            indexCache = new WeakHashMap<>();
         }
         return indexCache;
     }
@@ -284,7 +291,7 @@ public class LazyList<T> extends AbstractList<T> implements Serializable {
             // Increase the amount of cached pages if necessary
             maxPages = sizeOfSublist/pageSize + 1;
         }
-        return new ArrayList<T>(super.subList(fromIndex, toIndex));
+        return new ArrayList<>(super.subList(fromIndex, toIndex));
     }
 
     @Override

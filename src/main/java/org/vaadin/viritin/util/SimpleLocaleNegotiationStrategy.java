@@ -1,10 +1,11 @@
 package org.vaadin.viritin.util;
 
-import java.util.*;
-
+import com.vaadin.server.VaadinRequest;
 import org.vaadin.viritin.util.VaadinLocale.LocaleNegotiationStrategey;
 
-import com.vaadin.server.VaadinRequest;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Simple implementation of {@link LocaleNegotiationStrategey} which works with

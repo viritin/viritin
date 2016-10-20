@@ -1,21 +1,11 @@
 package org.vaadin.viritin.it;
 
-import com.vaadin.annotations.StyleSheet;
 import com.vaadin.annotations.Theme;
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeListener;
-import com.vaadin.server.ServiceException;
-import com.vaadin.server.SessionInitEvent;
-import com.vaadin.server.SessionInitListener;
-import com.vaadin.server.VaadinService;
-import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.apache.commons.io.IOUtils;
 import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.vaadin.viritin.util.HtmlElementPropertySetter;
@@ -31,7 +21,10 @@ import org.vaadin.viritin.util.HtmlElementPropertySetter;
 @Theme("valo")
 public class ElementPropertySetterTest extends AbstractTest {
 
+    private static final long serialVersionUID = 2226655074762870301L;
+
     private final ValueChangeListener vcl = new ValueChangeListener() {
+        private static final long serialVersionUID = -382717228031608542L;
 
         @Override
         public void valueChange(Property.ValueChangeEvent event) {

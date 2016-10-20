@@ -11,13 +11,15 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.TextField;
 import com.vaadin.util.ReflectTools;
+import org.vaadin.viritin.MBeanFieldGroup;
+import org.vaadin.viritin.MBeanFieldGroup.FieldGroupListener;
+
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import org.vaadin.viritin.MBeanFieldGroup;
-import org.vaadin.viritin.MBeanFieldGroup.FieldGroupListener;
 
 /**
  * A field to edit simple map structures like string to Integer/Double/Float 
@@ -30,13 +32,13 @@ import org.vaadin.viritin.MBeanFieldGroup.FieldGroupListener;
  */
 public class MapField<K, V> extends CustomField<Map> {
 
-    private static final Method addedMethod;
-    private static final Method removedMethod;
+    private static final Method ADDED_METHOD;
+    private static final Method REMOVED_METHOD;
 
     static {
-        addedMethod = ReflectTools.findMethod(ElementAddedListener.class,
+        ADDED_METHOD = ReflectTools.findMethod(ElementAddedListener.class,
                 "elementAdded", ElementAddedEvent.class);
-        removedMethod = ReflectTools.findMethod(ElementRemovedListener.class,
+        REMOVED_METHOD = ReflectTools.findMethod(ElementRemovedListener.class,
                 "elementRemoved", ElementRemovedEvent.class);
     }
 
@@ -49,6 +51,8 @@ public class MapField<K, V> extends CustomField<Map> {
     protected K newInstance;
 
     private final FieldGroupListener fieldGroupListener = new FieldGroupListener() {
+
+        private static final long serialVersionUID = 1741634663680831911L;
 
         @Override
         public void onFieldGroupChange(MBeanFieldGroup beanFieldGroup) {
@@ -69,7 +73,7 @@ public class MapField<K, V> extends CustomField<Map> {
     private boolean allowNewItems = true;
     private boolean allowRemovingItems = true;
     private boolean allowEditItems = true;
-    private final Map<K, EntryEditor> pojoToEditor = new HashMap<K, EntryEditor>();
+    private final Map<K, EntryEditor> pojoToEditor = new HashMap<>();
     private EntryEditor newEntryEditor;
 
     public MapField() {
@@ -96,25 +100,25 @@ public class MapField<K, V> extends CustomField<Map> {
 
     public MapField<K, V> addElementAddedListener(
             ElementAddedListener<K> listener) {
-        addListener(ElementAddedEvent.class, listener, addedMethod);
+        addListener(ElementAddedEvent.class, listener, ADDED_METHOD);
         return this;
     }
 
     public MapField<K, V> removeElementAddedListener(
             ElementAddedListener listener) {
-        removeListener(ElementAddedEvent.class, listener, addedMethod);
+        removeListener(ElementAddedEvent.class, listener, ADDED_METHOD);
         return this;
     }
 
     public MapField<K, V> addElementRemovedListener(
             ElementRemovedListener<K> listener) {
-        addListener(ElementRemovedEvent.class, listener, removedMethod);
+        addListener(ElementRemovedEvent.class, listener, REMOVED_METHOD);
         return this;
     }
 
     public MapField<K, V> removeElementRemovedListener(
             ElementRemovedListener listener) {
-        removeListener(ElementRemovedEvent.class, listener, removedMethod);
+        removeListener(ElementRemovedEvent.class, listener, REMOVED_METHOD);
         return this;
     }
 
@@ -172,7 +176,7 @@ public class MapField<K, V> extends CustomField<Map> {
             } else {
                 try {
                     value = (Map) fieldType.newInstance();
-                } catch (Exception ex) {
+                } catch (IllegalAccessException | InstantiationException ex) {
                     throw new RuntimeException(
                             "Could not instantiate the used colleciton type", ex);
                 }
@@ -209,11 +213,11 @@ public class MapField<K, V> extends CustomField<Map> {
         }
         K tKey;
         try {
-            tKey = (K) key;
+            tKey = key;
         } catch (ClassCastException e) {
             try {
                 tKey = keyType.getConstructor(String.class).newInstance(key);
-            } catch (Exception ex) {
+            } catch (IllegalAccessException | IllegalArgumentException | InstantiationException | NoSuchMethodException | SecurityException | InvocationTargetException ex) {
                 throw new RuntimeException("No suitable constructor found", ex);
             }
         }
@@ -223,7 +227,7 @@ public class MapField<K, V> extends CustomField<Map> {
         } catch (ClassCastException e) {
             try {
                 tVal = valueType.getConstructor(String.class).newInstance(value);
-            } catch (Exception ex) {
+            } catch (IllegalAccessException | IllegalArgumentException | InstantiationException | NoSuchMethodException | SecurityException | InvocationTargetException ex) {
                 throw new RuntimeException("No suitable constructor found", ex);
             }
         }
@@ -232,14 +236,14 @@ public class MapField<K, V> extends CustomField<Map> {
 
     }
 
-    private void renameValue(Object oldKey, String key) {
+    private void renameValue(K oldKey, String key) {
         K tKey;
         try {
             tKey = (K) key;
         } catch (ClassCastException e) {
             try {
                 tKey = keyType.getConstructor(String.class).newInstance(key);
-            } catch (Exception ex) {
+            } catch (IllegalAccessException | IllegalArgumentException | InstantiationException | NoSuchMethodException | SecurityException | InvocationTargetException ex) {
                 throw new RuntimeException("No suitable constructor found", ex);
             }
         }
@@ -257,7 +261,7 @@ public class MapField<K, V> extends CustomField<Map> {
             } catch (ClassCastException ex) {
                 try {
                     value = valueType.getConstructor(String.class).newInstance(strValue);
-                } catch (Exception ex1) {
+                } catch (IllegalAccessException | IllegalArgumentException | InstantiationException | NoSuchMethodException | SecurityException | InvocationTargetException ex1) {
                     value = null;
                 }
             }
@@ -271,7 +275,7 @@ public class MapField<K, V> extends CustomField<Map> {
 
     }
 
-    protected final EntryEditor getFieldGroupFor(K key) {
+    private EntryEditor getFieldGroupFor(K key) {
         EntryEditor ee = pojoToEditor.get(key);
         if (ee == null) {
             final TextField k = createKeyEditorInstance();
@@ -291,14 +295,14 @@ public class MapField<K, V> extends CustomField<Map> {
         getAndEnsureValue().put(key, value);
         addInternalElement(key, value);
         fireValueChange(false);
-        fireEvent(new ElementAddedEvent<K>(this, key));
+        fireEvent(new ElementAddedEvent<>(this, key));
     }
 
     public void removeElement(K keyToBeRemoved) {
         removeInternalElement(keyToBeRemoved);
         getAndEnsureValue().remove(keyToBeRemoved);
         fireValueChange(false);
-        fireEvent(new ElementRemovedEvent<K>(this, keyToBeRemoved));
+        fireEvent(new ElementRemovedEvent<>(this, keyToBeRemoved));
     }
 
     @Override
@@ -416,12 +420,13 @@ public class MapField<K, V> extends CustomField<Map> {
 
     private class EntryEditor implements Serializable {
 
+        private static final long serialVersionUID = 5710635901082609223L;
         TextField keyEditor;
         TextField valueEditor;
         Button delete;
-        Object oldKey;
+        K oldKey;
 
-        public EntryEditor(TextField ke, TextField valueEditor, Object k) {
+        EntryEditor(TextField ke, TextField valueEditor, K k) {
             this.keyEditor = ke;
             this.valueEditor = valueEditor;
             delete = new Button(FontAwesome.TRASH);
@@ -435,7 +440,7 @@ public class MapField<K, V> extends CustomField<Map> {
                     while(iterator.next() != keyEditor) {
                         idx++;
                     }
-                    mainLayout.removeRow((int) idx/3);
+                    mainLayout.removeRow(idx/3);
                 }
             });
 
@@ -458,7 +463,7 @@ public class MapField<K, V> extends CustomField<Map> {
             valueEditor.addValueChangeListener(new Property.ValueChangeListener() {
                 @Override
                 public void valueChange(Property.ValueChangeEvent event) {
-                    replaceValue((K) EntryEditor.this.oldKey, EntryEditor.this.valueEditor.getValue());
+                    replaceValue(EntryEditor.this.oldKey, EntryEditor.this.valueEditor.getValue());
                 }
 
             });

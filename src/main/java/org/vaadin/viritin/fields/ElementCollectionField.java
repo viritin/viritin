@@ -1,13 +1,5 @@
 package org.vaadin.viritin.fields;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import org.vaadin.viritin.MBeanFieldGroup;
-import org.vaadin.viritin.button.MButton;
-
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.Alignment;
@@ -17,9 +9,16 @@ import com.vaadin.ui.Field;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.themes.ValoTheme;
+import org.vaadin.viritin.MBeanFieldGroup;
 import org.vaadin.viritin.button.ConfirmButton;
+import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.form.AbstractForm;
 import org.vaadin.viritin.layouts.MGridLayout;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A field suitable for editing collection of referenced objects tied to parent
@@ -73,7 +72,9 @@ import org.vaadin.viritin.layouts.MGridLayout;
  */
 public class ElementCollectionField<ET> extends AbstractElementCollection<ET> {
 
-    List<ET> items = new ArrayList<ET>();
+    private static final long serialVersionUID = 8573373104105052804L;
+
+    List<ET> items = new ArrayList<>();
 
     boolean inited = false;
 
@@ -112,6 +113,7 @@ public class ElementCollectionField<ET> extends AbstractElementCollection<ET> {
             MButton b = new MButton(FontAwesome.EDIT)
                     .withStyleName(ValoTheme.BUTTON_ICON_ONLY)
                     .withListener(new Button.ClickListener() {
+                private static final long serialVersionUID = 5019806363620874205L;
                 @Override
                 public void buttonClick(Button.ClickEvent event) {
                     editInPopup(v);
@@ -137,6 +139,7 @@ public class ElementCollectionField<ET> extends AbstractElementCollection<ET> {
         b.withIcon(FontAwesome.TRASH_O)
                 .withStyleName(ValoTheme.BUTTON_ICON_ONLY, ValoTheme.BUTTON_DANGER)
                 .withListener(new Button.ClickListener() {
+            private static final long serialVersionUID = 5019806363620874205L;
                     @Override
                     public void buttonClick(Button.ClickEvent event) {
                         removeElement(v);
@@ -413,6 +416,7 @@ public class ElementCollectionField<ET> extends AbstractElementCollection<ET> {
         this.popupEditor = newPopupEditor;
         if (newPopupEditor != null) {
             newPopupEditor.setSavedHandler(new AbstractForm.SavedHandler<ET>() {
+                private static final long serialVersionUID = 389618696563816566L;
                 @Override
                 public void onSave(ET entity) {
                     MBeanFieldGroup<ET> fg = getFieldGroupFor(entity);

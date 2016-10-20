@@ -18,7 +18,7 @@ import org.vaadin.addonhelpers.components.VaadinComboBox;
 
 @RunWith(Parameterized.class)
 public class VaadinLocaleTest extends AbstractWebDriverCase {
-    private String expectedLanguage;
+    private final String expectedLanguage;
 
     @Parameters
     public static Collection languages() {

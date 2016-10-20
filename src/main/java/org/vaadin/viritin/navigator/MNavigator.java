@@ -39,6 +39,8 @@ import com.vaadin.ui.UI;
  */
 public class MNavigator extends Navigator {
 
+    private static final long serialVersionUID = 1438630556557157686L;
+
     /**
      * Creates a navigator that is tracking the active view using URI fragments
      * of the {@link com.vaadin.server.Page} containing the given UI and
@@ -137,6 +139,8 @@ public class MNavigator extends Navigator {
     // The listener exists for the life-time of the navigator. It never
     // gets unregistered.
     private static class MViewChangeListener implements ViewChangeListener {
+
+        private static final long serialVersionUID = -3311491180251673472L;
 
         @Override
         public boolean beforeViewChange(ViewChangeListener.ViewChangeEvent event) {

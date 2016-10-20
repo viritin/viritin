@@ -47,7 +47,7 @@ public class NestedPropertyTest {
         private List<Detail> detailList = Arrays.asList(new Detail(),
                 new Detail());
 
-        private Map<String, Integer> stringToInteger = new HashMap<String, Integer>();
+        private Map<String, Integer> stringToInteger = new HashMap<>();
 
         public Entity() {
             stringToInteger.put("id", id.intValue());
@@ -181,7 +181,7 @@ public class NestedPropertyTest {
     @Test
     public void testDynaBeanItem() {
 
-        DynaBeanItem<Entity> dynaBeanItem = new DynaBeanItem<Entity>(
+        DynaBeanItem<Entity> dynaBeanItem = new DynaBeanItem<>(
                 new Entity());
 
         Property itemProperty = dynaBeanItem.getItemProperty("property");
@@ -274,13 +274,13 @@ public class NestedPropertyTest {
     }
 
     public static ListContainer<Entity> getTestListContainer() {
-        ListContainer<Entity> listContainer = new ListContainer<Entity>(
+        ListContainer<Entity> listContainer = new ListContainer<>(
                 getEntities(3));
         return listContainer;
     }
 
     public static List<Entity> getEntities(int n) {
-        ArrayList<Entity> arrayList = new ArrayList<Entity>();
+        ArrayList<Entity> arrayList = new ArrayList<>();
         for (int i = 0; i < n; i++) {
             final Entity entity = new Entity();
             if(i==1) {

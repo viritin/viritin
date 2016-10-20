@@ -17,6 +17,8 @@ import org.vaadin.viritin.testdomain.Address.AddressType;
 @Theme("valo")
 public class EnumFieldAsRadioButtonGroup extends AbstractTest {
 
+    private static final long serialVersionUID = -825607383677011983L;
+
     @Override
     public Component getTestComponent() {
 

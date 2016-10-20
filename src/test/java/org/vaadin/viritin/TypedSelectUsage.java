@@ -4,7 +4,6 @@ import com.vaadin.data.Property;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.ListSelect;
-import com.vaadin.ui.TwinColSelect;
 import org.apache.commons.lang3.mutable.MutableObject;
 import org.junit.Assert;
 import org.junit.Test;
@@ -41,6 +40,7 @@ public class TypedSelectUsage {
 
     private MValueChangeListener<Person> getValueChangeListener() {
         return new MValueChangeListener<Person>() {
+            private static final long serialVersionUID = -9022394310035020509L;
 
             @Override
             public void valueChange(MValueChangeEvent<Person> event) {
@@ -65,6 +65,7 @@ public class TypedSelectUsage {
         // for caption usage
         listSelect.addItems(getOptions());
         listSelect.addValueChangeListener(new Property.ValueChangeListener() {
+            private static final long serialVersionUID = -382717228031608542L;
 
             @Override
             public void valueChange(Property.ValueChangeEvent event) {
@@ -79,6 +80,7 @@ public class TypedSelectUsage {
         // This is partly why the current API is "suboptimal".
         //listSelect.setMultiSelect(true);
         listSelect.addValueChangeListener(new Property.ValueChangeListener() {
+            private static final long serialVersionUID = -382717228031608542L;
 
             @Override
             public void valueChange(Property.ValueChangeEvent event) {
@@ -91,7 +93,7 @@ public class TypedSelectUsage {
         /** Actual TypedSelect usage */
 
         // Better typed alternative for Vaadin select
-        final TypedSelect<Person> typedSelect = new TypedSelect<Person>();
+        final TypedSelect<Person> typedSelect = new TypedSelect<>();
         // Uses "NativeSelect" as impl. by default, but all core select types are
         // supported. E.g.: withSelectType(ListSelect.class);
 
@@ -103,6 +105,7 @@ public class TypedSelectUsage {
         // for most objects you want to customize the caption text. Again, you
         // can use chaind invocation and you'll use lambdas in you java 8 project.
         typedSelect.setCaptionGenerator(new CaptionGenerator<Person>() {
+            private static final long serialVersionUID = -4723489976732288325L;
 
             @Override
             public String getCaption(Person option) {
@@ -132,7 +135,7 @@ public class TypedSelectUsage {
         // other configuration's are similar to testTypedSelect...
 
         /** Actual TypedSelect usage */
-        final TypedSelect<Person> typedSelect = new TypedSelect<Person>();
+        final TypedSelect<Person> typedSelect = new TypedSelect<>();
         // TypedSelect only provides configurations that are similar to all select-types (AbstractSelect)
         // for example the ComboBox has some options that other AbstractSelect don't have
         // by using asComboBoxType instead of typedSelect.withSelectType(ComboBox.class)

@@ -21,16 +21,20 @@ public class MTableLazyLoadingEmptyList extends AbstractTest {
         
         final List<Person> backingList = Service.getListOfPersons(0);
         
-        MTable<Person> mTable = new MTable<Person>(
+        MTable<Person> mTable = new MTable<>(
                 new LazyList.PagingProvider<Person>() {
-                    
+
+                    private static final long serialVersionUID = 4212839156216191152L;
+
                     @Override
                     public List<Person> findEntities(int firstRow) {
                         return backingList.subList(firstRow, 0);
                     }
                 },
                 new LazyList.CountProvider() {
-                    
+
+                    private static final long serialVersionUID = -3958524394327292732L;
+
                     @Override
                     public int size() {
                         return 0;

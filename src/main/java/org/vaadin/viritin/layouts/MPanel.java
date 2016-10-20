@@ -10,6 +10,8 @@ import org.vaadin.viritin.MSize;
  */
 public class MPanel extends Panel{
 
+    private static final long serialVersionUID = -7384406421724902867L;
+
     public MPanel() {
         super();
     }

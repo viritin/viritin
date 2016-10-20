@@ -27,15 +27,17 @@ public class GridLazyLoadingAndSorting extends AbstractTest {
 
         final List<Person> orig = Service.getListOfPersons(1000);
 
-        final MGrid<Person> g = new MGrid<Person>(
+        final MGrid<Person> g = new MGrid<>(
                 new SortableLazyList.SortablePagingProvider<Person>() {
-            @Override
+                    private static final long serialVersionUID = 8990276045925275684L;
+
+                    @Override
             public List<Person> findEntities(int firstRow, boolean sortAscending,
                     String property) {
                 List<Person> listOfPersons = new ArrayList<>(orig);
                 if (property != null) {
 
-                    Collections.sort(listOfPersons, new BeanComparator<Person>(
+                    Collections.sort(listOfPersons, new BeanComparator<>(
                             property));
                     if (!sortAscending) {
                         Collections.reverse(listOfPersons);
@@ -45,29 +47,33 @@ public class GridLazyLoadingAndSorting extends AbstractTest {
                 if (last > listOfPersons.size()) {
                     last = listOfPersons.size();
                 }
-                return new ArrayList<Person>(listOfPersons.subList(firstRow,
+                return new ArrayList<>(listOfPersons.subList(firstRow,
                         last));
             }
         },
                 new LazyList.CountProvider() {
 
-            @Override
+                    private static final long serialVersionUID = 6575441260380762210L;
+
+                    @Override
             public int size() {
                 return orig.size();
             }
         }
         );
 
-        final MGrid<Person> g2 = new MGrid<Person>(Person.class);
+        final MGrid<Person> g2 = new MGrid<>(Person.class);
         g2.lazyLoadFrom(
                 new SortableLazyList.SortablePagingProvider<Person>() {
-            @Override
+                    private static final long serialVersionUID = 6584091430092559501L;
+
+                    @Override
             public List<Person> findEntities(int firstRow, boolean sortAscending,
                     String property) {
                 List<Person> listOfPersons = new ArrayList<>(orig);
                 if (property != null) {
 
-                    Collections.sort(listOfPersons, new BeanComparator<Person>(
+                    Collections.sort(listOfPersons, new BeanComparator<>(
                             property));
                     if (!sortAscending) {
                         Collections.reverse(listOfPersons);
@@ -77,13 +83,15 @@ public class GridLazyLoadingAndSorting extends AbstractTest {
                 if (last > listOfPersons.size()) {
                     last = listOfPersons.size();
                 }
-                return new ArrayList<Person>(listOfPersons.subList(firstRow,
+                return new ArrayList<>(listOfPersons.subList(firstRow,
                         last));
             }
         },
                 new LazyList.CountProvider() {
 
-            @Override
+                    private static final long serialVersionUID = -7613809143021239619L;
+
+                    @Override
             public int size() {
                 return orig.size();
             }
@@ -96,7 +104,7 @@ public class GridLazyLoadingAndSorting extends AbstractTest {
                 List<Person> listOfPersons = new ArrayList<>(orig);
                 if (property != null) {
                     
-                    Collections.sort(listOfPersons, new BeanComparator<Person>(
+                    Collections.sort(listOfPersons, new BeanComparator<>(
                             property));
                     if (!sortAscending) {
                         Collections.reverse(listOfPersons);

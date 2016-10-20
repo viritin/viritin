@@ -54,6 +54,8 @@ public class LazyComboBoxUsageSample extends AbstractTest {
                 filterablePagingProvider, filterableCountProvider)
                 .setCaptionGenerator(new CaptionGenerator<Person>() {
 
+                    private static final long serialVersionUID = 5611804984518152177L;
+
                     @Override
                     public String getCaption(Person option) {
                         return option.getFirstName() + " " + option.
@@ -61,6 +63,8 @@ public class LazyComboBoxUsageSample extends AbstractTest {
                     }
                 })
                 .setIconGenerator(new IconGenerator<Person>() {
+                    private static final long serialVersionUID = -795330075732173785L;
+
                     @Override
                     public Resource getIcon(Person option) {
                         return FontAwesome.AMBULANCE;
@@ -73,6 +77,8 @@ public class LazyComboBoxUsageSample extends AbstractTest {
         cb.setValue(selection);
 
         cb.addMValueChangeListener(new MValueChangeListener<Person>() {
+
+            private static final long serialVersionUID = -115227386482631657L;
 
             @Override
             public void valueChange(MValueChangeEvent<Person> event) {

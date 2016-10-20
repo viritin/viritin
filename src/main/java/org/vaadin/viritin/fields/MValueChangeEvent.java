@@ -21,6 +21,7 @@ import com.vaadin.data.Property;
 /**
  *
  * @author mattitahvonenitmill
+ * @param <T>  the value type
  */
 public interface MValueChangeEvent<T> extends Property.ValueChangeEvent {
     T getValue();

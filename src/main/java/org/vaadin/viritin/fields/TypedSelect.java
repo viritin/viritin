@@ -57,7 +57,7 @@ public class TypedSelect<T> extends CustomField<T> {
      */
     public TypedSelect(Class<T> type) {
         this.fieldType = type;
-        bic = new ListContainer<T>(type);
+        bic = new ListContainer<>(type);
     }
 
     /**
@@ -312,7 +312,7 @@ public class TypedSelect<T> extends CustomField<T> {
 
         if (fieldType == null) {
             try {
-                fieldType = (Class<T>) ((Container.Sortable) select
+                fieldType = (Class<T>) ((Container.Ordered) select
                         .getContainerDataSource()).firstItemId().getClass();
             } catch (Exception e) {
                 // If field type isn't set or can't be detected just report
@@ -435,7 +435,7 @@ public class TypedSelect<T> extends CustomField<T> {
         if (bic != null) {
             bic.setCollection(options);
         } else {
-            bic = new ListContainer<T>(options);
+            bic = new ListContainer<>(options);
         }
         getSelect().setContainerDataSource(bic);
         return this;

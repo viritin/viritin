@@ -1,11 +1,13 @@
 package org.vaadin.viritin.util;
 
-import java.lang.reflect.Method;
-import java.util.*;
-
+import com.vaadin.server.VaadinRequest;
 import org.vaadin.viritin.util.VaadinLocale.LocaleNegotiationStrategey;
 
-import com.vaadin.server.VaadinRequest;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Collection;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Implementation of {@link LocaleNegotiationStrategey} which uses java 1.8
@@ -30,7 +32,7 @@ public class Java8LocaleNegotiationStrategy implements
             Method lookup = Locale.class.getMethod("lookup", List.class,
                     Collection.class);
             return (Locale) lookup.invoke(null, priorityList, supportedLocales);
-        } catch (Exception e) {
+        } catch (ClassNotFoundException | IllegalAccessException | IllegalArgumentException | NoSuchMethodException | SecurityException | InvocationTargetException e) {
             throw new RuntimeException(
                     "Java8LocaleNegotiontionStrategy need java 1.8 or newer.",
                     e);

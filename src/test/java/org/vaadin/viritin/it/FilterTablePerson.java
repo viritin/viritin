@@ -18,7 +18,7 @@ public class FilterTablePerson extends AbstractTest {
 
     @Override
     public Component getTestComponent() {
-        final FilterableTable<Person> table = new FilterableTable<Person>();
+        final FilterableTable<Person> table = new FilterableTable<>();
         table.withProperties("firstName", "lastName", "age");
         table.setBeans(Service.getListOfPersons(200));
 

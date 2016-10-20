@@ -10,6 +10,9 @@ package org.vaadin.viritin.fields;
  */
 public abstract class AbstractCaptionGenerator<T> implements
         CaptionGenerator<T> {
+
+    private static final long serialVersionUID = 7397954730260358087L;
+    
     @Override
     public String getCaption(T option) {
         if (option == null) {

@@ -3,6 +3,7 @@ package org.vaadin.viritin.util;
 import com.vaadin.ui.JavaScript;
 import com.vaadin.ui.JavaScriptFunction;
 import elemental.json.JsonArray;
+
 import java.util.UUID;
 
 /**
@@ -29,6 +30,7 @@ public class BrowserCookie {
     public static void detectCookieValue(String key, final Callback callback) {
         final String callbackid = "viritincookiecb"+UUID.randomUUID().toString().substring(0,8);
         JavaScript.getCurrent().addFunction(callbackid, new JavaScriptFunction() {
+            private static final long serialVersionUID = -3426072590182105863L;
 
             @Override
             public void call(JsonArray arguments) {

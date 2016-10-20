@@ -26,11 +26,11 @@ public class Service {
     }
 
     public static List<Group> getAvailableGroups() {
-        return new ArrayList<Group>(groups);
+        return new ArrayList<>(groups);
     }
 
     public static List<Person> getListOfPersons(int total) {
-        List<Person> l = new ArrayList<Person>(total);
+        List<Person> l = new ArrayList<>(total);
         for (int i = 0; i < total; i++) {
             Person p = new Person();
             p.setId(i + 1);

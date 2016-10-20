@@ -1,8 +1,9 @@
 package org.vaadin.viritin.components;
 
-import java.util.*;
+import org.vaadin.viritin.fields.CaptionGenerator;
+import org.vaadin.viritin.fields.TypedSelect;
 
-import org.vaadin.viritin.fields.*;
+import java.util.Locale;
 
 /**
  * A select component for {@link java.util.Locale}.

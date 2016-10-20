@@ -33,12 +33,16 @@ import org.vaadin.viritin.ui.MNotification;
 @Theme("valo")
 public class MNotificationExapmle extends AbstractTest {
 
+    private static final long serialVersionUID = 1298981554296094891L;
+
     @Override
     public Component getTestComponent() {
         MVerticalLayout layout = new MVerticalLayout(
                 new MLabel("MNotification Examples").withStyleName("h1"),
                 new MHorizontalLayout(
                         new MButton(FontAwesome.COMMENT, "Humanized", new Button.ClickListener() {
+                            private static final long serialVersionUID = 5019806363620874205L;
+                            
                             @Override
                             public void buttonClick(Button.ClickEvent event) {
                                 MNotification.humanized("Humanized", "This is a humanized notification!")
@@ -46,6 +50,8 @@ public class MNotificationExapmle extends AbstractTest {
                             }
                         }).withStyleName("primary"),
                         new MButton(FontAwesome.TIMES, "Error", new Button.ClickListener() {
+                            private static final long serialVersionUID = 5019806363620874205L;
+                            
                             @Override
                             public void buttonClick(Button.ClickEvent event) {
                                 MNotification.error("Error", "This is an error notification!")
@@ -53,6 +59,8 @@ public class MNotificationExapmle extends AbstractTest {
                             }
                         }).withStyleName("danger"),
                         new MButton(FontAwesome.EXCLAMATION_TRIANGLE, "Warning", new Button.ClickListener() {
+                            private static final long serialVersionUID = 5019806363620874205L;
+                            
                             @Override
                             public void buttonClick(Button.ClickEvent event) {
                                 MNotification.warning("Warning", "This is a warning notification!")
@@ -60,6 +68,8 @@ public class MNotificationExapmle extends AbstractTest {
                             }
                         }),
                         new MButton(FontAwesome.DOWNLOAD, "Tray", new Button.ClickListener() {
+                            private static final long serialVersionUID = 5019806363620874205L;
+                            
                             @Override
                             public void buttonClick(Button.ClickEvent event) {
                                 MNotification.tray("Tray", "This is a tray notification!")
@@ -67,6 +77,8 @@ public class MNotificationExapmle extends AbstractTest {
                             }
                         }).withStyleName("friendly"),
                         new MButton(FontAwesome.WHEELCHAIR, "Assistive", new Button.ClickListener() {
+                            private static final long serialVersionUID = 5019806363620874205L;
+                            
                             @Override
                             public void buttonClick(Button.ClickEvent event) {
                                 MNotification.assistive("Assistive", "This is an assistive notification!");

@@ -21,19 +21,24 @@ import org.vaadin.viritin.testdomain.Service;
  */
 @Theme("valo")
 public class CheckBoxGroupTest extends AbstractTest {
+
+    private static final long serialVersionUID = 9030446735101247343L;
     
     public static class PersonForm extends AbstractForm<Person> {
+
+        private static final long serialVersionUID = 663449825951264623L;
         
         private MTextField firstName = new MTextField("Name");
         
         private MTextField age = new MTextField("Age");
         
-        private LabelField<Integer> id = new LabelField<Integer>(Integer.class)
+        private LabelField<Integer> id = new LabelField<>(Integer.class)
                 .withCaption("ID");
         
         private final CheckBoxGroup<Group> groups = new CheckBoxGroup<Group>()
                 .setOptions(Service.getAvailableGroups())
                 .setCaptionGenerator(new CaptionGenerator<Group>() {
+                    private static final long serialVersionUID = -7476461236123873375L;
                     
                     @Override
                     public String getCaption(Group option) {
@@ -58,6 +63,8 @@ public class CheckBoxGroupTest extends AbstractTest {
         
         form.addValidityChangedListener(
                 new AbstractForm.ValidityChangedListener<Person>() {
+                    private static final long serialVersionUID = -3688956596748617476L;
+                    
                     @Override
                     public void onValidityChanged(
                             AbstractForm.ValidityChangedEvent<Person> event) {
@@ -75,6 +82,7 @@ public class CheckBoxGroupTest extends AbstractTest {
         form.setEntity(p);
         
         form.setSavedHandler(new AbstractForm.SavedHandler<Person>() {
+            private static final long serialVersionUID = 1008970415395369248L;
             
             @Override
             public void onSave(Person entity) {

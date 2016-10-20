@@ -33,6 +33,7 @@ public class NumberFieldWidthTest {
     public void testSizeDefined() {
 
         IntegerField integerField = new IntegerField() {
+            private static final long serialVersionUID = -2915829267538851760L;
 
             @Override
             public void setWidth(float width, Sizeable.Unit unit) {

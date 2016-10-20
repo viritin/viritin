@@ -33,7 +33,8 @@ public class ElementCollectionWithPopupEditor extends AbstractTest {
     }
 
     public static class FullAddressForm extends AbstractForm<Address> {
-        
+
+        private static final long serialVersionUID = 8476434813427628969L;
         EnumSelect type = new EnumSelect("type");
         MTextField street = new MTextField().withInputPrompt("street");
         MTextField city = new MTextField().withInputPrompt("city");
@@ -55,13 +56,14 @@ public class ElementCollectionWithPopupEditor extends AbstractTest {
 
     public static class PersonFormManualAddressAddition<Person> extends AbstractForm {
 
+        private static final long serialVersionUID = -7517054537365246364L;
         private final ElementCollectionField<Address> addresses
                 = new ElementCollectionField<>(Address.class,
                         AddressRow.class).withCaption("Addressess").
                 setRequireVerificationForRemoving(true)
                 .setAllowNewElements(false);
 
-        private Button add = new MButton("Add row", new Button.ClickListener() {
+        private final Button add = new MButton("Add row", new Button.ClickListener() {
 
             @Override
             public void buttonClick(Button.ClickEvent event) {
@@ -96,6 +98,8 @@ public class ElementCollectionWithPopupEditor extends AbstractTest {
         form.setEntity(p);
 
         form.setSavedHandler(new AbstractForm.SavedHandler<Person>() {
+
+            private static final long serialVersionUID = 5522176287160062623L;
 
             @Override
             public void onSave(Person entity) {

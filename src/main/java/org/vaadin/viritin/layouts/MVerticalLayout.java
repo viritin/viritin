@@ -11,6 +11,8 @@ import java.util.Collection;
 
 public class MVerticalLayout extends VerticalLayout {
 
+    private static final long serialVersionUID = -1806208156595232451L;
+
     public MVerticalLayout() {
         super.setSpacing(true);
         super.setMargin(true);

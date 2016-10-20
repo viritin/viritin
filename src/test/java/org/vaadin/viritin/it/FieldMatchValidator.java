@@ -1,5 +1,6 @@
 package org.vaadin.viritin.it;
 
+import java.lang.reflect.InvocationTargetException;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import org.apache.commons.beanutils.BeanUtils;
@@ -34,7 +35,7 @@ public class FieldMatchValidator implements
 
             return firstObj == null && secondObj == null || firstObj != null && firstObj.
                     equals(secondObj);
-        } catch (final Exception ignore) {
+        } catch (final IllegalAccessException | NoSuchMethodException | InvocationTargetException ignore) {
             // ignore
         }
         return true;

@@ -3,14 +3,13 @@ package org.vaadin.viritin.fields;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
+import org.vaadin.viritin.MBeanFieldGroup;
+import org.vaadin.viritin.button.MButton;
+import org.vaadin.viritin.layouts.MVerticalLayout;
 
 import java.util.ArrayList;
 import java.util.IdentityHashMap;
 import java.util.List;
-
-import org.vaadin.viritin.MBeanFieldGroup;
-import org.vaadin.viritin.button.MButton;
-import org.vaadin.viritin.layouts.MVerticalLayout;
 
 /**
  * A field suitable for editing collection of referenced objects tied to parent
@@ -73,7 +72,7 @@ public class ElementCollectionTable<ET> extends AbstractElementCollection<ET> {
                 }
             });
 
-    private IdentityHashMap<ET, MButton> elementToDelButton = new IdentityHashMap<ET, MButton>();
+    private IdentityHashMap<ET, MButton> elementToDelButton = new IdentityHashMap<>();
 
     boolean inited = false;
 

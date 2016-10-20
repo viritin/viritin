@@ -20,21 +20,28 @@ import com.vaadin.data.Container.ItemSetChangeNotifier;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.AbstractContainer;
+import org.apache.commons.beanutils.*;
+import org.apache.commons.beanutils.expression.DefaultResolver;
+import org.apache.commons.beanutils.expression.Resolver;
+import org.apache.commons.collections.comparators.NullComparator;
+import org.apache.commons.collections.comparators.ReverseComparator;
+import org.apache.commons.lang3.ClassUtils;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import org.apache.commons.beanutils.*;
-import org.apache.commons.collections.comparators.NullComparator;
-import org.apache.commons.collections.comparators.ReverseComparator;
-import org.apache.commons.lang3.ClassUtils;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.apache.commons.beanutils.expression.DefaultResolver;
-import org.apache.commons.beanutils.expression.Resolver;
 
 /**
  * A replacement for BeanItemContainer from the core
@@ -48,35 +55,38 @@ import org.apache.commons.beanutils.expression.Resolver;
 public class ListContainer<T> extends AbstractContainer implements
         Container.Indexed, Container.Sortable, ItemSetChangeNotifier {
 
+    private static final long serialVersionUID = -6709228455051205922L;
+
     private List<T> backingList;
     private List<String> properties;
 
-    public ListContainer(Collection<T> backingList) {
+    public ListContainer(Collection<? extends T> backingList) {
         setCollection(backingList);
     }
 
-    public ListContainer(Class<T> type, Collection<T> backingList) {
+    public ListContainer(Class<? extends T> type, Collection<? extends T> backingList) {
         if (type != null) {
             dynaClass = WrapDynaClass.createDynaClass(type);
         }
         setCollection(backingList);
     }
 
-    public final void setCollection(Collection<T> backingList1) {
-        if (backingList1 instanceof List) {
+    public final void setCollection(Collection<? extends T> backingList1) {
+        if (backingList1 instanceof List<?>) {
             this.backingList = (List<T>) backingList1;
         } else {
-            this.backingList = new ArrayList<T>(backingList1);
+            this.backingList = new ArrayList<>(backingList1);
         }
+        
         fireItemSetChange();
     }
 
-    public ListContainer(Class<T> type) {
-        backingList = new ArrayList<T>();
+    public ListContainer(Class<? extends T> type) {
+        backingList = new ArrayList<>();
         dynaClass = WrapDynaClass.createDynaClass(type);
     }
 
-    public ListContainer(Class<T> type, String... properties) {
+    public ListContainer(Class<? extends T> type, String... properties) {
         this(type);
         setContainerPropertyIds(properties);
     }
@@ -191,14 +201,14 @@ public class ListContainer<T> extends AbstractContainer implements
         if (itemId == null) {
             return null;
         }
-        return new DynaBeanItem<T>((T) itemId);
+        return new DynaBeanItem<>((T) itemId);
     }
 
     @Override
     public Collection<String> getContainerPropertyIds() {
         if (properties == null) {
             if (getDynaClass() != null) {
-                ArrayList<String> props = new ArrayList<String>();
+                ArrayList<String> props = new ArrayList<>();
                 for (DynaProperty db : getDynaClass().getDynaProperties()) {
                     if (db.getType() != null) {
                         props.add(db.getName());
@@ -248,7 +258,11 @@ public class ListContainer<T> extends AbstractContainer implements
             // nested/indexed/mapped property
             try {
                 return getNestedPropertyType(getDynaClass(), pName);
-            } catch (Exception ex) {
+            } catch (final IllegalAccessException 
+                         | InvocationTargetException 
+                         | NoSuchMethodException 
+                         | ClassNotFoundException 
+                         | NoSuchFieldException ex) {
                 throw new RuntimeException(ex);
             }
         }
@@ -256,7 +270,7 @@ public class ListContainer<T> extends AbstractContainer implements
 
     private static Resolver resolver = new DefaultResolver();
 
-    public static Class getNestedPropertyType(DynaClass bean, String name)
+    public static Class<?> getNestedPropertyType(DynaClass bean, String name)
             throws IllegalAccessException, InvocationTargetException,
             NoSuchMethodException, ClassNotFoundException, NoSuchFieldException {
         if (bean == null) {
@@ -338,7 +352,7 @@ public class ListContainer<T> extends AbstractContainer implements
 
     @Override
     public boolean containsId(Object itemId) {
-        return getBackingList().contains((T) itemId);
+        return getBackingList().contains(itemId);
     }
 
     @Override
@@ -355,7 +369,7 @@ public class ListContainer<T> extends AbstractContainer implements
 
     @Override
     public boolean removeItem(Object itemId) throws UnsupportedOperationException {
-        final boolean remove = backingList.remove((T) itemId);
+        final boolean remove = backingList.remove(itemId);
         if (remove) {
             fireItemSetChange();
         }
@@ -416,7 +430,7 @@ public class ListContainer<T> extends AbstractContainer implements
             // as the sorting should most probably be done at backend call level
             return Collections.emptySet();
         }
-        final ArrayList<String> props = new ArrayList<String>();
+        final ArrayList<String> props = new ArrayList<>();
         for (Object a : getContainerPropertyIds()) {
             DynaProperty db = getDynaClass().getDynaProperty(a.toString());
             if (db != null && db.getType() != null && (db.getType().
@@ -428,20 +442,24 @@ public class ListContainer<T> extends AbstractContainer implements
         return props;
     }
 
+    @Override
     public void addItemSetChangeListener(
             Container.ItemSetChangeListener listener) {
         super.addItemSetChangeListener(listener);
     }
 
+    @Override
     public void removeItemSetChangeListener(
             Container.ItemSetChangeListener listener) {
         super.removeItemSetChangeListener(listener);
     }
 
+    @Override
     public void addListener(Container.ItemSetChangeListener listener) {
         super.addListener(listener);
     }
 
+    @Override
     public void removeListener(Container.ItemSetChangeListener listener) {
         super.removeListener(listener);
     }
@@ -488,7 +506,7 @@ public class ListContainer<T> extends AbstractContainer implements
             for (int i = 0; i < propertyId.length; i++) {
                 String currentProperty = propertyId[i].toString();
                 Comparator<T> currentComparator
-                        = new BeanComparator<T>(currentProperty,
+                        = new BeanComparator<>(currentProperty,
                                 getUnderlyingComparator(currentProperty));
 
                 if (!ascending[i]) {
@@ -507,13 +525,17 @@ public class ListContainer<T> extends AbstractContainer implements
 
     public class DynaBeanItem<T> implements Item {
 
-        private final Map<Object, DynaProperty> propertyIdToProperty = new HashMap<Object, DynaProperty>();
+        private static final long serialVersionUID = 39911097876284908L;
+
+        private final Map<Object, DynaProperty> propertyIdToProperty = new HashMap<>();
 
         private class DynaProperty implements Property {
 
+            private static final long serialVersionUID = -6887983770952190177L;
+
             private final String propertyName;
 
-            public DynaProperty(String property) {
+            DynaProperty(String property) {
                 propertyName = property;
             }
 
@@ -522,19 +544,15 @@ public class ListContainer<T> extends AbstractContainer implements
             	DynaBean dynaBean = getDynaBean();
             	try {
                     return dynaBean.get(propertyName);
-                } catch (Exception e) {
+                } catch (final Exception e) {
                     try {
                         return PropertyUtils.getProperty(bean, propertyName);
                     } 
-                    catch (NestedNullException ex) {
+                    catch (final NestedNullException | java.lang.IndexOutOfBoundsException ex) {
                         return null;
-                    } catch(java.lang.IndexOutOfBoundsException ex) {
-                        return null;
-                    } catch (IllegalAccessException ex) {
+                    } catch (final IllegalAccessException | InvocationTargetException ex) {
                         throw new RuntimeException(ex);
-                    } catch (InvocationTargetException ex) {
-                        throw new RuntimeException(ex);
-                    } catch (NoSuchMethodException ex) {
+                    } catch (final NoSuchMethodException ex) {
                     	Logger.getLogger(ListContainer.class.getName()).log(
                                 Level.FINE, "Trying default method fallback for property {0}",
                                 propertyName);
@@ -546,11 +564,9 @@ public class ListContainer<T> extends AbstractContainer implements
 				try {
 					method = obtainGetterOfProperty(dynaBean.getDynaClass(), propertyName);
 					return method.invoke(bean);
-				} catch (ReflectiveOperationException e) {
-					throw new RuntimeException(e);
-				} catch (SecurityException e) {
-					throw new RuntimeException(e);
-				} catch (IllegalArgumentException e) {
+				} catch (final ReflectiveOperationException 
+                             | SecurityException 
+                             | IllegalArgumentException e) {
 					throw new RuntimeException(e);
 				}
             }
@@ -559,7 +575,9 @@ public class ListContainer<T> extends AbstractContainer implements
             public void setValue(Object newValue) throws Property.ReadOnlyException {
                 try {
                     PropertyUtils.setProperty(bean, propertyName, newValue);
-                } catch (Exception ex) {
+                } catch (final IllegalAccessException 
+                             | InvocationTargetException 
+                             | NoSuchMethodException ex) {
                     throw new RuntimeException(ex);
                 }
             }
@@ -631,7 +649,5 @@ public class ListContainer<T> extends AbstractContainer implements
         public boolean removeItemProperty(Object id) throws UnsupportedOperationException {
             throw new UnsupportedOperationException("Not supported yet.");
         }
-
     }
-
 }

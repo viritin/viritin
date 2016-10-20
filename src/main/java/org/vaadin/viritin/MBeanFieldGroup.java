@@ -93,14 +93,17 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
                             .getMessageInterpolator().interpolate(
                                 notNullAnnotation.message(),
                                 new MessageInterpolator.Context() {
+                                    @Override
                                     public ConstraintDescriptor<?> getConstraintDescriptor() {
                                         return null;
                                     }
 
+                                    @Override
                                     public Object getValidatedValue() {
                                         return null;
                                     }
 
+                                    @Override
                                     public <T> T unwrap(Class<T> type) {
                                         return null;
                                     }
@@ -139,7 +142,7 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
         }
     }
 
-    private final Set<String> fieldsWithInitiallyDisabledValidation = new HashSet<String>();
+    private final Set<String> fieldsWithInitiallyDisabledValidation = new HashSet<>();
 
     public Set<String> getFieldsWithInitiallyDisabledValidation() {
         return Collections.
@@ -195,7 +198,7 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
      * @return error messages from "bean level validation"
      */
     public Collection<String> getBeanLevelValidationErrors() {
-        Collection<String> errors = new ArrayList<String>();
+        Collection<String> errors = new ArrayList<>();
         if (getConstraintViolations() != null) {
             for (final ConstraintViolation<T> constraintViolation : getConstraintViolations()) {
                 final MessageInterpolator.Context context = new MessageInterpolator.Context() {
@@ -356,7 +359,7 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
         }
     }
 
-    private LinkedHashMap<MValidator<T>, Collection<AbstractComponent>> mValidators = new LinkedHashMap<MValidator<T>, Collection<AbstractComponent>>();
+    private final LinkedHashMap<MValidator<T>, Collection<AbstractComponent>> mValidators = new LinkedHashMap<>();
 
     /**
      * EXPERIMENTAL: The cross field validation support is still experimental
@@ -389,9 +392,9 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
         return this;
     }
 
-    private final Map<ErrorMessage, AbstractComponent> mValidationErrors = new HashMap<ErrorMessage, AbstractComponent>();
+    private final Map<ErrorMessage, AbstractComponent> mValidationErrors = new HashMap<>();
 
-    private final Map<Class, AbstractComponent> validatorToErrorTarget = new HashMap<Class, AbstractComponent>();
+    private final Map<Class, AbstractComponent> validatorToErrorTarget = new HashMap<>();
 
     /**
      * Sets the "validation error target", the component on which validation
@@ -472,7 +475,7 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
                         // no specific "target component" for validation error
                         // leave as bean level error
                         if (beanLevelViolations == null) {
-                            beanLevelViolations = new HashSet<Validator.InvalidValueException>();
+                            beanLevelViolations = new HashSet<>();
                         }
                         beanLevelViolations.add(e);
                         mValidationErrors.put(em, null);
@@ -520,7 +523,7 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
                             // no specific "target component" for validation error
                             // leave as bean level error
                             if (beanLevelViolations == null) {
-                                beanLevelViolations = new HashSet<Validator.InvalidValueException>();
+                                beanLevelViolations = new HashSet<>();
                             }
                             beanLevelViolations.add(e);
                             mValidationErrors.put(em, null);
@@ -573,6 +576,8 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
 
     public MBeanFieldGroup<T> withEagerValidation() {
         return withEagerValidation(new FieldGroupListener() {
+            private static final long serialVersionUID = 2706724523369882782L;
+
             @Override
             public void onFieldGroupChange(MBeanFieldGroup beanFieldGroup) {
             }
@@ -609,7 +614,7 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
      */
     public void unbind() {
         // wrap in array list to avoid CME
-        for (Field<?> field : new ArrayList<Field<?>>(getFields())) {
+        for (Field<?> field : new ArrayList<>(getFields())) {
             field.removeValueChangeListener(this);
             if (field instanceof TextChangeNotifier) {
                 final TextChangeNotifier abstractTextField = (TextChangeNotifier) field;

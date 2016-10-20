@@ -4,6 +4,7 @@ package org.vaadin.viritin.fields;
 import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
 import com.vaadin.ui.NativeSelect;
+
 import java.util.Collection;
 
 public class EnumSelect<T> extends TypedSelect<T> {

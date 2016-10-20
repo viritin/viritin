@@ -23,7 +23,7 @@ public class EditPersonWithDisabledField extends AbstractTest {
     
     public class CustomPerson extends Person {
         
-        private String readOnlyFieldInPojo = "fixedValue";
+        private final String readOnlyFieldInPojo = "fixedValue";
 
         public String getReadOnlyFieldInPojo() {
             return readOnlyFieldInPojo;
@@ -33,13 +33,14 @@ public class EditPersonWithDisabledField extends AbstractTest {
 
     public static class PersonForm extends AbstractForm<CustomPerson> {
 
-        private MTextField firstName = new MTextField("Name");
+        private static final long serialVersionUID = -2988976182433301844L;
+        private final MTextField firstName = new MTextField("Name");
         
-        private MTextField readOnlyFieldInPojo = new MTextField("Should be RO");
+        private final MTextField readOnlyFieldInPojo = new MTextField("Should be RO");
 
-        private IntegerField age = new IntegerField("Age");
+        private final IntegerField age = new IntegerField("Age");
 
-        private LabelField<Integer> id = new LabelField<>(Integer.class)
+        private final LabelField<Integer> id = new LabelField<>(Integer.class)
                 .withCaption("ID");
 
         public PersonForm() {
@@ -60,7 +61,9 @@ public class EditPersonWithDisabledField extends AbstractTest {
 
         form.addValidityChangedListener(
                 new AbstractForm.ValidityChangedListener<CustomPerson>() {
-            @Override
+                    private static final long serialVersionUID = -8159920971526151534L;
+
+                    @Override
             public void onValidityChanged(
                     AbstractForm.ValidityChangedEvent<CustomPerson> event) {
                 if (event.getComponent().isValid()) {
@@ -79,6 +82,8 @@ public class EditPersonWithDisabledField extends AbstractTest {
         form.setEntity(p);
 
         form.setSavedHandler(new AbstractForm.SavedHandler<CustomPerson>() {
+
+            private static final long serialVersionUID = 722131410583777207L;
 
             @Override
             public void onSave(CustomPerson entity) {

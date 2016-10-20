@@ -18,11 +18,11 @@ package org.vaadin.viritin.fields;
 import com.vaadin.data.Property;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomField;
+import org.apache.commons.lang3.StringUtils;
+
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Collection;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * A simple TextField based component to edit collections of objects, which can
@@ -32,6 +32,8 @@ import org.apache.commons.lang3.StringUtils;
  * strategies to convert from String presentation to element types.
  */
 public class CommaSeparatedCollectionField extends CustomField<Collection> {
+
+    private static final long serialVersionUID = 2443075282417590322L;
 
     public interface FromStringInstantiator<T> {
 
@@ -47,6 +49,7 @@ public class CommaSeparatedCollectionField extends CustomField<Collection> {
 
     public CommaSeparatedCollectionField() {
         textField.addValueChangeListener(new ValueChangeListener() {
+            private static final long serialVersionUID = -382717228031608542L;
             @Override
             public void valueChange(Property.ValueChangeEvent event) {
                 if (textField.isUserValueChange()) {
@@ -67,10 +70,10 @@ public class CommaSeparatedCollectionField extends CustomField<Collection> {
                             } catch (NoSuchMethodException ex) {
                                 try {
                                     collection.add(elementType.getConstructor(String.class).newInstance(part));
-                                } catch (Exception ex1) {
+                                } catch (IllegalAccessException | IllegalArgumentException | InstantiationException | NoSuchMethodException | SecurityException | InvocationTargetException ex1) {
                                 throw new RuntimeException("The string " + part + " could not be converted to " + elementType.getSimpleName(), ex1);
                                 }
-                            } catch (Exception ex) {
+                            } catch (IllegalAccessException | IllegalArgumentException | SecurityException | InvocationTargetException ex) {
                                 throw new RuntimeException("The string " + part + " could not be converted to " + elementType.getSimpleName(), ex);
                             }
                         } else {
