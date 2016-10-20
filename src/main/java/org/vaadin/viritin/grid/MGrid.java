@@ -219,6 +219,7 @@ public class MGrid<T> extends Grid {
             setContainerDataSource(gplc);
         }
         gplc.addGeneratedProperty(columnId, columnGenerator);
+        addColumn(columnId);
     }
 
     public MGrid<T> withFullWidth() {

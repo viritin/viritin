@@ -3,6 +3,7 @@ package org.vaadin.viritin.grid;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.PropertyValueGenerator;
+import java.util.ArrayList;
 import org.vaadin.viritin.ListContainer;
 
 import java.util.Collection;
@@ -209,6 +210,20 @@ public class GeneratedPropertyListContainer<T> extends ListContainer<T> {
         }
         Item item = super.getItem(itemId);
         return createGeneratedPropertyItem(itemId, item);
+    }
+
+    @Override
+    public Collection<String> getContainerPropertyIds() {
+           // create returned list of propertyIds
+        ArrayList<String> properties = new ArrayList<>();
+
+        // add all propertyIds of the underlying ListContainer
+        properties.addAll(super.getContainerPropertyIds());
+
+        // add the propertyIds for all the given generators
+        properties.addAll(propertyGenerators.keySet());
+
+        return properties;
     }
 
     private <T> Property<T> createProperty(final Item item,
