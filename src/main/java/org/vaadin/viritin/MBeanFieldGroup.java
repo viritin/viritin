@@ -83,7 +83,7 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
                     final NotNull notNullAnnotation = declaredField.
                         getAnnotation(
                             NotNull.class);
-                    if (notNullAnnotation != null) {
+                    if (notNullAnnotation != null && !field.isReadOnly()) {
                         field.setRequired(true);
                         Locale locale = getLocale();
                         if (locale == null) {

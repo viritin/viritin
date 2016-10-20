@@ -2,6 +2,7 @@ package org.vaadin.viritin;
 
 import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.Field;
+import com.vaadin.ui.TextField;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,6 +14,7 @@ import java.util.Arrays;
 import java.util.Locale;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import org.junit.Assert;
 import static org.junit.Assert.assertThat;
 
 /**
@@ -59,6 +61,23 @@ public class MBeanFieldGroupTest {
         assertThat(defaultMessageField.getRequiredError(), equalTo("Non deve essere nullo"));
         assertThat(customMessageKeyField.getRequiredError(), equalTo("Gli indirizzi email devono corrispondere!"));
         assertThat(customMessageField.getRequiredError(), equalTo("Custom message"));
+    }
+    
+    @Test
+    public void  readOnlyFieldsShouldNotBeMadeRequired() {
+        
+        MBeanFieldGroup<Tester> bfg = new MBeanFieldGroup<>(Tester.class);
+        
+        TextField readOnlyField = new TextField();
+        readOnlyField.setReadOnly(true);
+        TextField basic = new TextField();
+        bfg.bind(readOnlyField, "defaultMessage");
+        bfg.bind(basic, "customMessageKey");
+        bfg.configureMaddonDefaults();
+        
+        Assert.assertFalse("Read only field don't need to be marked required", readOnlyField.isRequired());
+        Assert.assertTrue("Editable notnull properties should make fields required", basic.isRequired());
+        
     }
 
     private void withLocale(Locale locale, Field<?>... fields) {
