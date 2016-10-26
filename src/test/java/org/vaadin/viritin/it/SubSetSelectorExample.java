@@ -1,16 +1,13 @@
 package org.vaadin.viritin.it;
 
-import com.vaadin.annotations.Theme;
-import com.vaadin.data.Property;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.Notification;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.viritin.fields.CaptionGenerator;
+import org.vaadin.viritin.fields.IntegerField;
 import org.vaadin.viritin.fields.MTextField;
 import org.vaadin.viritin.fields.SubSetSelector;
 import org.vaadin.viritin.form.AbstractForm;
@@ -18,6 +15,12 @@ import org.vaadin.viritin.layouts.MFormLayout;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.vaadin.viritin.testdomain.Person;
 import org.vaadin.viritin.testdomain.Service;
+
+import com.vaadin.annotations.Theme;
+import com.vaadin.data.Property;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.Notification;
 
 /**
  * Subset selector is a component that is designed to pick an handful of objects
@@ -99,7 +102,10 @@ public class SubSetSelectorExample extends AbstractTest {
         Button setList = new Button("setValue(new ArrayList())");
         setList.addClickListener(e->{sss.setValue(new ArrayList());});
 
-        return new MVerticalLayout(sss, setNull, setList);
+        IntegerField limitField = new IntegerField("Selection limit");
+        limitField.addValueChangeListener(e -> sss.setLimit(((Integer) e.getProperty().getValue()).intValue()));
+
+        return new MVerticalLayout(sss, setNull, setList, limitField);
         
     }
 
