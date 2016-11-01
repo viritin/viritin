@@ -15,27 +15,6 @@
  */
 package org.vaadin.viritin;
 
-import com.vaadin.data.Property;
-import com.vaadin.data.Validator;
-import com.vaadin.data.fieldgroup.BeanFieldGroup;
-import com.vaadin.event.FieldEvents;
-import com.vaadin.event.FieldEvents.TextChangeNotifier;
-import com.vaadin.server.AbstractErrorMessage;
-import com.vaadin.server.ErrorMessage;
-import com.vaadin.server.UserError;
-import com.vaadin.ui.AbstractComponent;
-import com.vaadin.ui.AbstractField;
-import com.vaadin.ui.Field;
-import org.vaadin.viritin.fields.EagerValidateable;
-
-import javax.validation.ConstraintViolation;
-import javax.validation.MessageInterpolator;
-import javax.validation.Validation;
-import javax.validation.ValidationException;
-import javax.validation.ValidatorFactory;
-import javax.validation.constraints.NotNull;
-import javax.validation.groups.Default;
-import javax.validation.metadata.ConstraintDescriptor;
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
@@ -52,6 +31,29 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.MessageInterpolator;
+import javax.validation.Validation;
+import javax.validation.ValidationException;
+import javax.validation.ValidatorFactory;
+import javax.validation.constraints.NotNull;
+import javax.validation.groups.Default;
+import javax.validation.metadata.ConstraintDescriptor;
+
+import org.vaadin.viritin.fields.EagerValidateable;
+
+import com.vaadin.data.Property;
+import com.vaadin.data.Validator;
+import com.vaadin.data.fieldgroup.BeanFieldGroup;
+import com.vaadin.event.FieldEvents;
+import com.vaadin.event.FieldEvents.TextChangeNotifier;
+import com.vaadin.server.AbstractErrorMessage;
+import com.vaadin.server.ErrorMessage;
+import com.vaadin.server.UserError;
+import com.vaadin.ui.AbstractComponent;
+import com.vaadin.ui.AbstractField;
+import com.vaadin.ui.Field;
+
 /**
  * Enhanced version of basic BeanFieldGroup in Vaadin. Supports "eager
  * validation" and some enhancements to bean validation support.
@@ -61,7 +63,10 @@ import java.util.logging.Logger;
 public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
     Property.ValueChangeListener, FieldEvents.TextChangeListener {
 
-    protected final Class nonHiddenBeanType;
+    private static final long serialVersionUID = 9027084784300479429L;
+
+    protected final Class<T> nonHiddenBeanType;
+    private boolean validateOnlyDefinedFields = false;
     private Set<ConstraintViolation<T>> jsr303beanLevelViolations;
     private Set<Validator.InvalidValueException> beanLevelViolations;
 
@@ -127,7 +132,7 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
     }
 
     protected java.lang.reflect.Field findDeclaredField(Object property,
-                                                        Class clazz) throws NoSuchFieldException, SecurityException {
+                                                        Class<?> clazz) throws NoSuchFieldException, SecurityException {
         try {
             java.lang.reflect.Field declaredField = clazz.
                 getDeclaredField(property.
@@ -161,9 +166,9 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
      */
     public void hideInitialEmpyFieldValidationErrors() {
         fieldsWithInitiallyDisabledValidation.clear();
-        for (Field f : getFields()) {
+        for (Field<?> f : getFields()) {
             if (f instanceof AbstractField) {
-                final AbstractField abstractField = (AbstractField) f;
+                final AbstractField<?> abstractField = (AbstractField<?>) f;
                 if (abstractField.getErrorMessage() != null && abstractField.
                     isRequired() && abstractField.
                     isEmpty() && abstractField.isValidationVisible()) {
@@ -273,7 +278,8 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
             return true;
         }
 
-        Set<ConstraintViolation<T>> constraintViolations = new HashSet(
+        boolean containsAtLeastOneDefinedComponentWitError = false;
+        Set<ConstraintViolation<T>> constraintViolations = new HashSet<>(
             javaxBeanValidator.validate(bean, getValidationGroups()));
         if (constraintViolations.isEmpty()) {
             return true;
@@ -292,10 +298,14 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
                 errortarget.setComponentError(new UserError(
                     constraintViolation.getMessage()));
                 iterator.remove();
+                containsAtLeastOneDefinedComponentWitError = true;
             }
             // else leave as "bean level error"
         }
         this.jsr303beanLevelViolations = constraintViolations;
+        if (!containsAtLeastOneDefinedComponentWitError && isValidateOnlyDefinedFields()) {
+            return true;
+        }
         return false;
     }
 
@@ -336,14 +346,14 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
         if (event != null) {
             Property property = event.getProperty();
             if (property instanceof Field) {
-                Field abstractField = (Field) property;
+                Field<?> abstractField = (Field<?>) property;
                 Object propertyId = getPropertyId(abstractField);
                 if (propertyId != null) {
                     boolean wasHiddenValidation = fieldsWithInitiallyDisabledValidation.
                         remove(propertyId.toString());
                     if (wasHiddenValidation) {
                         if (abstractField instanceof AbstractField) {
-                            AbstractField abstractField1 = (AbstractField) abstractField;
+                            AbstractField<?> abstractField1 = (AbstractField<?>) abstractField;
                             abstractField1.setValidationVisible(true);
                         }
                     }
@@ -394,7 +404,7 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
 
     private final Map<ErrorMessage, AbstractComponent> mValidationErrors = new HashMap<>();
 
-    private final Map<Class, AbstractComponent> validatorToErrorTarget = new HashMap<>();
+    private final Map<Class<?>, AbstractComponent> validatorToErrorTarget = new HashMap<>();
 
     /**
      * Sets the "validation error target", the component on which validation
@@ -421,6 +431,19 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
         for (AbstractComponent ac : validatorToErrorTarget.values()) {
             ac.setComponentError(null);
         }
+    }
+
+    public boolean isValidateOnlyDefinedFields() {
+        return validateOnlyDefinedFields;
+    }
+
+    /**
+     * Tells that only binded fields from the bean should be validated.
+     * By default, all bean properties are validated.
+     * @param validateOnlyDefinedFields
+     */
+    public void setValidateOnlyDefinedFields(boolean validateOnlyDefinedFields) {
+        this.validateOnlyDefinedFields = validateOnlyDefinedFields;
     }
 
     @Override
@@ -568,18 +591,18 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
         return super.isModified();
     }
 
-    public MBeanFieldGroup(Class beanType) {
+    public MBeanFieldGroup(Class<T> beanType) {
         super(beanType);
         this.nonHiddenBeanType = beanType;
         setBuffered(false);
     }
 
     public MBeanFieldGroup<T> withEagerValidation() {
-        return withEagerValidation(new FieldGroupListener() {
+        return withEagerValidation(new FieldGroupListener<T>() {
             private static final long serialVersionUID = 2706724523369882782L;
 
             @Override
-            public void onFieldGroupChange(MBeanFieldGroup beanFieldGroup) {
+            public void onFieldGroupChange(MBeanFieldGroup<T> beanFieldGroup) {
             }
         });
     }

@@ -1,8 +1,14 @@
 package org.vaadin.viritin.form;
 
-import com.vaadin.ui.*;
-import com.vaadin.ui.themes.ValoTheme;
-import com.vaadin.util.ReflectTools;
+import java.io.Serializable;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import javax.validation.groups.Default;
+
 import org.vaadin.viritin.BeanBinder;
 import org.vaadin.viritin.MBeanFieldGroup;
 import org.vaadin.viritin.MBeanFieldGroup.FieldGroupListener;
@@ -12,13 +18,19 @@ import org.vaadin.viritin.button.PrimaryButton;
 import org.vaadin.viritin.label.RichText;
 import org.vaadin.viritin.layouts.MHorizontalLayout;
 
-import javax.validation.groups.Default;
-import java.io.Serializable;
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import com.vaadin.ui.AbstractComponent;
+import com.vaadin.ui.AbstractComponentContainer;
+import com.vaadin.ui.AbstractField;
+import com.vaadin.ui.AbstractTextField;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.CustomComponent;
+import com.vaadin.ui.Field;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.UI;
+import com.vaadin.ui.Window;
+import com.vaadin.ui.themes.ValoTheme;
+import com.vaadin.util.ReflectTools;
 
 /**
  * Abstract super class for simple editor forms.
@@ -32,7 +44,7 @@ import java.util.Map;
  * @param <T> the type of the bean edited
  */
 public abstract class AbstractForm<T> extends CustomComponent implements
-        FieldGroupListener {
+        FieldGroupListener<T> {
 
     private static final long serialVersionUID = -2368496151988753088L;
     private String modalWindowTitle = "Edit entry";
@@ -41,6 +53,8 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     private String cancelCaption = "Cancel";
 
     public static class ValidityChangedEvent<T> extends Component.Event {
+
+        private static final long serialVersionUID = 7410354508832863756L;
 
         private static final Method method = ReflectTools.findMethod(
                 ValidityChangedListener.class, "onValidityChanged",
@@ -52,7 +66,7 @@ public abstract class AbstractForm<T> extends CustomComponent implements
 
         @Override
         public AbstractForm<T> getComponent() {
-            return (AbstractForm) super.getComponent();
+            return (AbstractForm<T>) super.getComponent();
         }
 
     }
@@ -66,6 +80,9 @@ public abstract class AbstractForm<T> extends CustomComponent implements
 
     public AbstractForm() {
         addAttachListener(new AttachListener() {
+
+            private static final long serialVersionUID = 3193438171004932112L;
+
             @Override
             public void attach(AttachEvent event) {
                 lazyInit();
@@ -94,7 +111,7 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     private RichText beanLevelViolations;
 
     @Override
-    public void onFieldGroupChange(MBeanFieldGroup beanFieldGroup) {
+    public void onFieldGroupChange(MBeanFieldGroup<T> beanFieldGroup) {
         boolean wasValid = isValid;
         isValid = fieldGroup.isValid();
         adjustSaveButtonState();
@@ -173,7 +190,7 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     }
 
     private void fireValidityChangedEvent() {
-        fireEvent(new ValidityChangedEvent(this));
+        fireEvent(new ValidityChangedEvent<T>(this));
     }
 
     public interface SavedHandler<T> extends Serializable {
@@ -244,8 +261,7 @@ public abstract class AbstractForm<T> extends CustomComponent implements
                 fieldGroup.addValidator(e.getKey(), e.getValue().toArray(
                         new AbstractComponent[e.getValue().size()]));
             }
-            for (Map.Entry<Class, AbstractComponent> e : validatorToErrorTarget.
-                    entrySet()) {
+            for (Map.Entry<Class<?>, AbstractComponent> e : validatorToErrorTarget.entrySet()) {
                 fieldGroup.setValidationErrorTarget(e.getKey(), e.getValue());
             }
 
@@ -297,10 +313,10 @@ public abstract class AbstractForm<T> extends CustomComponent implements
                 setSavedHandler((SavedHandler<T>) handler);
             }
             if (handler instanceof ResetHandler) {
-                setResetHandler((ResetHandler) handler);
+                setResetHandler((ResetHandler<T>) handler);
             }
             if (handler instanceof DeleteHandler) {
-                setDeleteHandler((DeleteHandler) handler);
+                setDeleteHandler((DeleteHandler<T>) handler);
             }
         }
     }
@@ -388,6 +404,8 @@ public abstract class AbstractForm<T> extends CustomComponent implements
         this.resetButton = resetButton;
         this.resetButton.addClickListener(new Button.ClickListener() {
 
+            private static final long serialVersionUID = -19755976436277487L;
+
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 reset(event);
@@ -405,6 +423,8 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     public void setSaveButton(Button saveButton) {
         this.saveButton = saveButton;
         saveButton.addClickListener(new Button.ClickListener() {
+
+            private static final long serialVersionUID = -2058398434893034442L;
 
             @Override
             public void buttonClick(Button.ClickEvent event) {
@@ -430,6 +450,8 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     public void setDeleteButton(final Button deleteButton) {
         this.deleteButton = deleteButton;
         deleteButton.addClickListener(new Button.ClickListener() {
+
+            private static final long serialVersionUID = -2693734056915561664L;
 
             @Override
             public void buttonClick(Button.ClickEvent event) {
@@ -538,7 +560,7 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     private final LinkedHashMap<MBeanFieldGroup.MValidator<T>, Collection<AbstractComponent>> mValidators
             = new LinkedHashMap<>();
 
-    private final Map<Class, AbstractComponent> validatorToErrorTarget = new LinkedHashMap<>();
+    private final Map<Class<?>, AbstractComponent> validatorToErrorTarget = new LinkedHashMap<>();
 
     private Class<?>[] validationGroups;
 
@@ -565,7 +587,7 @@ public abstract class AbstractForm<T> extends CustomComponent implements
         }
     }
 
-    public void setValidationErrorTarget(Class aClass,
+    public void setValidationErrorTarget(Class<?> aClass,
             AbstractComponent errorTarget) {
         validatorToErrorTarget.put(aClass, errorTarget);
         if (getFieldGroup() != null) {
@@ -660,6 +682,20 @@ public abstract class AbstractForm<T> extends CustomComponent implements
         this.deleteCaption = deleteCaption;
         this.cancelCaption = cancelCaption;
         return this;
+    }
+
+    public boolean isValidateOnlyDefinedFields() {
+        return fieldGroup.isValidateOnlyDefinedFields();
+    }
+
+    /**
+     * Tells that only binded fields from the bean (binded entity) should be validated.
+     * Useful when the form does not contain all bean properties.
+     * By default, all bean properties are validated.
+     * @param validateOnlyDefinedFields
+     */
+    public void setValidateOnlyDefinedFields(boolean validateOnlyDefinedFields) {
+        fieldGroup.setValidateOnlyDefinedFields(validateOnlyDefinedFields);
     }
 
 }

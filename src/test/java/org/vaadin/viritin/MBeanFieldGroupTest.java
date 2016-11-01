@@ -1,21 +1,25 @@
 package org.vaadin.viritin;
 
-import com.vaadin.ui.AbstractField;
-import com.vaadin.ui.Field;
-import com.vaadin.ui.TextField;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.vaadin.viritin.testdomain.Address;
-
-import javax.validation.constraints.NotNull;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
 
 import java.util.Arrays;
 import java.util.Locale;
 
-import static org.hamcrest.CoreMatchers.equalTo;
+import javax.validation.constraints.NotNull;
+
+import org.junit.After;
 import org.junit.Assert;
-import static org.junit.Assert.assertThat;
+import org.junit.Before;
+import org.junit.Test;
+import org.vaadin.viritin.fields.MTextField;
+import org.vaadin.viritin.form.AbstractForm;
+import org.vaadin.viritin.layouts.MVerticalLayout;
+
+import com.vaadin.ui.AbstractField;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.Field;
+import com.vaadin.ui.TextField;
 
 /**
  * Created by marco on 06/05/16.
@@ -80,6 +84,20 @@ public class MBeanFieldGroupTest {
         
     }
 
+    @Test
+    public void validateOnlyDefinedFields() {
+
+        Tester2 tester = new Tester2();
+        tester.setDefaultMessage("test"); //sets only one of NotNull values (valid = false)
+        TesterForm form = new TesterForm();
+        MBeanFieldGroup<Tester2> fieldGroup = BeanBinder.bind(tester, form);
+
+        Assert.assertFalse(fieldGroup.isValid());
+
+        fieldGroup.setValidateOnlyDefinedFields(true); //tells that only defaultMessage should be validated
+        Assert.assertTrue(fieldGroup.isValid());
+    }
+
     private void withLocale(Locale locale, Field<?>... fields) {
         Arrays.stream(fields).map(AbstractField.class::cast).forEach(f -> f.setLocale(locale));
     }
@@ -106,5 +124,56 @@ public class MBeanFieldGroupTest {
         public String getDefaultMessage() {
             return defaultMessage;
         }
+    }
+
+    public static class Tester2 {
+
+        @NotNull
+        private String defaultMessage;
+
+        @NotNull(message = "{YourMsgKey}")
+        private String customMessageKey;
+
+        @NotNull(message = "Custom message")
+        private String customMessage;
+
+        public String getDefaultMessage() {
+            return defaultMessage;
+        }
+
+        public void setDefaultMessage(String defaultMessage) {
+            this.defaultMessage = defaultMessage;
+        }
+
+        public String getCustomMessageKey() {
+            return customMessageKey;
+        }
+
+        public void setCustomMessageKey(String customMessageKey) {
+            this.customMessageKey = customMessageKey;
+        }
+
+        public String getCustomMessage() {
+            return customMessage;
+        }
+
+        public void setCustomMessage(String customMessage) {
+            this.customMessage = customMessage;
+        }
+
+    }
+
+    public class TesterForm extends AbstractForm<Tester2> {
+
+        private static final long serialVersionUID = -3550932858549479910L;
+
+        private MTextField defaultMessage;
+
+        @Override
+        protected Component createContent() {
+            defaultMessage = new MTextField("default message");
+            return new MVerticalLayout(defaultMessage, getToolbar());
+        }
+
     }
 }
