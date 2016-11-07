@@ -256,6 +256,7 @@ public class SubSetSelector<ET> extends CustomField<Collection> implements Abstr
         arrayList.removeAll(selected);
         cb.setOptions(arrayList);
         cb.getBic().fireItemSetChange();
+        cb.setEnabled(selected.size() < limit);
         table.setBeans(new ArrayList(selected));
         super.setInternalValue(newValue);
     }
