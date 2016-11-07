@@ -14,6 +14,7 @@ import com.vaadin.ui.AbstractTextField;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.CustomComponent;
+import com.vaadin.ui.Field;
 import com.vaadin.ui.themes.ValoTheme;
 import java.util.Collection;
 import java.util.EventObject;
@@ -28,7 +29,7 @@ import org.vaadin.viritin.util.HtmlElementPropertySetter;
  *
  * @author Niki
  */
-public class ClearableTextField extends CustomComponent {
+public class ClearableTextField extends CustomComponent implements Field {
 
     private final MTextField textfield = new MTextField();
     private final CssLayout root = new CssLayout();
@@ -616,4 +617,29 @@ public class ClearableTextField extends CustomComponent {
         textfield.validate();
     }
 
+    @Override
+    public void setValue(Object newValue) throws Property.ReadOnlyException {
+        if (newValue != null) {
+            this.setValue(newValue.toString());
+        } else {
+            this.setValue(null);
+        }
+    }
+
+    @Override
+    @Deprecated
+    public void addListener(Property.ValueChangeListener listener) {
+        textfield.addListener(listener);
+    }
+
+    @Override
+    @Deprecated
+    public void removeListener(Property.ValueChangeListener listener) {
+        textfield.removeListener(listener);
+    }
+
+    @Override
+    public void focus() {
+        super.focus();
+    }
 }
