@@ -1,22 +1,29 @@
 package org.vaadin.viritin.fields;
 
-import com.vaadin.data.Property;
-import com.vaadin.server.FontAwesome;
-import com.vaadin.ui.*;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.themes.Reindeer;
-import com.vaadin.ui.themes.ValoTheme;
-import org.vaadin.viritin.button.MButton;
-import org.vaadin.viritin.form.AbstractForm;
-import org.vaadin.viritin.layouts.MHorizontalLayout;
-import org.vaadin.viritin.layouts.MVerticalLayout;
-
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+
+import org.vaadin.viritin.button.MButton;
+import org.vaadin.viritin.form.AbstractForm;
+import org.vaadin.viritin.layouts.MHorizontalLayout;
+import org.vaadin.viritin.layouts.MVerticalLayout;
+
+import com.vaadin.data.Property;
+import com.vaadin.server.FontAwesome;
+import com.vaadin.ui.AbstractSelect;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.CustomField;
+import com.vaadin.ui.Table;
+import com.vaadin.ui.Window;
+import com.vaadin.ui.themes.Reindeer;
+import com.vaadin.ui.themes.ValoTheme;
 
 /**
  * Selects a set of beans from a larger set of choices. Bit similar UI component
@@ -44,6 +51,7 @@ public class SubSetSelector<ET> extends CustomField<Collection> implements Abstr
     private MVerticalLayout verticalLayout;
     private AbstractForm<ET> newInstanceForm;
     private List<ET> availableOptions;
+    private int               limit = Integer.MAX_VALUE;
 
     public SubSetSelector(Class<ET> elementType) {
         this.elementType = elementType;
@@ -72,6 +80,7 @@ public class SubSetSelector<ET> extends CustomField<Collection> implements Abstr
                     cb.setValue(null);
                     table.addItem(pojo);
                     selected.add(pojo);
+                    cb.setEnabled(selected.size() < limit);
                     // fire value change
                     fireValueChange(true);
                 }
@@ -110,6 +119,7 @@ public class SubSetSelector<ET> extends CustomField<Collection> implements Abstr
         cb.addOption(entity);
         table.removeItem(entity);
         selected.remove(entity);
+        cb.setEnabled(selected.size() < limit);
         // fire value change
         fireValueChange(true);
     }
@@ -246,6 +256,7 @@ public class SubSetSelector<ET> extends CustomField<Collection> implements Abstr
         arrayList.removeAll(selected);
         cb.setOptions(arrayList);
         cb.getBic().fireItemSetChange();
+        cb.setEnabled(selected.size() < limit);
         table.setBeans(new ArrayList(selected));
         super.setInternalValue(newValue);
     }
@@ -285,6 +296,11 @@ public class SubSetSelector<ET> extends CustomField<Collection> implements Abstr
         // getProvider().persist(elementType, newInstance);
         table.addItem(entity);
         selected.add(entity);
+        /*
+         * Here we check the table for limit because the added entity could be equal to another added previously.
+         * Since the table has a list container and selected has a map, they do not have the same behavior for equality.
+         */
+        cb.setEnabled(table.size() < limit);
         if (newInstanceForm != null) {
             newInstanceForm.closePopup();
         }
@@ -323,4 +339,23 @@ public class SubSetSelector<ET> extends CustomField<Collection> implements Abstr
             }
         });
     }
+
+    public int getLimit() {
+        return limit;
+    }
+
+    /**
+     * Sets the limit of elements added to the SubSetSelector.
+     * Setting the limit or adding elements will trigger the combo box availability.
+     * @param limit the maximum number of selected elements (collection size)
+     */
+    public void setLimit(int limit) {
+        if (limit < 0) {
+            this.limit = Integer.MAX_VALUE;
+        } else {
+            this.limit = limit;
+        }
+        cb.setEnabled(selected.size() < limit);
+    }
+
 }
