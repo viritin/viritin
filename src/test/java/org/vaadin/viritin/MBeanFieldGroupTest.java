@@ -85,17 +85,17 @@ public class MBeanFieldGroupTest {
     }
 
     @Test
-    public void validateOnlyDefinedFields() {
+    public void validateOnlyBoundFields() {
 
         Tester2 tester = new Tester2();
-        tester.setDefaultMessage("test"); //sets only one of NotNull values (valid = false)
+        tester.setDefaultMessage("test"); //sets only one of NotNull values
         TesterForm form = new TesterForm();
         MBeanFieldGroup<Tester2> fieldGroup = BeanBinder.bind(tester, form);
 
-        Assert.assertFalse(fieldGroup.isValid());
-
-        fieldGroup.setValidateOnlyDefinedFields(true); //tells that only defaultMessage should be validated
         Assert.assertTrue(fieldGroup.isValid());
+
+        fieldGroup.setValidateOnlyBoundFields(false); //tells that all properties should be validated
+        Assert.assertFalse(fieldGroup.isValid());
     }
 
     private void withLocale(Locale locale, Field<?>... fields) {

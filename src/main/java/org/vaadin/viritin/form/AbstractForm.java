@@ -684,18 +684,19 @@ public abstract class AbstractForm<T> extends CustomComponent implements
         return this;
     }
 
-    public boolean isValidateOnlyDefinedFields() {
-        return fieldGroup.isValidateOnlyDefinedFields();
+    public boolean isValidateOnlyBoundFields() {
+        return fieldGroup.isValidateOnlyBoundFields();
     }
 
     /**
-     * Tells that only binded fields from the bean (binded entity) should be validated.
-     * Useful when the form does not contain all bean properties.
-     * By default, all bean properties are validated.
-     * @param validateOnlyDefinedFields
+     * Tells that only bound fields from the bean (bound entity) should be validated.
+     * Useful when the form does not contain all bean properties or, on the other hand, is not valid until all properties are valid.
+     * By default, only bound bean properties are validated.
+     * If set to false, all bean properties will be validated.
+     * @param validateOnlyBoundFields
      */
-    public void setValidateOnlyDefinedFields(boolean validateOnlyDefinedFields) {
-        fieldGroup.setValidateOnlyDefinedFields(validateOnlyDefinedFields);
+    public void setValidateOnlyBoundFields(boolean validateOnlyBoundFields) {
+        fieldGroup.setValidateOnlyBoundFields(validateOnlyBoundFields);
     }
 
 }

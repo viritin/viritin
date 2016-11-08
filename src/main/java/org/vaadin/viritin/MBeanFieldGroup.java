@@ -66,7 +66,7 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
     private static final long serialVersionUID = 9027084784300479429L;
 
     protected final Class<T> nonHiddenBeanType;
-    private boolean validateOnlyDefinedFields = false;
+    private boolean validateOnlyBoundFields = true;
     private Set<ConstraintViolation<T>> jsr303beanLevelViolations;
     private Set<Validator.InvalidValueException> beanLevelViolations;
 
@@ -278,7 +278,7 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
             return true;
         }
 
-        boolean containsAtLeastOneDefinedComponentWitError = false;
+        boolean containsAtLeastOneBoundComponentWithError = false;
         Set<ConstraintViolation<T>> constraintViolations = new HashSet<>(
             javaxBeanValidator.validate(bean, getValidationGroups()));
         if (constraintViolations.isEmpty()) {
@@ -298,12 +298,12 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
                 errortarget.setComponentError(new UserError(
                     constraintViolation.getMessage()));
                 iterator.remove();
-                containsAtLeastOneDefinedComponentWitError = true;
+                containsAtLeastOneBoundComponentWithError = true;
             }
             // else leave as "bean level error"
         }
         this.jsr303beanLevelViolations = constraintViolations;
-        if (!containsAtLeastOneDefinedComponentWitError && isValidateOnlyDefinedFields()) {
+        if (!containsAtLeastOneBoundComponentWithError && isValidateOnlyBoundFields()) {
             return true;
         }
         return false;
@@ -433,17 +433,18 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
         }
     }
 
-    public boolean isValidateOnlyDefinedFields() {
-        return validateOnlyDefinedFields;
+    public boolean isValidateOnlyBoundFields() {
+        return validateOnlyBoundFields;
     }
 
     /**
-     * Tells that only binded fields from the bean should be validated.
-     * By default, all bean properties are validated.
-     * @param validateOnlyDefinedFields
+     * Tells that only bound fields from the bean should be validated.
+     * By default, only bound bean properties are validated.
+     * If set to false, all bean properties will be validated.
+     * @param validateOnlyBoundFields
      */
-    public void setValidateOnlyDefinedFields(boolean validateOnlyDefinedFields) {
-        this.validateOnlyDefinedFields = validateOnlyDefinedFields;
+    public void setValidateOnlyBoundFields(boolean validateOnlyBoundFields) {
+        this.validateOnlyBoundFields = validateOnlyBoundFields;
     }
 
     @Override
