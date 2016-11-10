@@ -116,4 +116,10 @@ public class MLabel extends Label {
         setVisible(visible);
         return this;
     }
+
+    public MLabel withId(String id) {
+        setId(id);
+        return this;
+    }
+
 }
