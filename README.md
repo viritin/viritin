@@ -214,6 +214,14 @@ Online demo for this add-on hopefully makes no sense. But there are though many 
  * Another [Java EE app example](https://github.com/mstahv/jpa-addressbook) - contains JPA usage examples for ManyToMany (MultiSelectTable) and ElementCollection (InlineEditableCollection).
  * Invoicing example [Java EE app](https://github.com/mstahv/jpa-invoicer) - contains JPA usage examples ElementCollection (InlineEditableCollection), LazyComboBox, DownloadButton.
 
+### Usage examples
+
+Run the following mvn command to start a small application
+(http://localhost:9998) with all usage examples under `org.vaadin.viritin.it`.
+
+```
+mvn -e exec:java -Dexec.mainClass="org.vaadin.viritin.it.UiRunner" -Dexec.classpathScope=test
+```
 
 ## Download a release
 
