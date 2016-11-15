@@ -31,11 +31,11 @@ import java.io.PipedOutputStream;
 public class DownloadButton extends MButton {
 
     public interface ContentWriter {
-
         void write(OutputStream stream);
     }
 
     private ContentWriter writer;
+    private String fileName;
 
     private final StreamResource streamResource = new StreamResource(
             new StreamResource.StreamSource() {
@@ -51,8 +51,12 @@ public class DownloadButton extends MButton {
                         throw new RuntimeException(ex);
                     }
                 }
-
-            }, "file");
+            }, ""){
+        @Override
+        public String getFilename() {
+            return DownloadButton.this.getFileName();
+        }
+    };
 
     /**
      * Constructs a new Download button without ContentWriter. Be sure to set
@@ -113,11 +117,11 @@ public class DownloadButton extends MButton {
     }
 
     public String getFileName() {
-        return streamResource.getFilename();
+        return fileName != null ? fileName : "file";
     }
 
     public DownloadButton setFileName(String fileName) {
-        streamResource.setFilename(fileName);
+        this.fileName = fileName;
         return this;
     }
 
