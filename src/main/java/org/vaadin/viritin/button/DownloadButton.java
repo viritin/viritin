@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
+import java.io.Serializable;
 
 /**
  * A helper class to implement typical file downloads.
@@ -16,8 +17,8 @@ import java.io.PipedOutputStream;
  * With this class you'll get rid of lots of boilerplate code from your
  * application. It also inverts the bit cumbersome input-output stream API in
  * Vaadin so, normally you just "wire" this button to your backend method that
- * writes your resource to OutputStream (instead of playing around with piped streams or storing
- * resources temporary in memory. Example of usage:
+ * writes your resource to OutputStream (instead of playing around with piped
+ * streams or storing resources temporary in memory. Example of usage:
  * <pre><code>
  *  new DownloadButton(invoice::toPdf).setFileName("invoice.pdf")
  * </code></pre>
@@ -31,36 +32,51 @@ import java.io.PipedOutputStream;
 public class DownloadButton extends MButton {
 
     public interface ContentWriter {
+
         void write(OutputStream stream);
     }
 
     private ContentWriter writer;
+    private MimeTypeProvider mimeTypeProvider;
+    private FileNameProvider fileNameProvider;
     private String fileName;
 
     private final StreamResource streamResource = new StreamResource(
             new StreamResource.StreamSource() {
 
-                @Override
-                public InputStream getStream() {
-                    try {
-                        final PipedOutputStream out = new PipedOutputStream();
-                        final PipedInputStream in = new PipedInputStream(out);
-                        writeResponce(out);
-                        return in;
-                    } catch (IOException ex) {
-                        throw new RuntimeException(ex);
-                    }
-                }
-            }, ""){
+        @Override
+        public InputStream getStream() {
+            try {
+                final PipedOutputStream out = new PipedOutputStream();
+                final PipedInputStream in = new PipedInputStream(out);
+                writeResponce(out);
+                return in;
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+    }, "") {
         @Override
         public String getFilename() {
+            if (fileNameProvider != null) {
+                return fileNameProvider.getFileName();
+            }
             return DownloadButton.this.getFileName();
         }
+
+        @Override
+        public String getMIMEType() {
+            if (mimeTypeProvider != null) {
+                return mimeTypeProvider.getMimeType();
+            }
+            return super.getMIMEType();
+        }
+
     };
 
     /**
      * Constructs a new Download button without ContentWriter. Be sure to set
-     * the ContentWriter or override its getter, before instance is actually 
+     * the ContentWriter or override its getter, before instance is actually
      * used.
      */
     public DownloadButton() {
@@ -136,4 +152,38 @@ public class DownloadButton extends MButton {
         setClickShortcut(keycode, modifiers);
         return this;
     }
+
+    public MimeTypeProvider getMimeTypeProvider() {
+        return mimeTypeProvider;
+    }
+
+    public FileNameProvider getFileNameProvider() {
+        return fileNameProvider;
+    }
+
+    @Override
+    public DownloadButton withCaption(String caption) {
+        return (DownloadButton) super.withCaption(caption);
+    }
+
+    public DownloadButton setFileNameProvider(FileNameProvider fileNameProvider) {
+        this.fileNameProvider = fileNameProvider;
+        return this;
+    }
+
+    public DownloadButton setMimeTypeProvider(MimeTypeProvider mimeTypeProvider) {
+        this.mimeTypeProvider = mimeTypeProvider;
+        return this;
+    }
+
+    public interface FileNameProvider extends Serializable {
+
+        String getFileName();
+    }
+
+    public interface MimeTypeProvider extends Serializable {
+
+        String getMimeType();
+    }
+
 }
