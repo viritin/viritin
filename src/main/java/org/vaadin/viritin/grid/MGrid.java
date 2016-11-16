@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.vaadin.viritin.FilterableListContainer;
 import org.vaadin.viritin.LazyList;
-import org.vaadin.viritin.ListContainer;
 import org.vaadin.viritin.MSize;
 import org.vaadin.viritin.SortableLazyList;
 import org.vaadin.viritin.grid.utils.GridUtils;
@@ -54,7 +54,7 @@ public class MGrid<T> extends Grid {
      * @return this
      */
     public MGrid<T> setRowType(Class<T> typeOfRows1) {
-        setContainerDataSource(new ListContainer<T>(typeOfRows1));
+        setContainerDataSource(new FilterableListContainer<>(typeOfRows1));
         this.typeOfRows = typeOfRows1;
         return this;
     }
@@ -173,7 +173,7 @@ public class MGrid<T> extends Grid {
     }
 
     public MGrid<T> setRows(List<T> rows) {
-        if (getContainerDataSource() instanceof ListContainer) {
+        if (getContainerDataSource() instanceof FilterableListContainer) {
             
             Collection<?> itemIds = getListContainer().getItemIds();
             if (itemIds instanceof SortableLazyList) {
@@ -187,7 +187,7 @@ public class MGrid<T> extends Grid {
             
             getListContainer().setCollection(rows);
         } else {
-            setContainerDataSource(new ListContainer(rows));
+            setContainerDataSource(new FilterableListContainer(rows));
         }
         return this;
     }
@@ -196,8 +196,8 @@ public class MGrid<T> extends Grid {
         return (List<T>) getListContainer().getItemIds();
     }
 
-    protected ListContainer<T> getListContainer() {
-        ListContainer<T> listContainer = (ListContainer<T>) getContainerDataSource();
+    protected FilterableListContainer<T> getListContainer() {
+        FilterableListContainer<T> listContainer = (FilterableListContainer<T>) getContainerDataSource();
         return listContainer;
     }
 
@@ -287,8 +287,8 @@ public class MGrid<T> extends Grid {
 
     public MGrid<T> withProperties(String... propertyIds) {
         Container.Indexed containerDataSource = getContainerDataSource();
-        if (containerDataSource instanceof ListContainer) {
-            ListContainer<T> lc = (ListContainer<T>) containerDataSource;
+        if (containerDataSource instanceof FilterableListContainer) {
+            FilterableListContainer<T> lc = (FilterableListContainer<T>) containerDataSource;
             lc.setContainerPropertyIds(propertyIds);
         }
         setColumns((Object[]) propertyIds);
@@ -322,8 +322,8 @@ public class MGrid<T> extends Grid {
                 public void postCommit(FieldGroup.CommitEvent commitEvent) throws FieldGroup.CommitException {
                     Item itemDataSource = commitEvent.getFieldBinder().
                             getItemDataSource();
-                    if (itemDataSource instanceof ListContainer.DynaBeanItem) {
-                        ListContainer<T>.DynaBeanItem<T> dynaBeanItem = (ListContainer<T>.DynaBeanItem<T>) itemDataSource;
+                    if (itemDataSource instanceof FilterableListContainer.DynaBeanItem) {
+                        FilterableListContainer<T>.DynaBeanItem<T> dynaBeanItem = (FilterableListContainer<T>.DynaBeanItem<T>) itemDataSource;
                         T bean = dynaBeanItem.getBean();
                         refreshRow(bean);
                     }
@@ -372,8 +372,8 @@ public class MGrid<T> extends Grid {
      * CPU cycles). This method explicitly forces Grid's row cache invalidation.
      */
     public void refreshRows() {
-        if (getContainerDataSource() instanceof ListContainer) {
-            ListContainer<T> listContainer = getListContainer();
+        if (getContainerDataSource() instanceof FilterableListContainer) {
+            FilterableListContainer<T> listContainer = getListContainer();
             if (listContainer.getItemIds() instanceof LazyList) {
                 ((LazyList) listContainer.getItemIds()).reset();
             }
@@ -415,7 +415,7 @@ public class MGrid<T> extends Grid {
      */
     public MGrid<T> lazyLoadFrom(LazyList.PagingProvider<T> pageProvider,
             LazyList.CountProvider countProvider) {
-        setRows(new LazyList<T>(pageProvider, countProvider, DEFAULT_PAGE_SIZE));
+        setRows(new LazyList<>(pageProvider, countProvider, DEFAULT_PAGE_SIZE));
         return this;
     }
 
@@ -429,7 +429,7 @@ public class MGrid<T> extends Grid {
      */
     public MGrid<T> lazyLoadFrom(LazyList.PagingProvider<T> pageProvider,
             LazyList.CountProvider countProvider, int pageSize) {
-        setRows(new LazyList<T>(pageProvider, countProvider, pageSize));
+        setRows(new LazyList<>(pageProvider, countProvider, pageSize));
         return this;
     }
 
@@ -443,7 +443,7 @@ public class MGrid<T> extends Grid {
     public MGrid<T> lazyLoadFrom(
             SortableLazyList.SortablePagingProvider<T> pageProvider,
             LazyList.CountProvider countProvider) {
-        setRows(new SortableLazyList<T>(pageProvider, countProvider,
+        setRows(new SortableLazyList<>(pageProvider, countProvider,
                 DEFAULT_PAGE_SIZE));
         ensureSortListener();
         return this;
@@ -476,7 +476,7 @@ public class MGrid<T> extends Grid {
     public MGrid<T> lazyLoadFrom(
             SortableLazyList.SortablePagingProvider<T> pageProvider,
             LazyList.CountProvider countProvider, int pageSize) {
-        setRows(new SortableLazyList<T>(pageProvider, countProvider, pageSize));
+        setRows(new SortableLazyList<>(pageProvider, countProvider, pageSize));
         ensureSortListener();
         return this;
     }
