@@ -35,7 +35,7 @@ public class GridLazyLoadingAndMultiSorting extends AbstractTest {
             public List<Person> findEntities(int firstRow, boolean[] sortAscending, String[] property) {
                 List<Person> listOfPersons = new ArrayList<>(orig);
                 if (property != null) {
-                    for (int i = 0; i < property.length; i++) {
+                    for (int i = property.length - 1 ; i >= 0; i--) {
                         String s = property[i];
                         boolean a = sortAscending[i];
                         Collections.sort(listOfPersons, new BeanComparator<>(
@@ -71,7 +71,7 @@ public class GridLazyLoadingAndMultiSorting extends AbstractTest {
                     (int firstRow, boolean[] sortAscending, String[] property) -> {
                         List<Person> listOfPersons = new ArrayList<>(orig);
                         if (property != null) {
-                            for (int i = 0; i < property.length; i++) {
+                            for (int i = property.length - 1 ; i >= 0; i--) {
                                 String s = property[i];
                                 boolean a = sortAscending[i];
                                 Collections.sort(listOfPersons, new BeanComparator<>(
