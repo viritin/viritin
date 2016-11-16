@@ -408,8 +408,10 @@ public class ListContainer<T> extends AbstractContainer implements
             if (backingList instanceof SortableLazyList) {
                 // using with MGrid may end up here
                 SortableLazyList sll = (SortableLazyList) backingList;
-                sll.setSortProperty(propertyId[0].toString());
-                sll.setSortAscending(ascending[0]);
+                String[] stringProperties = new String[propertyId.length];
+                System.arraycopy(propertyId, 0, stringProperties, 0, propertyId.length);
+                sll.setSortProperty(stringProperties);
+                sll.setSortAscending(ascending);
                 sll.reset();
             } else {
                 Comparator<T> comparator = new PropertyComparator(propertyId,

@@ -107,6 +107,18 @@ public class MGrid<T> extends Grid {
     }
 
     /**
+     * A shorthand to create an MGrid using SortableLazyList. By default page
+     * size of LazyList.DEFAULT_PAGE_SIZE (30) is used.
+     *
+     * @param pageProvider the interface via entities are fetched
+     * @param countProvider the interface via the count of items is detected
+     */
+    public MGrid(SortableLazyList.MultiSortablePagingProvider<T> pageProvider,
+            LazyList.CountProvider countProvider) {
+        this(pageProvider, countProvider, DEFAULT_PAGE_SIZE);
+    }
+
+    /**
      * A shorthand to create MTable using SortableLazyList.
      *
      * @param pageProvider the interface via entities are fetched
@@ -114,6 +126,19 @@ public class MGrid<T> extends Grid {
      * @param pageSize the page size (aka maxResults) that is used in paging.
      */
     public MGrid(SortableLazyList.SortablePagingProvider<T> pageProvider,
+            LazyList.CountProvider countProvider, int pageSize) {
+        this(new SortableLazyList(pageProvider, countProvider, pageSize));
+        ensureSortListener();
+    }
+
+        /**
+     * A shorthand to create MTable using SortableLazyList.
+     *
+     * @param pageProvider the interface via entities are fetched
+     * @param countProvider the interface via the count of items is detected
+     * @param pageSize the page size (aka maxResults) that is used in paging.
+     */
+    public MGrid(SortableLazyList.MultiSortablePagingProvider<T> pageProvider,
             LazyList.CountProvider countProvider, int pageSize) {
         this(new SortableLazyList(pageProvider, countProvider, pageSize));
         ensureSortListener();
@@ -155,7 +180,7 @@ public class MGrid<T> extends Grid {
                 if(old.getSortProperty() != null && rows instanceof SortableLazyList ) {
                     SortableLazyList newList =  (SortableLazyList) rows;
                     newList.setSortProperty(old.getSortProperty());
-                    newList.setSortAscending(old.isSortAscending());
+                    newList.setSortAscending(old.getSortAscending());
                 }
             }
             
@@ -428,6 +453,22 @@ public class MGrid<T> extends Grid {
      *
      * @param pageProvider the interface via entities are fetched
      * @param countProvider the interface via the count of items is detected
+     * @return this MTable object
+     */
+    public MGrid<T> lazyLoadFrom(
+            SortableLazyList.MultiSortablePagingProvider<T> pageProvider,
+            LazyList.CountProvider countProvider) {
+        setRows(new SortableLazyList(pageProvider, countProvider,
+                DEFAULT_PAGE_SIZE));
+        ensureSortListener();
+        return this;
+    }
+
+    /**
+     * Makes the table lazy load its content with given strategy.
+     *
+     * @param pageProvider the interface via entities are fetched
+     * @param countProvider the interface via the count of items is detected
      * @param pageSize the page size (aka maxResults) that is used in paging.
      * @return this MTable object
      */
@@ -439,6 +480,22 @@ public class MGrid<T> extends Grid {
         return this;
     }
 
+    /**
+     * Makes the table lazy load its content with given strategy.
+     *
+     * @param pageProvider the interface via entities are fetched
+     * @param countProvider the interface via the count of items is detected
+     * @param pageSize the page size (aka maxResults) that is used in paging.
+     * @return this MTable object
+     */
+    public MGrid<T> lazyLoadFrom(
+            SortableLazyList.MultiSortablePagingProvider<T> pageProvider,
+            LazyList.CountProvider countProvider, int pageSize) {
+        setRows(new SortableLazyList(pageProvider, countProvider, pageSize));
+        ensureSortListener();
+        return this;
+    }
+    
     public MGrid<T> withStyleName(String... styleNames) {
         for (String styleName : styleNames) {
             addStyleName(styleName);

@@ -18,14 +18,14 @@ public class SortableLazyList<T> extends LazyList<T> implements Serializable {
     private static final long serialVersionUID = 6271514642253054989L;
 
     public void sort(boolean ascending, String property) {
-        sortAscending = ascending;
-        sortProperty = property;
+        sortAscending[0] = ascending;
+        sortProperty = new String[]{property};
         // TODO resetting size at this point is actually obsolete?
         reset();
     }
     
-    private boolean sortAscending = true;
-    private String sortProperty;
+    private boolean[] sortAscending = new boolean[]{true};
+    private String[] sortProperty;
 
     // Split into subinterfaces for better Java 8 lambda support
     /**
@@ -49,6 +49,27 @@ public class SortableLazyList<T> extends LazyList<T> implements Serializable {
     }
 
     /**
+     * Interface via the LazyList communicates with the "backend", if sorting
+     * based on multiple properties is required.
+     *
+     * @param <T> The type of the objects in the list
+     */
+    public interface MultiSortablePagingProvider<T> extends Serializable {
+
+        /**
+         * Fetches one "page" of entities from the backend. The amount
+         * "maxResults" should match with the value configured for the LazyList
+         *
+         * @param firstRow the index of first row that should be fetched
+         * @param sortAscending the directions to be used for sorting, true if ascending
+         * @param properties the properties based on the sorting should be done, null for natural order
+         * @return a sub list from given first index
+         */
+        public List<T> findEntities(int firstRow, boolean[] sortAscending,
+                String[] properties);
+    }
+
+    /**
      * Interface via the LazyList communicates with the "backend"
      *
      * @param <T> The type of the objects in the list
@@ -57,6 +78,7 @@ public class SortableLazyList<T> extends LazyList<T> implements Serializable {
     }
 
     private final SortablePagingProvider<T> sortablePageProvider;
+    private final MultiSortablePagingProvider<T> multiSortablePageProvider;
 
     /**
      * Constructs a new LazyList with given provider and default page size of
@@ -80,6 +102,7 @@ public class SortableLazyList<T> extends LazyList<T> implements Serializable {
     public SortableLazyList(SortableEntityProvider<T> dataProvider, int pageSize) {
         super(dataProvider, pageSize);
         this.sortablePageProvider = dataProvider;
+        this.multiSortablePageProvider = null;
     }
 
     /**
@@ -106,26 +129,49 @@ public class SortableLazyList<T> extends LazyList<T> implements Serializable {
             int pageSize) {
         super(countProvider, pageSize);
         this.sortablePageProvider = pageProvider;
+        this.multiSortablePageProvider = null;
+    }
+
+    /**
+     * Constructs a new LazyList with given providers and page size.
+     *
+     * @param pageProvider the interface via "pages" of entities are requested
+     * @param countProvider the interface via the total count of entities is
+     * detected.
+     * @param pageSize the page size that should be used
+     */
+    public SortableLazyList(MultiSortablePagingProvider<T> pageProvider, CountProvider countProvider,
+            int pageSize) {
+        super(countProvider, pageSize);
+        this.sortablePageProvider = null;
+        this.multiSortablePageProvider = pageProvider;
     }
 
     @Override
     protected List<T> findEntities(int i) {
-        return sortablePageProvider.findEntities(i, isSortAscending(), getSortProperty());
+        if(multiSortablePageProvider != null) {
+            return multiSortablePageProvider.findEntities(i, getSortAscending(), getSortProperty());
+        }
+        return sortablePageProvider.findEntities(i, isSortAscending(), getSortProperty()[0]);
     }
 
     public boolean isSortAscending() {
+        return sortAscending[0];
+    }
+
+    public boolean[] getSortAscending() {
         return sortAscending;
     }
 
-    public void setSortAscending(boolean sortAscending) {
+    public void setSortAscending(boolean[] sortAscending) {
         this.sortAscending = sortAscending;
     }
 
-    public String getSortProperty() {
+    public String[] getSortProperty() {
         return sortProperty;
     }
 
-    public void setSortProperty(String sortProperty) {
+    public void setSortProperty(String[] sortProperty) {
         this.sortProperty = sortProperty;
     }
 

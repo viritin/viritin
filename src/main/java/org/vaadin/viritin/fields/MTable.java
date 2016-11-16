@@ -434,8 +434,8 @@ public class MTable<T> extends Table {
 
         if(sortProperty != null && beans instanceof SortableLazyList) {
             final SortableLazyList sll = (SortableLazyList)beans;
-            sll.setSortProperty(sortProperty);
-            sll.setSortAscending(sortAscending);
+            sll.setSortProperty(new String[]{sortProperty});
+            sll.setSortAscending(new boolean[] {sortAscending});
         }
         
         if (!isContainerInitialized() && !beans.isEmpty()) {
