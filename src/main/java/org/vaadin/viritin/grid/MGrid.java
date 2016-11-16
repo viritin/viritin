@@ -1,18 +1,6 @@
 package org.vaadin.viritin.grid;
 
-import com.vaadin.data.Container;
-import com.vaadin.data.Item;
-import com.vaadin.data.fieldgroup.FieldGroup;
-import com.vaadin.data.util.PropertyValueGenerator;
-import com.vaadin.event.SortEvent;
-import com.vaadin.event.SortEvent.SortListener;
-import com.vaadin.server.Extension;
-import com.vaadin.ui.Grid;
-import org.vaadin.viritin.LazyList;
-import org.vaadin.viritin.ListContainer;
-import org.vaadin.viritin.MSize;
-import org.vaadin.viritin.SortableLazyList;
-import org.vaadin.viritin.grid.utils.GridUtils;
+import static org.vaadin.viritin.LazyList.DEFAULT_PAGE_SIZE;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -22,7 +10,20 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static org.vaadin.viritin.LazyList.DEFAULT_PAGE_SIZE;
+import org.vaadin.viritin.LazyList;
+import org.vaadin.viritin.ListContainer;
+import org.vaadin.viritin.MSize;
+import org.vaadin.viritin.SortableLazyList;
+import org.vaadin.viritin.grid.utils.GridUtils;
+
+import com.vaadin.data.Container;
+import com.vaadin.data.Item;
+import com.vaadin.data.fieldgroup.FieldGroup;
+import com.vaadin.data.util.PropertyValueGenerator;
+import com.vaadin.event.SortEvent;
+import com.vaadin.event.SortEvent.SortListener;
+import com.vaadin.server.Extension;
+import com.vaadin.ui.Grid;
 
 /**
  *
@@ -53,7 +54,7 @@ public class MGrid<T> extends Grid {
      * @return this
      */
     public MGrid<T> setRowType(Class<T> typeOfRows1) {
-        setContainerDataSource(new ListContainer(typeOfRows1));
+        setContainerDataSource(new ListContainer<T>(typeOfRows1));
         this.typeOfRows = typeOfRows1;
         return this;
     }
@@ -79,7 +80,7 @@ public class MGrid<T> extends Grid {
      */
     public MGrid(LazyList.PagingProvider<T> pageProvider,
             LazyList.CountProvider countProvider) {
-        this(new LazyList(pageProvider, countProvider, DEFAULT_PAGE_SIZE));
+        this(new LazyList<T>(pageProvider, countProvider, DEFAULT_PAGE_SIZE));
     }
 
     /**
@@ -91,7 +92,7 @@ public class MGrid<T> extends Grid {
      */
     public MGrid(LazyList.PagingProvider<T> pageProvider,
             LazyList.CountProvider countProvider, int pageSize) {
-        this(new LazyList(pageProvider, countProvider, pageSize));
+        this(new LazyList<T>(pageProvider, countProvider, pageSize));
     }
 
     /**
@@ -115,7 +116,7 @@ public class MGrid<T> extends Grid {
      */
     public MGrid(SortableLazyList.SortablePagingProvider<T> pageProvider,
             LazyList.CountProvider countProvider, int pageSize) {
-        this(new SortableLazyList(pageProvider, countProvider, pageSize));
+        this(new SortableLazyList<T>(pageProvider, countProvider, pageSize));
         ensureSortListener();
     }
 
@@ -151,9 +152,9 @@ public class MGrid<T> extends Grid {
             
             Collection<?> itemIds = getListContainer().getItemIds();
             if (itemIds instanceof SortableLazyList) {
-                SortableLazyList old = (SortableLazyList) itemIds;
+                SortableLazyList<T> old = (SortableLazyList<T>) itemIds;
                 if(old.getSortProperty() != null && rows instanceof SortableLazyList ) {
-                    SortableLazyList newList =  (SortableLazyList) rows;
+                    SortableLazyList<T> newList = (SortableLazyList<T>) rows;
                     newList.setSortProperty(old.getSortProperty());
                     newList.setSortAscending(old.isSortAscending());
                 }
@@ -262,7 +263,7 @@ public class MGrid<T> extends Grid {
     public MGrid<T> withProperties(String... propertyIds) {
         Container.Indexed containerDataSource = getContainerDataSource();
         if (containerDataSource instanceof ListContainer) {
-            ListContainer lc = (ListContainer) containerDataSource;
+            ListContainer<T> lc = (ListContainer<T>) containerDataSource;
             lc.setContainerPropertyIds(propertyIds);
         }
         setColumns((Object[]) propertyIds);
@@ -297,8 +298,8 @@ public class MGrid<T> extends Grid {
                     Item itemDataSource = commitEvent.getFieldBinder().
                             getItemDataSource();
                     if (itemDataSource instanceof ListContainer.DynaBeanItem) {
-                        ListContainer.DynaBeanItem dynaBeanItem = (ListContainer.DynaBeanItem) itemDataSource;
-                        T bean = (T) dynaBeanItem.getBean();
+                        ListContainer<T>.DynaBeanItem<T> dynaBeanItem = (ListContainer<T>.DynaBeanItem<T>) itemDataSource;
+                        T bean = dynaBeanItem.getBean();
                         refreshRow(bean);
                     }
                 }
@@ -389,7 +390,7 @@ public class MGrid<T> extends Grid {
      */
     public MGrid<T> lazyLoadFrom(LazyList.PagingProvider<T> pageProvider,
             LazyList.CountProvider countProvider) {
-        setRows(new LazyList(pageProvider, countProvider, DEFAULT_PAGE_SIZE));
+        setRows(new LazyList<T>(pageProvider, countProvider, DEFAULT_PAGE_SIZE));
         return this;
     }
 
@@ -403,7 +404,7 @@ public class MGrid<T> extends Grid {
      */
     public MGrid<T> lazyLoadFrom(LazyList.PagingProvider<T> pageProvider,
             LazyList.CountProvider countProvider, int pageSize) {
-        setRows(new LazyList(pageProvider, countProvider, pageSize));
+        setRows(new LazyList<T>(pageProvider, countProvider, pageSize));
         return this;
     }
 
@@ -417,7 +418,7 @@ public class MGrid<T> extends Grid {
     public MGrid<T> lazyLoadFrom(
             SortableLazyList.SortablePagingProvider<T> pageProvider,
             LazyList.CountProvider countProvider) {
-        setRows(new SortableLazyList(pageProvider, countProvider,
+        setRows(new SortableLazyList<T>(pageProvider, countProvider,
                 DEFAULT_PAGE_SIZE));
         ensureSortListener();
         return this;
@@ -434,7 +435,7 @@ public class MGrid<T> extends Grid {
     public MGrid<T> lazyLoadFrom(
             SortableLazyList.SortablePagingProvider<T> pageProvider,
             LazyList.CountProvider countProvider, int pageSize) {
-        setRows(new SortableLazyList(pageProvider, countProvider, pageSize));
+        setRows(new SortableLazyList<T>(pageProvider, countProvider, pageSize));
         ensureSortListener();
         return this;
     }
@@ -463,6 +464,19 @@ public class MGrid<T> extends Grid {
     public MGrid<T> withSize(MSize mSize) {
         setWidth(mSize.getWidth(), mSize.getWidthUnit());
         setHeight(mSize.getHeight(), mSize.getHeightUnit());
+        return this;
+    }
+
+    public MGrid<T> withColumnHeaders(String... header) {
+        if (header.length != getColumns().size()) {
+            throw new IllegalArgumentException("The length of the headers array must match the number of columns");
+        }
+        for (int i = 0; i < getColumns().size(); i++) {
+            Object propertyId = getColumns().get(i).getPropertyId();
+            if (header[i] != null) {
+                getColumn(propertyId).setHeaderCaption(header[i]);
+            }
+        }
         return this;
     }
 }

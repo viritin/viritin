@@ -1,18 +1,19 @@
 package org.vaadin.viritin.it;
 
-import com.vaadin.annotations.Theme;
-import com.vaadin.data.Item;
-import com.vaadin.data.util.PropertyValueGenerator;
-import com.vaadin.ui.Component;
+import java.util.List;
+
 import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.viritin.grid.GeneratedPropertyListContainer;
 import org.vaadin.viritin.grid.MGrid;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.vaadin.viritin.testdomain.Address;
 import org.vaadin.viritin.testdomain.Person;
-
-import java.util.List;
 import org.vaadin.viritin.testdomain.Service;
+
+import com.vaadin.annotations.Theme;
+import com.vaadin.data.Item;
+import com.vaadin.data.util.PropertyValueGenerator;
+import com.vaadin.ui.Component;
 
 /**
  *
@@ -29,7 +30,8 @@ public class GeneratedPropertyListContainerExample extends AbstractTest {
             .withGeneratedColumn("groupnumber", Integer.class, p -> p.getGroups() != null ? p.getGroups().size() : 0)
             .withGeneratedColumn("details", new DetailsGenerator())
             .withProperties("id", "fullname", "groupnumber", "details")
-            .withFullWidth();
+            .withFullWidth()
+            .withColumnHeaders("person id", "full name", "group number", "details");
 
     private final MGrid<Person> legacyApiGrid = new MGrid<>();
 
