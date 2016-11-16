@@ -4,13 +4,13 @@ import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.PropertyValueGenerator;
 import java.util.ArrayList;
-import org.vaadin.viritin.ListContainer;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import org.vaadin.viritin.FilterableListContainer;
 
 /**
  *
@@ -18,7 +18,7 @@ import java.util.Set;
  * @since 23.04.2016
  * @param <T> the entity type listed in the consumer of the container, Vaadin Grid
  */
-public class GeneratedPropertyListContainer<T> extends ListContainer<T> {
+public class GeneratedPropertyListContainer<T> extends FilterableListContainer<T> {
 
     private static final long serialVersionUID = -8384723868776183241L;
 
