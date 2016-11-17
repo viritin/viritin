@@ -39,7 +39,6 @@ public class DownloadButton extends MButton {
     private ContentWriter writer;
     private MimeTypeProvider mimeTypeProvider;
     private FileNameProvider fileNameProvider;
-    private String fileName;
 
     private final StreamResource streamResource = new StreamResource(
             new StreamResource.StreamSource() {
@@ -133,11 +132,16 @@ public class DownloadButton extends MButton {
     }
 
     public String getFileName() {
-        return fileName != null ? fileName : "file";
+        return fileNameProvider != null ? fileNameProvider.getFileName() : "file";
     }
 
-    public DownloadButton setFileName(String fileName) {
-        this.fileName = fileName;
+    public DownloadButton setFileName(final String fileName) {
+        this.fileNameProvider = new FileNameProvider() {
+            @Override
+            public String getFileName() {
+                return fileName;
+            }
+        };
         return this;
     }
 
