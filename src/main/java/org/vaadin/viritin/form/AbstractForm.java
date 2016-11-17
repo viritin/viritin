@@ -693,7 +693,8 @@ public abstract class AbstractForm<T> extends CustomComponent implements
      * Useful when the form does not contain all bean properties or, on the other hand, is not valid until all properties are valid.
      * By default, only bound bean properties are validated.
      * If set to false, all bean properties will be validated.
-     * @param validateOnlyBoundFields
+     *
+     * @param validateOnlyBoundFields true if only bound fields should be validated
      */
     public void setValidateOnlyBoundFields(boolean validateOnlyBoundFields) {
         fieldGroup.setValidateOnlyBoundFields(validateOnlyBoundFields);

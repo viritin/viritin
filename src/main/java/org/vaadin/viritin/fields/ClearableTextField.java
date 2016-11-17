@@ -270,9 +270,13 @@ public class ClearableTextField extends CustomComponent implements Field {
         return textfield.isImmediate();
     }
 
+
+
     /**
+     * A method to add custom click listener to the clear button.
      *
-     * @see addClickListener(Button.ClickListener listener)
+     * @see Button#addClickListener(Button.ClickListener listener)
+     * @param listener the listener to be added to the clear button
      */
     public void addClickListener(Button.ClickListener listener) {
         clearButton.addClickListener(listener);

@@ -441,7 +441,9 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
      * Tells that only bound fields from the bean should be validated.
      * By default, only bound bean properties are validated.
      * If set to false, all bean properties will be validated.
-     * @param validateOnlyBoundFields
+     *
+     * @param validateOnlyBoundFields true if only fields that are actually bound in
+     *                                form should be validate. True by default.
      */
     public void setValidateOnlyBoundFields(boolean validateOnlyBoundFields) {
         this.validateOnlyBoundFields = validateOnlyBoundFields;
