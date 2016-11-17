@@ -30,6 +30,7 @@ import org.vaadin.viritin.testdomain.User;
 import com.vaadin.annotations.Theme;
 import com.vaadin.ui.Component;
 import java.text.MessageFormat;
+import java.util.Comparator;
 import java.util.Locale;
 import java.util.Random;
 
@@ -61,8 +62,18 @@ public class MTableLazyLoadingWithEntityAspect extends AbstractTest {
 		MTable<User> table = new MTable<>(
 				(firstRow, sortAscending, property) -> {
 					if (property != null) {
+                                                if(property.equals("localizedSalutation")) {
+                                                    Collections.sort(listOfPersons, new Comparator<User>(){
+                                                        @Override
+                                                        public int compare(User o1, User o2) {
+                                                            return localizedSalutation(o1).compareTo(localizedSalutation(o2));
+                                                        }
+                                                    });
+                                                } else {
 						Collections.sort(listOfPersons, new BeanComparator<>(
 								property));
+                                                    
+                                                }
 						if (!sortAscending) {
 							Collections.reverse(listOfPersons);
 						}
@@ -79,10 +90,14 @@ public class MTableLazyLoadingWithEntityAspect extends AbstractTest {
 				.withProperties("localizedSalutation","locale", "person.firstName", "person.lastName")
 				.withColumnHeaders("Salutation", "Locale", "Forename", "Name")
 				.withFullWidth()
-                .withGeneratedColumn("localizedSalutation", u-> MessageFormat.format(
-                        u.getLocalizedSalutation(), u.getPerson().getFirstName()));
+                .withGeneratedColumn("localizedSalutation", u-> localizedSalutation(u));
 
 		return table;
 	}
+        
+        String localizedSalutation(User u) {
+            return MessageFormat.format(
+                u.getLocalizedSalutation(), u.getPerson().getFirstName());
+        }
 
 }
