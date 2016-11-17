@@ -152,7 +152,9 @@ public class SortableLazyList<T> extends LazyList<T> implements Serializable {
         if(multiSortablePageProvider != null) {
             return multiSortablePageProvider.findEntities(i, getSortAscending(), getSortProperty());
         }
-        return sortablePageProvider.findEntities(i, isSortAscending(), getSortProperty()[0]);
+        String[] sortProperties = getSortProperty();
+        String sortProperty = sortProperties == null || sortProperties.length == 0 ? null : sortProperties[0];
+        return sortablePageProvider.findEntities(i, isSortAscending(), sortProperty);
     }
 
     public boolean isSortAscending() {
