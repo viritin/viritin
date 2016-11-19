@@ -91,7 +91,7 @@ public class ListContainer<T> extends AbstractContainer implements
         this(type);
         setContainerPropertyIds(properties);
     }
-    
+
     public ListContainer(DynaClass type) {
         backingList = new ArrayList<>();
         dynaClass = type;
