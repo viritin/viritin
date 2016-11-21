@@ -1,20 +1,22 @@
 package org.vaadin.viritin.fields;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
+import org.apache.commons.lang3.ObjectUtils;
+import org.vaadin.viritin.LazyList;
+import org.vaadin.viritin.ListContainer;
+import org.vaadin.viritin.util.HtmlElementPropertySetter;
+
 import com.vaadin.data.Container;
 import com.vaadin.data.Container.Filterable;
 import com.vaadin.data.util.filter.UnsupportedFilterException;
 import com.vaadin.server.Resource;
 import com.vaadin.shared.Version;
 import com.vaadin.shared.ui.combobox.FilteringMode;
+import com.vaadin.ui.AbstractSelect.ItemCaptionMode;
 import com.vaadin.ui.ComboBox;
-import org.apache.commons.lang3.ObjectUtils;
-import org.vaadin.viritin.LazyList;
-import org.vaadin.viritin.ListContainer;
-import org.vaadin.viritin.util.HtmlElementPropertySetter;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * This class tries to provide a simple lazy loading connection form ComboBox to
@@ -25,8 +27,10 @@ import java.util.List;
  */
 public class LazyComboBox<T> extends TypedSelect<T> {
 
+    private static final long           serialVersionUID = 2332969066755466769L;
+
     private String currentFilter;
-    private FilterablePagingProvider fpp;
+    private FilterablePagingProvider<T> fpp;
     private FilterableCountProvider fcp;
 
     /**
@@ -86,7 +90,7 @@ public class LazyComboBox<T> extends TypedSelect<T> {
      * @param countProvider the interface via the count of items is detected
      */
     public LazyComboBox(Class<T> elementType,
-            final FilterablePagingProvider filterablePageProvider,
+            final FilterablePagingProvider<T> filterablePageProvider,
             final FilterableCountProvider countProvider) {
         this(elementType, filterablePageProvider, countProvider,
                 LazyList.DEFAULT_PAGE_SIZE);
@@ -102,7 +106,7 @@ public class LazyComboBox<T> extends TypedSelect<T> {
      * @param pageLength the maximum page size to be used with service calls
      */
     public LazyComboBox(Class<T> elementType,
-            final FilterablePagingProvider filterablePageProvider,
+            final FilterablePagingProvider<T> filterablePageProvider,
             final FilterableCountProvider countProvider, int pageLength) {
         this();
         initList(elementType, filterablePageProvider, countProvider, pageLength);
@@ -110,19 +114,19 @@ public class LazyComboBox<T> extends TypedSelect<T> {
 
     protected final ComboBox initList(
             Class<T> elementType,
-            FilterablePagingProvider filterablePageProvider,
+            FilterablePagingProvider<T> filterablePageProvider,
             FilterableCountProvider countProvider1, int pageLength) {
 
         this.fpp = filterablePageProvider;
         this.fcp = countProvider1;
 
         // piggyback to simple paging provider
-        piggybackLazyList = new LazyList<>(new LazyList.PagingProvider() {
+        piggybackLazyList = new LazyList<>(new LazyList.PagingProvider<T>() {
 
             private static final long serialVersionUID = 1027614132444478021L;
 
             @Override
-            public List findEntities(int firstRow) {
+            public List<T> findEntities(int firstRow) {
                 return fpp.findEntities(firstRow,
                         getCurrentFilter());
             }
@@ -137,6 +141,9 @@ public class LazyComboBox<T> extends TypedSelect<T> {
         }, pageLength);
 
         final ComboBox comboBox = new ComboBox() {
+
+            private static final long serialVersionUID = -4543249010409767251L;
+
             @SuppressWarnings("unchecked")
             @Override
             public String getItemCaption(Object itemId) {
@@ -219,12 +226,12 @@ public class LazyComboBox<T> extends TypedSelect<T> {
         this.fpp = filterablePagingProvider;
         this.fcp = filterableCountProvider;
         // Need to re-create the piggybackList & set container, some refactoring should be done here
-        piggybackLazyList = new LazyList<>(new LazyList.PagingProvider() {
+        piggybackLazyList = new LazyList<>(new LazyList.PagingProvider<T>() {
 
             private static final long serialVersionUID = 1027614132444478021L;
 
             @Override
-            public List findEntities(int firstRow) {
+            public List<T> findEntities(int firstRow) {
                 return fpp.findEntities(firstRow,
                         getCurrentFilter());
             }
@@ -237,7 +244,7 @@ public class LazyComboBox<T> extends TypedSelect<T> {
                 return fcp.size(getCurrentFilter());
             }
         }, pageLength);
-        setBic(new DummyFilterableListContainer<>(getType(),
+        setBic(new DummyFilterableListContainer<T>(getType(),
                 piggybackLazyList));
         getSelect().setContainerDataSource(getBic());
     }
@@ -284,6 +291,8 @@ public class LazyComboBox<T> extends TypedSelect<T> {
      */
     private static class DummyFilterableListContainer<T> extends ListContainer<T>
             implements Filterable {
+
+        private static final long serialVersionUID = -1165474591390168493L;
 
         DummyFilterableListContainer(Class<T> type,
                 Collection<T> backingList) {
@@ -364,8 +373,8 @@ public class LazyComboBox<T> extends TypedSelect<T> {
     }
 
     @Override
-    public LazyComboBox setFieldType(Class<T> type) {
-        return (LazyComboBox) super.setFieldType(type);
+    public LazyComboBox<T> setFieldType(Class<T> type) {
+        return (LazyComboBox<T>) super.setFieldType(type);
     }
 
     @Override

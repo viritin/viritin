@@ -1,11 +1,14 @@
 package org.vaadin.viritin.layouts;
 
+import org.vaadin.viritin.MSize;
+
 import com.vaadin.server.Resource;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Window;
-import org.vaadin.viritin.MSize;
 
 public class MWindow extends Window {
+
+    private static final long serialVersionUID = -9067209720594324637L;
 
     public MWindow() {
         super();

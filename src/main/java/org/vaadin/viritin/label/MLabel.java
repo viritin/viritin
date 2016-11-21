@@ -15,14 +15,17 @@
  */
 package org.vaadin.viritin.label;
 
+import org.vaadin.viritin.MSize;
+
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Label;
-import org.vaadin.viritin.MSize;
 
 /**
  * Fluent Label
  */
 public class MLabel extends Label {
+
+    private static final long serialVersionUID = -635245868195615938L;
 
     public MLabel() {
         super();

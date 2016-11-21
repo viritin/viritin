@@ -15,15 +15,18 @@
  */
 package org.vaadin.viritin.button;
 
+import org.vaadin.dialogs.ConfirmDialog;
+
 import com.vaadin.server.Resource;
 import com.vaadin.shared.MouseEventDetails;
-import org.vaadin.dialogs.ConfirmDialog;
 
 /**
  *
  * @author mattitahvonenitmill
  */
 public class ConfirmButton extends MButton {
+
+    private static final long serialVersionUID = -3146998691761708825L;
 
     private String confirmWindowCaption;
     private String confirmationText = "Are you sure?";

@@ -1,13 +1,16 @@
 package org.vaadin.viritin.fields;
 
 
-import com.vaadin.data.Property;
-import com.vaadin.data.Validator;
-import com.vaadin.ui.NativeSelect;
-
 import java.util.Collection;
 
+import com.vaadin.data.Property;
+import com.vaadin.data.Validator;
+import com.vaadin.ui.AbstractSelect;
+import com.vaadin.ui.NativeSelect;
+
 public class EnumSelect<T> extends TypedSelect<T> {
+
+    private static final long serialVersionUID = -4871997560701783780L;
 
     public EnumSelect() {
         withSelectType(NativeSelect.class);
@@ -28,56 +31,56 @@ public class EnumSelect<T> extends TypedSelect<T> {
     }
 
     @Override
-    public EnumSelect setBeans(Collection options) {
-        return (EnumSelect) super.setBeans(options);
+    public EnumSelect<T> setBeans(Collection<T> options) {
+        return (EnumSelect<T>) super.setBeans(options);
     }
 
     @Override
-    public EnumSelect setFieldType(Class type) {
-        return (EnumSelect) super.setFieldType(type);
+    public EnumSelect<T> setFieldType(Class<T> type) {
+        return (EnumSelect<T>) super.setFieldType(type);
     }
 
     @Override
-    public EnumSelect withWidth(String width) {
-        return (EnumSelect) super.withWidth(width);
+    public EnumSelect<T> withWidth(String width) {
+        return (EnumSelect<T>) super.withWidth(width);
     }
 
     @Override
-    public EnumSelect withWidth(float width, Unit unit) {
-        return (EnumSelect) super.withWidth(width, unit);
+    public EnumSelect<T> withWidth(float width, Unit unit) {
+        return (EnumSelect<T>) super.withWidth(width, unit);
     }
 
     @Override
-    public EnumSelect withValidator(Validator validator) {
-        return (EnumSelect) super.withValidator(validator);
+    public EnumSelect<T> withValidator(Validator validator) {
+        return (EnumSelect<T>) super.withValidator(validator);
     }
 
     @Override
-    public TypedSelect withReadOnly(boolean readOnly) {
+    public TypedSelect<T> withReadOnly(boolean readOnly) {
         return super.withReadOnly(readOnly);
     }
 
     @Override
-    public EnumSelect withFullWidth() {
-        return (EnumSelect) super.withFullWidth();
+    public EnumSelect<T> withFullWidth() {
+        return (EnumSelect<T>) super.withFullWidth();
     }
 
     @Override
-    public EnumSelect addMValueChangeListener(MValueChangeListener listener) {
-        return (EnumSelect) super.addMValueChangeListener(listener);
+    public EnumSelect<T> addMValueChangeListener(MValueChangeListener<T> listener) {
+        return (EnumSelect<T>) super.addMValueChangeListener(listener);
     }
 
     @Override
-    public EnumSelect withSelectType(Class selectType) {
-        return (EnumSelect) super.withSelectType(selectType);
+    public EnumSelect<T> withSelectType(Class<? extends AbstractSelect> selectType) {
+        return (EnumSelect<T>) super.withSelectType(selectType);
     }
 
     @Override
-    public EnumSelect withCaption(String caption) {
-        return (EnumSelect) super.withCaption(caption);
+    public EnumSelect<T> withCaption(String caption) {
+        return (EnumSelect<T>) super.withCaption(caption);
     }
 
-    public EnumSelect withNullSelection(boolean allowNullSelection) {
+    public EnumSelect<T> withNullSelection(boolean allowNullSelection) {
         getSelect().setNullSelectionAllowed(allowNullSelection);
         return this;
     }

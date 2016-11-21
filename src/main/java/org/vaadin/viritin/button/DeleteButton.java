@@ -24,6 +24,8 @@ import com.vaadin.server.Resource;
  */
 public class DeleteButton extends ConfirmButton {
 
+    private static final long serialVersionUID = 4012911261590461969L;
+
     public DeleteButton() {
         setupDeleteButton();
     }
