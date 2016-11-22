@@ -3,6 +3,7 @@ package org.vaadin.viritin;
 import com.vaadin.data.Container;
 import com.vaadin.data.Container.Filterable;
 import com.vaadin.data.Item;
+import com.vaadin.data.Property;
 import com.vaadin.data.util.filter.UnsupportedFilterException;
 
 import java.util.ArrayList;
@@ -136,6 +137,15 @@ public class FilterableListContainer<T> extends ListContainer<T> implements
     @Override
     public Collection<T> getItemIds() {
         return getBackingList();
+    }
+
+    @Override
+    public Property getContainerProperty(Object itemId, Object propertyId) {
+        return getItemIgnoreFilter(itemId).getItemProperty(propertyId);
+    }
+
+    private Item getItemIgnoreFilter(Object itemId) {
+        return super.getItem(itemId);
     }
 
     @Override
