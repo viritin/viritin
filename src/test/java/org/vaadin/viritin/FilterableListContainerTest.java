@@ -51,6 +51,7 @@ public class FilterableListContainerTest {
         List<Person> l = new ArrayList<>(total);
         for (int i = 0; i < total; i++) {
             Person p = new Person();
+            p.setId(i);
             p.setFirstName("First" + i);
             p.setLastName("Lastname" + i);
             p.setAge(r.nextInt(100));
