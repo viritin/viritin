@@ -238,10 +238,7 @@ public class ListContainer<T> extends AbstractContainer implements
     @Override
     public Property getContainerProperty(Object itemId, Object propertyId) {
         Item i = getItem(itemId);
-        if (i == null) {
-            return null;
-        }
-        return i.getItemProperty(propertyId);
+        return i != null ? i.getItemProperty(propertyId) : null;
     }
 
     @Override
