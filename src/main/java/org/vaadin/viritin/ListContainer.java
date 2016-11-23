@@ -513,20 +513,20 @@ public class ListContainer<T> extends AbstractContainer implements
         @Override
         public int compare(T o1, T o2) {
             for (int i = 0; i < propertyId.length; i++) {
-                String currentProperty = propertyId[i].toString();
-                Comparator underlyingComparator = getUnderlyingComparator(currentProperty);
+                Comparator underlyingComparator = getUnderlyingComparator(propertyId[i]);
                 Comparator currentComparator = underlyingComparator != null ? underlyingComparator : ComparableComparator.getInstance();
 
                 if (!ascending[i]) {
                     currentComparator = new ReverseComparator(currentComparator);
                 }
 
-                Object o1Prop = getContainerProperty(o1, currentProperty).getValue();
-                Object o2Prop = getContainerProperty(o2, currentProperty).getValue();
-                int compare = currentComparator.compare(o1Prop, o2Prop);
-                if (compare != 0) {
-                    return compare;
-                }
+                Property o1Prop = getContainerProperty(o1, propertyId[i]);
+                Object o1Value = o1Prop != null ? o1Prop.getValue() : null;
+
+                Property o2Prop = getContainerProperty(o2, propertyId[i]);
+                Object o2Value = o2Prop != null ? o2Prop.getValue() : null;
+
+                return currentComparator.compare(o1Value, o2Value);
             }
 
             return 0;
