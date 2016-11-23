@@ -238,7 +238,7 @@ public class ListContainer<T> extends AbstractContainer implements
     @Override
     public Property getContainerProperty(Object itemId, Object propertyId) {
         Item i = getItem(itemId);
-        return i != null ? i.getItemProperty(propertyId) : null;
+        return (i != null) ? i.getItemProperty(propertyId) : null;
     }
 
     @Override
@@ -518,10 +518,10 @@ public class ListContainer<T> extends AbstractContainer implements
                 }
 
                 Property o1Prop = getContainerProperty(o1, propertyId[i]);
-                Object o1Value = o1Prop != null ? o1Prop.getValue() : null;
+                Object o1Value = (o1Prop != null) ? o1Prop.getValue() : null;
 
                 Property o2Prop = getContainerProperty(o2, propertyId[i]);
-                Object o2Value = o2Prop != null ? o2Prop.getValue() : null;
+                Object o2Value = (o2Prop != null) ? o2Prop.getValue() : null;
 
                 return currentComparator.compare(o1Value, o2Value);
             }
