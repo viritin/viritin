@@ -3,7 +3,6 @@ package org.vaadin.viritin;
 import com.vaadin.data.Container;
 import com.vaadin.data.Container.Filterable;
 import com.vaadin.data.Item;
-import com.vaadin.data.Property;
 import com.vaadin.data.util.filter.UnsupportedFilterException;
 
 import java.util.ArrayList;
