@@ -140,15 +140,6 @@ public class FilterableListContainer<T> extends ListContainer<T> implements
     }
 
     @Override
-    public Property getContainerProperty(Object itemId, Object propertyId) {
-        return getItemIgnoreFilter(itemId).getItemProperty(propertyId);
-    }
-
-    private Item getItemIgnoreFilter(Object itemId) {
-        return super.getItem(itemId);
-    }
-
-    @Override
     public List<T> getItemIds(int startIndex, int numberOfItems) {
         return getBackingList().subList(startIndex, startIndex + numberOfItems);
     }
