@@ -4,15 +4,13 @@ import java.util.Date;
 import java.util.Map;
 
 import com.vaadin.data.Property;
-import com.vaadin.server.Resource;
 import com.vaadin.shared.ui.datefield.Resolution;
-import com.vaadin.ui.DateField;
 
 /**
  *
  * @author Matti Tahvonen
  */
-public class MDateField extends DateField {
+public class MDateField extends FDateField {
 
     public MDateField() {
     }
@@ -91,16 +89,6 @@ public class MDateField extends DateField {
         super.setValue(newValue, repaintIsNotNeeded);
     }
 
-    public MDateField withIcon(Resource icon) {
-        setIcon(icon);
-        return this;
-    }
-
-    public MDateField withResolution(Resolution resolution) {
-        setResolution(resolution);
-        return this;
-    }
-
     public MDateField withStyleName(String... styleNames) {
         for (String styleName : styleNames) {
             addStyleName(styleName);
@@ -108,34 +96,8 @@ public class MDateField extends DateField {
         return this;
     }
 
-    public MDateField withRequired(boolean required) {
-        setRequired(required);
-        return this;
-    }
-
-    public MDateField withRequiredError(String requiredError) {
-        setRequiredError(requiredError);
-        return this;
-    }
-
     public MDateField withFullWidth() {
         setWidth("100%");
         return this;
     }
-
-    public MDateField withWidth(float width, Unit unit) {
-        setWidth(width, unit);
-        return this;
-    }
-
-    public MDateField withWidth(String width) {
-        setWidth(width);
-        return this;
-    }
-
-    public MDateField withId(String id) {
-        setId(id);
-        return this;
-    }
-
 }

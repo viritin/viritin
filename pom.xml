@@ -206,7 +206,7 @@
         	<plugin>
 				<groupId>net.vergien.fig</groupId>
 				<artifactId>fluent-interface-generator-maven-plugin</artifactId>
-				<version>0.0.2</version>
+				<version>0.0.3</version>
 				<dependencies>
 					<dependency>
            				<groupId>com.vaadin</groupId>
@@ -241,9 +241,7 @@
 									<classNames>
 										<param>com.vaadin.ui.TextField</param>
 										<param>com.vaadin.ui.TextArea</param>
-										<!-- creates broken code
-										<param>com.vaadin.ui.DateField</param>
-										 -->
+										<param>com.vaadin.ui.DateField</param>										 
 									</classNames>
 								</pkgConf>
 								<pkgConf>
