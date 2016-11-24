@@ -219,7 +219,8 @@
 									<classNames>
 										<param>com.vaadin.ui.TextField</param>
 										<param>com.vaadin.ui.TextArea</param>
-										<param>com.vaadin.ui.DateField</param>										 
+										<param>com.vaadin.ui.DateField</param>	
+										<param>com.vaadin.ui.CheckBox</param>									 
 									</classNames>
 								</pkgConf>
 								<pkgConf>
