@@ -48,44 +48,4 @@ public class MPanel extends FPanel{
         }
         return this;
     }
-
-    public MPanel withEnabled(boolean enabled) {
-        setEnabled(enabled);
-        return this;
-    }
-
-    public MPanel withVisible(boolean visible) {
-        setVisible(visible);
-        return this;
-    }
-
-    public MPanel withSizeUndefined() {
-        setSizeUndefined();
-        return this;
-    }
-
-    public MPanel withWidthUndefined() {
-        setWidthUndefined();
-        return this;
-    }
-
-    public MPanel withHeightUndefined() {
-        setHeightUndefined();
-        return this;
-    }
-
-    public MPanel withResponsive(boolean responsive) {
-        setResponsive(responsive);
-        return this;
-    }
-
-    public MPanel withId(String id) {
-        setId(id);
-        return this;
-    }
-
-    public MPanel withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
 }

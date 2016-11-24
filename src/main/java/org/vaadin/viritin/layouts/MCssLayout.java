@@ -15,13 +15,11 @@ public class MCssLayout extends FCssLayout {
     }
 
     public MCssLayout withFullWidth() {
-        setWidth("100%");
-        return this;
+        return withWidth("100%");       
     }
 
     public MCssLayout withFullHeight() {
-        setHeight("100%");
-        return this;
+        return withHeight("100%");
     }
 
     public MCssLayout withSize(MSize size) {
@@ -37,11 +35,6 @@ public class MCssLayout extends FCssLayout {
         return this;
     }
 
-    public MCssLayout withCaption(String caption) {
-        setCaption(caption);
-        return this;
-    }
-
     public MCssLayout add(Component... component) {
         addComponents(component);
         return this;
@@ -52,41 +45,4 @@ public class MCssLayout extends FCssLayout {
         setCaptionAsHtml(captionAsHtml);
         return this;
     }
-
-    public MCssLayout withVisible(boolean visible) {
-        setVisible(visible);
-        return this;
-    }
-
-    public MCssLayout withSizeUndefined() {
-        setSizeUndefined();
-        return this;
-    }
-
-    public MCssLayout withWidthUndefined() {
-        setWidthUndefined();
-        return this;
-    }
-
-    public MCssLayout withHeightUndefined() {
-        setHeightUndefined();
-        return this;
-    }
-
-    public MCssLayout withResponsive(boolean responsive) {
-        setResponsive(responsive);
-        return this;
-    }
-
-    public MCssLayout withId(String id) {
-        setId(id);
-        return this;
-    }
-
-    public MCssLayout withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
-
 }

@@ -113,11 +113,6 @@ public class MTextField extends FTextField implements EagerValidateable {
         return lastKnownTextChangeValue;
     }
 
-    public MTextField withConversionError(String message) {
-        setConversionError(message);
-        return this;
-    }
-
     public MTextField withConverter(Converter<String, ?> converter) {
         setConverter(converter);
         return this;
@@ -128,36 +123,10 @@ public class MTextField extends FTextField implements EagerValidateable {
         return this;
     }
 
-
-    public MTextField withValue(String value) {
-        setValue(value);
-        return this;
-    }
-
     public MTextField withStyleName(String... styleNames) {
         for (String styleName : styleNames) {
             addStyleName(styleName);
         }
-        return this;
-    }
-
-    public MTextField withVisible(boolean visible) {
-        setVisible(visible);
-        return this;
-    }
-
-    public MTextField withTextChangeListener(FieldEvents.TextChangeListener listener) {
-        addTextChangeListener(listener);
-        return this;
-    }
-
-    public MTextField withValueChangeListener(Property.ValueChangeListener listener) {
-        addValueChangeListener(listener);
-        return this;
-    }
-
-    public MTextField withBlurListener(FieldEvents.BlurListener listener) {
-        addBlurListener(listener);
         return this;
     }
 
@@ -185,8 +154,6 @@ public class MTextField extends FTextField implements EagerValidateable {
     public enum AutoCapitalize {
         on, off
     }   
-
-
 
     public MTextField withAutocompleteOff() {
         return setAutocomplete(AutoComplete.off);

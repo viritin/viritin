@@ -55,13 +55,11 @@ public class MTextArea extends FTextArea {
     }
 
     public MTextArea withFullWidth() {
-        setWidth("100%");
-        return this;
+        return withWidth("100%");
     }
-
-    public MTextArea withValue(String value) {
-        setValue(value);
-        return this;
+    
+    public MTextArea withFullHeight() {
+        return withHeight("100%");
     }
 
     public MTextArea withSize(MSize mSize) {
@@ -76,30 +74,10 @@ public class MTextArea extends FTextArea {
         return this;
     }
 
-    public MTextArea withTextChangeListener(FieldEvents.TextChangeListener listener) {
-        addTextChangeListener(listener);
-        return this;
-    }
-
-    public MTextArea withValueChangeListener(Property.ValueChangeListener listener) {
-        addValueChangeListener(listener);
-        return this;
-    }
-
-    public MTextArea withBlurListener(FieldEvents.BlurListener listener) {
-        addBlurListener(listener);
-        return this;
-    }
-
     public MTextArea withStyleName(String... styleNames) {
         for (String styleName : styleNames) {
             addStyleName(styleName);
         }
-        return this;
-    }
-
-    public MTextArea withVisible(boolean visible) {
-        setVisible(visible);
         return this;
     }
 }

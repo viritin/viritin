@@ -79,44 +79,4 @@ public class MGridLayout extends FGridLayout {
         }
         return this;
     }
-
-    public MGridLayout withVisible(boolean visible) {
-        setVisible(visible);
-        return this;
-    }
-
-    public MGridLayout withSizeUndefined() {
-        setSizeUndefined();
-        return this;
-    }
-
-    public MGridLayout withWidthUndefined() {
-        setWidthUndefined();
-        return this;
-    }
-
-    public MGridLayout withHeightUndefined() {
-        setHeightUndefined();
-        return this;
-    }
-
-    public MGridLayout withResponsive(boolean responsive) {
-        setResponsive(responsive);
-        return this;
-    }
-
-    public MGridLayout withDefaultComponentAlignment(Alignment defaultAlignment) {
-        setDefaultComponentAlignment(defaultAlignment);
-        return this;
-    }
-
-    public MGridLayout withId(String id) {
-        setId(id);
-        return this;
-    }
-
-    public MGridLayout withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
 }
