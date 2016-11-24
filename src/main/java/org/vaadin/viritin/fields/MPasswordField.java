@@ -15,25 +15,22 @@
  */
 package org.vaadin.viritin.fields;
 
+import java.util.EventObject;
+
 import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
 import com.vaadin.data.util.converter.Converter;
-import com.vaadin.event.FieldEvents;
 import com.vaadin.event.FieldEvents.TextChangeEvent;
 import com.vaadin.server.AbstractErrorMessage;
 import com.vaadin.server.CompositeErrorMessage;
 import com.vaadin.server.ErrorMessage;
-import com.vaadin.server.Resource;
-import com.vaadin.ui.PasswordField;
-
-import java.util.EventObject;
 
 /**
  * A an extension to basic Vaadin PasswordField. Uses the only sane default for
  * "nullRepresentation" (""), adds support for "eager validation" (~ validate
  * while typing) and adds some fluent APIs.
  */
-public class MPasswordField extends PasswordField implements EagerValidateable {
+public class MPasswordField extends FPasswordField implements EagerValidateable {
 
     private boolean eagerValidation = false;
     private boolean eagerValidationStatus;
@@ -102,90 +99,19 @@ public class MPasswordField extends PasswordField implements EagerValidateable {
         return lastKnownTextChangeValue;
     }
 
-    public MPasswordField withConversionError(String message) {
-        setConversionError(message);
-        return this;
-    }
-
     public MPasswordField withConverter(Converter<String, ?> converter) {
         setConverter(converter);
         return this;
     }
 
     public MPasswordField withFullWidth() {
-        setWidth("100%");
-        return this;
-    }
-
-    public MPasswordField withInputPrompt(String inputPrompt) {
-        setInputPrompt(inputPrompt);
-        return this;
-    }
-
-    public MPasswordField withReadOnly(boolean readOnly) {
-        setReadOnly(readOnly);
-        return this;
-    }
-
-    public MPasswordField withValidator(Validator validator) {
-        addValidator(validator);
-        return this;
-    }
-
-    public MPasswordField withWidth(float width, Unit unit) {
-        setWidth(width, unit);
-        return this;
-    }
-
-    public MPasswordField withWidth(String width) {
-        setWidth(width);
-        return this;
-    }
-
-    public MPasswordField withNullRepresentation(String nullRepresentation) {
-        setNullRepresentation(nullRepresentation);
-        return this;
-    }
-
-    public MPasswordField withIcon(Resource icon) {
-        setIcon(icon);
-        return this;
-    }
-
-    public MPasswordField withRequired(boolean required) {
-        setRequired(required);
-        return this;
-    }
-
-    public MPasswordField withRequiredError(String requiredError) {
-        setRequiredError(requiredError);
-        return this;
-    }
-
-    public MPasswordField withId(String id) {
-        setId(id);
-        return this;
+        return withWidth("100%");
     }
 
     public MPasswordField withStyleName(String... styleNames) {
         for (String styleName : styleNames) {
             addStyleName(styleName);
         }
-        return this;
-    }
-
-    public MPasswordField withTextChangeListener(FieldEvents.TextChangeListener listener) {
-        addTextChangeListener(listener);
-        return this;
-    }
-
-    public MPasswordField withValueChangeListener(Property.ValueChangeListener listener) {
-        addValueChangeListener(listener);
-        return this;
-    }
-
-    public MPasswordField withBlurListener(FieldEvents.BlurListener listener) {
-        addBlurListener(listener);
         return this;
     }
 
