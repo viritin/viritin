@@ -15,10 +15,11 @@
  */
 package org.vaadin.viritin.label;
 
-import com.vaadin.shared.ui.label.ContentMode;
-import com.vaadin.ui.Label;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
+
+import com.vaadin.shared.ui.label.ContentMode;
+import com.vaadin.ui.Label;
 
 /**
  * Label whose content is wrapped in an H1,H2,H3.. element.
@@ -26,6 +27,8 @@ import org.jsoup.safety.Whitelist;
  * Uses Jsoup for sanitation. Only text by default.
  */
 public class Header extends Label {
+
+    private static final long serialVersionUID = -2879612973232108854L;
 
     private String text;
     private int headerLevel = 1;

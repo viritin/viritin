@@ -15,6 +15,8 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class IntegerField extends AbstractNumberField<Integer> {
 
+    private static final long serialVersionUID = 377246000306551089L;
+
     public IntegerField() {
         setSizeUndefined();
     }

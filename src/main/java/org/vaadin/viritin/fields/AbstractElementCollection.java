@@ -1,17 +1,5 @@
 package org.vaadin.viritin.fields;
 
-import com.vaadin.data.Validator;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.CustomField;
-import com.vaadin.ui.DefaultFieldFactory;
-import com.vaadin.ui.Field;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.Layout;
-import com.vaadin.util.ReflectTools;
-import org.vaadin.viritin.BeanBinder;
-import org.vaadin.viritin.MBeanFieldGroup;
-import org.vaadin.viritin.MBeanFieldGroup.FieldGroupListener;
-
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -24,6 +12,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.vaadin.viritin.BeanBinder;
+import org.vaadin.viritin.MBeanFieldGroup;
+import org.vaadin.viritin.MBeanFieldGroup.FieldGroupListener;
+
+import com.vaadin.data.Validator;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.CustomField;
+import com.vaadin.ui.DefaultFieldFactory;
+import com.vaadin.ui.Field;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.Layout;
+import com.vaadin.util.ReflectTools;
 
 /**
  * A superclass for fields suitable for editing collection of referenced objects tied to parent
@@ -202,14 +203,14 @@ public abstract class AbstractElementCollection<ET> extends CustomField<Collecti
         if (value == null) {
             if (getPropertyDataSource() == null) {
                 // this should never happen :-)
-                return new HashSet();
+                return new HashSet<ET>();
             }
             Class fieldType = getPropertyDataSource().getType();
             if (fieldType.isInterface()) {
                 if (fieldType == List.class) {
-                    value = new ArrayList();
+                    value = new ArrayList<ET>();
                 } else { // Set
-                    value = new HashSet();
+                    value = new HashSet<ET>();
                 }
             } else {
                 try {
@@ -312,7 +313,7 @@ public abstract class AbstractElementCollection<ET> extends CustomField<Collecti
         MBeanFieldGroup<ET> bfg;
         Object editor;
 
-        private EditorStuff(MBeanFieldGroup editor, Object o) {
+        private EditorStuff(MBeanFieldGroup<ET> editor, Object o) {
             this.bfg = editor;
             this.editor = o;
         }

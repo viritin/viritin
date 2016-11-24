@@ -25,6 +25,8 @@ import com.vaadin.server.Resource;
  */
 public class PrimaryButton extends MButton {
 
+    private static final long serialVersionUID = 1005969185091403505L;
+
     public PrimaryButton() {
         setupPrimaryButton();
     }

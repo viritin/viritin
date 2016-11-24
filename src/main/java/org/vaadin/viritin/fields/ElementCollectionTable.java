@@ -1,15 +1,19 @@
 package org.vaadin.viritin.fields;
 
-import com.vaadin.server.FontAwesome;
-import com.vaadin.ui.*;
-import com.vaadin.ui.themes.ValoTheme;
+import java.util.ArrayList;
+import java.util.IdentityHashMap;
+import java.util.List;
+
 import org.vaadin.viritin.MBeanFieldGroup;
 import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 
-import java.util.ArrayList;
-import java.util.IdentityHashMap;
-import java.util.List;
+import com.vaadin.server.FontAwesome;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.Layout;
+import com.vaadin.ui.Table;
+import com.vaadin.ui.themes.ValoTheme;
 
 /**
  * A field suitable for editing collection of referenced objects tied to parent
@@ -53,19 +57,23 @@ import java.util.List;
  */
 public class ElementCollectionTable<ET> extends AbstractElementCollection<ET> {
 
-    public ElementCollectionTable(Class elementType, Class formType) {
+    private static final long serialVersionUID = 8055987316151594559L;
+
+    public ElementCollectionTable(Class<ET> elementType, Class<?> formType) {
         super(elementType, formType);
     }
 
-    public ElementCollectionTable(Class elementType, Instantiator i,
-            Class formType) {
+    public ElementCollectionTable(Class<ET> elementType, Instantiator i, Class<?> formType) {
         super(elementType, i, formType);
     }
 
-    private MTable table;
+    private MTable<ET> table;
 
     private MButton addButton = new MButton(FontAwesome.PLUS,
             new Button.ClickListener() {
+
+                private static final long serialVersionUID = 6115218255676556647L;
+
                 @Override
                 public void buttonClick(Button.ClickEvent event) {
                     addElement(createInstance());
@@ -108,7 +116,7 @@ public class ElementCollectionTable<ET> extends AbstractElementCollection<ET> {
     /**
      * @return the Table used in the implementation. Configure carefully.
      */
-    public MTable getTable() {
+    public MTable<ET> getTable() {
         return table;
     }
 
@@ -121,10 +129,12 @@ public class ElementCollectionTable<ET> extends AbstractElementCollection<ET> {
         if (!inited) {
             layout.setMargin(false);
             setHeight("300px");
-            table = new MTable(getElementType()).withFullWidth();
+            table = new MTable<ET>(getElementType()).withFullWidth();
             for (Object propertyId : getVisibleProperties()) {
                 table.addGeneratedColumn(propertyId,
                         new Table.ColumnGenerator() {
+
+                            private static final long serialVersionUID = 3637140096807147630L;
 
                             @Override
                             public Object generateCell(Table source,
@@ -152,6 +162,8 @@ public class ElementCollectionTable<ET> extends AbstractElementCollection<ET> {
                 table.addGeneratedColumn("__ACTIONS",
                         new Table.ColumnGenerator() {
 
+                            private static final long serialVersionUID = 492486828008202547L;
+
                             @Override
                             public Object generateCell(Table source,
                                     final Object itemId,
@@ -160,6 +172,9 @@ public class ElementCollectionTable<ET> extends AbstractElementCollection<ET> {
                                 MButton b = new MButton(FontAwesome.TRASH_O).
                                 withListener(
                                         new Button.ClickListener() {
+
+                                            private static final long serialVersionUID = -1257102620834362724L;
+
                                             @Override
                                             public void buttonClick(
                                                     Button.ClickEvent event) {

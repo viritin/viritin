@@ -15,6 +15,11 @@
  */
 package org.vaadin.viritin.fields;
 
+import java.util.EventObject;
+import java.util.Map;
+
+import org.vaadin.viritin.util.HtmlElementPropertySetter;
+
 import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
 import com.vaadin.data.util.converter.Converter;
@@ -26,10 +31,6 @@ import com.vaadin.server.CompositeErrorMessage;
 import com.vaadin.server.ErrorMessage;
 import com.vaadin.server.Resource;
 import com.vaadin.ui.TextField;
-import org.vaadin.viritin.util.HtmlElementPropertySetter;
-
-import java.util.EventObject;
-import java.util.Map;
 
 /**
  * A an extension to basic Vaadin TextField. Uses the only sane default for
@@ -37,6 +38,8 @@ import java.util.Map;
  * while typing) and adds some fluent APIs.
  */
 public class MTextField extends TextField implements EagerValidateable {
+
+    private static final long serialVersionUID = -9001913175922725871L;
 
     private boolean eagerValidation = false;
     private boolean eagerValidationStatus;
