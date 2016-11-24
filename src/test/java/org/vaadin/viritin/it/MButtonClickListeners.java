@@ -17,12 +17,12 @@ import org.vaadin.viritin.layouts.MVerticalLayout;
 @Theme("valo")
 public class MButtonClickListeners extends AbstractTest {
 
+    private static final long serialVersionUID = -8785308275350618769L;
+
     @Override
     public Component getTestComponent() {
         
         MButton b = new MButton("Say hola");
-//        b.addClickListener(this::sayHola);
-//        b.addClickListener(this::sayHolaOldSchool);
         
         // And the same without lambdas as the project is 1.6 compatible
         b.addClickListener(new MClickListener() {
@@ -33,6 +33,8 @@ public class MButtonClickListeners extends AbstractTest {
             }
         });
         b.addClickListener(new Button.ClickListener() {
+            private static final long serialVersionUID = 5019806363620874205L;
+            
             @Override
             public void buttonClick(ClickEvent event) {
                 sayHolaOldSchool(event);

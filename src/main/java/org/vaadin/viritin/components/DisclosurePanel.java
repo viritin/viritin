@@ -16,8 +16,8 @@ public class DisclosurePanel extends VerticalLayout {
     private FontIcon closedIcon = FontAwesome.PLUS_CIRCLE;
     private FontIcon openIcon = FontAwesome.MINUS_CIRCLE;
 
-    private MButton toggle = new MButton(closedIcon);
-    private MVerticalLayout contentWrapper = new MVerticalLayout();
+    private final MButton toggle = new MButton(closedIcon);
+    private final MVerticalLayout contentWrapper = new MVerticalLayout();
 
     public DisclosurePanel() {
         toggle.setStyleName(ValoTheme.BUTTON_BORDERLESS);

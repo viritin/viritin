@@ -13,6 +13,12 @@ public class MFormLayout extends FFormLayout {
         super(children);
     }
 
+    public MFormLayout withCaption(String caption, boolean captionAsHtml) {
+        setCaption(caption);
+        setCaptionAsHtml(captionAsHtml);
+        return this;
+    }
+
     public MFormLayout withFullWidth() {
         setWidth(100, Unit.PERCENTAGE);
         return this;
@@ -28,6 +34,11 @@ public class MFormLayout extends FFormLayout {
         for (String styleName : styleNames) {
             addStyleName(styleName);
         }
+        return this;
+    }
+
+    public MFormLayout with(Component... components) {
+        addComponents(components);
         return this;
     }
 }

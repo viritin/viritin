@@ -11,6 +11,8 @@ import com.vaadin.ui.Component;
 
 public class MVerticalLayout extends FVerticalLayout {
 
+    private static final long serialVersionUID = -1806208156595232451L;
+
     public MVerticalLayout() {
         super.setSpacing(true);
         super.setMargin(true);
@@ -101,10 +103,61 @@ public class MVerticalLayout extends FVerticalLayout {
         return this;
     }
 
+    public MVerticalLayout withCaption(String caption, boolean captionAsHtml) {
+        setCaption(caption);
+        setCaptionAsHtml(captionAsHtml);
+        return this;
+    }
+
     public MVerticalLayout withStyleName(String... styleNames) {
         for (String styleName : styleNames) {
             addStyleName(styleName);
         }
         return this;
     }
+    public MVerticalLayout withEnabled(boolean enabled) {
+        setEnabled(enabled);
+        return this;
+    }
+
+    public MVerticalLayout withVisible(boolean visible) {
+        setVisible(visible);
+        return this;
+    }
+
+    public MVerticalLayout withSizeUndefined() {
+        setSizeUndefined();
+        return this;
+    }
+
+    public MVerticalLayout withWidthUndefined() {
+        setWidthUndefined();
+        return this;
+    }
+
+    public MVerticalLayout withHeightUndefined() {
+        setHeightUndefined();
+        return this;
+    }
+
+    public MVerticalLayout withResponsive(boolean responsive) {
+        setResponsive(responsive);
+        return this;
+    }
+
+    public MVerticalLayout withDefaultComponentAlignment(Alignment defaultAlignment) {
+        setDefaultComponentAlignment(defaultAlignment);
+        return this;
+    }
+
+    public MVerticalLayout withId(String id) {
+        setId(id);
+        return this;
+    }
+
+    public MVerticalLayout withDescription(String description) {
+        setDescription(description);
+        return this;
+    }
+
 }

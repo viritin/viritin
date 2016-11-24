@@ -15,18 +15,20 @@
  */
 package org.vaadin.viritin.button;
 
-import java.util.LinkedHashSet;
-
 import org.vaadin.viritin.MSize;
 
 import com.vaadin.server.Resource;
 import com.vaadin.shared.MouseEventDetails;
+
+import java.util.LinkedHashSet;
 
 /**
  * An extension to basic Vaadin button that adds some handy constructors and
  * fluent API.
  */
 public class MButton extends FButton {
+
+    private static final long serialVersionUID = 3859208260278798873L;
 
     public MButton() {
     }
@@ -82,6 +84,11 @@ public class MButton extends FButton {
         return this;
     }
 
+    public MButton withClickShortcut(int keycode, int... modifiers){
+        setClickShortcut(keycode, modifiers);
+        return this;
+    }
+
     /**
      * A parameterless version of ClickListener to make it easier to use method
      * references.
@@ -107,7 +114,7 @@ public class MButton extends FButton {
 
     public MButton addClickListener(MClickListener listener) {
         if (mClickListeners == null) {
-            mClickListeners = new LinkedHashSet<MClickListener>();
+            mClickListeners = new LinkedHashSet<>();
         }
         mClickListeners.add(listener);
         return this;

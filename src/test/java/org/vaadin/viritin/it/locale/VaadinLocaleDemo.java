@@ -23,11 +23,11 @@ import com.vaadin.ui.Button.ClickListener;
 @SuppressWarnings("serial")
 @Theme("valo")
 public class VaadinLocaleDemo extends AbstractTest {
-    private VaadinLocale vaadinLocale = new VaadinLocale(Locale.ENGLISH,
+    private final VaadinLocale vaadinLocale = new VaadinLocale(Locale.ENGLISH,
             Locale.GERMAN, new Locale("de", "DE"), new Locale("da"), new Locale("fi"));
-    private LocaleSelect localeSelect = (LocaleSelect) new LocaleSelect()
+    private final LocaleSelect localeSelect = (LocaleSelect) new LocaleSelect()
             .withSelectType(ComboBox.class);
-    private DateField dateField = new DateField();
+    private final DateField dateField = new DateField();
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {

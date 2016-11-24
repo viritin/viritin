@@ -1,25 +1,20 @@
 package org.vaadin.viritin.fields;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
-import org.vaadin.viritin.ListContainer;
-
 import com.vaadin.data.Container;
 import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
 import com.vaadin.data.Validator.InvalidValueException;
 import com.vaadin.server.Resource;
-import com.vaadin.ui.AbstractSelect;
-import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.CustomField;
-import com.vaadin.ui.ListSelect;
-import com.vaadin.ui.NativeSelect;
-import com.vaadin.ui.OptionGroup;
-import com.vaadin.ui.TwinColSelect;
+import com.vaadin.ui.*;
+import org.vaadin.viritin.ListContainer;
+import org.vaadin.viritin.fields.config.ComboBoxConfig;
+import org.vaadin.viritin.fields.config.ListSelectConfig;
+import org.vaadin.viritin.fields.config.OptionGroupConfig;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * A select implementation with better typed API than in core Vaadin.
@@ -34,11 +29,17 @@ import com.vaadin.ui.TwinColSelect;
  * <p>
  * Note, that this select is always in single select mode. See MultiSelectTable
  * for a proper "multiselect".
+ * <p>
+ * NOTE, that if your options might be empty OR you might use multiple different types of
+ * options in your select, you have to specify the common superclass for the 
+ * options either using constructor with the class parameter or using
+ * setFieldType method. Due to Java type erasure, we cannot properly detect it
+ * with generics (type parameters) only.
  *
  * @author mstahv
  * @param <T> the type of selects value
  */
-public class TypedSelect<T> extends CustomField {
+public class TypedSelect<T> extends CustomField<T> {
 
     private CaptionGenerator<T> captionGenerator;
     private IconGenerator<T> iconGenerator;
@@ -56,7 +57,7 @@ public class TypedSelect<T> extends CustomField {
      */
     public TypedSelect(Class<T> type) {
         this.fieldType = type;
-        bic = new ListContainer<T>(type);
+        bic = new ListContainer<>(type);
     }
 
     /**
@@ -122,91 +123,125 @@ public class TypedSelect<T> extends CustomField {
         return this;
     }
 
+    public TypedSelect<T> withCaption(String caption, boolean captionAsHtml) {
+        setCaption(caption);
+        setCaptionAsHtml(captionAsHtml);
+        return this;
+    }
+
+    public TypedSelect<T> asListSelectType() {
+        return asListSelectType(null);
+    }
+
+    public TypedSelect<T> asListSelectType(ListSelectConfig config) {
+        ListSelect listSelect = new ListSelect() {
+            @SuppressWarnings("unchecked")
+            @Override
+            public String getItemCaption(Object itemId) {
+                return TypedSelect.this.getCaption((T) itemId);
+            }
+
+            @Override
+            public Resource getItemIcon(Object itemId) {
+                if (iconGenerator != null) {
+                    return iconGenerator.getIcon((T) itemId);
+                }
+                return super.getItemIcon(itemId);
+            }
+
+        };
+        if (config != null) {
+            config.configurateListSelect(listSelect);
+        }
+        setSelectInstance(listSelect);
+        return this;
+    }
+
+    public TypedSelect<T> asOptionGroupType() {
+        return asOptionGroupType(null);
+    }
+
+    public TypedSelect<T> asOptionGroupType(OptionGroupConfig config) {
+        OptionGroup optionGroup = new OptionGroup() {
+            @SuppressWarnings("unchecked")
+            @Override
+            public String getItemCaption(Object itemId) {
+                return TypedSelect.this.getCaption((T) itemId);
+            }
+
+            @Override
+            public Resource getItemIcon(Object itemId) {
+                if (iconGenerator != null) {
+                    return iconGenerator.getIcon((T) itemId);
+                }
+                return super.getItemIcon(itemId);
+            }
+
+        };
+        if (config != null) {
+            config.configurateOptionGroup(optionGroup);
+        }
+        setSelectInstance(optionGroup);
+        return this;
+    }
+
+    public TypedSelect<T> asComboBoxType() {
+        return asComboBoxType(null);
+    }
+
+    public TypedSelect<T> asComboBoxType(ComboBoxConfig config) {
+        ComboBox comboBox = new ComboBox() {
+            @SuppressWarnings("unchecked")
+            @Override
+            public String getItemCaption(Object itemId) {
+                return TypedSelect.this.getCaption((T) itemId);
+            }
+
+            @Override
+            public Resource getItemIcon(Object itemId) {
+                if (iconGenerator != null) {
+                    return iconGenerator.getIcon((T) itemId);
+                }
+                return super.getItemIcon(itemId);
+            }
+        };
+        if (config != null) {
+            config.configurateComboBox(comboBox);
+        }
+        setSelectInstance(comboBox);
+        LazyComboBox.fixComboBoxVaadinIssue16647(comboBox);
+        return this;
+    }
+
+    public TypedSelect<T> asNativeSelectType() {
+        setSelectInstance(new NativeSelect() {
+            @SuppressWarnings("unchecked")
+            @Override
+            public String getItemCaption(Object itemId) {
+                return TypedSelect.this.getCaption((T) itemId);
+            }
+
+            @Override
+            public Resource getItemIcon(Object itemId) {
+                if (iconGenerator != null) {
+                    return iconGenerator.getIcon((T) itemId);
+                }
+                return super.getItemIcon(itemId);
+            }
+        });
+        return this;
+    }
+
     public TypedSelect<T> withSelectType(
             Class<? extends AbstractSelect> selectType) {
         if (selectType == ListSelect.class) {
-            setSelectInstance(new ListSelect() {
-                @SuppressWarnings("unchecked")
-                @Override
-                public String getItemCaption(Object itemId) {
-                    return TypedSelect.this.getCaption((T) itemId);
-                }
-
-                @Override
-                public Resource getItemIcon(Object itemId) {
-                    if (iconGenerator != null) {
-                        return iconGenerator.getIcon((T) itemId);
-                    }
-                    return super.getItemIcon(itemId);
-                }
-
-            });
+            asListSelectType();
         } else if (selectType == OptionGroup.class) {
-            setSelectInstance(new OptionGroup() {
-                @SuppressWarnings("unchecked")
-                @Override
-                public String getItemCaption(Object itemId) {
-                    return TypedSelect.this.getCaption((T) itemId);
-                }
-
-                @Override
-                public Resource getItemIcon(Object itemId) {
-                    if (iconGenerator != null) {
-                        return iconGenerator.getIcon((T) itemId);
-                    }
-                    return super.getItemIcon(itemId);
-                }
-
-            });
+            asOptionGroupType();
         } else if (selectType == ComboBox.class) {
-            setSelectInstance(new ComboBox() {
-                @SuppressWarnings("unchecked")
-                @Override
-                public String getItemCaption(Object itemId) {
-                    return TypedSelect.this.getCaption((T) itemId);
-                }
-
-                @Override
-                public Resource getItemIcon(Object itemId) {
-                    if (iconGenerator != null) {
-                        return iconGenerator.getIcon((T) itemId);
-                    }
-                    return super.getItemIcon(itemId);
-                }
-            });
-            LazyComboBox.fixComboBoxVaadinIssue16647((ComboBox) getSelect());
-        } else if (selectType == TwinColSelect.class) {
-            setSelectInstance(new TwinColSelect() {
-                @SuppressWarnings("unchecked")
-                @Override
-                public String getItemCaption(Object itemId) {
-                    return TypedSelect.this.getCaption((T) itemId);
-                }
-
-                @Override
-                public Resource getItemIcon(Object itemId) {
-                    if (iconGenerator != null) {
-                        return iconGenerator.getIcon((T) itemId);
-                    }
-                    return super.getItemIcon(itemId);
-                }
-            });
-        } else /*if (selectType == null || selectType == NativeSelect.class)*/ {
-            setSelectInstance(new NativeSelect() {
-                @SuppressWarnings("unchecked")
-                @Override
-                public String getItemCaption(Object itemId) {
-                    return TypedSelect.this.getCaption((T) itemId);
-                }
-
-                @Override
-                public Resource getItemIcon(Object itemId) {
-                    if (iconGenerator != null) {
-                        return iconGenerator.getIcon((T) itemId);
-                    }
-                    return super.getItemIcon(itemId);
-                }
-            });
+            asComboBoxType();
+        } else {
+            asNativeSelectType();
         }
         return this;
     }
@@ -277,7 +312,7 @@ public class TypedSelect<T> extends CustomField {
 
         if (fieldType == null) {
             try {
-                fieldType = (Class<T>) ((Container.Sortable) select
+                fieldType = (Class<T>) ((Container.Ordered) select
                         .getContainerDataSource()).firstItemId().getClass();
             } catch (Exception e) {
                 // If field type isn't set or can't be detected just report
@@ -348,7 +383,7 @@ public class TypedSelect<T> extends CustomField {
     }
 
     @Override
-    protected void setInternalValue(Object newValue) {
+    protected void setInternalValue(T newValue) {
         super.setInternalValue(newValue);
         getSelect().setValue(newValue);
     }
@@ -400,7 +435,7 @@ public class TypedSelect<T> extends CustomField {
         if (bic != null) {
             bic.setCollection(options);
         } else {
-            bic = new ListContainer<T>(options);
+            bic = new ListContainer<>(options);
         }
         getSelect().setContainerDataSource(bic);
         return this;
@@ -423,6 +458,10 @@ public class TypedSelect<T> extends CustomField {
         return setOptions(options);
     }
 
+    public Collection<T> getBeans() {
+        return (Collection) bic.getItemIds();
+    }
+
     @Override
     public void attach() {
         if (bic != null && getSelect().getContainerDataSource() != bic) {
@@ -439,17 +478,12 @@ public class TypedSelect<T> extends CustomField {
 
                 @Override
                 public void valueChange(Property.ValueChangeEvent event) {
-                    setValue(event.getProperty().getValue());
+                    setValue((T) event.getProperty().getValue());
                     fireEvent(new MValueChangeEventImpl<T>(TypedSelect.this));
                 }
             };
             getSelect().addValueChangeListener(piggyBackListener);
         }
-    }
-
-    @Override
-    public T getValue() {
-        return (T) super.getValue();
     }
 
     public TypedSelect<T> withFullWidth() {
@@ -477,7 +511,12 @@ public class TypedSelect<T> extends CustomField {
         setWidth(width);
         return this;
     }
-    
+
+    public TypedSelect<T> withWidthUndefined() {
+        setWidthUndefined();
+        return this;
+    }
+
     public TypedSelect<T> withId(String id) {
         setId(id);
         return this;
@@ -499,6 +538,26 @@ public class TypedSelect<T> extends CustomField {
         if (bic != null && bic.size() > 0) {
             getSelect().setValue(bic.getIdByIndex(0));
         }
+    }
+
+    public TypedSelect<T> withNullSelectionAllowed(boolean nullAllowed) {
+        setNullSelectionAllowed(nullAllowed);
+        return this;
+    }
+
+    public TypedSelect<T> withVisible(boolean visible) {
+        setVisible(visible);
+        return this;
+    }
+
+    public TypedSelect<T> withDescription(String description) {
+        setDescription(description);
+        return this;
+    }
+
+    public TypedSelect<T> withEnabled(boolean enabled) {
+        setEnabled(enabled);
+        return this;
     }
 
     /**
@@ -533,6 +592,10 @@ public class TypedSelect<T> extends CustomField {
     @Override
     protected Component initContent() {
         return getSelect();
+    }
+
+    public void addOption(T option) {
+        getBic().addItem(option);
     }
 
 }

@@ -1,6 +1,7 @@
 package org.vaadin.viritin.it;
 
 import com.vaadin.annotations.Theme;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,16 +25,19 @@ public class GridLazyLoadingAndSorting extends AbstractTest {
     @Override
     public Component getTestComponent() {
 
-        final List<Person> listOfPersons = Service.getListOfPersons(1000);
+        final List<Person> orig = Service.getListOfPersons(1000);
 
-        final MGrid<Person> g = new MGrid<Person>(
+        final MGrid<Person> g = new MGrid<>(
                 new SortableLazyList.SortablePagingProvider<Person>() {
-            @Override
+                    private static final long serialVersionUID = 8990276045925275684L;
+
+                    @Override
             public List<Person> findEntities(int firstRow, boolean sortAscending,
                     String property) {
+                List<Person> listOfPersons = new ArrayList<>(orig);
                 if (property != null) {
 
-                    Collections.sort(listOfPersons, new BeanComparator<Person>(
+                    Collections.sort(listOfPersons, new BeanComparator<>(
                             property));
                     if (!sortAscending) {
                         Collections.reverse(listOfPersons);
@@ -43,28 +47,33 @@ public class GridLazyLoadingAndSorting extends AbstractTest {
                 if (last > listOfPersons.size()) {
                     last = listOfPersons.size();
                 }
-                return new ArrayList<Person>(listOfPersons.subList(firstRow,
+                return new ArrayList<>(listOfPersons.subList(firstRow,
                         last));
             }
         },
                 new LazyList.CountProvider() {
 
-            @Override
+                    private static final long serialVersionUID = 6575441260380762210L;
+
+                    @Override
             public int size() {
-                return listOfPersons.size();
+                return orig.size();
             }
         }
         );
 
-        final MGrid<Person> g2 = new MGrid<Person>(Person.class);
+        final MGrid<Person> g2 = new MGrid<>(Person.class);
         g2.lazyLoadFrom(
                 new SortableLazyList.SortablePagingProvider<Person>() {
-            @Override
+                    private static final long serialVersionUID = 6584091430092559501L;
+
+                    @Override
             public List<Person> findEntities(int firstRow, boolean sortAscending,
                     String property) {
+                List<Person> listOfPersons = new ArrayList<>(orig);
                 if (property != null) {
 
-                    Collections.sort(listOfPersons, new BeanComparator<Person>(
+                    Collections.sort(listOfPersons, new BeanComparator<>(
                             property));
                     if (!sortAscending) {
                         Collections.reverse(listOfPersons);
@@ -74,20 +83,44 @@ public class GridLazyLoadingAndSorting extends AbstractTest {
                 if (last > listOfPersons.size()) {
                     last = listOfPersons.size();
                 }
-                return new ArrayList<Person>(listOfPersons.subList(firstRow,
+                return new ArrayList<>(listOfPersons.subList(firstRow,
                         last));
             }
         },
                 new LazyList.CountProvider() {
 
-            @Override
+                    private static final long serialVersionUID = -7613809143021239619L;
+
+                    @Override
             public int size() {
-                return listOfPersons.size();
+                return orig.size();
             }
         }
         );
 
-        return new MVerticalLayout(g, g2);
+        Button b = new Button("Reset loading strategy (should maintaine sort order)");
+        b.addClickListener(e -> {
+            g.lazyLoadFrom((int firstRow, boolean sortAscending, String property) -> {
+                List<Person> listOfPersons = new ArrayList<>(orig);
+                if (property != null) {
+                    
+                    Collections.sort(listOfPersons, new BeanComparator<>(
+                            property));
+                    if (!sortAscending) {
+                        Collections.reverse(listOfPersons);
+                    }
+                }
+                int last = firstRow + LazyList.DEFAULT_PAGE_SIZE;
+                if (last > listOfPersons.size()) {
+                    last = listOfPersons.size();
+                }
+                return new ArrayList<>(listOfPersons.subList(firstRow,
+                        last));
+            }, () -> orig.size());
+
+        });
+
+        return new MVerticalLayout(b, g, g2);
     }
 
 }

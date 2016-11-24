@@ -123,14 +123,15 @@ public class CrossFieldValidation extends AbstractTest {
 
     public static class ReservationForm extends AbstractForm<Reservation> {
 
-        private MTextField comment = new MTextField("Comment");
-        private DateField start = new MDateField("Start")
+        private static final long serialVersionUID = -8641811916424288855L;
+        private final MTextField comment = new MTextField("Comment");
+        private final DateField start = new MDateField("Start")
                 .withResolution(Resolution.MINUTE);
-        private DateField end = new MDateField("End")
+        private final DateField end = new MDateField("End")
                 .withResolution(Resolution.MINUTE);
-        private MTextField email = new MTextField("Email");
-        private MTextField verifyEmail = new MTextField("Verify email");
-        private EnumSelect testEnum = new EnumSelect("Test enum");
+        private final MTextField email = new MTextField("Email");
+        private final MTextField verifyEmail = new MTextField("Verify email");
+        private final EnumSelect testEnum = new EnumSelect("Test enum");
 
         public ReservationForm() {
             // In this test using via AbstractForm but can be used with raw
@@ -170,6 +171,8 @@ public class CrossFieldValidation extends AbstractTest {
         public static class MValidatorImpl implements
                 MBeanFieldGroup.MValidator<Reservation> {
 
+            private static final long serialVersionUID = 7773475835262158065L;
+
             @Override
             public void validate(Reservation value) throws Validator.InvalidValueException {
                 // No null checks needed as this is not reached unless
@@ -196,6 +199,8 @@ public class CrossFieldValidation extends AbstractTest {
 
         form.addValidityChangedListener(
                 new AbstractForm.ValidityChangedListener<Reservation>() {
+                    private static final long serialVersionUID = 5430174280044587676L;
+
                     @Override
                     public void onValidityChanged(
                             AbstractForm.ValidityChangedEvent<Reservation> event) {
@@ -211,6 +216,8 @@ public class CrossFieldValidation extends AbstractTest {
 
         form.setSavedHandler(new AbstractForm.SavedHandler<Reservation>() {
 
+            private static final long serialVersionUID = 382987534900227025L;
+
             @Override
             public void onSave(Reservation entity) {
                 Notification.show(entity.toString());
@@ -218,6 +225,8 @@ public class CrossFieldValidation extends AbstractTest {
         });
 
         form.setDeleteHandler(new AbstractForm.DeleteHandler<Reservation>() {
+
+            private static final long serialVersionUID = 427652068306119517L;
 
             @Override
             public void onDelete(Reservation entity) {

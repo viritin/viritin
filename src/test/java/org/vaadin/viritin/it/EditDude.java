@@ -23,18 +23,21 @@ import org.vaadin.viritin.testdomain.Dude;
 @Theme("valo")
 public class EditDude extends AbstractTest {
 
+    private static final long serialVersionUID = -1808409887708900997L;
 
     public static class DudeForm extends AbstractForm<Dude> {
 
-        private MTextField firstName = new MTextField("Name");
+        private static final long serialVersionUID = -3578950068291730479L;
 
-        private MTextField age = new MTextField("Age");
+        private final MTextField firstName = new MTextField("Name");
 
-        LabelField<Integer> id = new LabelField<Integer>(Integer.class)
+        private final MTextField age = new MTextField("Age");
+
+        LabelField<Integer> id = new LabelField<>(Integer.class)
                 .withCaption("ID");
         
         @PropertyId("address.type")
-        EnumSelect<Address.AddressType> type = new EnumSelect<Address.AddressType>();
+        EnumSelect<Address.AddressType> type = new EnumSelect<>();
         @PropertyId("address.street")
         MTextField street = new MTextField().withInputPrompt("street");
         @PropertyId("address.city")
@@ -66,6 +69,7 @@ public class EditDude extends AbstractTest {
         form.setEntity(p);
 
         form.setSavedHandler(new AbstractForm.SavedHandler<Dude>() {
+            private static final long serialVersionUID = 6646955460224852274L;
 
             @Override
             public void onSave(Dude entity) {

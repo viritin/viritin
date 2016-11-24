@@ -19,10 +19,14 @@ import org.vaadin.viritin.label.RichText;
  *            the type of the entity
  */
 public class LabelField<T> extends CustomField<T> {
+
+    private static final long serialVersionUID = -3079451926367430515L;
     private final Class<T> type;
 
     private static class ToStringCaptionGenerator<T> implements
             CaptionGenerator<T> {
+
+        private static final long serialVersionUID = 1149675718238329960L;
 
         @Override
         public String getCaption(T option) {
@@ -40,7 +44,7 @@ public class LabelField<T> extends CustomField<T> {
         setCaption(caption);
     }
 
-    private CaptionGenerator<T> captionGenerator = new ToStringCaptionGenerator<T>();
+    private CaptionGenerator<T> captionGenerator = new ToStringCaptionGenerator<>();
     private Label label = new RichText();
 
     public LabelField(Class<T> type) {

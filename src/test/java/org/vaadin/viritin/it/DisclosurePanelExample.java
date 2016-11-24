@@ -16,6 +16,8 @@ import org.vaadin.viritin.layouts.MVerticalLayout;
 @Theme("valo")
 public class DisclosurePanelExample extends AbstractTest {
 
+    private static final long serialVersionUID = 2638100034569162593L;
+
     @Override
     public Component getTestComponent() {
         

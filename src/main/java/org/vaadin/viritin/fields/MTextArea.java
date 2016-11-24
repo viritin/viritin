@@ -17,6 +17,7 @@ package org.vaadin.viritin.fields;
 
 import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
+import com.vaadin.event.FieldEvents;
 import org.vaadin.viritin.MSize;
 
 /**
@@ -58,6 +59,11 @@ public class MTextArea extends FTextArea {
         return this;
     }
 
+    public MTextArea withValue(String value) {
+        setValue(value);
+        return this;
+    }
+
     public MTextArea withSize(MSize mSize) {
         setWidth(mSize.getWidth(), mSize.getWidthUnit());
         setHeight(mSize.getHeight(), mSize.getHeightUnit());
@@ -70,10 +76,30 @@ public class MTextArea extends FTextArea {
         return this;
     }
 
+    public MTextArea withTextChangeListener(FieldEvents.TextChangeListener listener) {
+        addTextChangeListener(listener);
+        return this;
+    }
+
+    public MTextArea withValueChangeListener(Property.ValueChangeListener listener) {
+        addValueChangeListener(listener);
+        return this;
+    }
+
+    public MTextArea withBlurListener(FieldEvents.BlurListener listener) {
+        addBlurListener(listener);
+        return this;
+    }
+
     public MTextArea withStyleName(String... styleNames) {
         for (String styleName : styleNames) {
             addStyleName(styleName);
         }
+        return this;
+    }
+
+    public MTextArea withVisible(boolean visible) {
+        setVisible(visible);
         return this;
     }
 }

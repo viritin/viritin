@@ -3,6 +3,8 @@ package org.vaadin.viritin.layouts;
 
 public class MMarginInfo extends FMarginInfo {
 
+    private static final long serialVersionUID = -3559703824387291269L;
+
     public MMarginInfo(boolean enabled) {
         super(enabled);
     }

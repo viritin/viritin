@@ -42,17 +42,17 @@ public class DynaBeanBasedContainerTest {
 
     final static int amount = 1000000;
 
-    private List<Person> persons = Service.getListOfPersons(amount);
+    private final List<Person> persons = Service.getListOfPersons(amount);
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
     @Test
     public void testEmptyList() {
-        List<Person> l = new ArrayList<Person>();
+        List<Person> l = new ArrayList<>();
         // Test with BeanItemContainer
         System.out.println("BeanItemContainer with empty list");
-        BeanItemContainer<Person> bc = new BeanItemContainer<Person>(
+        BeanItemContainer<Person> bc = new BeanItemContainer<>(
                 Person.class, l);
         System.out.println("   container size=" + bc.size());
         System.out.print("Properties: ");
@@ -63,7 +63,7 @@ public class DynaBeanBasedContainerTest {
         // Test ListContainer with setCollection call
         System.out.
                 println("\n\nListContainer with empty list via setCollection");
-        ListContainer<Person> lc = new ListContainer<Person>(Person.class);
+        ListContainer<Person> lc = new ListContainer<>(Person.class);
         lc.setCollection(l);
         System.out.println("   container size=" + lc.size());
         System.out.print("Properties: ");
@@ -74,7 +74,7 @@ public class DynaBeanBasedContainerTest {
         // Test ListContainer with setCollection call
         System.out.println(
                 "\n\nListContainer with Class<T>, Collection<T> constructor");
-        lc = new ListContainer<Person>(Person.class, l);
+        lc = new ListContainer<>(Person.class, l);
         System.out.println("   container size=" + lc.size());
         System.out.print("Properties: ");
         for (String p : lc.getContainerPropertyIds()) {
@@ -98,8 +98,8 @@ public class DynaBeanBasedContainerTest {
         // will cause zarro properties
         System.out.println(
                 "\n\nListContainer with empty list via Collection<T> constructor");
-        l = new ArrayList<Person>();
-        lc = new ListContainer<Person>(l);
+        l = new ArrayList<>();
+        lc = new ListContainer<>(l);
         System.out.println("   container size=" + lc.size());
         System.out.println("Properties: none should print due to exception");
         Assert.assertEquals(0, lc.getContainerPropertyIds().size());
@@ -112,7 +112,7 @@ public class DynaBeanBasedContainerTest {
         long initial = reportMemoryUsage();
 
         long ms = System.currentTimeMillis();
-        ListContainer lc = new ListContainer<Person>(persons);
+        ListContainer lc = new ListContainer<>(persons);
         System.out.println(
                 "After creation (took " + (System.currentTimeMillis() - ms) + ")");
         long after = reportMemoryUsage();
@@ -146,7 +146,7 @@ public class DynaBeanBasedContainerTest {
         long initial = reportMemoryUsage();
 
         long ms = System.currentTimeMillis();
-        BeanItemContainer lc = new BeanItemContainer<Person>(persons);
+        BeanItemContainer lc = new BeanItemContainer<>(persons);
         System.out.println(
                 "After creation (took " + (System.currentTimeMillis() - ms) + ")");
         long after = reportMemoryUsage();
@@ -195,7 +195,7 @@ public class DynaBeanBasedContainerTest {
     public void ensureNullFromNextAndPrevId() {
         final List<Person> persons = Service.getListOfPersons(2);
 
-        ListContainer lc = new ListContainer<Person>(persons);
+        ListContainer lc = new ListContainer<>(persons);
         
         Assert.assertNull(lc.prevItemId(persons.get(0)));
         Assert.assertEquals(persons.get(0), lc.prevItemId(persons.get(1)));

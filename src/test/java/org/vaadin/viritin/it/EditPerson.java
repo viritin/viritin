@@ -20,7 +20,6 @@ import org.vaadin.viritin.testdomain.Address;
 import org.vaadin.viritin.testdomain.Group;
 import org.vaadin.viritin.testdomain.Person;
 import org.vaadin.viritin.testdomain.Service;
-import org.vaadin.viritin.util.HtmlElementPropertySetter;
 
 /**
  *
@@ -29,9 +28,11 @@ import org.vaadin.viritin.util.HtmlElementPropertySetter;
 @Theme("valo")
 public class EditPerson extends AbstractTest {
 
+    private static final long serialVersionUID = 8480545478837182696L;
+
     public static class AddressRow {
 
-        EnumSelect<Address.AddressType> type = new EnumSelect<Address.AddressType>();
+        EnumSelect<Address.AddressType> type = new EnumSelect<>();
         MTextField street = new MTextField().withInputPrompt("street");
         MTextField city = new MTextField().withInputPrompt("city");
         MTextField zipCode = new MTextField().withInputPrompt("zip");
@@ -42,6 +43,7 @@ public class EditPerson extends AbstractTest {
             // you can do whatwever you want here
             type.setCaptionGenerator(
                     new CaptionGenerator<Address.AddressType>() {
+                        private static final long serialVersionUID = -5994389052707708278L;
 
                         @Override
                         public String getCaption(Address.AddressType option) {
@@ -53,16 +55,18 @@ public class EditPerson extends AbstractTest {
 
     public static class PersonForm extends AbstractForm<Person> {
 
-        private MTextField firstName = new MTextField("Name")
+        private static final long serialVersionUID = -2299890309080845494L;
+
+        private final MTextField firstName = new MTextField("Name")
                 .withAutocompleteOff()
                 .withAutoCorrectOff()
                 .withAutoCapitalizeOff()
                 .withSpellCheckOff()
                 ;
 
-        private IntegerField age = new IntegerField("Age");
+        private final IntegerField age = new IntegerField("Age");
 
-        private LabelField<Integer> id = new LabelField<>(Integer.class)
+        private final LabelField<Integer> id = new LabelField<>(Integer.class)
                 .withCaption("ID");
         private final ElementCollectionField<Address> addresses = new ElementCollectionField<>(
                 Address.class, AddressRow.class).withCaption("Addressess")
@@ -91,6 +95,8 @@ public class EditPerson extends AbstractTest {
 
         form.addValidityChangedListener(
                 new AbstractForm.ValidityChangedListener<Person>() {
+                    private static final long serialVersionUID = -3688956596748617476L;
+                    
                     @Override
                     public void onValidityChanged(
                             AbstractForm.ValidityChangedEvent<Person> event) {
@@ -108,6 +114,7 @@ public class EditPerson extends AbstractTest {
         form.setEntity(p);
 
         form.setSavedHandler(new AbstractForm.SavedHandler<Person>() {
+            private static final long serialVersionUID = 1008970415395369248L;
 
             @Override
             public void onSave(Person entity) {
@@ -116,6 +123,7 @@ public class EditPerson extends AbstractTest {
         });
 
         form.setDeleteHandler(new AbstractForm.DeleteHandler<Person>() {
+            private static final long serialVersionUID = -6298152846013943120L;
 
             @Override
             public void onDelete(Person entity) {
@@ -125,6 +133,7 @@ public class EditPerson extends AbstractTest {
 
         Button openInPopup = new Button("Open in popup");
         openInPopup.addClickListener(new Button.ClickListener() {
+            private static final long serialVersionUID = 5019806363620874205L;
 
             @Override
             public void buttonClick(Button.ClickEvent event) {
@@ -134,6 +143,7 @@ public class EditPerson extends AbstractTest {
                 form.setEntity(p);
 
                 form.setSavedHandler(new AbstractForm.SavedHandler<Person>() {
+                    private static final long serialVersionUID = 1008970415395369248L;
 
                     @Override
                     public void onSave(Person entity) {
@@ -142,6 +152,7 @@ public class EditPerson extends AbstractTest {
                 });
 
                 form.setDeleteHandler(new AbstractForm.DeleteHandler<Person>() {
+                    private static final long serialVersionUID = -6298152846013943120L;
 
                     @Override
                     public void onDelete(Person entity) {
@@ -149,6 +160,7 @@ public class EditPerson extends AbstractTest {
                     }
                 });
                 form.setResetHandler(new AbstractForm.ResetHandler<Person>() {
+                    private static final long serialVersionUID = -1695108652595021734L;
 
                     @Override
                     public void onReset(Person entity) {

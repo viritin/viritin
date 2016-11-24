@@ -2,17 +2,20 @@ package org.vaadin.viritin.fields;
 
 import com.vaadin.data.Validator;
 import com.vaadin.data.validator.BeanValidator;
+
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.lang.reflect.Field;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 
 /**
  *
  * @author Matti Tahvonen
  */
 public class IntegerSliderField extends IntegerField {
+
+    private static final long serialVersionUID = -3019209950602573361L;
 
     private Integer max;
     private Integer min;
@@ -40,24 +43,15 @@ public class IntegerSliderField extends IntegerField {
                 
                 Field field = beantype.getDeclaredField(fieldName);
                 field.setAccessible(true);
-                Max max = field.getAnnotation(Max.class);
-                if(max != null) {
-                    setMax((int) max.value());
+                Max maxAnnotation = field.getAnnotation(Max.class);
+                if(maxAnnotation != null) {
+                    setMax((int) maxAnnotation.value());
                 }
-                Min min = field.getAnnotation(Min.class);
-                if(min != null) {
-                    setMin((int) min.value());
+                Min minAnnotation = field.getAnnotation(Min.class);
+                if(minAnnotation != null) {
+                    setMin((int) minAnnotation.value());
                 }
-            } catch (NoSuchFieldException ex) {
-                Logger.getLogger(IntegerSliderField.class.getName()).
-                        log(Level.SEVERE, null, ex);
-            } catch (SecurityException ex) {
-                Logger.getLogger(IntegerSliderField.class.getName()).
-                        log(Level.SEVERE, null, ex);
-            } catch (IllegalArgumentException ex) {
-                Logger.getLogger(IntegerSliderField.class.getName()).
-                        log(Level.SEVERE, null, ex);
-            } catch (IllegalAccessException ex) {
+            } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
                 Logger.getLogger(IntegerSliderField.class.getName()).
                         log(Level.SEVERE, null, ex);
             }

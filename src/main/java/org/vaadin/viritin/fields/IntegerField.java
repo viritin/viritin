@@ -1,5 +1,7 @@
 package org.vaadin.viritin.fields;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * An field to edit integers.
  *
@@ -14,6 +16,7 @@ package org.vaadin.viritin.fields;
 public class IntegerField extends AbstractNumberField<Integer> {
 
     public IntegerField() {
+        setSizeUndefined();
     }
 
     public IntegerField(String caption) {
@@ -22,7 +25,11 @@ public class IntegerField extends AbstractNumberField<Integer> {
 
     @Override
     protected void userInputToValue(String str) {
-        setValue(Integer.parseInt(str));
+        if (StringUtils.isNotBlank(str)) {
+            setValue(Integer.parseInt(str));
+        } else {
+            setValue(null);
+        }
     }
 
     @Override

@@ -14,6 +14,18 @@ public class MGridLayout extends FGridLayout {
         super.setMargin(true);
     }
 
+    public MGridLayout(int columns, int rows) {
+        super(columns, rows);
+        super.setSpacing(true);
+        super.setMargin(true);
+    }
+
+    public MGridLayout(int columns, int rows, Component... children) {
+        super(columns, rows, children);
+        super.setSpacing(true);
+        super.setMargin(true);
+    }
+    
     public MGridLayout(Component... components) {
         this();
         addComponents(components);
@@ -55,10 +67,56 @@ public class MGridLayout extends FGridLayout {
         return with(component.toArray(new Component[component.size()]));
     }
 
+    public MGridLayout withCaption(String caption, boolean captionAsHtml) {
+        setCaption(caption);
+        setCaptionAsHtml(captionAsHtml);
+        return this;
+    }
+
     public MGridLayout withStyleName(String... styleNames) {
         for (String styleName : styleNames) {
             addStyleName(styleName);
         }
+        return this;
+    }
+
+    public MGridLayout withVisible(boolean visible) {
+        setVisible(visible);
+        return this;
+    }
+
+    public MGridLayout withSizeUndefined() {
+        setSizeUndefined();
+        return this;
+    }
+
+    public MGridLayout withWidthUndefined() {
+        setWidthUndefined();
+        return this;
+    }
+
+    public MGridLayout withHeightUndefined() {
+        setHeightUndefined();
+        return this;
+    }
+
+    public MGridLayout withResponsive(boolean responsive) {
+        setResponsive(responsive);
+        return this;
+    }
+
+    public MGridLayout withDefaultComponentAlignment(Alignment defaultAlignment) {
+        setDefaultComponentAlignment(defaultAlignment);
+        return this;
+    }
+
+    public MGridLayout withId(String id) {
+        setId(id);
+        return this;
+    }
+
+    public MGridLayout withDescription(String description) {
+        setDescription(description);
         return this;
     }
 }

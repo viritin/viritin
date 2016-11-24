@@ -12,6 +12,8 @@ import java.util.Collection;
 
 public class MHorizontalLayout extends FHorizontalLayout {
 
+    private static final long serialVersionUID = 524957578263653251L;
+
     public MHorizontalLayout() {
         super.setSpacing(true);
     }
@@ -102,6 +104,12 @@ public class MHorizontalLayout extends FHorizontalLayout {
         return this;
     }
 
+    public MHorizontalLayout withCaption(String caption, boolean captionAsHtml) {
+        setCaption(caption);
+        setCaptionAsHtml(captionAsHtml);
+        return this;
+    }
+
     public MHorizontalLayout withStyleName(String... styleNames) {
         for (String styleName : styleNames) {
             addStyleName(styleName);
@@ -119,4 +127,50 @@ public class MHorizontalLayout extends FHorizontalLayout {
     public MHorizontalLayout space() {
         return expand(new Label());
     }
+
+    public MHorizontalLayout withEnabled(boolean enabled) {
+        setEnabled(enabled);
+        return this;
+    }
+
+    public MHorizontalLayout withVisible(boolean visible) {
+        setVisible(visible);
+        return this;
+    }
+
+    public MHorizontalLayout withSizeUndefined() {
+        setSizeUndefined();
+        return this;
+    }
+
+    public MHorizontalLayout withWidthUndefined() {
+        setWidthUndefined();
+        return this;
+    }
+
+    public MHorizontalLayout withHeightUndefined() {
+        setHeightUndefined();
+        return this;
+    }
+
+    public MHorizontalLayout withResponsive(boolean responsive) {
+        setResponsive(responsive);
+        return this;
+    }
+
+    public MHorizontalLayout withDefaultComponentAlignment(Alignment defaultAlignment) {
+        setDefaultComponentAlignment(defaultAlignment);
+        return this;
+    }
+
+    public MHorizontalLayout withId(String id) {
+        setId(id);
+        return this;
+    }
+
+    public MHorizontalLayout withDescription(String description) {
+        setDescription(description);
+        return this;
+    }
+
 }

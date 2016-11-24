@@ -51,7 +51,7 @@ public class ListContainerLoopPerformanceTest {
         NullOutputStream nullOutputStream = new NullOutputStream();
         List<Person> listOfPersons = Service.getListOfPersons(100 * 1000);
         long currentTimeMillis = System.currentTimeMillis();
-        ListContainer<Person> listContainer = new ListContainer<Person>(
+        ListContainer<Person> listContainer = new ListContainer<>(
                 listOfPersons);
         Collection<?> ids = listContainer.getContainerPropertyIds();
         for (int i = 0; i < listContainer.size(); i++) {
@@ -74,7 +74,7 @@ public class ListContainerLoopPerformanceTest {
 
         List<Person> listOfPersons = Service.getListOfPersons(100 * 1000);
         long currentTimeMillis = System.currentTimeMillis();
-        BeanItemContainer<Person> c = new BeanItemContainer<Person>(
+        BeanItemContainer<Person> c = new BeanItemContainer<>(
                 Person.class, listOfPersons);
         Collection<?> ids = c.getContainerPropertyIds();
         for (int i = 0; i < c.size(); i++) {

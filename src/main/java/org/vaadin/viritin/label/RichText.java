@@ -16,13 +16,14 @@
 package org.vaadin.viritin.label;
 
 import com.vaadin.shared.ui.label.ContentMode;
-import com.vaadin.ui.Label;
-import java.io.IOException;
-import java.io.InputStream;
 import org.apache.commons.io.IOUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 import org.markdown4j.Markdown4jProcessor;
+
+import java.io.IOException;
+import java.io.InputStream;
+import org.vaadin.viritin.MSize;
 
 /**
  * XSS safe rich text label with either Markdown syntax or raw html (sanitized
@@ -31,7 +32,7 @@ import org.markdown4j.Markdown4jProcessor;
  * By default jsoups Whitelist.relaxed is used for sanitizing. This can be
  * overridden by returning custom whitelist with getWhitelist method.
  */
-public class RichText extends Label {
+public class RichText extends MLabel {
 
     transient private Whitelist whitelist;
     private String richText;
@@ -132,4 +133,92 @@ public class RichText extends Label {
     public RichText withSafeHtmlResource(String resourceName) {
         return withSafeHtml(getClass().getResourceAsStream(resourceName));
     }
+
+    @Override
+    public RichText withContent(String content) {
+        return setRichText(content);
+    }
+
+    @Override
+    public RichText withContentMode(ContentMode mode) {
+        setContentMode(mode);
+        return this;
+    }
+
+    @Override
+    public RichText withValue(String value) {
+        return setRichText(value);
+    }
+
+    @Override
+    public RichText withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
+    @Override
+    public RichText withVisible(boolean visible) {
+        super.withVisible(visible);
+        return this;
+    }
+
+    @Override
+    public RichText withEnabled(boolean enabled) {
+        super.withEnabled(enabled);
+        return this;
+    }
+
+    @Override
+    public RichText withWidthUndefined() {
+        super.withWidthUndefined();
+        return this;
+    }
+
+    @Override
+    public RichText withFullHeight() {
+        super.withFullHeight();
+        return this;
+    }
+
+    @Override
+    public RichText withFullWidth() {
+        super.withFullWidth();
+        return this;
+    }
+
+    @Override
+    public RichText withStyleName(String... styleNames) {
+        super.withStyleName(styleNames);
+        return this;
+    }
+
+    @Override
+    public RichText withSize(MSize mSize) {
+        super.withSize(mSize);
+        return this;
+    }
+
+    @Override
+    public RichText withSize(String width, String height) {
+        super.withSize(width, height);
+        return this;
+    }
+
+    @Override
+    public RichText withHeight(String height) {
+        super.withHeight(height);
+        return this;
+    }
+
+    @Override
+    public RichText withWidth(String width) {
+        super.withWidth(width);
+        return this;
+    }
+
+    @Override
+    public RichText withCaption(String caption) {
+        super.withCaption(caption);
+        return this;
+    }    
 }

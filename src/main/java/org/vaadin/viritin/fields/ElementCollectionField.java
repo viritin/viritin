@@ -1,13 +1,5 @@
 package org.vaadin.viritin.fields;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import org.vaadin.viritin.MBeanFieldGroup;
-import org.vaadin.viritin.button.MButton;
-
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.Alignment;
@@ -17,6 +9,16 @@ import com.vaadin.ui.Field;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.themes.ValoTheme;
+import org.vaadin.viritin.MBeanFieldGroup;
+import org.vaadin.viritin.button.ConfirmButton;
+import org.vaadin.viritin.button.MButton;
+import org.vaadin.viritin.form.AbstractForm;
+import org.vaadin.viritin.layouts.MGridLayout;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A field suitable for editing collection of referenced objects tied to parent
@@ -70,11 +72,17 @@ import com.vaadin.ui.themes.ValoTheme;
  */
 public class ElementCollectionField<ET> extends AbstractElementCollection<ET> {
 
-    List<ET> items = new ArrayList<ET>();
+    private static final long serialVersionUID = 8573373104105052804L;
+
+    List<ET> items = new ArrayList<>();
 
     boolean inited = false;
 
-    GridLayout layout = new GridLayout();
+    MGridLayout layout = new MGridLayout();
+
+    private boolean visibleHeaders = true;
+    private boolean requireVerificationForRemoval;
+    private AbstractForm<ET> popupEditor;
 
     public ElementCollectionField(Class<ET> elementType,
             Class<?> formType) {
@@ -101,23 +109,48 @@ public class ElementCollectionField<ET> extends AbstractElementCollection<ET> {
             layout.addComponent(c);
             layout.setComponentAlignment(c, Alignment.MIDDLE_LEFT);
         }
-        if (isAllowRemovingItems()) {
-            layout.addComponent(new MButton(FontAwesome.TRASH_O).withListener(
-                    new Button.ClickListener() {
+        if (getPopupEditor() != null) {
+            MButton b = new MButton(FontAwesome.EDIT)
+                    .withStyleName(ValoTheme.BUTTON_ICON_ONLY)
+                    .withListener(new Button.ClickListener() {
+                private static final long serialVersionUID = 5019806363620874205L;
                 @Override
                 public void buttonClick(Button.ClickEvent event) {
-                    removeElement(v);
+                    editInPopup(v);
                 }
-            }).withStyleName(ValoTheme.BUTTON_ICON_ONLY));
+            });
+            layout.add(b);
+        }
+        if (isAllowRemovingItems()) {
+            layout.add(createRemoveButton(v));
         }
         if (!isAllowEditItems()) {
             fg.setReadOnly(true);
         }
     }
 
+    protected Component createRemoveButton(final ET v) {
+        MButton b;
+        if (requireVerificationForRemoval) {
+            b = new ConfirmButton();
+        } else {
+            b = new MButton();
+        }
+        b.withIcon(FontAwesome.TRASH_O)
+                .withStyleName(ValoTheme.BUTTON_ICON_ONLY, ValoTheme.BUTTON_DANGER)
+                .withListener(new Button.ClickListener() {
+            private static final long serialVersionUID = 5019806363620874205L;
+                    @Override
+                    public void buttonClick(Button.ClickEvent event) {
+                        removeElement(v);
+                    }
+                });
+        return b;
+    }
+
     @Override
     public void removeInternalElement(ET v) {
-        int index = items.indexOf(v);
+        int index = itemsIdentityIndexOf(v);
         items.remove(index);
         int row = index + 1;
         layout.removeRow(row);
@@ -130,11 +163,9 @@ public class ElementCollectionField<ET> extends AbstractElementCollection<ET> {
 
     @Override
     public void setPersisted(ET v, boolean persisted) {
-        int row = items.indexOf(v) + 1;
+        int row = itemsIdentityIndexOf(v) + 1;
         if (isAllowRemovingItems()) {
-            Button c = (Button) layout.getComponent(getVisibleProperties().
-                    size(),
-                    row);
+            Button c = (Button) layout.getComponent(layout.getColumns() - 1, row);
             if (persisted) {
                 c.setDescription(getDeleteElementDescription());
             } else {
@@ -154,6 +185,15 @@ public class ElementCollectionField<ET> extends AbstractElementCollection<ET> {
         }
     }
 
+    private int itemsIdentityIndexOf(Object o) {
+        for (int index = 0; index < items.size(); index++) {
+            if (items.get(index) == o) {
+                return index;
+            }
+        }
+        return -1;
+    }
+
     private void ensureInited() {
         if (!inited) {
             layout.setSpacing(true);
@@ -161,24 +201,54 @@ public class ElementCollectionField<ET> extends AbstractElementCollection<ET> {
             if (isAllowRemovingItems()) {
                 columns++;
             }
-            layout.setColumns(columns);
-            for (Object property : getVisibleProperties()) {
-                Label header = new Label(getPropertyHeader(property.
-                        toString()));
-                header.setWidthUndefined();
-                layout.addComponent(header);
+            if(getPopupEditor() != null) {
+                columns++;
             }
-            if (isAllowRemovingItems()) {
-                // leave last header slot empty, "actions" colunn
-                layout.newLine();
+            layout.setColumns(columns);
+
+            if (visibleHeaders) {
+                for (Object property : getVisibleProperties()) {
+                    Component header = createHeader(property);
+                    layout.addComponent(header);
+                }
+                if (isAllowRemovingItems()) {
+                    // leave last header slot empty, "actions" colunn
+                    layout.newLine();
+                }
             }
             inited = true;
         }
     }
 
+    /**
+     * Creates the header for given property. By default a simple Label is used.
+     * Override this method to style it or to replace it with something more
+     * complex.
+     *
+     * @param property the property for which header is to be created.
+     * @return the component used for header
+     */
+    protected Component createHeader(Object property) {
+        Label header = new Label(getPropertyHeader(property.
+                toString()));
+        header.setWidthUndefined();
+        return header;
+    }
+
     public ElementCollectionField<ET> withEditorInstantiator(
             Instantiator instantiator) {
         setEditorInstantiator(instantiator);
+        return this;
+    }
+
+    public ElementCollectionField<ET> withNewEditorInstantiator(
+            EditorInstantiator<?, ET> instantiator) {
+        setNewEditorInstantiator(instantiator);
+        return this;
+    }
+
+    public ElementCollectionField<ET> withVisibleHeaders(boolean visibleHeaders) {
+        this.visibleHeaders = visibleHeaders;
         return this;
     }
 
@@ -325,6 +395,48 @@ public class ElementCollectionField<ET> extends AbstractElementCollection<ET> {
     public ElementCollectionField<ET> withId(String id) {
         setId(id);
         return this;
+    }
+
+    public ElementCollectionField<ET> setRequireVerificationForRemoving(boolean requireVerification) {
+        requireVerificationForRemoval = requireVerification;
+        return this;
+    }
+
+    public AbstractForm<ET> getPopupEditor() {
+        return popupEditor;
+    }
+
+    /**
+     * Method to set form to allow editing more properties than it would be
+     * convenient inline.
+     *
+     * @param newPopupEditor the popup editor to be used to edit instances
+     */
+    public void setPopupEditor(AbstractForm<ET> newPopupEditor) {
+        this.popupEditor = newPopupEditor;
+        if (newPopupEditor != null) {
+            newPopupEditor.setSavedHandler(new AbstractForm.SavedHandler<ET>() {
+                private static final long serialVersionUID = 389618696563816566L;
+                @Override
+                public void onSave(ET entity) {
+                    MBeanFieldGroup<ET> fg = getFieldGroupFor(entity);
+                    fg.setItemDataSource(entity);
+                    fg.setBeanModified(true);
+                    // TODO refresh binding
+                    popupEditor.getPopup().close();
+                }
+            });
+        }
+    }
+
+    /**
+     * Opens a (possibly configured) popup editor to edit given entity.
+     * 
+     * @param entity the entity to be edited
+     */
+    public void editInPopup(ET entity) {
+        getPopupEditor().setEntity(entity);
+        getPopupEditor().openInModalPopup();
     }
 
 }

@@ -9,6 +9,7 @@ import org.vaadin.viritin.util.HtmlElementPropertySetter;
 /**
  *
  * @author Matti Tahvonen
+ * @param <T>  field value type
  */
 public abstract class AbstractNumberField<T> extends CustomField<T> implements
         EagerValidateable, FieldEvents.TextChangeNotifier {
@@ -27,14 +28,18 @@ public abstract class AbstractNumberField<T> extends CustomField<T> implements
         s.setProperty("type", getHtmlFieldType());
         // prevent all but numbers with a simple js
         s.setJavaScriptEventHandler("keypress",
-                "function(e) {var c = viritin.getChar(e); return c==null || /^[\\d\\n\\t\\r]+$/.test(c);}");
+                "function(e) {var c = viritin.getChar(e); return c==null || /^[-\\d\\n\\t\\r]+$/.test(c);}");
     }
     protected HtmlElementPropertySetter s = new HtmlElementPropertySetter(tf);
     protected Property.ValueChangeListener vcl = new Property.ValueChangeListener() {
         @Override
         public void valueChange(Property.ValueChangeEvent event) {
             Object value = event.getProperty().getValue();
-            userInputToValue(String.valueOf(value));
+            if(value != null) {
+                userInputToValue(String.valueOf(value));
+            }else {
+                setValue(null);
+            }
         }
     };
 
@@ -134,6 +139,18 @@ public abstract class AbstractNumberField<T> extends CustomField<T> implements
     public void setReadOnly(boolean readOnly) {
         super.setReadOnly(readOnly);
         tf.setReadOnly(readOnly);
+    }
+
+    @Override
+    public void setWidth(float width, Unit unit) {
+        super.setWidth(width, unit);
+        if (tf != null) {
+            if (width != -1) {
+                tf.setWidth("100%");
+            } else {
+                tf.setWidth(null);
+            }
+        }
     }
 
 }

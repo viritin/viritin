@@ -1,9 +1,14 @@
 package org.vaadin.viritin.util;
 
-import java.util.*;
-
 import com.vaadin.server.*;
 import com.vaadin.ui.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Stack;
 
 /**
  * This class handles the locale for a vaadin application. It negotiates the
@@ -38,7 +43,7 @@ public class VaadinLocale {
     }
 
     private static final String LOCALE_SESSION_ATTRIBUTE = "org.vaadin.viritin.selectedLocale";
-    private final List<Locale> supportedLocales = new ArrayList<Locale>();
+    private final List<Locale> supportedLocales = new ArrayList<>();
     private Locale bestLocaleByAcceptHeader;
     private final LocaleNegotiationStrategey localeNegotiationStrategey;
 
@@ -54,9 +59,7 @@ public class VaadinLocale {
         }
         this.localeNegotiationStrategey = localeNegotiationStrategey;
 
-        for (Locale locale : supportedLocales) {
-            this.supportedLocales.add(locale);
-        }
+        this.supportedLocales.addAll(Arrays.asList(supportedLocales));
     }
 
     /**
@@ -123,7 +126,7 @@ public class VaadinLocale {
     }
 
     private void recursiveSetLocale() {
-        Stack<Component> stack = new Stack<Component>();
+        Stack<Component> stack = new Stack<>();
         stack.addAll(VaadinSession.getCurrent().getUIs());
         while (!stack.isEmpty()) {
             Component component = stack.pop();
@@ -157,6 +160,6 @@ public class VaadinLocale {
     }
 
     public List<Locale> getSupportedLocales() {
-        return new ArrayList<Locale>(supportedLocales);
+        return new ArrayList<>(supportedLocales);
     }
 }

@@ -1,7 +1,12 @@
 package org.vaadin.viritin;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.AbstractList;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.WeakHashMap;
 
 /**
  * A general purpose helper class to us MTable/ListContainer for service layers
@@ -14,6 +19,8 @@ import java.util.*;
  * @param <T> The type of the objects in the list
  */
 public class LazyList<T> extends AbstractList<T> implements Serializable {
+
+    private static final long serialVersionUID = 2423832460602269469L;
 
     private List<T> findPageFromCache(int pageIndexForReqest) {
         int p = pageIndexForReqest - pageIndex;
@@ -28,7 +35,7 @@ public class LazyList<T> extends AbstractList<T> implements Serializable {
 
     private void loadPreviousPage() {
         pageIndex--;
-        List page = findEntities(pageIndex * pageSize);
+        List<T> page = findEntities(pageIndex * pageSize);
         pages.add(0, page);
         if (pages.size() > maxPages) {
             pages.remove(pages.size() - 1);
@@ -36,7 +43,7 @@ public class LazyList<T> extends AbstractList<T> implements Serializable {
     }
 
     private void loadNextPage() {
-        List page = findEntities((pageIndex + pages.size()) * pageSize);
+        List<T> page = findEntities((pageIndex + pages.size()) * pageSize);
         pages.add(page);
         if (pages.size() > maxPages) {
             pages.remove(0);
@@ -80,11 +87,10 @@ public class LazyList<T> extends AbstractList<T> implements Serializable {
      *
      * @param <T> The type of the objects in the list
      */
-    public interface EntityProvider<T> extends PagingProvider,
-            CountProvider {
+    public interface EntityProvider<T> extends PagingProvider<T>, CountProvider {
     }
 
-    private PagingProvider pageProvider;
+    private PagingProvider<T> pageProvider;
     private final CountProvider countProvider;
 
     // Vaadin table by default has 15 rows, 2x that to cache up an down
@@ -127,7 +133,7 @@ public class LazyList<T> extends AbstractList<T> implements Serializable {
      * @param dataProvider the data provider that is used to fetch pages of
      * entities and to detect the total count of entities
      */
-    public LazyList(EntityProvider dataProvider) {
+    public LazyList(EntityProvider<T> dataProvider) {
         this(dataProvider, DEFAULT_PAGE_SIZE);
     }
 
@@ -139,7 +145,7 @@ public class LazyList<T> extends AbstractList<T> implements Serializable {
      * entities and to detect the total count of entities
      * @param pageSize the page size to be used
      */
-    public LazyList(EntityProvider dataProvider, int pageSize) {
+    public LazyList(EntityProvider<T> dataProvider, int pageSize) {
         this.pageProvider = dataProvider;
         this.countProvider = dataProvider;
         this.pageSize = pageSize;
@@ -153,8 +159,7 @@ public class LazyList<T> extends AbstractList<T> implements Serializable {
      * @param countProvider the interface via the total count of entities is
      * detected.
      */
-    public LazyList(PagingProvider pageProvider,
-            CountProvider countProvider) {
+    public LazyList(PagingProvider<T> pageProvider, CountProvider countProvider) {
         this(pageProvider, countProvider, DEFAULT_PAGE_SIZE);
     }
 
@@ -166,8 +171,7 @@ public class LazyList<T> extends AbstractList<T> implements Serializable {
      * detected.
      * @param pageSize the page size that should be used
      */
-    public LazyList(PagingProvider pageProvider,
-            CountProvider countProvider, int pageSize) {
+    public LazyList(PagingProvider<T> pageProvider, CountProvider countProvider, int pageSize) {
         this.pageProvider = pageProvider;
         this.countProvider = countProvider;
         this.pageSize = pageSize;
@@ -213,7 +217,7 @@ public class LazyList<T> extends AbstractList<T> implements Serializable {
         pages.add(findEntities(pageIndex * pageSize));
     }
 
-    protected List findEntities(int i) {
+    protected List<T> findEntities(int i) {
         return pageProvider.findEntities(i);
     }
 
@@ -231,7 +235,7 @@ public class LazyList<T> extends AbstractList<T> implements Serializable {
 
     private Map<T, Integer> getIndexCache() {
         if (indexCache == null) {
-            indexCache = new WeakHashMap<T, Integer>();
+            indexCache = new WeakHashMap<>();
         }
         return indexCache;
     }
@@ -272,8 +276,8 @@ public class LazyList<T> extends AbstractList<T> implements Serializable {
         if (getIndexCache().containsKey(o)) {
             return true;
         }
-        for(List<T> t : pages) {
-            if(t.contains(o)) {
+        for (List<T> t : pages) {
+            if (t.contains(o)) {
                 return true;
             }
         }
@@ -287,7 +291,7 @@ public class LazyList<T> extends AbstractList<T> implements Serializable {
             // Increase the amount of cached pages if necessary
             maxPages = sizeOfSublist/pageSize + 1;
         }
-        return new ArrayList(super.subList(fromIndex, toIndex));
+        return new ArrayList<>(super.subList(fromIndex, toIndex));
     }
 
     @Override

@@ -2,6 +2,7 @@ package org.vaadin.viritin.layouts;
 
 import org.vaadin.viritin.MSize;
 
+import com.vaadin.server.Resource;
 import com.vaadin.ui.Component;
 
 public class MWindow extends FWindow {
@@ -30,6 +31,11 @@ public class MWindow extends FWindow {
 
     public MWindow withCenter() {
         center();
+        return this;
+    }
+
+    public MWindow withIcon(Resource icon) {
+        setIcon(icon);
         return this;
     }
 

@@ -14,7 +14,7 @@ public class TableUsageExample {
 
     public void tableAsBeanSelector() {
         Table table = new Table();
-        BeanItemContainer<Entity> beanItemContainer = new BeanItemContainer<Entity>(Entity.class);
+        BeanItemContainer<Entity> beanItemContainer = new BeanItemContainer<>(Entity.class);
         beanItemContainer.addAll(findBeans());
         table.setContainerDataSource(beanItemContainer);
         table.setVisibleColumns("property", "another");
@@ -34,6 +34,8 @@ public class TableUsageExample {
                 .withProperties("property", "another")
                 .withColumnHeaders("Property 1", "Second");
         t.addMValueChangeListener(new MValueChangeListener<Entity>() {
+
+            private static final long serialVersionUID = 382491506910830168L;
 
             @Override
             public void valueChange(MValueChangeEvent<Entity> event) {

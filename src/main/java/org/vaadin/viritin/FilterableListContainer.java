@@ -1,15 +1,15 @@
 package org.vaadin.viritin;
 
+import com.vaadin.data.Container;
+import com.vaadin.data.Container.Filterable;
+import com.vaadin.data.Item;
+import com.vaadin.data.util.filter.UnsupportedFilterException;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import com.vaadin.data.Container;
-import com.vaadin.data.Container.Filterable;
-import com.vaadin.data.Item;
-import com.vaadin.data.util.filter.UnsupportedFilterException;
 
 /**
  * A filterable ({@link Container.Filterable}) version of {@link ListContainer}.
@@ -23,15 +23,15 @@ public class FilterableListContainer<T> extends ListContainer<T> implements
 
     private static final long serialVersionUID = 6410519255465731727L;
 
-    private Set<Filter> filters = new HashSet<Filter>();
+    private final Set<Filter> filters = new HashSet<>();
 
-    private List<T> filteredItems = new ArrayList<T>();
+    private List<T> filteredItems = new ArrayList<>();
 
-    public FilterableListContainer(Class<T> type) {
+    public FilterableListContainer(Class<? extends T> type) {
         super(type);
     }
 
-    public FilterableListContainer(Collection<T> backingList) {
+    public FilterableListContainer(Collection<? extends T> backingList) {
         super(backingList);
     }
 
@@ -64,13 +64,11 @@ public class FilterableListContainer<T> extends ListContainer<T> implements
     }
 
     private void applyFilters() {
-        filteredItems = new ArrayList<T>();
+        filteredItems = new ArrayList<>();
         if (isFiltered()) {
-            boolean appliedFilter = false;
             for (T itemId : super.getBackingList()) {
                 if (passesFilters(itemId)) {
                     filteredItems.add(itemId);
-                    appliedFilter = true;
                 }
             }
         }

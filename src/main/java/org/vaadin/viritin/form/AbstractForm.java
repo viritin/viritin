@@ -1,40 +1,60 @@
 package org.vaadin.viritin.form;
 
-import com.vaadin.ui.*;
-import com.vaadin.ui.themes.ValoTheme;
-import com.vaadin.util.ReflectTools;
 import java.io.Serializable;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import javax.validation.groups.Default;
+
 import org.vaadin.viritin.BeanBinder;
 import org.vaadin.viritin.MBeanFieldGroup;
 import org.vaadin.viritin.MBeanFieldGroup.FieldGroupListener;
 import org.vaadin.viritin.button.DeleteButton;
 import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.button.PrimaryButton;
+import org.vaadin.viritin.label.RichText;
 import org.vaadin.viritin.layouts.MHorizontalLayout;
 
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import javax.validation.groups.Default;
-import org.vaadin.viritin.label.RichText;
+import com.vaadin.ui.AbstractComponent;
+import com.vaadin.ui.AbstractComponentContainer;
+import com.vaadin.ui.AbstractField;
+import com.vaadin.ui.AbstractTextField;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.CustomComponent;
+import com.vaadin.ui.Field;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.UI;
+import com.vaadin.ui.Window;
+import com.vaadin.ui.themes.ValoTheme;
+import com.vaadin.util.ReflectTools;
 
 /**
  * Abstract super class for simple editor forms.
  *
+ * See {@link #createContent()} for usage information.
+ *
+ *
+ * @see <a href="https://github.com/viritin/viritin/wiki/AbstractForm">The
+ * wiki</a>
+ *
  * @param <T> the type of the bean edited
  */
 public abstract class AbstractForm<T> extends CustomComponent implements
-        FieldGroupListener {
+        FieldGroupListener<T> {
 
+    private static final long serialVersionUID = -2368496151988753088L;
     private String modalWindowTitle = "Edit entry";
     private String saveCaption = "Save";
     private String deleteCaption = "Delete";
     private String cancelCaption = "Cancel";
 
-
     public static class ValidityChangedEvent<T> extends Component.Event {
+
+        private static final long serialVersionUID = 7410354508832863756L;
 
         private static final Method method = ReflectTools.findMethod(
                 ValidityChangedListener.class, "onValidityChanged",
@@ -46,7 +66,7 @@ public abstract class AbstractForm<T> extends CustomComponent implements
 
         @Override
         public AbstractForm<T> getComponent() {
-            return (AbstractForm) super.getComponent();
+            return (AbstractForm<T>) super.getComponent();
         }
 
     }
@@ -60,6 +80,9 @@ public abstract class AbstractForm<T> extends CustomComponent implements
 
     public AbstractForm() {
         addAttachListener(new AttachListener() {
+
+            private static final long serialVersionUID = 3193438171004932112L;
+
             @Override
             public void attach(AttachEvent event) {
                 lazyInit();
@@ -88,7 +111,7 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     private RichText beanLevelViolations;
 
     @Override
-    public void onFieldGroupChange(MBeanFieldGroup beanFieldGroup) {
+    public void onFieldGroupChange(MBeanFieldGroup<T> beanFieldGroup) {
         boolean wasValid = isValid;
         isValid = fieldGroup.isValid();
         adjustSaveButtonState();
@@ -167,7 +190,7 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     }
 
     private void fireValidityChangedEvent() {
-        fireEvent(new ValidityChangedEvent(this));
+        fireEvent(new ValidityChangedEvent<T>(this));
     }
 
     public interface SavedHandler<T> extends Serializable {
@@ -207,9 +230,21 @@ public abstract class AbstractForm<T> extends CustomComponent implements
         this.eagerValidation = eagerValidation;
     }
 
+    /**
+     * Sets the object to be edited by this form. This method binds all fields
+     * from this form to given objects.
+     * <p>
+     * If your form needs to manually configure something based on the state of
+     * the edited object, you can override this method to do that either before
+     * the object is bound to fields or to do something after the bean binding.
+     *
+     * @param entity the object to be edited by this form
+     * @return the MBeanFieldGroup that is used to do the binding. Most often
+     * you don't need to do anything with it.
+     */
     public MBeanFieldGroup<T> setEntity(T entity) {
-        lazyInit();
         this.entity = entity;
+        lazyInit();
         if (entity != null) {
             if (isBound()) {
                 fieldGroup.unbind();
@@ -226,8 +261,7 @@ public abstract class AbstractForm<T> extends CustomComponent implements
                 fieldGroup.addValidator(e.getKey(), e.getValue().toArray(
                         new AbstractComponent[e.getValue().size()]));
             }
-            for (Map.Entry<Class, AbstractComponent> e : validatorToErrorTarget.
-                    entrySet()) {
+            for (Map.Entry<Class<?>, AbstractComponent> e : validatorToErrorTarget.entrySet()) {
                 fieldGroup.setValidationErrorTarget(e.getKey(), e.getValue());
             }
 
@@ -279,10 +313,10 @@ public abstract class AbstractForm<T> extends CustomComponent implements
                 setSavedHandler((SavedHandler<T>) handler);
             }
             if (handler instanceof ResetHandler) {
-                setResetHandler((ResetHandler) handler);
+                setResetHandler((ResetHandler<T>) handler);
             }
             if (handler instanceof DeleteHandler) {
-                setDeleteHandler((DeleteHandler) handler);
+                setDeleteHandler((DeleteHandler<T>) handler);
             }
         }
     }
@@ -336,12 +370,11 @@ public abstract class AbstractForm<T> extends CustomComponent implements
      * you can use this method to close the popup.
      */
     public void closePopup() {
-        if(popup != null) {
+        if (popup != null) {
             popup.close();
             popup = null;
         }
     }
-
 
     /**
      * @return A default toolbar containing save/cancel/delete buttons
@@ -371,6 +404,8 @@ public abstract class AbstractForm<T> extends CustomComponent implements
         this.resetButton = resetButton;
         this.resetButton.addClickListener(new Button.ClickListener() {
 
+            private static final long serialVersionUID = -19755976436277487L;
+
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 reset(event);
@@ -388,6 +423,8 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     public void setSaveButton(Button saveButton) {
         this.saveButton = saveButton;
         saveButton.addClickListener(new Button.ClickListener() {
+
+            private static final long serialVersionUID = -2058398434893034442L;
 
             @Override
             public void buttonClick(Button.ClickEvent event) {
@@ -413,6 +450,8 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     public void setDeleteButton(final Button deleteButton) {
         this.deleteButton = deleteButton;
         deleteButton.addClickListener(new Button.ClickListener() {
+
+            private static final long serialVersionUID = -2693734056915561664L;
 
             @Override
             public void buttonClick(Button.ClickEvent event) {
@@ -447,9 +486,8 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     }
 
     /**
-     * Focuses the first field found from the form. It often improves UX to
-     * call this method, or focus another field, when you assign a bean for
-     * editing.
+     * Focuses the first field found from the form. It often improves UX to call
+     * this method, or focus another field, when you assign a bean for editing.
      */
     public void focusFirst() {
         Component compositionRoot = getCompositionRoot();
@@ -485,13 +523,15 @@ public abstract class AbstractForm<T> extends CustomComponent implements
      * This method should return the actual content of the form, including
      * possible toolbar.
      *
-     * Example implementation could look like this:      <code>
+     * Use setEntity(T entity) to fill in the data. Am example implementation
+     * could look like this:
+     * <pre><code>
      * public class PersonForm extends AbstractForm&lt;Person&gt; {
      *
      *     private TextField firstName = new MTextField(&quot;First Name&quot;);
      *     private TextField lastName = new MTextField(&quot;Last Name&quot;);
      *
-     *     \@Override
+     *    {@literal @}Override
      *     protected Component createContent() {
      *         return new MVerticalLayout(
      *                 new FormLayout(
@@ -502,7 +542,7 @@ public abstract class AbstractForm<T> extends CustomComponent implements
      *         );
      *     }
      * }
-     * </code>
+     * </code></pre>
      *
      * @return the content of the form
      *
@@ -518,15 +558,15 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     }
 
     private final LinkedHashMap<MBeanFieldGroup.MValidator<T>, Collection<AbstractComponent>> mValidators
-            = new LinkedHashMap<MBeanFieldGroup.MValidator<T>, Collection<AbstractComponent>>();
+            = new LinkedHashMap<>();
 
-    private final Map<Class, AbstractComponent> validatorToErrorTarget = new LinkedHashMap<Class, AbstractComponent>();
+    private final Map<Class<?>, AbstractComponent> validatorToErrorTarget = new LinkedHashMap<>();
 
     private Class<?>[] validationGroups;
 
     /**
-     * @return the JSR 303 bean validation groups that should be
-     * used to validate the bean
+     * @return the JSR 303 bean validation groups that should be used to
+     * validate the bean
      */
     public Class<?>[] getValidationGroups() {
         if (validationGroups == null) {
@@ -542,12 +582,12 @@ public abstract class AbstractForm<T> extends CustomComponent implements
      */
     public void setValidationGroups(Class<?>... validationGroups) {
         this.validationGroups = validationGroups;
-        if(getFieldGroup() != null) {
+        if (getFieldGroup() != null) {
             getFieldGroup().setValidationGroups(validationGroups);
         }
     }
 
-    public void setValidationErrorTarget(Class aClass,
+    public void setValidationErrorTarget(Class<?> aClass,
             AbstractComponent errorTarget) {
         validatorToErrorTarget.put(aClass, errorTarget);
         if (getFieldGroup() != null) {
@@ -637,12 +677,27 @@ public abstract class AbstractForm<T> extends CustomComponent implements
         this.deleteCaption = deleteCaption;
     }
 
-
     public AbstractForm<T> withI18NCaption(String saveCaption, String deleteCaption, String cancelCaption) {
         this.saveCaption = saveCaption;
         this.deleteCaption = deleteCaption;
         this.cancelCaption = cancelCaption;
         return this;
+    }
+
+    public boolean isValidateOnlyBoundFields() {
+        return fieldGroup.isValidateOnlyBoundFields();
+    }
+
+    /**
+     * Tells that only bound fields from the bean (bound entity) should be validated.
+     * Useful when the form does not contain all bean properties or, on the other hand, is not valid until all properties are valid.
+     * By default, only bound bean properties are validated.
+     * If set to false, all bean properties will be validated.
+     *
+     * @param validateOnlyBoundFields true if only bound fields should be validated
+     */
+    public void setValidateOnlyBoundFields(boolean validateOnlyBoundFields) {
+        fieldGroup.setValidateOnlyBoundFields(validateOnlyBoundFields);
     }
 
 }

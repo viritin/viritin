@@ -11,7 +11,7 @@ import com.vaadin.ui.*;
  *
  */
 public class VaadinLocaleDemoComponent extends CustomComponent {
-    private DateField dateField = new DateField();
+    private final DateField dateField = new DateField();
 
     public VaadinLocaleDemoComponent() {
         dateField.setValue(new Date());

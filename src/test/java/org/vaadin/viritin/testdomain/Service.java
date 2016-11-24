@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -26,11 +27,11 @@ public class Service {
     }
 
     public static List<Group> getAvailableGroups() {
-        return new ArrayList<Group>(groups);
+        return new ArrayList<>(groups);
     }
 
     public static List<Person> getListOfPersons(int total) {
-        List<Person> l = new ArrayList<Person>(total);
+        List<Person> l = new ArrayList<>(total);
         for (int i = 0; i < total; i++) {
             Person p = new Person();
             p.setId(i + 1);
@@ -65,6 +66,29 @@ public class Service {
         }
         Logger.getAnonymousLogger().entering(Service.class.getName(), "count");
         return COUNT;
+    }
+
+    public static long countByFirstName(String filter) {
+        logger.log(Level.INFO, "countByFirstName " + filter);
+        if (pagedBase == null) {
+            pagedBase = getListOfPersons((int) COUNT);
+        }
+        return pagedBase.stream().filter(p->p.getFirstName().contains(filter)).count();
+    }
+
+    public static List<Person> findByFirstName(String filter, long start, long maxResults) {
+        System.err.println("findByFirstName " + filter + " " + start + " " + maxResults);
+        if (pagedBase == null) {
+            pagedBase = getListOfPersons((int) COUNT);
+        }
+        
+        List<Person> filtered = pagedBase.stream().filter(p->p.getFirstName().contains(filter)).collect(Collectors.toList());
+        
+        int end = (int) (start + maxResults);
+        if (end > filtered.size()) {
+            end = filtered.size();
+        }
+        return filtered.subList((int) start, end);
     }
 
 }

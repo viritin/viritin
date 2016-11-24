@@ -1,9 +1,9 @@
 package org.vaadin.viritin.it;
 
-import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.TextField;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -12,6 +12,7 @@ import org.vaadin.viritin.BeanBinder;
 import org.vaadin.viritin.MBeanFieldGroup;
 import org.vaadin.viritin.fields.IntegerField;
 import org.vaadin.viritin.fields.IntegerSliderField;
+import org.vaadin.viritin.fields.MTextField;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 
 /**
@@ -20,8 +21,11 @@ import org.vaadin.viritin.layouts.MVerticalLayout;
  */
 public class IntegerFieldUsage extends AbstractTest {
 
+    private static final long serialVersionUID = -1841759044439831663L;
+
     public static class Domain {
 
+        private Integer normalInteger;
         private Integer integer;
         private int intti = 2;
         @Min(10)
@@ -65,18 +69,28 @@ public class IntegerFieldUsage extends AbstractTest {
             this.slider = slider;
         }
 
-        @Override
-        public String toString() {
-            return "Domain{" + "integer=" + integer + ", intti=" + intti + ", validatedInteger=" + validatedInteger + ", slider=" + slider + '}';
+        public Integer getNormalInteger() {
+            return normalInteger;
         }
 
+        public void setNormalInteger(Integer normalInteger) {
+            this.normalInteger = normalInteger;
+        }
+
+        @Override
+        public String toString() {
+            return "Domain{" + "normalInteger=" + normalInteger + ", integer=" + integer + ", intti=" + intti + ", validatedInteger=" + validatedInteger + ", slider=" + slider + '}';
+        }
+        
+        
     }
 
-    private IntegerField integer = new IntegerField().withCaption("Integer");
-    private IntegerField intti = new IntegerField().withCaption("int");
-    private IntegerField validatedInteger = new IntegerField().withCaption(
+    private final TextField normalInteger = new MTextField().withCaption("Integer with basic TextField");
+    private final IntegerField integer = new IntegerField().withCaption("Integer");
+    private final IntegerField intti = new IntegerField().withCaption("int");
+    private final IntegerField validatedInteger = new IntegerField().withCaption(
             "validated");
-    private IntegerSliderField slider = new IntegerSliderField()
+    private final IntegerSliderField slider = new IntegerSliderField()
             .withCaption("Slider")
             .withStep(5) // .withMax(69) // Set automatically from BeanValidation annotations
             // .withMin(-69) // Set automatically from BeanValidation annotations
@@ -89,6 +103,7 @@ public class IntegerFieldUsage extends AbstractTest {
 
         BeanBinder.bind(domain, this).withEagerValidation(
                 new MBeanFieldGroup.FieldGroupListener<Domain>() {
+            private static final long serialVersionUID = 1901097967848065661L;
 
             boolean wasvalid = true;
 
@@ -108,6 +123,8 @@ public class IntegerFieldUsage extends AbstractTest {
         });
 
         Button show = new Button("Show value", new Button.ClickListener() {
+            private static final long serialVersionUID = 5019806363620874205L;
+            
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 Notification.show(domain.toString());
@@ -116,6 +133,7 @@ public class IntegerFieldUsage extends AbstractTest {
 
         Button toggleVisible = new Button("Toggle visibility",
                 new Button.ClickListener() {
+            private static final long serialVersionUID = 5019806363620874205L;
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 integer.setVisible(!integer.isVisible());
@@ -132,6 +150,7 @@ public class IntegerFieldUsage extends AbstractTest {
                 intti,
                 validatedInteger,
                 slider,
+                normalInteger,
                 show,
                 toggleVisible
         );
