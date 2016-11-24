@@ -25,7 +25,7 @@ public class MGridLayout extends FGridLayout {
         super.setSpacing(true);
         super.setMargin(true);
     }
-    
+
     public MGridLayout(Component... components) {
         this();
         addComponents(components);
@@ -77,6 +77,23 @@ public class MGridLayout extends FGridLayout {
         for (String styleName : styleNames) {
             addStyleName(styleName);
         }
+        return this;
+    }
+
+    @Override
+    public MGridLayout withWidthFull() {
+        return withWidth("100%");
+    }
+
+    @Override
+    public MGridLayout withHeightFull() {
+        return withHeight("100%");
+    }
+
+    @Override
+    public MGridLayout withComponent(Component component, Alignment alignment) {
+        addComponent(component);
+        setComponentAlignment(component, alignment);
         return this;
     }
 }

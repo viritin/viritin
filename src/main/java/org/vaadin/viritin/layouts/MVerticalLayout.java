@@ -3,9 +3,8 @@ package org.vaadin.viritin.layouts;
 import java.util.Collection;
 
 import org.vaadin.viritin.MSize;
+import org.vaadin.viritin.fluency.ui.FluentLayout;
 
-import com.vaadin.server.Resource;
-import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
 
@@ -55,7 +54,8 @@ public class MVerticalLayout extends FVerticalLayout {
      * Expands selected components. Also adds to layout and sets the only sane
      * height for expanded components (100%) if needed.
      *
-     * @param componentsToExpand components that should be expanded
+     * @param componentsToExpand
+     *            components that should be expanded
      * @return the object itself for further configuration
      */
     public MVerticalLayout expand(Component... componentsToExpand) {
@@ -89,8 +89,10 @@ public class MVerticalLayout extends FVerticalLayout {
         return add(component).withExpand(component, ratio);
     }
 
-    public MVerticalLayout add(Component component, Alignment alignment, float ratio) {
-        return add(component).withAlign(component, alignment).withExpand(component, ratio);
+    public MVerticalLayout add(Component component, Alignment alignment,
+            float ratio) {
+        return add(component).withAlign(component, alignment)
+                .withExpand(component, ratio);
     }
 
     public MVerticalLayout withAlign(Component component, Alignment alignment) {
@@ -113,6 +115,24 @@ public class MVerticalLayout extends FVerticalLayout {
         for (String styleName : styleNames) {
             addStyleName(styleName);
         }
+        return this;
+    }
+
+    @Override
+    public MVerticalLayout withWidthFull() {
+        return withWidth("100%");
+    }
+
+    @Override
+    public MVerticalLayout withHeightFull() {
+        return withHeight("100%");
+    }
+
+    @Override
+    public MVerticalLayout withComponent(Component component,
+            Alignment alignment) {
+        addComponent(component);
+        setComponentAlignment(component, alignment);
         return this;
     }
 }

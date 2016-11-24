@@ -221,7 +221,7 @@
 										<param>com.vaadin.ui.TextArea</param>
 										<param>com.vaadin.ui.DateField</param>	
 										<param>com.vaadin.ui.CheckBox</param>
-										<param>com.vaadin.ui.PasswordField</param>									 
+										<param>com.vaadin.ui.PasswordField</param>			 
 									</classNames>
 								</pkgConf>
 								<pkgConf>
@@ -245,6 +245,7 @@
 								</pkgConf>
 								<pkgConf>
 									<pkgName>org.vaadin.viritin.layouts</pkgName>
+									<interfacePkgName>org.vaadin.viritin.fluency.ui</interfacePkgName>
 									<ignoreMethods>
 										<param>setStyleName</param>
 										<param>addAction</param>

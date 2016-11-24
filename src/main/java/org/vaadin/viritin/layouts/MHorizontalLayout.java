@@ -1,14 +1,12 @@
 package org.vaadin.viritin.layouts;
 
-import com.vaadin.server.Resource;
-import com.vaadin.shared.ui.MarginInfo;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
+import java.util.Collection;
+
 import org.vaadin.viritin.MSize;
 
-import java.util.Collection;
+import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.Label;
 
 public class MHorizontalLayout extends FHorizontalLayout {
 
@@ -55,7 +53,8 @@ public class MHorizontalLayout extends FHorizontalLayout {
      * Expands selected components. Also sets the only sane width for expanded
      * components (100%).
      *
-     * @param componentsToExpand the components that should be expanded
+     * @param componentsToExpand
+     *            the components that should be expanded
      * @return the object itself for further configuration
      */
     public MHorizontalLayout expand(Component... componentsToExpand) {
@@ -90,11 +89,14 @@ public class MHorizontalLayout extends FHorizontalLayout {
         return add(component).withExpand(component, ratio);
     }
 
-    public MHorizontalLayout add(Component component, Alignment alignment, float ratio) {
-        return add(component).withAlign(component, alignment).withExpand(component, ratio);
+    public MHorizontalLayout add(Component component, Alignment alignment,
+            float ratio) {
+        return add(component).withAlign(component, alignment)
+                .withExpand(component, ratio);
     }
 
-    public MHorizontalLayout withAlign(Component component, Alignment alignment) {
+    public MHorizontalLayout withAlign(Component component,
+            Alignment alignment) {
         setComponentAlignment(component, alignment);
         return this;
     }
@@ -104,7 +106,8 @@ public class MHorizontalLayout extends FHorizontalLayout {
         return this;
     }
 
-    public MHorizontalLayout withCaption(String caption, boolean captionAsHtml) {
+    public MHorizontalLayout withCaption(String caption,
+            boolean captionAsHtml) {
         setCaption(caption);
         setCaptionAsHtml(captionAsHtml);
         return this;
@@ -126,5 +129,23 @@ public class MHorizontalLayout extends FHorizontalLayout {
      */
     public MHorizontalLayout space() {
         return expand(new Label());
+    }
+
+    @Override
+    public MHorizontalLayout withWidthFull() {
+        return withWidth("100%");
+    }
+
+    @Override
+    public MHorizontalLayout withHeightFull() {
+        return withHeight("100%");
+    }
+
+    @Override
+    public MHorizontalLayout withComponent(Component component,
+            Alignment alignment) {
+        addComponent(component);
+        setComponentAlignment(component, alignment);
+        return this;
     }
 }

@@ -1,11 +1,10 @@
 package org.vaadin.viritin.layouts;
 
-import com.vaadin.server.Resource;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.CssLayout;
 import org.vaadin.viritin.MSize;
 
-public class MCssLayout extends FCssLayout {
+import com.vaadin.ui.Component;
+
+public class MCssLayout extends FCssLayout  {
 
     public MCssLayout() {
     }
@@ -15,7 +14,7 @@ public class MCssLayout extends FCssLayout {
     }
 
     public MCssLayout withFullWidth() {
-        return withWidth("100%");       
+        return withWidth("100%");
     }
 
     public MCssLayout withFullHeight() {
@@ -44,5 +43,15 @@ public class MCssLayout extends FCssLayout {
         setCaption(caption);
         setCaptionAsHtml(captionAsHtml);
         return this;
+    }
+
+    @Override
+    public MCssLayout withWidthFull() {
+        return withWidth("100%");
+    }
+
+    @Override
+    public MCssLayout withHeightFull() {
+        return withHeight("100%");
     }
 }
