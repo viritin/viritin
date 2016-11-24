@@ -63,7 +63,7 @@ public class MPanel extends FPanel {
     }
 
     @Override
-    public <T extends Action & com.vaadin.event.Action.Listener> IPanel withAction(
+    public <T extends Action & com.vaadin.event.Action.Listener> MPanel withAction(
             T action) {
        addAction(action);
        return this;

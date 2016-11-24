@@ -1,7 +1,9 @@
 package org.vaadin.viritin.layouts;
 
 import org.vaadin.viritin.MSize;
+import org.vaadin.viritin.fluency.ui.IWindow;
 
+import com.vaadin.event.Action;
 import com.vaadin.ui.Component;
 
 public class MWindow extends FWindow {
@@ -19,7 +21,7 @@ public class MWindow extends FWindow {
     }
 
     public MWindow withFullWidth() {
-        return withWidth("100%");      
+        return withWidth("100%");
     }
 
     public MWindow withFullHeight() {
@@ -41,6 +43,23 @@ public class MWindow extends FWindow {
         for (String styleName : styleNames) {
             addStyleName(styleName);
         }
+        return this;
+    }
+
+    @Override
+    public MWindow withWidthFull() {
+        return withWidth("100%");
+    }
+
+    @Override
+    public MWindow withHeightFull() {
+        return withHeight("100%");
+    }
+
+    @Override
+    public <T extends Action & com.vaadin.event.Action.Listener> MWindow withAction(
+            T action) {
+        addAction(action);
         return this;
     }
 }
