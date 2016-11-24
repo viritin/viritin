@@ -49,6 +49,18 @@ public class FluentAction extends Action {
     }
 
     /**
+     * A {@link Notifier} complemented by fluent setters.
+     * 
+     * @param <S>
+     *            Self-referential generic type
+     * @see Notifier
+     */
+    public interface FluentNotifier<S extends FluentNotifier<S>>
+            extends Notifier, FluentContainer<S> {
+        public <T extends Action & Action.Listener> S withAction(T action);
+    }
+    
+    /**
      * A {@link ShortcutNotifier} complemented by fluent setters.
      *
      * @param <S> Self-referential generic type

@@ -1,7 +1,9 @@
 package org.vaadin.viritin.layouts;
 
 import org.vaadin.viritin.MSize;
+import org.vaadin.viritin.fluency.ui.IPanel;
 
+import com.vaadin.event.Action;
 import com.vaadin.ui.Component;
 
 /**
@@ -48,5 +50,22 @@ public class MPanel extends FPanel {
             addStyleName(styleName);
         }
         return this;
+    }
+
+    @Override
+    public IPanel withWidthFull() {
+        return withWidth("100%");
+    }
+
+    @Override
+    public IPanel withHeightFull() {
+        return withHeight("100%");
+    }
+
+    @Override
+    public <T extends Action & com.vaadin.event.Action.Listener> IPanel withAction(
+            T action) {
+       addAction(action);
+       return this;
     }
 }
