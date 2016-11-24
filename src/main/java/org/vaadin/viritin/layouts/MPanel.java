@@ -7,7 +7,7 @@ import com.vaadin.ui.Component;
 /**
  * Fluent Panel
  */
-public class MPanel extends FPanel{
+public class MPanel extends FPanel {
 
     private static final long serialVersionUID = -7384406421724902868L;
 
@@ -36,6 +36,7 @@ public class MPanel extends FPanel{
         setHeight("100%");
         return this;
     }
+
     public MPanel withSize(MSize size) {
         setWidth(size.getWidth(), size.getWidthUnit());
         setHeight(size.getHeight(), size.getHeightUnit());
