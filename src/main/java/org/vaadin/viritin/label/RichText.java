@@ -15,15 +15,16 @@
  */
 package org.vaadin.viritin.label;
 
-import com.vaadin.shared.ui.label.ContentMode;
+import java.io.IOException;
+import java.io.InputStream;
+
 import org.apache.commons.io.IOUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 import org.markdown4j.Markdown4jProcessor;
-
-import java.io.IOException;
-import java.io.InputStream;
 import org.vaadin.viritin.MSize;
+
+import com.vaadin.shared.ui.label.ContentMode;
 
 /**
  * XSS safe rich text label with either Markdown syntax or raw html (sanitized
@@ -33,6 +34,8 @@ import org.vaadin.viritin.MSize;
  * overridden by returning custom whitelist with getWhitelist method.
  */
 public class RichText extends MLabel {
+
+    private static final long serialVersionUID = -6926829115110918731L;
 
     transient private Whitelist whitelist;
     private String richText;

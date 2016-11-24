@@ -1,13 +1,14 @@
 package org.vaadin.viritin.fields;
 
-import com.vaadin.data.Validator;
-import com.vaadin.data.validator.BeanValidator;
-
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import java.lang.reflect.Field;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+
+import com.vaadin.data.Validator;
+import com.vaadin.data.validator.BeanValidator;
 
 /**
  *
@@ -39,7 +40,7 @@ public class IntegerSliderField extends IntegerField {
                 String fieldName = propertyNameField.get(beanValidator).toString();
                 Field beanClass = BeanValidator.class.getDeclaredField("beanClass");
                 beanClass.setAccessible(true);
-                Class beantype = (Class) beanClass.get(beanValidator);
+                Class<?> beantype = (Class<?>) beanClass.get(beanValidator);
                 
                 Field field = beantype.getDeclaredField(fieldName);
                 field.setAccessible(true);

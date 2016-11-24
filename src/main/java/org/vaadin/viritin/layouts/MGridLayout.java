@@ -1,15 +1,18 @@
 package org.vaadin.viritin.layouts;
 
+import java.util.Collection;
+
+import org.vaadin.viritin.MSize;
+
 import com.vaadin.server.Resource;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.GridLayout;
-import org.vaadin.viritin.MSize;
-
-import java.util.Collection;
 
 public class MGridLayout extends GridLayout {
+
+    private static final long serialVersionUID = -4353934595461037075L;
 
     public MGridLayout() {
         super.setSpacing(true);

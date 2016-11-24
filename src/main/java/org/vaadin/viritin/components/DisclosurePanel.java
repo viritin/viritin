@@ -1,17 +1,20 @@
 package org.vaadin.viritin.components;
 
+import org.vaadin.viritin.button.MButton;
+import org.vaadin.viritin.layouts.MVerticalLayout;
+
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.FontIcon;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
-import org.vaadin.viritin.button.MButton;
-import org.vaadin.viritin.layouts.MVerticalLayout;
 
 /**
  */
 public class DisclosurePanel extends VerticalLayout {
+
+    private static final long serialVersionUID = 6509419456771505782L;
 
     private FontIcon closedIcon = FontAwesome.PLUS_CIRCLE;
     private FontIcon openIcon = FontAwesome.MINUS_CIRCLE;
@@ -24,6 +27,9 @@ public class DisclosurePanel extends VerticalLayout {
         contentWrapper.setVisible(false);
         addComponents(toggle, contentWrapper);
         toggle.addClickListener(new Button.ClickListener() {
+
+            private static final long serialVersionUID = -3471451934465654395L;
+
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 setOpen(!isOpen());

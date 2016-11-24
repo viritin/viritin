@@ -12,6 +12,8 @@ import org.vaadin.viritin.util.HtmlElementPropertySetter;
  */
 public class EmailField extends MTextField {
 
+    private static final long serialVersionUID = -4717961169375147779L;
+
     public EmailField() {
     }
 
