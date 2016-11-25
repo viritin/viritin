@@ -553,10 +553,12 @@ public class ListContainer<T> extends AbstractContainer implements
 
             private static final long serialVersionUID = -6887983770952190177L;
 
+            private boolean readOnly;
             private final String propertyName;
 
             DynaProperty(String property) {
                 propertyName = property;
+                readOnly = false;
             }
 
             @Override
@@ -593,6 +595,10 @@ public class ListContainer<T> extends AbstractContainer implements
 
             @Override
             public void setValue(Object newValue) throws Property.ReadOnlyException {
+            	if(isReadOnly()){
+            		throw new ReadOnlyException();
+            	}
+            	
                 try {
                     PropertyUtils.setProperty(bean, propertyName, newValue);
                 } catch (final IllegalAccessException 
@@ -615,12 +621,12 @@ public class ListContainer<T> extends AbstractContainer implements
             				getWriteMethod() == null;
             	}
                 
-            	return false;
+            	return readOnly;
             }
 
             @Override
             public void setReadOnly(boolean newStatus) {
-                throw new UnsupportedOperationException("Not supported yet.");
+                this.readOnly = newStatus;
             }
 
         }
@@ -642,7 +648,7 @@ public class ListContainer<T> extends AbstractContainer implements
                 try {
                 	if(bean instanceof DynaBean){
                 		db = (DynaBean) bean;
-                	}else{
+                	} else {
                 		db = new WrapDynaBean(bean, (WrapDynaClass) getDynaClass(bean));
                 	}
                 } catch (Throwable e) {
