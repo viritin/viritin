@@ -11,6 +11,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.beanutils.DynaClass;
+
 /**
  * A filterable ({@link Container.Filterable}) version of {@link ListContainer}.
  *
@@ -30,8 +32,16 @@ public class FilterableListContainer<T> extends ListContainer<T> implements
     public FilterableListContainer(Class<? extends T> type) {
         super(type);
     }
+    
+    public FilterableListContainer(DynaClass type, String... properties) {
+		super(type, properties);
+	}
 
-    public FilterableListContainer(Collection<? extends T> backingList) {
+	public FilterableListContainer(DynaClass type) {
+		super(type);
+	}
+
+	public FilterableListContainer(Collection<? extends T> backingList) {
         super(backingList);
     }
 
