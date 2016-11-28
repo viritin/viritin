@@ -92,22 +92,36 @@ public class ListContainer<T> extends AbstractContainer implements
         setContainerPropertyIds(properties);
     }
 
+    public ListContainer(DynaClass type) {
+        backingList = new ArrayList<>();
+        dynaClass = type;
+    }
+
+    public ListContainer(DynaClass type, String... properties) {
+        this(type);
+        setContainerPropertyIds(properties);
+    }
+
     protected List<T> getBackingList() {
         return backingList;
     }
 
-    private transient WrapDynaClass dynaClass;
+    private transient DynaClass dynaClass;
 
-    private WrapDynaClass getDynaClass() {
+    private DynaClass getDynaClass() {
         if (dynaClass == null && !backingList.isEmpty()) {
             return getDynaClass(backingList.get(0));
         }
         return dynaClass;
     }
 
-    private WrapDynaClass getDynaClass(Object reference) {
+    private DynaClass getDynaClass(Object reference) {
         if (dynaClass == null && reference != null) {
-            dynaClass = WrapDynaClass.createDynaClass(reference.getClass());
+        	if(reference instanceof DynaBean){
+        		dynaClass = ((DynaBean)reference).getDynaClass();
+        	}else{
+        		dynaClass = WrapDynaClass.createDynaClass(reference.getClass());
+        	}
         }
         return dynaClass;
     }
@@ -540,10 +554,12 @@ public class ListContainer<T> extends AbstractContainer implements
 
             private static final long serialVersionUID = -6887983770952190177L;
 
+            private boolean readOnly;
             private final String propertyName;
 
             DynaProperty(String property) {
                 propertyName = property;
+                readOnly = false;
             }
 
             @Override
@@ -580,6 +596,10 @@ public class ListContainer<T> extends AbstractContainer implements
 
             @Override
             public void setValue(Object newValue) throws Property.ReadOnlyException {
+            	if(isReadOnly()){
+            		throw new ReadOnlyException();
+            	}
+            	
                 try {
                     PropertyUtils.setProperty(bean, propertyName, newValue);
                 } catch (final IllegalAccessException 
@@ -596,13 +616,18 @@ public class ListContainer<T> extends AbstractContainer implements
 
             @Override
             public boolean isReadOnly() {
-                return getDynaClass().getPropertyDescriptor(propertyName).
-                        getWriteMethod() == null;
+            	DynaClass clazz = getDynaClass();
+            	if(clazz instanceof WrapDynaClass){
+            		return ((WrapDynaClass)clazz).getPropertyDescriptor(propertyName).
+            				getWriteMethod() == null;
+            	}
+                
+            	return readOnly;
             }
 
             @Override
             public void setReadOnly(boolean newStatus) {
-                throw new UnsupportedOperationException("Not supported yet.");
+                this.readOnly = newStatus;
             }
 
         }
@@ -622,7 +647,11 @@ public class ListContainer<T> extends AbstractContainer implements
         private DynaBean getDynaBean() {
             if (db == null) {
                 try {
-                    db = new WrapDynaBean(bean, getDynaClass(bean));
+                	if(bean instanceof DynaBean){
+                		db = (DynaBean) bean;
+                	} else {
+                		db = new WrapDynaBean(bean, (WrapDynaClass) getDynaClass(bean));
+                	}
                 } catch (Throwable e) {
                     // Older version of beanutils is somehow available by the 
                     // classloader! Probably tomee
