@@ -36,6 +36,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import org.apache.commons.beanutils.DynaClass;
 
 import static org.vaadin.viritin.LazyList.DEFAULT_PAGE_SIZE;
 
@@ -64,13 +65,14 @@ public class MTable<T> extends Table {
     private String[] pendingHeaders;
 
     private Collection sortableProperties;
-    
+
     // Cached last sort properties, used to maintain sorting when re-setting
     // lazy load strategy
     private String sortProperty;
     private boolean sortAscending;
 
-    public MTable() {}
+    public MTable() {
+    }
 
     /**
      * Constructs a Table with explicit bean type. Handy for example if your
@@ -85,6 +87,17 @@ public class MTable<T> extends Table {
 
     public MTable(T... beans) {
         this(new ArrayList<>(Arrays.asList(beans)));
+    }
+
+    /**
+     * Constructs a Table with explicit bean type. Handy for example if your
+     * beans are JPA proxies or the table is empty when showing it initially.
+     *
+     * @param type the type of beans that are listed in this table
+     */
+    public MTable(DynaClass type) {
+        bic = createContainer(type);
+        setContainerDataSource(bic);
     }
 
     /**
@@ -260,6 +273,10 @@ public class MTable<T> extends Table {
         return new ListContainer<T>(type); // Type parameter just to keep NB happy
     }
 
+    private ListContainer<T> createContainer(DynaClass type) {
+        return new ListContainer<>(type);
+    }
+
     protected ListContainer<T> createContainer(Collection<T> beans) {
         return new ListContainer<>(beans);
     }
@@ -311,6 +328,7 @@ public class MTable<T> extends Table {
 
     /**
      * the propertyId has to been added before!
+     *
      * @param propertyId columns property id
      * @param width width to be reserved for columns content
      * @return MTable
@@ -425,19 +443,19 @@ public class MTable<T> extends Table {
         setBeans(new ArrayList<>(Arrays.asList(beans)));
         return this;
     }
-    
+
     public MTable<T> setRows(T... beansForRows) {
         return setBeans(beansForRows);
     }
 
     public MTable<T> setBeans(Collection<T> beans) {
 
-        if(sortProperty != null && beans instanceof SortableLazyList) {
-            final SortableLazyList sll = (SortableLazyList)beans;
+        if (sortProperty != null && beans instanceof SortableLazyList) {
+            final SortableLazyList sll = (SortableLazyList) beans;
             sll.setSortProperty(new String[]{sortProperty});
-            sll.setSortAscending(new boolean[] {sortAscending});
+            sll.setSortAscending(new boolean[]{sortAscending});
         }
-        
+
         if (!isContainerInitialized() && !beans.isEmpty()) {
             ensureBeanItemContainer(beans);
         } else if (isContainerInitialized()) {
@@ -445,7 +463,7 @@ public class MTable<T> extends Table {
         }
         return this;
     }
-    
+
     public MTable<T> setRows(Collection<T> beansForRows) {
         return setBeans(beansForRows);
     }
@@ -508,12 +526,10 @@ public class MTable<T> extends Table {
         return this;
     }
 
-
     public MTable<T> withId(String id) {
         setId(id);
         return this;
     }
-
 
     public MTable<T> expand(String... propertiesToExpand) {
         for (String property : propertiesToExpand) {
@@ -524,6 +540,7 @@ public class MTable<T> extends Table {
 
     /**
      * the propertyId has to been added before!
+     *
      * @param propertyId columns property id
      * @param ratio the expandRatio used to divide excess space for this column
      * @return MTable
@@ -539,6 +556,7 @@ public class MTable<T> extends Table {
         if (itemClickPiggyback == null) {
             itemClickPiggyback = new ItemClickListener() {
                 private static final long serialVersionUID = -2318797984292753676L;
+
                 @Override
                 public void itemClick(ItemClickEvent event) {
                     fireEvent(new RowClickEvent<T>(event));
@@ -561,6 +579,7 @@ public class MTable<T> extends Table {
             final SimpleColumnGenerator<T> columnGenerator) {
         addGeneratedColumn(columnId, new ColumnGenerator() {
             private static final long serialVersionUID = 2855441121974230973L;
+
             @Override
             public Object generateCell(Table source, Object itemId,
                     Object columnId) {
@@ -698,13 +717,14 @@ public class MTable<T> extends Table {
     /**
      * A version of ItemClickEvent that is properly typed and named.
      *
-     * @param <T> the type of the row 
+     * @param <T> the type of the row
      */
     public static class RowClickEvent<T> extends MouseEvents.ClickEvent {
+
         private static final long serialVersionUID = -73902815731458960L;
-        
+
         public static final Method TYPED_ITEM_CLICK_METHOD;
-        
+
         static {
             try {
                 TYPED_ITEM_CLICK_METHOD = RowClickListener.class.
