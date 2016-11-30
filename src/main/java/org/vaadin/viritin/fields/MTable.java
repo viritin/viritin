@@ -873,4 +873,18 @@ public class MTable<T> extends Table {
         return this;
     }
 
+    public MTable<T> withValueChangeListener(MValueChangeListener<T> listener){
+        addMValueChangeListener(listener);
+        return this;
+    }
+
+    public MTable<T> withRowClickListener(RowClickListener<T> listener){
+        addRowClickListener(listener);
+        return this;
+    }
+
+    public MTable<T> withSortListener(SortListener listener){
+        addSortListener(listener);
+        return this;
+    }
 }
