@@ -78,7 +78,7 @@ public class ListContainer<T> extends AbstractContainer implements
         } else {
             this.backingList = new ArrayList<T>(backingList1); // Type parameter to keep NB happy
         }
-        
+
         fireItemSetChange();
     }
 
@@ -92,22 +92,36 @@ public class ListContainer<T> extends AbstractContainer implements
         setContainerPropertyIds(properties);
     }
 
+    public ListContainer(DynaClass type) {
+        backingList = new ArrayList<>();
+        dynaClass = type;
+    }
+
+    public ListContainer(DynaClass type, String... properties) {
+        this(type);
+        setContainerPropertyIds(properties);
+    }
+
     protected List<T> getBackingList() {
         return backingList;
     }
 
-    private transient WrapDynaClass dynaClass;
+    private transient DynaClass dynaClass;
 
-    private WrapDynaClass getDynaClass() {
+    private DynaClass getDynaClass() {
         if (dynaClass == null && !backingList.isEmpty()) {
             return getDynaClass(backingList.get(0));
         }
         return dynaClass;
     }
 
-    private WrapDynaClass getDynaClass(Object reference) {
+    private DynaClass getDynaClass(Object reference) {
         if (dynaClass == null && reference != null) {
-            dynaClass = WrapDynaClass.createDynaClass(reference.getClass());
+            if (reference instanceof DynaBean) {
+                dynaClass = ((DynaBean) reference).getDynaClass();
+            } else {
+                dynaClass = WrapDynaClass.createDynaClass(reference.getClass());
+            }
         }
         return dynaClass;
     }
@@ -260,11 +274,11 @@ public class ListContainer<T> extends AbstractContainer implements
             // nested/indexed/mapped property
             try {
                 return getNestedPropertyType(getDynaClass(), pName);
-            } catch (final IllegalAccessException 
-                         | InvocationTargetException 
-                         | NoSuchMethodException 
-                         | ClassNotFoundException 
-                         | NoSuchFieldException ex) {
+            } catch (final IllegalAccessException
+                    | InvocationTargetException
+                    | NoSuchMethodException
+                    | ClassNotFoundException
+                    | NoSuchFieldException ex) {
                 throw new RuntimeException(ex);
             }
         }
@@ -304,11 +318,10 @@ public class ListContainer<T> extends AbstractContainer implements
         Class<?> type;
         DynaProperty dynaProperty = bean.getDynaProperty(name);
         if (dynaProperty != null) {
-        	type = dynaProperty.getType();
-        } 
-        else { //happens for default methods
-        	Method method = obtainGetterOfProperty(bean, name);
-        	type = method.getReturnType();
+            type = dynaProperty.getType();
+        } else { //happens for default methods
+            Method method = obtainGetterOfProperty(bean, name);
+            type = method.getReturnType();
         }
         if (type.isPrimitive() == true) {
             // Vaadin can't handle primitive types in _all_ places, so use
@@ -318,22 +331,25 @@ public class ListContainer<T> extends AbstractContainer implements
         }
         return type;
     }
-    
+
     /**
      * Explicitly resolves the getter bypassing commons.beanutils
+     *
      * @param beanClass
      * @param propertyName
      * @return getter method of the property
      * @throws ClassNotFoundException if class forName fails
      * @throws NoSuchMethodException if there is no getter
-     * @throws SecurityException if there are constraints by the security manager
+     * @throws SecurityException if there are constraints by the security
+     * manager
      */
     private static Method obtainGetterOfProperty(DynaClass beanClass, String propertyName) throws ClassNotFoundException, NoSuchMethodException, SecurityException {
-    	Class<?> clazz = Class.forName(beanClass.getName());
-    	return clazz.getMethod("get"+firstLetterUppercase(propertyName));
+        Class<?> clazz = Class.forName(beanClass.getName());
+        return clazz.getMethod("get" + firstLetterUppercase(propertyName));
     }
+
     private static String firstLetterUppercase(String s) {
-    	return Character.toUpperCase(s.charAt(0)) + (s.length() > 1 ? s.substring(1) : "");
+        return Character.toUpperCase(s.charAt(0)) + (s.length() > 1 ? s.substring(1) : "");
     }
 
     private static Class<?> detectTypeParameter(Class clazz, String name,
@@ -540,51 +556,56 @@ public class ListContainer<T> extends AbstractContainer implements
 
             private static final long serialVersionUID = -6887983770952190177L;
 
+            private boolean readOnly;
             private final String propertyName;
 
             DynaProperty(String property) {
                 propertyName = property;
+                readOnly = false;
             }
 
             @Override
             public Object getValue() {
-            	DynaBean dynaBean = getDynaBean();
-            	try {
+                DynaBean dynaBean = getDynaBean();
+                try {
                     return dynaBean.get(propertyName);
                 } catch (final Exception e) {
                     try {
                         return PropertyUtils.getProperty(bean, propertyName);
-                    } 
-                    catch (final NestedNullException | java.lang.IndexOutOfBoundsException ex) {
+                    } catch (final NestedNullException | java.lang.IndexOutOfBoundsException ex) {
                         return null;
                     } catch (final IllegalAccessException | InvocationTargetException ex) {
                         throw new RuntimeException(ex);
                     } catch (final NoSuchMethodException ex) {
-                    	Logger.getLogger(ListContainer.class.getName()).log(
+                        Logger.getLogger(ListContainer.class.getName()).log(
                                 Level.FINE, "Trying default method fallback for property {0}",
                                 propertyName);
                     }
                 }
-            	
-            	//fallback for default methods:
-            	Method method;
-				try {
-					method = obtainGetterOfProperty(dynaBean.getDynaClass(), propertyName);
-					return method.invoke(bean);
-				} catch (final ReflectiveOperationException 
-                             | SecurityException 
-                             | IllegalArgumentException e) {
-					throw new RuntimeException(e);
-				}
+
+                //fallback for default methods:
+                Method method;
+                try {
+                    method = obtainGetterOfProperty(dynaBean.getDynaClass(), propertyName);
+                    return method.invoke(bean);
+                } catch (final ReflectiveOperationException
+                        | SecurityException
+                        | IllegalArgumentException e) {
+                    throw new RuntimeException(e);
+                }
             }
 
             @Override
             public void setValue(Object newValue) throws Property.ReadOnlyException {
+                if (isReadOnly()) {
+                    throw new ReadOnlyException();
+                }
+
                 try {
                     PropertyUtils.setProperty(bean, propertyName, newValue);
-                } catch (final IllegalAccessException 
-                             | InvocationTargetException 
-                             | NoSuchMethodException ex) {
+                } catch (final IllegalAccessException
+                        | InvocationTargetException
+                        | NoSuchMethodException ex) {
                     throw new RuntimeException(ex);
                 }
             }
@@ -596,13 +617,18 @@ public class ListContainer<T> extends AbstractContainer implements
 
             @Override
             public boolean isReadOnly() {
-                return getDynaClass().getPropertyDescriptor(propertyName).
-                        getWriteMethod() == null;
+                DynaClass clazz = getDynaClass();
+                if (clazz instanceof WrapDynaClass) {
+                    return ((WrapDynaClass) clazz).getPropertyDescriptor(propertyName).
+                            getWriteMethod() == null;
+                }
+
+                return readOnly;
             }
 
             @Override
             public void setReadOnly(boolean newStatus) {
-                throw new UnsupportedOperationException("Not supported yet.");
+                this.readOnly = newStatus;
             }
 
         }
@@ -622,7 +648,11 @@ public class ListContainer<T> extends AbstractContainer implements
         private DynaBean getDynaBean() {
             if (db == null) {
                 try {
-                    db = new WrapDynaBean(bean, getDynaClass(bean));
+                    if (bean instanceof DynaBean) {
+                        db = (DynaBean) bean;
+                    } else {
+                        db = new WrapDynaBean(bean, (WrapDynaClass) getDynaClass(bean));
+                    }
                 } catch (Throwable e) {
                     // Older version of beanutils is somehow available by the 
                     // classloader! Probably tomee
