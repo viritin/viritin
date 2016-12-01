@@ -33,7 +33,7 @@ public class ConfirmButton extends MButton {
     private String okCaption = "OK";
     private String cancelCaption = "Cancel";
 
-	private String confirmWindowOkButtonStyle;
+    private String confirmWindowOkButtonStyle;
 
     public ConfirmButton() {
     }
@@ -51,24 +51,34 @@ public class ConfirmButton extends MButton {
     }
 
     public ConfirmButton(Resource icon, String buttonCaption, String confirmationText,
-                         ClickListener listener) {
+            ClickListener listener) {
         super(icon, buttonCaption, listener);
         this.confirmationText = confirmationText;
     }
 
-	@Override
-	protected void fireClick(final MouseEventDetails details) {
-		ConfirmDialog dialog = ConfirmDialog.show(getUI(), getConfirmWindowCaption(),
-			getConfirmationText(), getOkCaption(), getCancelCaption(), new Runnable() {
-				@Override
-				public void run() {
-					doFireClickListener(details);
-				}
-			});
+    @Override
+    protected void fireClick(final MouseEventDetails details) {
+        ConfirmDialog dialog = ConfirmDialog.show(getUI(), getConfirmWindowCaption(),
+                getConfirmationText(), getOkCaption(), getCancelCaption(), new Runnable() {
+            @Override
+            public void run() {
+                doFireClickListener(details);
+            }
+        });
 
-		dialog.getOkButton().addStyleName(confirmWindowOkButtonStyle);
-	}
+        dialog.getOkButton().addStyleName(confirmWindowOkButtonStyle);
+    }
 
+    @Override
+    protected void fireClick() {
+        fireClick(null);
+    }
+
+    @Override
+    public void setClickShortcut(int keyCode, int... modifiers) {
+        super.setClickShortcut(keyCode, modifiers); //To change body of generated methods, choose Tools | Templates.
+    }
+    
     @Override
     public ConfirmButton removeClickListener(MClickListener listener) {
         super.removeClickListener(listener);
@@ -226,7 +236,7 @@ public class ConfirmButton extends MButton {
         return this;
     }
 
-	public void setConfirmWindowOkButtonStyle(String confirmWindowOkButtonStyle) {
-		this.confirmWindowOkButtonStyle = confirmWindowOkButtonStyle;
-	}
+    public void setConfirmWindowOkButtonStyle(String confirmWindowOkButtonStyle) {
+        this.confirmWindowOkButtonStyle = confirmWindowOkButtonStyle;
+    }
 }
