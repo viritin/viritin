@@ -17,6 +17,7 @@ import com.vaadin.shared.Version;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.AbstractSelect.ItemCaptionMode;
 import com.vaadin.ui.ComboBox;
+import java.util.Map;
 
 /**
  * This class tries to provide a simple lazy loading connection form ComboBox to
@@ -27,11 +28,13 @@ import com.vaadin.ui.ComboBox;
  */
 public class LazyComboBox<T> extends TypedSelect<T> {
 
-    private static final long           serialVersionUID = 2332969066755466769L;
+    private static final long serialVersionUID = 2332969066755466769L;
 
     private String currentFilter;
     private FilterablePagingProvider<T> fpp;
     private FilterableCountProvider fcp;
+    private String lastRawFilter;
+    private boolean useRawFilter = false;
 
     /**
      * Interface via the LazyComboBox communicates with the "backend"
@@ -185,6 +188,15 @@ public class LazyComboBox<T> extends TypedSelect<T> {
                 setItemCaptionPropertyId("FAKE");
             }
 
+            @Override
+            public void changeVariables(Object source, Map<String, Object> variables) {
+                String newFilter = (String) variables.get("filter");
+                if (newFilter != null) {
+                    lastRawFilter = newFilter;
+                }
+                super.changeVariables(source, variables);
+            }
+
         };
 
         setBic(new DummyFilterableListContainer<>(elementType,
@@ -205,9 +217,11 @@ public class LazyComboBox<T> extends TypedSelect<T> {
 
     /**
      * Set a new strategies how to load options.
-     * 
-     * @param filterablePagingProvider the paging provider that gives the actual options in pages
-     * @param filterableCountProvider the count provider to give the total about of options with current filter
+     *
+     * @param filterablePagingProvider the paging provider that gives the actual
+     * options in pages
+     * @param filterableCountProvider the count provider to give the total about
+     * of options with current filter
      */
     public void loadFrom(FilterablePagingProvider<T> filterablePagingProvider, FilterableCountProvider filterableCountProvider) {
         this.fpp = filterablePagingProvider;
@@ -218,9 +232,12 @@ public class LazyComboBox<T> extends TypedSelect<T> {
     /**
      * Set a new strategies how to load options.
      *
-     * @param filterablePagingProvider the paging provider that gives the actual options in pages
-     * @param filterableCountProvider the count provider to give the total about of options with current filter
-     * @param pageLength the length of the pages that component should use to access providers
+     * @param filterablePagingProvider the paging provider that gives the actual
+     * options in pages
+     * @param filterableCountProvider the count provider to give the total about
+     * of options with current filter
+     * @param pageLength the length of the pages that component should use to
+     * access providers
      */
     public void loadFrom(FilterablePagingProvider<T> filterablePagingProvider, FilterableCountProvider filterableCountProvider, int pageLength) {
         this.fpp = filterablePagingProvider;
@@ -280,7 +297,25 @@ public class LazyComboBox<T> extends TypedSelect<T> {
     }
 
     public String getCurrentFilter() {
-        return currentFilter;
+        return useRawFilter ? lastRawFilter : currentFilter;
+    }
+    
+    public String getRawFilter() {
+        return lastRawFilter;
+    }
+
+    public boolean isUseRawFilter() {
+        return useRawFilter;
+    }
+
+    /**
+     * Using this method LazyComboBox can be made to use "raw" non lowercased 
+     * filters string.
+     * 
+     * @param useRawFilter true if raw filter string should be used.
+     */
+    public void setUseRawFilter(boolean useRawFilter) {
+        this.useRawFilter = useRawFilter;
     }
 
     /**
