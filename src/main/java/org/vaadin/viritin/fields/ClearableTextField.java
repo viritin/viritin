@@ -5,44 +5,53 @@ import com.vaadin.data.util.converter.Converter;
 import com.vaadin.event.FieldEvents;
 import com.vaadin.server.ErrorMessage;
 import com.vaadin.server.FontAwesome;
+import com.vaadin.server.Page;
 import com.vaadin.server.Resource;
 import com.vaadin.ui.AbstractTextField;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.CustomField;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Layout;
 import com.vaadin.ui.themes.ValoTheme;
 import org.vaadin.viritin.button.MButton;
+import org.vaadin.viritin.layouts.MHorizontalLayout;
 
 /**
- * A textfield with an attached button, that clears the textfield. Most methods in this class delegate to the textfield,
- * some to the button. ClearableTextField should work as a drop-in replacement for TextFiled / MTextField.
+ * A textfield with an attached button, that clears the textfield. Most methods
+ * in this class delegate to the textfield, some to the button.
+ * ClearableTextField should work as a drop-in replacement for TextFiled /
+ * MTextField.
  *
  * @author Niki
  */
 public class ClearableTextField extends CustomField {
 
     private final MTextField textfield = new MTextField();
-    private final CssLayout root = new CssLayout();
-    private final MButton clearButton = new MButton();
+    private final MButton clearButton = new MButton(FontAwesome.TIMES).withStyleName(ValoTheme.BUTTON_ICON_ONLY);
+    private final HorizontalLayout root = new MHorizontalLayout()
+            .expand(textfield).add(clearButton)
+            .withSpacing(false)
+            .withFullWidth()
+            .withStyleName("clearable-textfield");
 
     @SuppressWarnings("OverridableMethodCallInConstructor")
     public ClearableTextField() {
-        clearButton.setIcon(FontAwesome.TIMES);
         clearButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 textfield.clear();
+                textfield.focus();
             }
         });
-        
+
         textfield.addValueChangeListener(new ValueChangeListener() {
             @Override
             public void valueChange(Property.ValueChangeEvent event) {
                 setValue(textfield.getValue());
             }
         });
-        
+
         textfield.addTextChangeListener(new FieldEvents.TextChangeListener() {
             @Override
             public void textChange(FieldEvents.TextChangeEvent event) {
@@ -50,8 +59,7 @@ public class ClearableTextField extends CustomField {
             }
         });
 
-        root.addComponents(textfield, clearButton);
-        root.addStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+        setWidth("300px");
     }
 
     @SuppressWarnings("OverridableMethodCallInConstructor")
@@ -93,7 +101,7 @@ public class ClearableTextField extends CustomField {
      *
      * @return The root CssLayout
      */
-    public CssLayout getRoot() {
+    public Layout getRoot() {
         return root;
     }
 
@@ -288,7 +296,6 @@ public class ClearableTextField extends CustomField {
 
     public ClearableTextField withFullWidth() {
         this.setWidth("100%");
-        textfield.withFullWidth();
         return this;
     }
 
@@ -308,13 +315,29 @@ public class ClearableTextField extends CustomField {
     }
 
     @Override
+    public ErrorMessage getErrorMessage() {
+        final ErrorMessage errorMessage = super.getErrorMessage();
+        if (errorMessage == null) {
+            textfield.removeStyleName("error");
+        } else {
+            textfield.addStyleName("error");
+        }
+        return errorMessage;
+    }
+
+    @Override
     public void setComponentError(ErrorMessage componentError) {
         super.setComponentError(componentError);
-        if(componentError == null) {
-            textfield.removeStyleName("v-textfield-errror");
+        if (componentError == null) {
+            textfield.removeStyleName("errror");
         } else {
-            textfield.addStyleName("v-textfield-error");
+            textfield.addStyleName("error");
         }
+    }
+
+    @Override
+    public void beforeClientResponse(boolean initial) {
+        super.beforeClientResponse(initial); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -331,4 +354,23 @@ public class ClearableTextField extends CustomField {
     public Class getType() {
         return String.class;
     }
+
+    @Override
+    public void attach() {
+        super.attach();
+        Page.getCurrent().getStyles().add(
+                ".clearable-textfield .v-widget {\n"
+                + "	border-radius: 4px 4px 4px 4px;\n"
+                + "}\n"
+                + ".clearable-textfield .v-slot:last-child>.v-widget {\n"
+                + "	border-top-left-radius: 0;\n"
+                + "	border-bottom-left-radius: 0; margin-left:-1px\n"
+                + "}\n"
+                + "\n"
+                + ".clearable-textfield .v-slot:first-child>.v-widget {\n"
+                + "	border-top-right-radius: 0;\n"
+                + "	border-bottom-right-radius: 0;\n"
+                + "}\n");
+    }
+
 }
