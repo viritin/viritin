@@ -14,6 +14,7 @@ import com.vaadin.data.Container;
 import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
 import com.vaadin.data.Validator.InvalidValueException;
+import com.vaadin.server.ErrorMessage;
 import com.vaadin.server.Resource;
 import com.vaadin.ui.AbstractSelect;
 import com.vaadin.ui.ComboBox;
@@ -37,9 +38,9 @@ import com.vaadin.ui.OptionGroup;
  * Note, that this select is always in single select mode. See MultiSelectTable
  * for a proper "multiselect".
  * <p>
- * NOTE, that if your options might be empty OR you might use multiple different types of
- * options in your select, you have to specify the common superclass for the 
- * options either using constructor with the class parameter or using
+ * NOTE, that if your options might be empty OR you might use multiple different
+ * types of options in your select, you have to specify the common superclass
+ * for the options either using constructor with the class parameter or using
  * setFieldType method. Due to Java type erasure, we cannot properly detect it
  * with generics (type parameters) only.
  *
@@ -327,7 +328,7 @@ public class TypedSelect<T> extends CustomField<T> {
         return setOptions(Arrays.asList(values));
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public Class getType() {
 
@@ -619,6 +620,13 @@ public class TypedSelect<T> extends CustomField<T> {
 
     public void addOption(T option) {
         getBic().addItem(option);
+    }
+
+    @Override
+    public ErrorMessage getErrorMessage() {
+        final ErrorMessage errorMessage = super.getErrorMessage();
+        getSelect().setStyleName("error", errorMessage != null);
+        return errorMessage;
     }
 
 }
