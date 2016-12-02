@@ -184,7 +184,7 @@
         	<plugin>
 				<groupId>net.vergien.fig</groupId>
 				<artifactId>fluent-interface-generator-maven-plugin</artifactId>
-				<version>0.0.3</version>
+				<version>0.0.4</version>
 				<dependencies>
 					<dependency>
            				<groupId>com.vaadin</groupId>
@@ -209,6 +209,12 @@
 							<abstractPrefix>F</abstractPrefix>
 							<interfacePrefix>I</interfacePrefix>
                             <prefix>M</prefix>
+                            <methodNameMappings>
+                            	<withSizeFull>withFullSize</withSizeFull>
+                            	<withSizeUndefined>withUndefinedSize</withSizeUndefined>
+                            	<withHeightUndefined>withUndefinedHeight</withHeightUndefined>
+                            	<withWidthUndefined>withUndefinedWidth</withWidthUndefined>                   
+                            </methodNameMappings>
 							<mapping>
 								<pkgConf>
 									<pkgName>org.vaadin.viritin.fields</pkgName>

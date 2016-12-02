@@ -50,17 +50,7 @@ public class MPanel extends FPanel {
             addStyleName(styleName);
         }
         return this;
-    }
-
-    @Override
-    public IPanel withWidthFull() {
-        return withWidth("100%");
-    }
-
-    @Override
-    public IPanel withHeightFull() {
-        return withHeight("100%");
-    }
+    }  
 
     @Override
     public <T extends Action & com.vaadin.event.Action.Listener> MPanel withAction(

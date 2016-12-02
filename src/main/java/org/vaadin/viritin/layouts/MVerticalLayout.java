@@ -119,16 +119,6 @@ public class MVerticalLayout extends FVerticalLayout {
     }
 
     @Override
-    public MVerticalLayout withWidthFull() {
-        return withWidth("100%");
-    }
-
-    @Override
-    public MVerticalLayout withHeightFull() {
-        return withHeight("100%");
-    }
-
-    @Override
     public MVerticalLayout withComponent(Component component,
             Alignment alignment) {
         addComponent(component);

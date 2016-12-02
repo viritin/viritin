@@ -132,16 +132,6 @@ public class MHorizontalLayout extends FHorizontalLayout {
     }
 
     @Override
-    public MHorizontalLayout withWidthFull() {
-        return withWidth("100%");
-    }
-
-    @Override
-    public MHorizontalLayout withHeightFull() {
-        return withHeight("100%");
-    }
-
-    @Override
     public MHorizontalLayout withComponent(Component component,
             Alignment alignment) {
         addComponent(component);

@@ -98,7 +98,7 @@ public interface FluentSizeable<S extends FluentSizeable<S>>
      * @return this (for method chaining)
      * @see #setSizeFull()
      */
-    public S withSizeFull();
+    public S withFullSize();
 
     // Javadoc copied form Vaadin Framework
     /**
@@ -106,7 +106,7 @@ public interface FluentSizeable<S extends FluentSizeable<S>>
      *
      * @return this (for method chaining)
      */
-    public S withWidthFull();
+    public S withFullWidth();
 
     // Javadoc copied form Vaadin Framework
     /**
@@ -114,7 +114,7 @@ public interface FluentSizeable<S extends FluentSizeable<S>>
      *
      * @return this (for method chaining)
      */
-    public S withHeightFull();
+    public S withFullHeight();
 
     // Javadoc copied form Vaadin Framework
     /**
@@ -122,7 +122,7 @@ public interface FluentSizeable<S extends FluentSizeable<S>>
      * @return this (for method chaining)
      * @see #setSizeUndefined()
      */
-    public S withSizeUndefined();
+    public S withUndefinedSize();
 
     // Javadoc copied form Vaadin Framework
     /**
@@ -131,7 +131,7 @@ public interface FluentSizeable<S extends FluentSizeable<S>>
      * @return this (for method chaining)
      * @see #setWidthUndefined()
      */
-    public S withWidthUndefined();
+    public S withUndefinedWidth();
 
     // Javadoc copied form Vaadin Framework
     /**
@@ -140,6 +140,6 @@ public interface FluentSizeable<S extends FluentSizeable<S>>
      * @return this (for method chaining)
      * @see #setHeightUndefined()
      */
-    public S withHeightUndefined();
+    public S withUndefinedHeight();
 
 }

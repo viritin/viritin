@@ -1,8 +1,6 @@
 package org.vaadin.viritin.layouts;
 
 import org.vaadin.viritin.MSize;
-
-import org.vaadin.viritin.MSize;
 import org.vaadin.viritin.fluency.ui.IFormLayout;
 
 import com.vaadin.ui.Alignment;
@@ -25,6 +23,7 @@ public class MFormLayout extends FFormLayout {
         return this;
     }
 
+    @Override
     public MFormLayout withFullWidth() {
         setWidth(100, Unit.PERCENTAGE);
         return this;
@@ -36,6 +35,7 @@ public class MFormLayout extends FFormLayout {
         return this;
     }
 
+    @Override
     public MFormLayout withStyleName(String... styleNames) {
         for (String styleName : styleNames) {
             addStyleName(styleName);
@@ -46,16 +46,6 @@ public class MFormLayout extends FFormLayout {
     public MFormLayout with(Component... components) {
         addComponents(components);
         return this;
-    }
-
-    @Override
-    public MFormLayout withWidthFull() {
-        return withWidth("100%");
-    }
-
-    @Override
-    public MFormLayout withHeightFull() {
-        return withHeight("100%");
     }
 
     @Override
@@ -73,5 +63,10 @@ public class MFormLayout extends FFormLayout {
     public IFormLayout withExpandRatio(Component component, float ratio) {
         setExpandRatio(component, ratio);
         return this;
+    }
+
+    @Override
+    public MFormLayout withFullHeight() {
+        return withHeight("100%");
     }
 }

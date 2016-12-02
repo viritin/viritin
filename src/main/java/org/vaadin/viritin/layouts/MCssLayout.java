@@ -2,8 +2,6 @@ package org.vaadin.viritin.layouts;
 
 import org.vaadin.viritin.MSize;
 
-import org.vaadin.viritin.MSize;
-
 import com.vaadin.ui.Component;
 
 public class MCssLayout extends FCssLayout  {
@@ -17,10 +15,12 @@ public class MCssLayout extends FCssLayout  {
         super(children);
     }
 
+    @Override
     public MCssLayout withFullWidth() {
         return withWidth("100%");
     }
 
+    @Override
     public MCssLayout withFullHeight() {
         return withHeight("100%");
     }
@@ -31,6 +31,7 @@ public class MCssLayout extends FCssLayout  {
         return this;
     }
 
+    @Override
     public MCssLayout withStyleName(String... styleNames) {
         for (String styleName : styleNames) {
             addStyleName(styleName);
@@ -47,15 +48,5 @@ public class MCssLayout extends FCssLayout  {
         setCaption(caption);
         setCaptionAsHtml(captionAsHtml);
         return this;
-    }
-
-    @Override
-    public MCssLayout withWidthFull() {
-        return withWidth("100%");
-    }
-
-    @Override
-    public MCssLayout withHeightFull() {
-        return withHeight("100%");
-    }
+    }   
 }

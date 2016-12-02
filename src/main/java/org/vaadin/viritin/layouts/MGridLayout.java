@@ -86,15 +86,7 @@ public class MGridLayout extends FGridLayout {
         return this;
     }
 
-    @Override
-    public MGridLayout withWidthFull() {
-        return withWidth("100%");
-    }
-
-    @Override
-    public MGridLayout withHeightFull() {
-        return withHeight("100%");
-    }
+   
 
     @Override
     public MGridLayout withComponent(Component component, Alignment alignment) {

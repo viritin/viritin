@@ -47,7 +47,7 @@ public class ElementCollectionWithPopupEditor extends AbstractTest {
         @Override
         protected Component createContent() {
             return new MFormLayout(type, street, city, zipCode, getToolbar())
-                    .withWidthUndefined()
+                    .withUndefinedWidth()
                     .withMargin(true);
         }
         

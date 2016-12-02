@@ -51,16 +51,6 @@ public class MWindow extends FWindow {
     }
 
     @Override
-    public MWindow withWidthFull() {
-        return withWidth("100%");
-    }
-
-    @Override
-    public MWindow withHeightFull() {
-        return withHeight("100%");
-    }
-
-    @Override
     public <T extends Action & com.vaadin.event.Action.Listener> MWindow withAction(
             T action) {
         addAction(action);

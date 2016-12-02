@@ -16,6 +16,7 @@
 package org.vaadin.viritin.label;
 
 import org.vaadin.viritin.MSize;
+import org.vaadin.viritin.fluency.label.ILabel;
 
 
 /**
@@ -66,13 +67,7 @@ public class MLabel extends FLabel {
         return this;
     }
 
-    public MLabel withFullWidth() {
-        return withWidthFull();
-    }
-
-    public MLabel withFullHeight() {
-        return withHeightFull();
-    }
+    
 
     @Override
     public MLabel withStyleName(String... styles) {
@@ -83,17 +78,13 @@ public class MLabel extends FLabel {
     }
 
     @Override
-    public MLabel withWidthFull() {
-        setWidth("100%");
-        return this;
+    public MLabel withFullWidth() {
+        return withWidth("100%");
     }
 
     @Override
-    public MLabel withHeightFull() {
-        setHeight("100%");
-        return this;
+    public MLabel withFullHeight() {
+        return withHeight("100%");
     }
-    
-    
-    
+
 }

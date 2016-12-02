@@ -170,13 +170,7 @@ public class RichText extends MLabel {
         super.withEnabled(enabled);
         return this;
     }
-
-    @Override
-    public RichText withWidthUndefined() {
-        super.withWidthUndefined();
-        return this;
-    }
-
+    
     @Override
     public RichText withFullHeight() {
         super.withFullHeight();
