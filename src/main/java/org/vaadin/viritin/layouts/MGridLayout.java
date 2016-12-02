@@ -4,11 +4,17 @@ import java.util.Collection;
 
 import org.vaadin.viritin.MSize;
 
+import java.util.Collection;
+
+import org.vaadin.viritin.MSize;
+
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
 
 public class MGridLayout extends FGridLayout {
 
+    private static final long serialVersionUID = -4353934595461037075L;
+    
     public MGridLayout() {
         super.setSpacing(true);
         super.setMargin(true);

@@ -42,6 +42,7 @@ public class ClearableTextField extends CustomComponent implements Field {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 textfield.clear();
+                textfield.focus();
             }
         });
 

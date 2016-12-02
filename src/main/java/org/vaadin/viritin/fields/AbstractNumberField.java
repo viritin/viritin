@@ -1,10 +1,11 @@
 package org.vaadin.viritin.fields;
 
+import org.vaadin.viritin.util.HtmlElementPropertySetter;
+
 import com.vaadin.data.Property;
 import com.vaadin.event.FieldEvents;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomField;
-import org.vaadin.viritin.util.HtmlElementPropertySetter;
 
 /**
  *
@@ -14,9 +15,14 @@ import org.vaadin.viritin.util.HtmlElementPropertySetter;
 public abstract class AbstractNumberField<T> extends CustomField<T> implements
         EagerValidateable, FieldEvents.TextChangeNotifier {
 
+    private static final long serialVersionUID = 5925606478174987241L;
+
     private String htmlFieldType = "number";
 
     protected MTextField tf = new MTextField() {
+
+        private static final long serialVersionUID = 6823601969399906594L;
+
         @Override
         public void beforeClientResponse(boolean initial) {
             super.beforeClientResponse(initial);
@@ -32,6 +38,9 @@ public abstract class AbstractNumberField<T> extends CustomField<T> implements
     }
     protected HtmlElementPropertySetter s = new HtmlElementPropertySetter(tf);
     protected Property.ValueChangeListener vcl = new Property.ValueChangeListener() {
+
+        private static final long serialVersionUID = 5034199201545161061L;
+
         @Override
         public void valueChange(Property.ValueChangeEvent event) {
             Object value = event.getProperty().getValue();
@@ -115,6 +124,9 @@ public abstract class AbstractNumberField<T> extends CustomField<T> implements
         tf.setEagerValidation(true);
         if (eagerValidation && tcl == null) {
             tcl = new FieldEvents.TextChangeListener() {
+
+                private static final long serialVersionUID = 2244473923631502546L;
+
                 @Override
                 public void textChange(
                         FieldEvents.TextChangeEvent event) {

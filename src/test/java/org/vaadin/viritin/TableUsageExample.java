@@ -32,9 +32,8 @@ public class TableUsageExample {
 
         MTable<Entity> t = new MTable(findBeans())
                 .withProperties("property", "another")
-                .withColumnHeaders("Property 1", "Second");
-        t.addMValueChangeListener(new MValueChangeListener<Entity>() {
-
+                .withColumnHeaders("Property 1", "Second")
+                .withValueChangeListener(new MValueChangeListener<Entity>() {
             private static final long serialVersionUID = 382491506910830168L;
 
             @Override

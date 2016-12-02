@@ -31,6 +31,8 @@ import java.io.Serializable;
  */
 public class DownloadButton extends MButton {
 
+    private static final long serialVersionUID = 356223526447669958L;
+
     public interface ContentWriter {
 
         void write(OutputStream stream);
@@ -40,8 +42,9 @@ public class DownloadButton extends MButton {
     private MimeTypeProvider mimeTypeProvider;
     private FileNameProvider fileNameProvider;
 
-    private final StreamResource streamResource = new StreamResource(
-            new StreamResource.StreamSource() {
+    private final StreamResource streamResource = new StreamResource(new StreamResource.StreamSource() {
+
+        private static final long serialVersionUID = 3641967669172064511L;
 
         @Override
         public InputStream getStream() {
@@ -55,6 +58,9 @@ public class DownloadButton extends MButton {
             }
         }
     }, "") {
+
+        private static final long serialVersionUID = -8221900203840804581L;
+
         @Override
         public String getFilename() {
             if (fileNameProvider != null) {
@@ -137,6 +143,9 @@ public class DownloadButton extends MButton {
 
     public DownloadButton setFileName(final String fileName) {
         this.fileNameProvider = new FileNameProvider() {
+
+            private static final long serialVersionUID = -3449552786114328636L;
+
             @Override
             public String getFileName() {
                 return fileName;

@@ -1,20 +1,27 @@
 package org.vaadin.viritin.fields;
 
-import com.vaadin.data.Container;
-import com.vaadin.data.Property;
-import com.vaadin.data.Validator;
-import com.vaadin.data.Validator.InvalidValueException;
-import com.vaadin.server.Resource;
-import com.vaadin.ui.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
 import org.vaadin.viritin.ListContainer;
 import org.vaadin.viritin.fields.config.ComboBoxConfig;
 import org.vaadin.viritin.fields.config.ListSelectConfig;
 import org.vaadin.viritin.fields.config.OptionGroupConfig;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import com.vaadin.data.Container;
+import com.vaadin.data.Property;
+import com.vaadin.data.Validator;
+import com.vaadin.data.Validator.InvalidValueException;
+import com.vaadin.server.Resource;
+import com.vaadin.ui.AbstractSelect;
+import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.CustomField;
+import com.vaadin.ui.ListSelect;
+import com.vaadin.ui.NativeSelect;
+import com.vaadin.ui.OptionGroup;
 
 /**
  * A select implementation with better typed API than in core Vaadin.
@@ -40,6 +47,8 @@ import java.util.List;
  * @param <T> the type of selects value
  */
 public class TypedSelect<T> extends CustomField<T> {
+
+    private static final long serialVersionUID = -8585094121129546069L;
 
     private CaptionGenerator<T> captionGenerator;
     private IconGenerator<T> iconGenerator;
@@ -135,6 +144,9 @@ public class TypedSelect<T> extends CustomField<T> {
 
     public TypedSelect<T> asListSelectType(ListSelectConfig config) {
         ListSelect listSelect = new ListSelect() {
+
+            private static final long serialVersionUID = -6410506555879530635L;
+
             @SuppressWarnings("unchecked")
             @Override
             public String getItemCaption(Object itemId) {
@@ -163,6 +175,9 @@ public class TypedSelect<T> extends CustomField<T> {
 
     public TypedSelect<T> asOptionGroupType(OptionGroupConfig config) {
         OptionGroup optionGroup = new OptionGroup() {
+
+            private static final long serialVersionUID = 6181647051422960470L;
+
             @SuppressWarnings("unchecked")
             @Override
             public String getItemCaption(Object itemId) {
@@ -191,6 +206,9 @@ public class TypedSelect<T> extends CustomField<T> {
 
     public TypedSelect<T> asComboBoxType(ComboBoxConfig config) {
         ComboBox comboBox = new ComboBox() {
+
+            private static final long serialVersionUID = -468737106391765750L;
+
             @SuppressWarnings("unchecked")
             @Override
             public String getItemCaption(Object itemId) {
@@ -215,6 +233,9 @@ public class TypedSelect<T> extends CustomField<T> {
 
     public TypedSelect<T> asNativeSelectType() {
         setSelectInstance(new NativeSelect() {
+
+            private static final long serialVersionUID = 7903027904040681357L;
+
             @SuppressWarnings("unchecked")
             @Override
             public String getItemCaption(Object itemId) {
@@ -306,7 +327,7 @@ public class TypedSelect<T> extends CustomField<T> {
         return setOptions(Arrays.asList(values));
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public Class getType() {
 
@@ -330,7 +351,7 @@ public class TypedSelect<T> extends CustomField<T> {
      * @param type the type of options in the select
      * @return this typed select instance
      */
-    public TypedSelect setType(Class<T> type) {
+    public TypedSelect<T> setType(Class<T> type) {
         this.fieldType = type;
         return this;
     }
@@ -341,7 +362,7 @@ public class TypedSelect<T> extends CustomField<T> {
      * @param type the type of options in the select
      * @return this typed select instance
      */
-    public TypedSelect setFieldType(Class<T> type) {
+    public TypedSelect<T> setFieldType(Class<T> type) {
         this.fieldType = type;
         return this;
     }
@@ -475,6 +496,8 @@ public class TypedSelect<T> extends CustomField<T> {
     private void ensurePiggybackListener() {
         if (piggyBackListener == null) {
             piggyBackListener = new ValueChangeListener() {
+
+                private static final long serialVersionUID = 8457613845310646169L;
 
                 @Override
                 public void valueChange(Property.ValueChangeEvent event) {

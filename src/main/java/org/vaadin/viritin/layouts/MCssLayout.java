@@ -2,9 +2,13 @@ package org.vaadin.viritin.layouts;
 
 import org.vaadin.viritin.MSize;
 
+import org.vaadin.viritin.MSize;
+
 import com.vaadin.ui.Component;
 
 public class MCssLayout extends FCssLayout  {
+
+    private static final long serialVersionUID = 3994874408852708021L;
 
     public MCssLayout() {
     }

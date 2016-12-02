@@ -1,12 +1,16 @@
 package org.vaadin.viritin.layouts;
 
 import org.vaadin.viritin.MSize;
+
+import org.vaadin.viritin.MSize;
 import org.vaadin.viritin.fluency.ui.IFormLayout;
 
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
 
 public class MFormLayout extends FFormLayout {
+
+    private static final long serialVersionUID = -4097293516833876208L;
 
     public MFormLayout() {
     }

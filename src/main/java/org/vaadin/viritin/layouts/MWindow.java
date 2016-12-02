@@ -1,12 +1,16 @@
 package org.vaadin.viritin.layouts;
 
 import org.vaadin.viritin.MSize;
+
+import org.vaadin.viritin.MSize;
 import org.vaadin.viritin.fluency.ui.IWindow;
 
 import com.vaadin.event.Action;
 import com.vaadin.ui.Component;
 
 public class MWindow extends FWindow {
+
+    private static final long serialVersionUID = -9067209720594324637L;
 
     public MWindow() {
         super();

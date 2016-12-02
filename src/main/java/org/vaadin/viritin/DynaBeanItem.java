@@ -1,18 +1,19 @@
 package org.vaadin.viritin;
 
-import com.vaadin.data.Item;
-import com.vaadin.data.Property;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.commons.beanutils.DynaBean;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.beanutils.WrapDynaBean;
 import org.apache.commons.beanutils.expression.DefaultResolver;
 import org.apache.commons.lang3.ClassUtils;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import com.vaadin.data.Item;
+import com.vaadin.data.Property;
 
 /**
  * A standalone version of the DynaBeanItem originally introduced in
@@ -29,12 +30,16 @@ import java.util.Map;
  */
 public class DynaBeanItem<T> implements Item {
 
+    private static final long serialVersionUID = -5073690046197951234L;
+
     /* Container-Item-Property specifications don't say item should always return
      the same property instance, but some components depend on this :-(
      */
     private final Map<Object, DynaProperty> propertyIdToProperty = new HashMap<>();
 
     private class DynaProperty implements Property {
+
+        private static final long serialVersionUID = -2419540615310696644L;
 
         private final String propertyName;
 
@@ -61,7 +66,7 @@ public class DynaBeanItem<T> implements Item {
         }
 
         @Override
-        public Class getType() {
+        public Class<?> getType() {
             try {
                 final org.apache.commons.beanutils.DynaProperty dynaProperty = getDynaBean().
                         getDynaClass().
@@ -143,7 +148,7 @@ public class DynaBeanItem<T> implements Item {
 
     @Override
     public Collection<String> getItemPropertyIds() {
-        ArrayList<String> properties = new ArrayList();
+        ArrayList<String> properties = new ArrayList<String>();
         for (org.apache.commons.beanutils.DynaProperty dp : getDynaBean().
                 getDynaClass().getDynaProperties()) {
             properties.add(dp.getName());

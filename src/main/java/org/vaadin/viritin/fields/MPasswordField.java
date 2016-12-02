@@ -32,6 +32,8 @@ import com.vaadin.server.ErrorMessage;
  */
 public class MPasswordField extends FPasswordField implements EagerValidateable {
 
+    private static final long serialVersionUID = 7493214285444996814L;
+    
     private boolean eagerValidation = false;
     private boolean eagerValidationStatus;
     private String lastKnownTextChangeValue;

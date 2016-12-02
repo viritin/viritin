@@ -15,16 +15,19 @@
  */
 package org.vaadin.viritin.fields;
 
+import org.vaadin.viritin.MSize;
+
 import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
 import com.vaadin.event.FieldEvents;
-import org.vaadin.viritin.MSize;
 
 /**
  *
  * @author mattitahvonenitmill
  */
 public class MTextArea extends FTextArea {
+
+    private static final long serialVersionUID = 2513695658302975814L;
 
     public MTextArea() {
         configureMaddonStuff();

@@ -15,12 +15,14 @@
  */
 package org.vaadin.viritin.fields;
 
+import java.lang.reflect.Method;
+
 import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.Field;
 
-import java.lang.reflect.Method;
-
 public class MValueChangeEventImpl<T> extends AbstractField.ValueChangeEvent implements MValueChangeEvent<T> {
+
+    private static final long serialVersionUID = 7702133432642079889L;
 
     static final Method VALUE_CHANGE_METHOD;
 
