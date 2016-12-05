@@ -329,7 +329,7 @@ public class ClearableTextField extends CustomField {
     public void setComponentError(ErrorMessage componentError) {
         super.setComponentError(componentError);
         if (componentError == null) {
-            textfield.removeStyleName("errror");
+            textfield.removeStyleName("error");
         } else {
             textfield.addStyleName("error");
         }
