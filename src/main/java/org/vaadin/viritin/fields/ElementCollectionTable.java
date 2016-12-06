@@ -1,19 +1,18 @@
 package org.vaadin.viritin.fields;
 
-import java.util.ArrayList;
-import java.util.IdentityHashMap;
-import java.util.List;
-
-import org.vaadin.viritin.MBeanFieldGroup;
-import org.vaadin.viritin.button.MButton;
-import org.vaadin.viritin.layouts.MVerticalLayout;
-
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.themes.ValoTheme;
+import org.vaadin.viritin.MBeanFieldGroup;
+import org.vaadin.viritin.button.MButton;
+import org.vaadin.viritin.layouts.MVerticalLayout;
+
+import java.util.ArrayList;
+import java.util.IdentityHashMap;
+import java.util.List;
 
 /**
  * A field suitable for editing collection of referenced objects tied to parent
@@ -184,14 +183,21 @@ public class ElementCollectionTable<ET> extends AbstractElementCollection<ET> {
                                         }).withStyleName(
                                         ValoTheme.BUTTON_ICON_ONLY);
                                 b.setDescription(getDeleteElementDescription());
+
+								if (getDeleteElementStyles() != null) {
+									for (String style : getDeleteElementStyles()) {
+										b.addStyleName(style);
+									}
+								}
+
                                 elementToDelButton.put((ET) itemId, b);
                                 return b;
                             }
                         });
-                table.setColumnHeader("__ACTIONS", "");                
+                table.setColumnHeader("__ACTIONS", "");
                 cols.add("__ACTIONS");
             }
-            
+
             table.setVisibleColumns(cols.toArray());
             for (Object property : getVisibleProperties()) {
                 table.setColumnHeader(property, getPropertyHeader(property.
@@ -235,7 +241,18 @@ public class ElementCollectionTable<ET> extends AbstractElementCollection<ET> {
         this.deleteThisElementDescription = deleteThisElementDescription;
     }
 
-    @Override
+	private String[] deleteElementStyles;
+
+	public String[] getDeleteElementStyles() {
+		return deleteElementStyles;
+	}
+
+	public void addDeleteElementStyles(String... deleteElementStyles) {
+		this.deleteElementStyles = deleteElementStyles;
+	}
+
+
+	@Override
     public void onElementAdded() {
         // NOP
     }
