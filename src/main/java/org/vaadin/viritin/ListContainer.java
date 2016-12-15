@@ -539,7 +539,10 @@ public class ListContainer<T> extends AbstractContainer implements
                 final Property o2Prop = getContainerProperty(o2, propertyId[i]);
                 Object o2Value = (o2Prop != null) ? o2Prop.getValue() : null;
 
-                return currentComparator.compare(o1Value, o2Value);
+                int compare = currentComparator.compare(o1Value, o2Value);
+                if (compare != 0) {
+                    return compare;
+                }
             }
 
             return 0;
