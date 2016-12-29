@@ -14,6 +14,7 @@ import com.vaadin.data.Container;
 import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
 import com.vaadin.data.Validator.InvalidValueException;
+import com.vaadin.data.util.converter.Converter.ConversionException;
 import com.vaadin.server.ErrorMessage;
 import com.vaadin.server.Resource;
 import com.vaadin.ui.AbstractSelect;
@@ -486,11 +487,21 @@ public class TypedSelect<T> extends CustomField<T> {
 
     @Override
     public void attach() {
-        if (bic != null && getSelect().getContainerDataSource() != bic) {
-            getSelect().setContainerDataSource(bic);
-        }
+        ensureContainerSet();
         super.attach();
     }
+
+	private void ensureContainerSet() {
+		if (bic != null && getSelect().getContainerDataSource() != bic) {
+            getSelect().setContainerDataSource(bic);
+        }
+	}
+	
+	@Override
+	public void setValue(T newFieldValue) throws com.vaadin.data.Property.ReadOnlyException, ConversionException {
+		ensureContainerSet();
+		super.setValue(newFieldValue);
+	}
 
     private ValueChangeListener piggyBackListener;
 
