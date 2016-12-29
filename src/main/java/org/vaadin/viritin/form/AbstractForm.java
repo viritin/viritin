@@ -634,7 +634,7 @@ public abstract class AbstractForm<T> extends CustomComponent implements
     public AbstractForm<T> clearValidators() {
         mValidators.clear();
         if (getFieldGroup() != null) {
-            getFieldGroup().clear();
+            getFieldGroup().clearValidators();
         }
         return this;
     }
