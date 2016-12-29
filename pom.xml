@@ -26,7 +26,7 @@
     </organization>
     
     <scm>
-        <url>git://github.com/viritin/viritin.git</url>
+        <url>https://github.com/viritin/viritin</url>
         <connection>scm:git:git://github.com/viritin/viritin.git</connection>
         <developerConnection>scm:git:ssh://git@github.com:/viritin/viritin.git</developerConnection>
         <tag>viritin-1.37</tag>
