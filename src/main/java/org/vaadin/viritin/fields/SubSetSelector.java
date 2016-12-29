@@ -51,7 +51,7 @@ public class SubSetSelector<ET> extends CustomField<Collection> implements Abstr
     private MVerticalLayout verticalLayout;
     private AbstractForm<ET> newInstanceForm;
     private List<ET> availableOptions;
-    private int               limit = Integer.MAX_VALUE;
+    private int limit = Integer.MAX_VALUE;
 
     public SubSetSelector(Class<ET> elementType) {
         this.elementType = elementType;
@@ -233,7 +233,7 @@ public class SubSetSelector<ET> extends CustomField<Collection> implements Abstr
 
     @Override
     public void setPropertyDataSource(Property newDataSource) {
-        if(newDataSource != null) {
+        if (newDataSource != null) {
             type = newDataSource.getType();
         }
         super.setPropertyDataSource(newDataSource);
@@ -242,9 +242,9 @@ public class SubSetSelector<ET> extends CustomField<Collection> implements Abstr
     @Override
     protected void setInternalValue(Collection newValue) {
         selected = newValue;
-        if(selected == null) {
+        if (selected == null) {
             Class<Collection> clazz = getType();
-            if(clazz != null && List.class.isAssignableFrom(clazz)) {
+            if (clazz != null && List.class.isAssignableFrom(clazz)) {
                 selected = new ArrayList();
             } else {
                 selected = new HashSet();
@@ -331,13 +331,17 @@ public class SubSetSelector<ET> extends CustomField<Collection> implements Abstr
      * should add a new item.
      */
     public void setNewItemsAllowed(boolean allowAddingNewItems) {
-        cb.getSelect().setNewItemsAllowed(true);
-        cb.getSelect().setNewItemHandler(new AbstractSelect.NewItemHandler() {
-            @Override
-            public void addNewItem(String s) {
-                addEntity(s);
-            }
-        });
+        cb.getSelect().setNewItemsAllowed(allowAddingNewItems);
+        if (allowAddingNewItems) {
+            cb.getSelect().setNewItemHandler(new AbstractSelect.NewItemHandler() {
+                @Override
+                public void addNewItem(String s) {
+                    addEntity(s);
+                }
+            });
+        } else {
+            cb.getSelect().setNewItemHandler(null);
+        }
     }
 
     public int getLimit() {
@@ -345,8 +349,9 @@ public class SubSetSelector<ET> extends CustomField<Collection> implements Abstr
     }
 
     /**
-     * Sets the limit of elements added to the SubSetSelector.
-     * Setting the limit or adding elements will trigger the combo box availability.
+     * Sets the limit of elements added to the SubSetSelector. Setting the limit
+     * or adding elements will trigger the combo box availability.
+     *
      * @param limit the maximum number of selected elements (collection size)
      */
     public void setLimit(int limit) {
