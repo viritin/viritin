@@ -58,14 +58,6 @@ public class ElementCollectionTable<ET> extends AbstractElementCollection<ET> {
 
     private static final long serialVersionUID = 8055987316151594559L;
 
-    public ElementCollectionTable(Class<ET> elementType, Class<?> formType) {
-        super(elementType, formType);
-    }
-
-    public ElementCollectionTable(Class<ET> elementType, Instantiator i, Class<?> formType) {
-        super(elementType, i, formType);
-    }
-
     private MTable<ET> table;
 
     private MButton addButton = new MButton(FontAwesome.PLUS,
@@ -85,6 +77,18 @@ public class ElementCollectionTable<ET> extends AbstractElementCollection<ET> {
 
     private MVerticalLayout layout = new MVerticalLayout();
 
+    private String[] deleteElementStyles;
+
+    private String disabledDeleteThisElementDescription = "Fill this row to add a new element, currently ignored";
+
+    public ElementCollectionTable(Class<ET> elementType, Class<?> formType) {
+        super(elementType, formType);
+    }
+
+    public ElementCollectionTable(Class<ET> elementType, Instantiator i, Class<?> formType) {
+        super(elementType, i, formType);
+    }
+    
     @Override
     public void attach() {
         super.attach();
@@ -228,8 +232,6 @@ public class ElementCollectionTable<ET> extends AbstractElementCollection<ET> {
         this.disabledDeleteThisElementDescription = disabledDeleteThisElementDescription;
     }
 
-    private String disabledDeleteThisElementDescription = "Fill this row to add a new element, currently ignored";
-
     public String getDeleteElementDescription() {
         return deleteThisElementDescription;
     }
@@ -241,18 +243,16 @@ public class ElementCollectionTable<ET> extends AbstractElementCollection<ET> {
         this.deleteThisElementDescription = deleteThisElementDescription;
     }
 
-	private String[] deleteElementStyles;
+    public String[] getDeleteElementStyles() {
+            return deleteElementStyles;
+    }
 
-	public String[] getDeleteElementStyles() {
-		return deleteElementStyles;
-	}
-
-	public void addDeleteElementStyles(String... deleteElementStyles) {
-		this.deleteElementStyles = deleteElementStyles;
-	}
+    public void addDeleteElementStyles(String... deleteElementStyles) {
+            this.deleteElementStyles = deleteElementStyles;
+    }
 
 
-	@Override
+    @Override
     public void onElementAdded() {
         // NOP
     }
