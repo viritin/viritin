@@ -1,19 +1,18 @@
 package org.vaadin.viritin.fields;
 
-import java.util.ArrayList;
-import java.util.IdentityHashMap;
-import java.util.List;
-
-import org.vaadin.viritin.MBeanFieldGroup;
-import org.vaadin.viritin.button.MButton;
-import org.vaadin.viritin.layouts.MVerticalLayout;
-
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.themes.ValoTheme;
+import org.vaadin.viritin.MBeanFieldGroup;
+import org.vaadin.viritin.button.MButton;
+import org.vaadin.viritin.layouts.MVerticalLayout;
+
+import java.util.ArrayList;
+import java.util.IdentityHashMap;
+import java.util.List;
 
 /**
  * A field suitable for editing collection of referenced objects tied to parent
@@ -59,14 +58,6 @@ public class ElementCollectionTable<ET> extends AbstractElementCollection<ET> {
 
     private static final long serialVersionUID = 8055987316151594559L;
 
-    public ElementCollectionTable(Class<ET> elementType, Class<?> formType) {
-        super(elementType, formType);
-    }
-
-    public ElementCollectionTable(Class<ET> elementType, Instantiator i, Class<?> formType) {
-        super(elementType, i, formType);
-    }
-
     private MTable<ET> table;
 
     private MButton addButton = new MButton(FontAwesome.PLUS,
@@ -86,6 +77,18 @@ public class ElementCollectionTable<ET> extends AbstractElementCollection<ET> {
 
     private MVerticalLayout layout = new MVerticalLayout();
 
+    private String[] deleteElementStyles;
+
+    private String disabledDeleteThisElementDescription = "Fill this row to add a new element, currently ignored";
+
+    public ElementCollectionTable(Class<ET> elementType, Class<?> formType) {
+        super(elementType, formType);
+    }
+
+    public ElementCollectionTable(Class<ET> elementType, Instantiator i, Class<?> formType) {
+        super(elementType, i, formType);
+    }
+    
     @Override
     public void attach() {
         super.attach();
@@ -184,14 +187,21 @@ public class ElementCollectionTable<ET> extends AbstractElementCollection<ET> {
                                         }).withStyleName(
                                         ValoTheme.BUTTON_ICON_ONLY);
                                 b.setDescription(getDeleteElementDescription());
+
+								if (getDeleteElementStyles() != null) {
+									for (String style : getDeleteElementStyles()) {
+										b.addStyleName(style);
+									}
+								}
+
                                 elementToDelButton.put((ET) itemId, b);
                                 return b;
                             }
                         });
-                table.setColumnHeader("__ACTIONS", "");                
+                table.setColumnHeader("__ACTIONS", "");
                 cols.add("__ACTIONS");
             }
-            
+
             table.setVisibleColumns(cols.toArray());
             for (Object property : getVisibleProperties()) {
                 table.setColumnHeader(property, getPropertyHeader(property.
@@ -222,8 +232,6 @@ public class ElementCollectionTable<ET> extends AbstractElementCollection<ET> {
         this.disabledDeleteThisElementDescription = disabledDeleteThisElementDescription;
     }
 
-    private String disabledDeleteThisElementDescription = "Fill this row to add a new element, currently ignored";
-
     public String getDeleteElementDescription() {
         return deleteThisElementDescription;
     }
@@ -234,6 +242,15 @@ public class ElementCollectionTable<ET> extends AbstractElementCollection<ET> {
             String deleteThisElementDescription) {
         this.deleteThisElementDescription = deleteThisElementDescription;
     }
+
+    public String[] getDeleteElementStyles() {
+            return deleteElementStyles;
+    }
+
+    public void addDeleteElementStyles(String... deleteElementStyles) {
+            this.deleteElementStyles = deleteElementStyles;
+    }
+
 
     @Override
     public void onElementAdded() {
