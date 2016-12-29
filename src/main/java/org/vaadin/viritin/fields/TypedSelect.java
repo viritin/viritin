@@ -309,7 +309,7 @@ public class TypedSelect<T> extends CustomField<T> {
         if (captionGenerator != null) {
             return captionGenerator.getCaption(option);
         }
-        return option.toString();
+        return option == null ? "" : option.toString();
     }
 
     protected Resource getIcon(T entity) {
