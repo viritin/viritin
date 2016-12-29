@@ -159,4 +159,8 @@ public class MDateField extends DateField {
         return this;
     }
 
+    public MDateField withDateFormat(String dateFormat){
+        setDateFormat(dateFormat);
+        return this;
+    }
 }
