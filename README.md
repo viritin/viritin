@@ -208,7 +208,7 @@ Currently project contains following helpers (might be slightly outdated):
 
 Online demo for this add-on hopefully makes no sense. But there are though many demo apps that contain helpful usage examples. Some of them listed here:
 
- * Add-ons own test sources, both [integration tests](https://github.com/mstahv/viriting/blob/master/src/test/java/org/vaadin/viritin/it/EditPerson.java) and [unit tests](https://github.com/mstahv/maddon/tree/master/src/test/java/org/vaadin/viritin) contains some usage examples.
+ * Add-ons own test sources, both [integration tests](https://github.com/viritin/viritin/tree/master/src/test/java/org/vaadin/viritin/it) and [unit tests](https://github.com/mstahv/maddon/tree/master/src/test/java/org/vaadin/viritin) contains some usage examples.
  * [Vaadin Java EE application example](https://hub.jazz.net/project/vaadin/vaadin-jpa-app/overview)
  * [Spring Data + Vaadin UI example](https://github.com/mstahv/spring-data-vaadin-crud)
  * Another [Java EE app example](https://github.com/mstahv/jpa-addressbook) - contains JPA usage examples for ManyToMany (MultiSelectTable) and ElementCollection (InlineEditableCollection).
