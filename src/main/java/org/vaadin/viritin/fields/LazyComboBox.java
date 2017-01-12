@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import com.vaadin.server.ErrorMessage;
 import org.apache.commons.lang3.ObjectUtils;
 import org.vaadin.viritin.LazyList;
 import org.vaadin.viritin.ListContainer;
@@ -417,4 +418,8 @@ public class LazyComboBox<T> extends TypedSelect<T> {
         return (LazyComboBox<T>) super.withCaption(caption);
     }
 
+    @Override
+    public void setComponentError(ErrorMessage componentError) {
+        getSelect().setComponentError(componentError);
+    }
 }
