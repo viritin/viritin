@@ -1,5 +1,6 @@
 package org.vaadin.viritin.fields;
 
+import com.vaadin.event.FieldEvents;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -62,5 +63,15 @@ public class IntegerField extends AbstractNumberField<Integer> {
     public IntegerField withWidth(String width) {
         setWidth(width);
         return this;
+    }
+
+    @Override
+    public IntegerField withBlurListener(FieldEvents.BlurListener listener) {
+        return (IntegerField) super.withBlurListener(listener);
+    }
+
+    @Override
+    public IntegerField withFocusListener(FieldEvents.FocusListener listener) {
+        return (IntegerField) super.withFocusListener(listener);
     }
 }
