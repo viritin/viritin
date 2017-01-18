@@ -494,7 +494,7 @@ public class ListContainer<T> extends AbstractContainer implements
      * @param property the property whose comparator is requested
      * @return Comparator that will compare two objects based on a property
      */
-    protected Comparator<T> getUnderlyingComparator(Object property) {
+    protected Comparator<?> getUnderlyingComparator(Object property) {
         return new NullComparator();
     }
 
