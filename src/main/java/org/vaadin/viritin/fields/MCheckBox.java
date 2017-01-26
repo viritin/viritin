@@ -10,6 +10,7 @@ public class MCheckBox extends CheckBox {
     private static final long serialVersionUID = 2889392345462991407L;
 
     public MCheckBox() {
+        super();
     }
 
     public MCheckBox(String caption) {
@@ -65,7 +66,7 @@ public class MCheckBox extends CheckBox {
         return this;
     }
 
-    public MCheckBox withValueChangeListener(Property.ValueChangeListener listener) {
+    public MCheckBox withValueChangeListener(ValueChangeListener listener) {
         addValueChangeListener(listener);
         return this;
     }

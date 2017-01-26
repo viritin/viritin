@@ -32,6 +32,7 @@ public class MTextArea extends TextArea {
     private static final long serialVersionUID = 2513695658302975814L;
 
     public MTextArea() {
+        super();
         configureMaddonStuff();
     }
 
@@ -106,7 +107,7 @@ public class MTextArea extends TextArea {
         return this;
     }
 
-    public MTextArea withValueChangeListener(Property.ValueChangeListener listener) {
+    public MTextArea withValueChangeListener(ValueChangeListener listener) {
         addValueChangeListener(listener);
         return this;
     }

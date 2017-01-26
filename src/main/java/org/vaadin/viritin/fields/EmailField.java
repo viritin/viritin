@@ -15,6 +15,7 @@ public class EmailField extends MTextField {
     private static final long serialVersionUID = -4717961169375147779L;
 
     public EmailField() {
+        super();
     }
 
     public EmailField(String caption) {

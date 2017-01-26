@@ -16,6 +16,7 @@ import java.util.Map;
 public class MDateField extends DateField {
 
     public MDateField() {
+        super();
     }
 
     public MDateField(String caption) {
@@ -129,7 +130,7 @@ public class MDateField extends DateField {
         return this;
     }
 
-    public MDateField withValueChangeListener(Property.ValueChangeListener listener) {
+    public MDateField withValueChangeListener(ValueChangeListener listener) {
         addValueChangeListener(listener);
         return this;
     }

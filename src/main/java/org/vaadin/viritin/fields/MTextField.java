@@ -52,6 +52,7 @@ public class MTextField extends TextField implements EagerValidateable {
     boolean userValueChange;
 
     public MTextField() {
+        super();
         configureMaddonStuff();
     }
 
@@ -202,7 +203,7 @@ public class MTextField extends TextField implements EagerValidateable {
         return this;
     }
 
-    public MTextField withValueChangeListener(Property.ValueChangeListener listener) {
+    public MTextField withValueChangeListener(ValueChangeListener listener) {
         addValueChangeListener(listener);
         return this;
     }
