@@ -52,8 +52,8 @@ public class ConcurrentSortableLazyList<T> extends SortableLazyList<T> {
 
     @Override
     public int size() {
+        tryLock();
         try {
-            tryLock();
             return super.size();
         } finally {
             unlock();
@@ -62,8 +62,8 @@ public class ConcurrentSortableLazyList<T> extends SortableLazyList<T> {
 
     @Override
     protected List<T> findEntities(int firstRow) {
+        tryLock();
         try {
-            tryLock();
             return super.findEntities(firstRow);
         } finally {
             unlock();
@@ -72,8 +72,8 @@ public class ConcurrentSortableLazyList<T> extends SortableLazyList<T> {
 
     @Override
     public T get(int index) {
+        tryLock();
         try {
-            tryLock();
             return super.get(index);
         } finally {
             unlock();
@@ -82,8 +82,8 @@ public class ConcurrentSortableLazyList<T> extends SortableLazyList<T> {
 
     @Override
     protected void initCacheFormPage(int pageIndexForRequest) {
+        tryLock();
         try {
-            tryLock();
             super.initCacheFormPage(pageIndexForRequest);
         } finally {
             unlock();
