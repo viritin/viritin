@@ -10,9 +10,12 @@ import org.vaadin.viritin.util.VaadinLocale;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.server.VaadinRequest;
-import com.vaadin.ui.*;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.v7.ui.ComboBox;
+import com.vaadin.ui.Component;
+import com.vaadin.v7.ui.DateField;
 
 /**
  * Demo for the {@link VaadinLocale} class.

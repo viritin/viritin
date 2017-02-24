@@ -5,6 +5,7 @@ import static org.hamcrest.CoreMatchers.*;
 
 import java.net.MalformedURLException;
 import java.util.*;
+import org.junit.Ignore;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,6 +41,7 @@ public class VaadinLocaleTest extends AbstractWebDriverCase {
     }
 
     @Test
+    @Ignore("See if can be run with phantomjs and/or update to geckodriver")
     public void testLanguageByBrowser() {
         driver.navigate().to(
                 "http://localhost:5678/"

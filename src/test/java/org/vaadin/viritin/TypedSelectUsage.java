@@ -1,9 +1,9 @@
 package org.vaadin.viritin;
 
-import com.vaadin.data.Property;
-import com.vaadin.shared.ui.combobox.FilteringMode;
-import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.ListSelect;
+import com.vaadin.v7.data.Property;
+import com.vaadin.v7.shared.ui.combobox.FilteringMode;
+import com.vaadin.v7.ui.ComboBox;
+import com.vaadin.v7.ui.ListSelect;
 import org.apache.commons.lang3.mutable.MutableObject;
 import org.junit.Assert;
 import org.junit.Test;

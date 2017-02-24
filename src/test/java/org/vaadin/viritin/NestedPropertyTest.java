@@ -15,8 +15,8 @@
  */
 package org.vaadin.viritin;
 
-import com.vaadin.data.Item;
-import com.vaadin.data.Property;
+import com.vaadin.v7.data.Item;
+import com.vaadin.v7.data.Property;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;

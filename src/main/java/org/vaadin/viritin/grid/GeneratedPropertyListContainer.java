@@ -1,8 +1,8 @@
 package org.vaadin.viritin.grid;
 
-import com.vaadin.data.Item;
-import com.vaadin.data.Property;
-import com.vaadin.data.util.PropertyValueGenerator;
+import com.vaadin.v7.data.Item;
+import com.vaadin.v7.data.Property;
+import com.vaadin.v7.data.util.PropertyValueGenerator;
 import java.util.ArrayList;
 import org.vaadin.viritin.ListContainer;
 

@@ -2,7 +2,7 @@ package org.vaadin.viritin.it;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.TextField;
+import com.vaadin.v7.ui.TextField;
 import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.viritin.MBeanFieldGroup;
 import org.vaadin.viritin.layouts.MVerticalLayout;

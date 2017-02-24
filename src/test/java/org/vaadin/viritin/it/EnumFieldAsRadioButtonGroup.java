@@ -1,9 +1,9 @@
 package org.vaadin.viritin.it;
 
 import com.vaadin.annotations.Theme;
-import com.vaadin.data.util.ObjectProperty;
+import com.vaadin.v7.data.util.ObjectProperty;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.OptionGroup;
+import com.vaadin.v7.ui.OptionGroup;
 import com.vaadin.ui.themes.ValoTheme;
 
 import org.vaadin.addonhelpers.AbstractTest;

@@ -11,8 +11,8 @@ import org.vaadin.viritin.testdomain.Person;
 import org.vaadin.viritin.testdomain.Service;
 
 import com.vaadin.annotations.Theme;
-import com.vaadin.data.Item;
-import com.vaadin.data.util.PropertyValueGenerator;
+import com.vaadin.v7.data.Item;
+import com.vaadin.v7.data.util.PropertyValueGenerator;
 import com.vaadin.ui.Component;
 
 /**

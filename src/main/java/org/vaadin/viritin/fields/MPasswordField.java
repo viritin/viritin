@@ -15,18 +15,19 @@
  */
 package org.vaadin.viritin.fields;
 
+import com.vaadin.event.FieldEvents.BlurListener;
 import java.util.EventObject;
 
-import com.vaadin.data.Property;
-import com.vaadin.data.Validator;
-import com.vaadin.data.util.converter.Converter;
-import com.vaadin.event.FieldEvents;
-import com.vaadin.event.FieldEvents.TextChangeEvent;
+import com.vaadin.v7.data.Property;
+import com.vaadin.v7.data.Validator;
+import com.vaadin.v7.data.util.converter.Converter;
+import com.vaadin.v7.event.FieldEvents;
+import com.vaadin.v7.event.FieldEvents.TextChangeEvent;
 import com.vaadin.server.AbstractErrorMessage;
 import com.vaadin.server.CompositeErrorMessage;
 import com.vaadin.server.ErrorMessage;
 import com.vaadin.server.Resource;
-import com.vaadin.ui.PasswordField;
+import com.vaadin.v7.ui.PasswordField;
 
 /**
  * A an extension to basic Vaadin PasswordField. Uses the only sane default for
@@ -186,7 +187,7 @@ public class MPasswordField extends PasswordField implements EagerValidateable {
         return this;
     }
 
-    public MPasswordField withBlurListener(FieldEvents.BlurListener listener) {
+    public MPasswordField withBlurListener(BlurListener listener) {
         addBlurListener(listener);
         return this;
     }

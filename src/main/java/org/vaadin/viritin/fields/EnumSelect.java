@@ -3,10 +3,10 @@ package org.vaadin.viritin.fields;
 
 import java.util.Collection;
 
-import com.vaadin.data.Property;
-import com.vaadin.data.Validator;
-import com.vaadin.ui.AbstractSelect;
-import com.vaadin.ui.NativeSelect;
+import com.vaadin.v7.data.Property;
+import com.vaadin.v7.data.Validator;
+import com.vaadin.v7.ui.AbstractSelect;
+import com.vaadin.v7.ui.NativeSelect;
 
 public class EnumSelect<T> extends TypedSelect<T> {
 

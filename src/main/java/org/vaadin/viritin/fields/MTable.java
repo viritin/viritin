@@ -15,13 +15,13 @@
  */
 package org.vaadin.viritin.fields;
 
-import com.vaadin.event.ItemClickEvent;
-import com.vaadin.event.ItemClickEvent.ItemClickListener;
+import com.vaadin.v7.event.ItemClickEvent;
+import com.vaadin.v7.event.ItemClickEvent.ItemClickListener;
 import com.vaadin.event.MouseEvents;
 import com.vaadin.server.Resource;
 import com.vaadin.shared.MouseEventDetails;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.Table;
+import com.vaadin.v7.ui.Table;
 import com.vaadin.util.ReflectTools;
 import org.apache.commons.lang3.StringUtils;
 import org.vaadin.viritin.LazyList;

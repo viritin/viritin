@@ -3,7 +3,7 @@ package org.vaadin.viritin;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Panel;
-import com.vaadin.ui.Tree;
+import com.vaadin.v7.ui.Tree;
 import com.vaadin.ui.VerticalLayout;
 import junit.framework.Assert;
 import org.junit.Test;

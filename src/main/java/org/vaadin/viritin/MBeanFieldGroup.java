@@ -42,17 +42,17 @@ import javax.validation.metadata.ConstraintDescriptor;
 
 import org.vaadin.viritin.fields.EagerValidateable;
 
-import com.vaadin.data.Property;
-import com.vaadin.data.Validator;
-import com.vaadin.data.fieldgroup.BeanFieldGroup;
-import com.vaadin.event.FieldEvents;
-import com.vaadin.event.FieldEvents.TextChangeNotifier;
+import com.vaadin.v7.data.Property;
+import com.vaadin.v7.data.Validator;
+import com.vaadin.v7.data.fieldgroup.BeanFieldGroup;
+import com.vaadin.v7.event.FieldEvents;
+import com.vaadin.v7.event.FieldEvents.TextChangeNotifier;
 import com.vaadin.server.AbstractErrorMessage;
 import com.vaadin.server.ErrorMessage;
 import com.vaadin.server.UserError;
 import com.vaadin.ui.AbstractComponent;
-import com.vaadin.ui.AbstractField;
-import com.vaadin.ui.Field;
+import com.vaadin.v7.ui.AbstractField;
+import com.vaadin.v7.ui.Field;
 
 /**
  * Enhanced version of basic BeanFieldGroup in Vaadin. Supports "eager
@@ -621,7 +621,7 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
     public MBeanFieldGroup<T> withEagerValidation(FieldGroupListener<T> listener) {
         this.listener = listener;
         for (Field<?> field : getFields()) {
-            ((AbstractComponent) field).setImmediate(true);
+            // ((AbstractComponent) field).setImmediate(true);
             field.addValueChangeListener(this);
             if (field instanceof EagerValidateable) {
                 EagerValidateable ev = (EagerValidateable) field;
@@ -657,7 +657,7 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
      * Viritin does not support buffering. Use at own risk, using this method 
      * might cause odd issues with certain features.
      * @see <a href="https://github.com/viritin/viritin/issues/186">Issue 186</a>
-     * @throws com.vaadin.data.fieldgroup.FieldGroup.CommitException if commit fails
+     * @throws com.vaadin.v7.data.fieldgroup.FieldGroup.CommitException if commit fails
      * @deprecated
      */
     @Override

@@ -1,9 +1,9 @@
 package org.vaadin.viritin.fields;
 
-import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.v7.data.util.BeanItemContainer;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.CustomField;
-import com.vaadin.ui.ListSelect;
+import com.vaadin.v7.ui.CustomField;
+import com.vaadin.v7.ui.ListSelect;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -43,7 +43,7 @@ public class CollectionSelect<T> extends CustomField<Collection<T>> {
 
 			@Override
 			public void valueChange(
-					com.vaadin.data.Property.ValueChangeEvent event) {
+					com.vaadin.v7.data.Property.ValueChangeEvent event) {
 				/*
 				 * Modify the original collection to make it possible for e.g.
 				 * ORM tools to optimize queries

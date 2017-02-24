@@ -1,11 +1,11 @@
 package org.vaadin.viritin.it;
 
 import com.vaadin.annotations.Theme;
-import com.vaadin.data.Validator;
-import com.vaadin.shared.ui.datefield.Resolution;
+import com.vaadin.v7.data.Validator;
+import com.vaadin.v7.shared.ui.datefield.Resolution;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.DateField;
+import com.vaadin.v7.ui.DateField;
 import com.vaadin.ui.Notification;
 import java.util.Date;
 import java.util.Locale;

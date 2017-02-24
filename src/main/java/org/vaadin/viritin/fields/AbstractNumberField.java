@@ -1,11 +1,13 @@
 package org.vaadin.viritin.fields;
 
+import com.vaadin.event.FieldEvents.BlurListener;
+import com.vaadin.event.FieldEvents.FocusListener;
 import org.vaadin.viritin.util.HtmlElementPropertySetter;
 
-import com.vaadin.data.Property;
-import com.vaadin.event.FieldEvents;
+import com.vaadin.v7.data.Property;
+import com.vaadin.v7.event.FieldEvents;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.CustomField;
+import com.vaadin.v7.ui.CustomField;
 
 /**
  * @param <T> field value type
@@ -96,20 +98,9 @@ public abstract class AbstractNumberField<T> extends CustomField<T> implements
         tf.addTextChangeListener(listener);
     }
 
-    @Override
-    public void addListener(
-            FieldEvents.TextChangeListener listener) {
-        tf.addTextChangeListener(listener);
-    }
 
     @Override
     public void removeTextChangeListener(
-            FieldEvents.TextChangeListener listener) {
-        tf.removeTextChangeListener(listener);
-    }
-
-    @Override
-    public void removeListener(
             FieldEvents.TextChangeListener listener) {
         tf.removeTextChangeListener(listener);
     }
@@ -166,57 +157,35 @@ public abstract class AbstractNumberField<T> extends CustomField<T> implements
     }
 
     @Override
-    public void addBlurListener(FieldEvents.BlurListener listener) {
+    public void addBlurListener(BlurListener listener) {
         tf.addBlurListener(listener);
     }
 
-    @Override
-    @SuppressWarnings("deprecation")
-    public void addListener(FieldEvents.BlurListener listener) {
-        addBlurListener(listener);
-    }
 
     @Override
-    public void removeBlurListener(FieldEvents.BlurListener listener) {
+    public void removeBlurListener(BlurListener listener) {
         tf.removeBlurListener(listener);
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void removeListener(FieldEvents.BlurListener listener) {
-        removeBlurListener(listener);
-    }
-
-    @Override
-    public void addFocusListener(FieldEvents.FocusListener listener) {
+    public void addFocusListener(FocusListener listener) {
         tf.addFocusListener(listener);
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void addListener(FieldEvents.FocusListener listener) {
-        addFocusListener(listener);
-    }
-
-    @Override
-    public void removeFocusListener(FieldEvents.FocusListener listener) {
+    public void removeFocusListener(FocusListener listener) {
         tf.removeFocusListener(listener);
     }
 
-    @Override
-    @SuppressWarnings("deprecation")
-    public void removeListener(FieldEvents.FocusListener listener) {
-        removeFocusListener(listener);
-    }
 
     /**
      * Adds a BlurListener to the Component which gets fired when a Field loses keyboard focus, returning
      * this instance in a fluent fashion.
      *
-     * @param listener
+     * @param listener the listener to be added
      * @return this instance
      */
-    public AbstractNumberField<T> withBlurListener(FieldEvents.BlurListener listener) {
+    public AbstractNumberField<T> withBlurListener(BlurListener listener) {
         addBlurListener(listener);
         return this;
     }
@@ -225,10 +194,10 @@ public abstract class AbstractNumberField<T> extends CustomField<T> implements
      * Adds a FocusListener to the Component which gets fired when a Field receives keyboard focus, returning
      * this instance in a fluent fashion.
      *
-     * @param listener
+     * @param listener the listener to be added
      * @return this instance
      */
-    public AbstractNumberField<T> withFocusListener(FieldEvents.FocusListener listener) {
+    public AbstractNumberField<T> withFocusListener(FocusListener listener) {
         addFocusListener(listener);
         return this;
     }

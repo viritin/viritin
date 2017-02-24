@@ -1,15 +1,15 @@
 package org.vaadin.viritin.fields;
 
-import com.vaadin.data.Property;
-import com.vaadin.data.Validator;
+import com.vaadin.v7.data.Property;
+import com.vaadin.v7.data.Validator;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.CustomField;
+import com.vaadin.v7.ui.CustomField;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
-import com.vaadin.ui.TextField;
+import com.vaadin.v7.ui.TextField;
 import com.vaadin.util.ReflectTools;
 import org.vaadin.viritin.MBeanFieldGroup;
 import org.vaadin.viritin.MBeanFieldGroup.FieldGroupListener;

@@ -1,9 +1,9 @@
 package org.vaadin.viritin;
 
 import org.vaadin.viritin.ListContainer;
-import com.vaadin.data.util.converter.Converter;
+import com.vaadin.v7.data.util.converter.Converter;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.Table;
+import com.vaadin.v7.ui.Table;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;

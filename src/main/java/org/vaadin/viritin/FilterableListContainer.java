@@ -1,9 +1,9 @@
 package org.vaadin.viritin;
 
-import com.vaadin.data.Container;
-import com.vaadin.data.Container.Filterable;
-import com.vaadin.data.Item;
-import com.vaadin.data.util.filter.UnsupportedFilterException;
+import com.vaadin.v7.data.Container;
+import com.vaadin.v7.data.Container.Filterable;
+import com.vaadin.v7.data.Item;
+import com.vaadin.v7.data.util.filter.UnsupportedFilterException;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -109,7 +109,7 @@ public class FilterableListContainer<T> extends ListContainer<T> implements
      * If the parent {@link ListContainer} wants to fire an ItemSetChange, we
      * need to refilter.
      *
-     * @see com.vaadin.data.util.AbstractContainer#fireItemSetChange()
+     * @see com.vaadin.v7.data.util.AbstractContainer#fireItemSetChange()
      *
      */
     @Override

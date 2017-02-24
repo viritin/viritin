@@ -1,7 +1,7 @@
 package org.vaadin.viritin;
 
 import org.vaadin.viritin.testdomain.Person;
-import com.vaadin.data.Item;
+import com.vaadin.v7.data.Item;
 import org.junit.Test;
 
 import java.util.Arrays;

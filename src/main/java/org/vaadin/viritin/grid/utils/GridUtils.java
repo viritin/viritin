@@ -1,11 +1,11 @@
 package org.vaadin.viritin.grid.utils;
 
-import com.vaadin.data.sort.SortOrder;
-import com.vaadin.event.SortEvent;
+import com.vaadin.v7.data.sort.SortOrder;
+import com.vaadin.v7.event.SortEvent;
 import com.vaadin.shared.data.sort.SortDirection;
-import com.vaadin.ui.Grid;
-import com.vaadin.ui.Grid.Column;
-import com.vaadin.ui.Grid.ColumnReorderEvent;
+import com.vaadin.v7.ui.Grid;
+import com.vaadin.v7.ui.Grid.Column;
+import com.vaadin.v7.ui.Grid.ColumnReorderEvent;
 import org.apache.commons.lang3.StringUtils;
 import org.vaadin.viritin.util.BrowserCookie;
 import org.vaadin.viritin.util.BrowserCookie.Callback;

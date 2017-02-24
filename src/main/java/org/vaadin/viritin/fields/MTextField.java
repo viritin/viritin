@@ -15,22 +15,23 @@
  */
 package org.vaadin.viritin.fields;
 
+import com.vaadin.event.FieldEvents.BlurListener;
 import java.util.EventObject;
 import java.util.Map;
 
 import org.vaadin.viritin.util.HtmlElementPropertySetter;
 
-import com.vaadin.data.Property;
-import com.vaadin.data.Validator;
-import com.vaadin.data.util.converter.Converter;
-import com.vaadin.data.util.converter.ConverterUtil;
-import com.vaadin.event.FieldEvents;
-import com.vaadin.event.FieldEvents.TextChangeEvent;
+import com.vaadin.v7.data.Property;
+import com.vaadin.v7.data.Validator;
+import com.vaadin.v7.data.util.converter.Converter;
+import com.vaadin.v7.data.util.converter.ConverterUtil;
+import com.vaadin.v7.event.FieldEvents;
+import com.vaadin.v7.event.FieldEvents.TextChangeEvent;
 import com.vaadin.server.AbstractErrorMessage;
 import com.vaadin.server.CompositeErrorMessage;
 import com.vaadin.server.ErrorMessage;
 import com.vaadin.server.Resource;
-import com.vaadin.ui.TextField;
+import com.vaadin.v7.ui.TextField;
 
 /**
  * A an extension to basic Vaadin TextField. Uses the only sane default for
@@ -207,7 +208,7 @@ public class MTextField extends TextField implements EagerValidateable {
         return this;
     }
 
-    public MTextField withBlurListener(FieldEvents.BlurListener listener) {
+    public MTextField withBlurListener(BlurListener listener) {
         addBlurListener(listener);
         return this;
     }

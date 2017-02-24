@@ -1,10 +1,10 @@
 package org.vaadin.viritin.it;
 
-import com.vaadin.event.FieldEvents.TextChangeEvent;
-import com.vaadin.event.FieldEvents.TextChangeListener;
+import com.vaadin.v7.event.FieldEvents.TextChangeEvent;
+import com.vaadin.v7.event.FieldEvents.TextChangeListener;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.Grid;
-import com.vaadin.ui.TextField;
+import com.vaadin.v7.ui.Grid;
+import com.vaadin.v7.ui.TextField;
 import com.vaadin.ui.themes.ValoTheme;
 import java.util.List;
 import java.util.stream.Collectors;

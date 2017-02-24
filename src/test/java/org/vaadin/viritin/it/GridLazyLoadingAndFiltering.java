@@ -1,8 +1,8 @@
 package org.vaadin.viritin.it;
 
 import com.vaadin.ui.Component;
-import com.vaadin.ui.Grid;
-import com.vaadin.ui.TextField;
+import com.vaadin.v7.ui.Grid;
+import com.vaadin.v7.ui.TextField;
 import com.vaadin.ui.themes.ValoTheme;
 import java.util.List;
 import org.vaadin.addonhelpers.AbstractTest;

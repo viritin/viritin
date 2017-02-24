@@ -7,8 +7,8 @@ import java.util.logging.Logger;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
-import com.vaadin.data.Validator;
-import com.vaadin.data.validator.BeanValidator;
+import com.vaadin.v7.data.Validator;
+import com.vaadin.v7.data.validator.BeanValidator;
 
 /**
  *

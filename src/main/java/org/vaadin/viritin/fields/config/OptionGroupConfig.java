@@ -1,6 +1,6 @@
 package org.vaadin.viritin.fields.config;
 
-import com.vaadin.ui.OptionGroup;
+import com.vaadin.v7.ui.OptionGroup;
 
 import java.util.Arrays;
 import java.util.HashSet;

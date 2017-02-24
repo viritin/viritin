@@ -1,8 +1,8 @@
 package org.vaadin.viritin.it;
 
 import com.vaadin.annotations.Theme;
-import com.vaadin.data.util.filter.SimpleStringFilter;
-import com.vaadin.event.FieldEvents;
+import com.vaadin.v7.data.util.filter.SimpleStringFilter;
+import com.vaadin.v7.event.FieldEvents;
 import com.vaadin.ui.Component;
 import org.apache.commons.lang3.StringUtils;
 import org.vaadin.addonhelpers.AbstractTest;

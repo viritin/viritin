@@ -5,9 +5,9 @@ import org.vaadin.viritin.grid.MGrid;
 import org.vaadin.viritin.testdomain.Person;
 
 import com.vaadin.ui.Component;
-import com.vaadin.ui.Grid;
-import com.vaadin.ui.Grid.Column;
-import com.vaadin.ui.Label;
+import com.vaadin.v7.ui.Grid;
+import com.vaadin.v7.ui.Grid.Column;
+import com.vaadin.v7.ui.Label;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 
 public class GridSaveSettingsTest extends AbstractTest {

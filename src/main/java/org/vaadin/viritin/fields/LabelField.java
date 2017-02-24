@@ -1,8 +1,8 @@
 package org.vaadin.viritin.fields;
 
 import com.vaadin.ui.Component;
-import com.vaadin.ui.CustomField;
-import com.vaadin.ui.Label;
+import com.vaadin.v7.ui.CustomField;
+import com.vaadin.v7.ui.Label;
 import org.vaadin.viritin.label.RichText;
 
 /**

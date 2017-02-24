@@ -1,7 +1,7 @@
 package org.vaadin.viritin.it;
 
 import com.vaadin.annotations.Theme;
-import com.vaadin.data.util.ObjectProperty;
+import com.vaadin.v7.data.util.ObjectProperty;
 import com.vaadin.ui.Component;
 import org.jsoup.safety.Whitelist;
 import org.vaadin.addonhelpers.AbstractTest;

@@ -1,7 +1,7 @@
 package org.vaadin.viritin.it;
 
 import com.vaadin.annotations.Theme;
-import com.vaadin.ui.CheckBox;
+import com.vaadin.v7.ui.CheckBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Notification;
 import org.vaadin.addonhelpers.AbstractTest;

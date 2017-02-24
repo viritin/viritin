@@ -4,7 +4,7 @@ import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Layout;
-import com.vaadin.ui.Table;
+import com.vaadin.v7.ui.Table;
 import com.vaadin.ui.themes.ValoTheme;
 import org.vaadin.viritin.MBeanFieldGroup;
 import org.vaadin.viritin.button.MButton;

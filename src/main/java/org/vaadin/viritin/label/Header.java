@@ -18,8 +18,8 @@ package org.vaadin.viritin.label;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
-import com.vaadin.shared.ui.label.ContentMode;
-import com.vaadin.ui.Label;
+import com.vaadin.v7.shared.ui.label.ContentMode;
+import com.vaadin.v7.ui.Label;
 
 /**
  * Label whose content is wrapped in an H1,H2,H3.. element.

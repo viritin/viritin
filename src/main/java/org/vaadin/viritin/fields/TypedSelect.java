@@ -10,20 +10,20 @@ import org.vaadin.viritin.fields.config.ComboBoxConfig;
 import org.vaadin.viritin.fields.config.ListSelectConfig;
 import org.vaadin.viritin.fields.config.OptionGroupConfig;
 
-import com.vaadin.data.Container;
-import com.vaadin.data.Property;
-import com.vaadin.data.Validator;
-import com.vaadin.data.Validator.InvalidValueException;
-import com.vaadin.data.util.converter.Converter.ConversionException;
+import com.vaadin.v7.data.Container;
+import com.vaadin.v7.data.Property;
+import com.vaadin.v7.data.Validator;
+import com.vaadin.v7.data.Validator.InvalidValueException;
+import com.vaadin.v7.data.util.converter.Converter.ConversionException;
 import com.vaadin.server.ErrorMessage;
 import com.vaadin.server.Resource;
-import com.vaadin.ui.AbstractSelect;
-import com.vaadin.ui.ComboBox;
+import com.vaadin.v7.ui.AbstractSelect;
+import com.vaadin.v7.ui.ComboBox;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.CustomField;
-import com.vaadin.ui.ListSelect;
-import com.vaadin.ui.NativeSelect;
-import com.vaadin.ui.OptionGroup;
+import com.vaadin.v7.ui.CustomField;
+import com.vaadin.v7.ui.ListSelect;
+import com.vaadin.v7.ui.NativeSelect;
+import com.vaadin.v7.ui.OptionGroup;
 
 /**
  * A select implementation with better typed API than in core Vaadin.
@@ -498,7 +498,7 @@ public class TypedSelect<T> extends CustomField<T> {
 	}
 	
 	@Override
-	public void setValue(T newFieldValue) throws com.vaadin.data.Property.ReadOnlyException, ConversionException {
+	public void setValue(T newFieldValue) throws com.vaadin.v7.data.Property.ReadOnlyException, ConversionException {
 		ensureContainerSet();
 		super.setValue(newFieldValue);
 	}

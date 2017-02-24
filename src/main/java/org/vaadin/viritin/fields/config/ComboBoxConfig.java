@@ -1,7 +1,7 @@
 package org.vaadin.viritin.fields.config;
 
-import com.vaadin.shared.ui.combobox.FilteringMode;
-import com.vaadin.ui.ComboBox;
+import com.vaadin.v7.shared.ui.combobox.FilteringMode;
+import com.vaadin.v7.ui.ComboBox;
 
 /**
  * Configures fluently the ComboBox within TypedSelect

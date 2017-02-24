@@ -17,8 +17,8 @@ package org.vaadin.viritin.label;
 
 import org.vaadin.viritin.MSize;
 
-import com.vaadin.shared.ui.label.ContentMode;
-import com.vaadin.ui.Label;
+import com.vaadin.v7.shared.ui.label.ContentMode;
+import com.vaadin.v7.ui.Label;
 
 /**
  * Fluent Label

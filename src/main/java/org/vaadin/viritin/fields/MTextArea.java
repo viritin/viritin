@@ -15,13 +15,14 @@
  */
 package org.vaadin.viritin.fields;
 
+import com.vaadin.event.FieldEvents.BlurListener;
 import org.vaadin.viritin.MSize;
 
-import com.vaadin.data.Property;
-import com.vaadin.data.Validator;
-import com.vaadin.event.FieldEvents;
+import com.vaadin.v7.data.Property;
+import com.vaadin.v7.data.Validator;
+import com.vaadin.v7.event.FieldEvents;
 import com.vaadin.server.Resource;
-import com.vaadin.ui.TextArea;
+import com.vaadin.v7.ui.TextArea;
 
 /**
  *
@@ -111,7 +112,7 @@ public class MTextArea extends TextArea {
         return this;
     }
 
-    public MTextArea withBlurListener(FieldEvents.BlurListener listener) {
+    public MTextArea withBlurListener(BlurListener listener) {
         addBlurListener(listener);
         return this;
     }

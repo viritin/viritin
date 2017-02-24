@@ -12,8 +12,8 @@ import org.apache.commons.beanutils.WrapDynaBean;
 import org.apache.commons.beanutils.expression.DefaultResolver;
 import org.apache.commons.lang3.ClassUtils;
 
-import com.vaadin.data.Item;
-import com.vaadin.data.Property;
+import com.vaadin.v7.data.Item;
+import com.vaadin.v7.data.Property;
 
 /**
  * A standalone version of the DynaBeanItem originally introduced in

@@ -16,7 +16,7 @@
 
 package org.vaadin.viritin.fields;
 
-import com.vaadin.data.Property;
+import com.vaadin.v7.data.Property;
 
 /**
  *

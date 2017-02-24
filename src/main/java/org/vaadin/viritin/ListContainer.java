@@ -15,11 +15,11 @@
  */
 package org.vaadin.viritin;
 
-import com.vaadin.data.Container;
-import com.vaadin.data.Container.ItemSetChangeNotifier;
-import com.vaadin.data.Item;
-import com.vaadin.data.Property;
-import com.vaadin.data.util.AbstractContainer;
+import com.vaadin.v7.data.Container;
+import com.vaadin.v7.data.Container.ItemSetChangeNotifier;
+import com.vaadin.v7.data.Item;
+import com.vaadin.v7.data.Property;
+import com.vaadin.v7.data.util.AbstractContainer;
 import org.apache.commons.beanutils.*;
 import org.apache.commons.beanutils.expression.DefaultResolver;
 import org.apache.commons.beanutils.expression.Resolver;

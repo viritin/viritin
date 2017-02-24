@@ -2,7 +2,7 @@ package org.vaadin.viritin.it;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.OptionGroup;
+import com.vaadin.v7.ui.OptionGroup;
 
 import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.viritin.fields.TypedSelect;

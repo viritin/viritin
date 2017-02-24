@@ -1,7 +1,7 @@
 package org.vaadin.viritin.it;
 
+import com.vaadin.annotations.PropertyId;
 import com.vaadin.annotations.Theme;
-import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Notification;
 

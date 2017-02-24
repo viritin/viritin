@@ -16,14 +16,14 @@ import org.vaadin.viritin.MSize;
 import org.vaadin.viritin.SortableLazyList;
 import org.vaadin.viritin.grid.utils.GridUtils;
 
-import com.vaadin.data.Container;
-import com.vaadin.data.Item;
-import com.vaadin.data.fieldgroup.FieldGroup;
-import com.vaadin.data.util.PropertyValueGenerator;
-import com.vaadin.event.SortEvent;
-import com.vaadin.event.SortEvent.SortListener;
+import com.vaadin.v7.data.Container;
+import com.vaadin.v7.data.Item;
+import com.vaadin.v7.data.fieldgroup.FieldGroup;
+import com.vaadin.v7.data.util.PropertyValueGenerator;
+import com.vaadin.v7.event.SortEvent;
+import com.vaadin.v7.event.SortEvent.SortListener;
 import com.vaadin.server.Extension;
-import com.vaadin.ui.Grid;
+import com.vaadin.v7.ui.Grid;
 
 /**
  *

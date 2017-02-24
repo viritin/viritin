@@ -1,10 +1,11 @@
 package org.vaadin.viritin.fields;
 
-import com.vaadin.data.Property;
-import com.vaadin.event.FieldEvents;
+import com.vaadin.event.FieldEvents.BlurListener;
+import com.vaadin.v7.data.Property;
+import com.vaadin.v7.event.FieldEvents;
 import com.vaadin.server.Resource;
-import com.vaadin.shared.ui.datefield.Resolution;
-import com.vaadin.ui.DateField;
+import com.vaadin.v7.shared.ui.datefield.Resolution;
+import com.vaadin.v7.ui.DateField;
 
 import java.util.Date;
 import java.util.Map;
@@ -134,7 +135,7 @@ public class MDateField extends DateField {
         return this;
     }
 
-    public MDateField withBlurListener(FieldEvents.BlurListener listener) {
+    public MDateField withBlurListener(BlurListener listener) {
         addBlurListener(listener);
         return this;
     }

@@ -17,8 +17,8 @@ package org.vaadin.viritin.fields;
 
 import java.lang.reflect.Method;
 
-import com.vaadin.ui.AbstractField;
-import com.vaadin.ui.Field;
+import com.vaadin.v7.ui.AbstractField;
+import com.vaadin.v7.ui.Field;
 
 public class MValueChangeEventImpl<T> extends AbstractField.ValueChangeEvent implements MValueChangeEvent<T> {
 

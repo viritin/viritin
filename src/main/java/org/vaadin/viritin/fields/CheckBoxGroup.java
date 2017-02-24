@@ -12,10 +12,10 @@ import java.util.Set;
 
 import org.vaadin.viritin.ListContainer;
 
-import com.vaadin.data.util.converter.Converter;
+import com.vaadin.v7.data.util.converter.Converter;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.CustomField;
-import com.vaadin.ui.OptionGroup;
+import com.vaadin.v7.ui.CustomField;
+import com.vaadin.v7.ui.OptionGroup;
 
 /**
  * An OptionGroup that can be used as a field to modify

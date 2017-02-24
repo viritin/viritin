@@ -1,17 +1,19 @@
 package org.vaadin.viritin.fields;
 
-import com.vaadin.data.Property;
-import com.vaadin.data.util.converter.Converter;
-import com.vaadin.event.FieldEvents;
+import com.vaadin.event.FieldEvents.BlurListener;
+import com.vaadin.event.FieldEvents.FocusListener;
+import com.vaadin.v7.data.Property;
+import com.vaadin.v7.data.util.converter.Converter;
+import com.vaadin.v7.event.FieldEvents;
 import com.vaadin.server.ErrorMessage;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Page;
 import com.vaadin.server.Resource;
-import com.vaadin.ui.AbstractTextField;
+import com.vaadin.v7.ui.AbstractTextField;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.CustomField;
-import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.v7.ui.CustomField;
+import com.vaadin.v7.ui.HorizontalLayout;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.themes.ValoTheme;
 import org.vaadin.viritin.button.MButton;
@@ -29,7 +31,7 @@ public class ClearableTextField extends CustomField {
 
     private final MTextField textfield = new MTextField();
     private final MButton clearButton = new MButton(FontAwesome.TIMES).withStyleName(ValoTheme.BUTTON_ICON_ONLY);
-    private final HorizontalLayout root = new MHorizontalLayout()
+    private final MHorizontalLayout root = new MHorizontalLayout()
             .expand(textfield).add(clearButton)
             .withSpacing(false)
             .withFullWidth()
@@ -263,19 +265,19 @@ public class ClearableTextField extends CustomField {
         return textfield.getCursorPosition();
     }
 
-    public void addFocusListener(FieldEvents.FocusListener listener) {
+    public void addFocusListener(FocusListener listener) {
         textfield.addFocusListener(listener);
     }
 
-    public void removeFocusListener(FieldEvents.FocusListener listener) {
+    public void removeFocusListener(FocusListener listener) {
         textfield.removeFocusListener(listener);
     }
 
-    public void addBlurListener(FieldEvents.BlurListener listener) {
+    public void addBlurListener(BlurListener listener) {
         textfield.addBlurListener(listener);
     }
 
-    public void removeBlurListener(FieldEvents.BlurListener listener) {
+    public void removeBlurListener(BlurListener listener) {
         textfield.removeBlurListener(listener);
     }
 

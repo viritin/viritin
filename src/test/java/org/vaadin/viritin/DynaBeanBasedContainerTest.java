@@ -16,8 +16,8 @@
 package org.vaadin.viritin;
 
 import org.vaadin.viritin.testdomain.Person;
-import com.vaadin.data.Item;
-import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.v7.data.Item;
+import com.vaadin.v7.data.util.BeanItemContainer;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryUsage;

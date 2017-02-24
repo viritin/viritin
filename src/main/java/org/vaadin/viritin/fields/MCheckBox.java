@@ -1,9 +1,10 @@
 package org.vaadin.viritin.fields;
 
-import com.vaadin.data.Property;
-import com.vaadin.event.FieldEvents;
+import com.vaadin.event.FieldEvents.BlurListener;
+import com.vaadin.v7.data.Property;
+import com.vaadin.v7.event.FieldEvents;
 import com.vaadin.server.Resource;
-import com.vaadin.ui.CheckBox;
+import com.vaadin.v7.ui.CheckBox;
 
 public class MCheckBox extends CheckBox {
 
@@ -70,7 +71,7 @@ public class MCheckBox extends CheckBox {
         return this;
     }
 
-    public MCheckBox withBlurListener(FieldEvents.BlurListener listener) {
+    public MCheckBox withBlurListener(BlurListener listener) {
         addBlurListener(listener);
         return this;
     }

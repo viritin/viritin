@@ -3,7 +3,7 @@ package org.vaadin.viritin.it;
 import com.vaadin.annotations.Theme;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.NativeSelect;
+import com.vaadin.v7.ui.NativeSelect;
 import com.vaadin.ui.Notification;
 import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.viritin.button.MButton;

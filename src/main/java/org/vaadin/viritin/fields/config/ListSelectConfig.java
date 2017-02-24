@@ -1,6 +1,6 @@
 package org.vaadin.viritin.fields.config;
 
-import com.vaadin.ui.ListSelect;
+import com.vaadin.v7.ui.ListSelect;
 
 /**
  * Configures fluently the ListSelect within TypedSelect

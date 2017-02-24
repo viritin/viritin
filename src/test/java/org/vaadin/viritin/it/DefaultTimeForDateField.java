@@ -1,8 +1,8 @@
 package org.vaadin.viritin.it;
 
-import com.vaadin.data.Property;
+import com.vaadin.v7.data.Property;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.DateField;
+import com.vaadin.v7.ui.DateField;
 import com.vaadin.ui.Notification;
 import java.util.Date;
 import java.util.Map;

@@ -1,8 +1,8 @@
 
 package org.vaadin.viritin;
 
-import com.vaadin.data.util.ObjectProperty;
-import com.vaadin.ui.TextField;
+import com.vaadin.v7.data.util.ObjectProperty;
+import com.vaadin.v7.ui.TextField;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

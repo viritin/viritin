@@ -12,17 +12,16 @@ import org.vaadin.viritin.form.AbstractForm;
 import org.vaadin.viritin.layouts.MHorizontalLayout;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 
-import com.vaadin.data.Property;
+import com.vaadin.v7.data.Property;
 import com.vaadin.server.FontAwesome;
-import com.vaadin.ui.AbstractSelect;
+import com.vaadin.v7.ui.AbstractSelect;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.ComboBox;
+import com.vaadin.v7.ui.ComboBox;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.CustomField;
-import com.vaadin.ui.Table;
+import com.vaadin.v7.ui.CustomField;
+import com.vaadin.v7.ui.Table;
 import com.vaadin.ui.Window;
-import com.vaadin.ui.themes.Reindeer;
 import com.vaadin.ui.themes.ValoTheme;
 
 /**
@@ -73,7 +72,7 @@ public class SubSetSelector<ET> extends CustomField<Collection> implements Abstr
         cb.addValueChangeListener(new ValueChangeListener() {
             @Override
             public void valueChange(
-                    com.vaadin.data.Property.ValueChangeEvent event) {
+                    com.vaadin.v7.data.Property.ValueChangeEvent event) {
                 if (event.getProperty().getValue() != null) {
                     Object pojo = event.getProperty().getValue();
                     cb.getBic().removeItem(pojo);
@@ -107,7 +106,7 @@ public class SubSetSelector<ET> extends CustomField<Collection> implements Abstr
                 removeSelectedOption(entity);
             }
         });
-        button.setStyleName(Reindeer.BUTTON_SMALL);
+        button.setStyleName(ValoTheme.BUTTON_SMALL);
         return button;
 
     }
