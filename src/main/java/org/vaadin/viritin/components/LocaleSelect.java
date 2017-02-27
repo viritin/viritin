@@ -1,8 +1,7 @@
 package org.vaadin.viritin.components;
 
-import org.vaadin.viritin.fields.CaptionGenerator;
-import org.vaadin.viritin.fields.TypedSelect;
-
+import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.ItemCaptionGenerator;
 import java.util.Locale;
 
 /**
@@ -15,11 +14,11 @@ import java.util.Locale;
  *
  */
 @SuppressWarnings("serial")
-public class LocaleSelect extends TypedSelect<Locale> {
+public class LocaleSelect extends ComboBox<Locale> {
     public LocaleSelect() {
-        setCaptionGenerator(new CaptionGenerator<Locale>() {
+        setItemCaptionGenerator(new ItemCaptionGenerator<Locale>() {
             @Override
-            public String getCaption(Locale option) {
+            public String apply(Locale option) {
                 return option.getDisplayName(option);
             }
         });

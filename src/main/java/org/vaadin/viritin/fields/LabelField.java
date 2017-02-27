@@ -1,9 +1,10 @@
 package org.vaadin.viritin.fields;
 
 import com.vaadin.ui.Component;
-import com.vaadin.v7.ui.CustomField;
-import com.vaadin.v7.ui.Label;
+import com.vaadin.ui.CustomField;
+import com.vaadin.ui.Label;
 import org.vaadin.viritin.label.RichText;
+import org.vaadin.viritin.v7.fields.CaptionGenerator;
 
 /**
  * A field which represents the value always in a label, so it is not editable.
@@ -11,17 +12,28 @@ import org.vaadin.viritin.label.RichText;
  * The use case is a non editable value in a form, e.g. an id.
  * <p>
  * The creation of the label text can be controlled via a
- * {@link org.vaadin.viritin.fields.CaptionGenerator}.
- * 
+ * {@link org.vaadin.viritin.v7.fields.CaptionGenerator}.
+ *
  * @author Daniel Nordhoff-Vergien
  *
- * @param <T>
- *            the type of the entity
+ * @param <T> the type of the entity
  */
 public class LabelField<T> extends CustomField<T> {
 
     private static final long serialVersionUID = -3079451926367430515L;
-    private final Class<T> type;
+
+    private T value;
+
+    @Override
+    protected void doSetValue(T value) {
+        this.value = value;
+        updateLabel();
+    }
+
+    @Override
+    public T getValue() {
+        return value;
+    }
 
     private static class ToStringCaptionGenerator<T> implements
             CaptionGenerator<T> {
@@ -38,22 +50,15 @@ public class LabelField<T> extends CustomField<T> {
         }
     }
 
-    public LabelField(Class<T> type, String caption) {
+    public LabelField(String caption) {
         super();
-        this.type = type;
         setCaption(caption);
     }
 
     private CaptionGenerator<T> captionGenerator = new ToStringCaptionGenerator<>();
     private Label label = new RichText();
 
-    public LabelField(Class<T> type) {
-        super();
-        this.type = type;
-    }
-
     public LabelField() {
-        this.type = (Class<T>) String.class;
     }
 
     public LabelField<T> withFullWidth() {
@@ -98,21 +103,11 @@ public class LabelField<T> extends CustomField<T> {
         label.setValue(caption);
     }
 
-    @Override
-    protected void setInternalValue(T newValue) {
-        super.setInternalValue(newValue);
-        updateLabel();
-    }
-
-    @Override
-    public Class<? extends T> getType() {
-        return type;
-    }
-
     /**
      * Sets the CaptionGenerator for creating the label value.
-     * 
-     * @param captionGenerator the caption generator used to format the displayed property
+     *
+     * @param captionGenerator the caption generator used to format the
+     * displayed property
      */
     public void setCaptionGenerator(CaptionGenerator<T> captionGenerator) {
         this.captionGenerator = captionGenerator;
@@ -126,5 +121,5 @@ public class LabelField<T> extends CustomField<T> {
     public Label getLabel() {
         return label;
     }
-    
+
 }

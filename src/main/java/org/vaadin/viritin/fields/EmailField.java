@@ -1,5 +1,6 @@
 package org.vaadin.viritin.fields;
 
+import com.vaadin.ui.TextField;
 import org.vaadin.viritin.util.HtmlElementPropertySetter;
 
 /**
@@ -10,7 +11,7 @@ import org.vaadin.viritin.util.HtmlElementPropertySetter;
  *
  * @author Matti Tahvonen
  */
-public class EmailField extends MTextField {
+public class EmailField extends TextField {
 
     private static final long serialVersionUID = -4717961169375147779L;
 

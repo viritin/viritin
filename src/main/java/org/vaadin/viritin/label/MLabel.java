@@ -15,10 +15,10 @@
  */
 package org.vaadin.viritin.label;
 
+import com.vaadin.shared.ui.ContentMode;
 import org.vaadin.viritin.MSize;
 
-import com.vaadin.v7.shared.ui.label.ContentMode;
-import com.vaadin.v7.ui.Label;
+import com.vaadin.ui.Label;
 
 /**
  * Fluent Label

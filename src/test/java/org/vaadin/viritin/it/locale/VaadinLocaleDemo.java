@@ -4,63 +4,60 @@ import java.util.*;
 
 import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.viritin.components.LocaleSelect;
-import org.vaadin.viritin.fields.*;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.vaadin.viritin.util.VaadinLocale;
 
-import com.vaadin.annotations.Theme;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.v7.ui.ComboBox;
 import com.vaadin.ui.Component;
-import com.vaadin.v7.ui.DateField;
+import com.vaadin.ui.DateField;
+import java.time.LocalDate;
 
 /**
  * Demo for the {@link VaadinLocale} class.
- * 
+ *
  * @author Daniel Nordhoff-Vergien
  *
  */
 @SuppressWarnings("serial")
-@Theme("valo")
 public class VaadinLocaleDemo extends AbstractTest {
+
     private final VaadinLocale vaadinLocale = new VaadinLocale(Locale.ENGLISH,
             Locale.GERMAN, new Locale("de", "DE"), new Locale("da"), new Locale("fi"));
-    private final LocaleSelect localeSelect = (LocaleSelect) new LocaleSelect()
-            .withSelectType(ComboBox.class);
+    private final LocaleSelect localeSelect = (LocaleSelect) new LocaleSelect();
     private final DateField dateField = new DateField();
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
         super.init(vaadinRequest);
         vaadinLocale.setVaadinRequest(vaadinRequest);
-        localeSelect.setOptions(vaadinLocale.getSupportedLocales());
+        localeSelect.setItems(vaadinLocale.getSupportedLocales());
         localeSelect.setValue(getLocale());
     }
 
     @Override
     public Component getTestComponent() {
-        dateField.setValue(new Date());
+        dateField.setValue(LocalDate.now());
         localeSelect.setId("language-selection");
-        localeSelect
-                .addMValueChangeListener(new MValueChangeListener<Locale>() {
-                    @Override
-                    public void valueChange(MValueChangeEvent<Locale> event) {
-                        vaadinLocale.setLocale(event.getValue());
-                    }
-                });
+        localeSelect.addValueChangeListener(e
+                -> vaadinLocale.setLocale(e.getValue())
+        );
         Button addNewComponent = new Button("Create new component");
 
         final MVerticalLayout layout = new MVerticalLayout(localeSelect,
                 dateField, new VaadinLocaleDemoComponent(), addNewComponent);
-        addNewComponent.addClickListener(new ClickListener() {
+
+        addNewComponent.addClickListener(
+                new ClickListener() {
             @Override
-            public void buttonClick(ClickEvent event) {
+            public void buttonClick(ClickEvent event
+            ) {
                 layout.add(new VaadinLocaleDemoComponent());
             }
-        });
+        }
+        );
         return layout;
     }
 

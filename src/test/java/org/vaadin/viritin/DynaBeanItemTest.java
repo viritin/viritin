@@ -1,5 +1,6 @@
 package org.vaadin.viritin;
 
+import org.vaadin.viritin.v7.ListContainer;
 import org.vaadin.viritin.testdomain.Person;
 import com.vaadin.v7.data.Item;
 import org.junit.Test;

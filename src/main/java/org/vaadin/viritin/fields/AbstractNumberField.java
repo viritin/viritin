@@ -1,26 +1,27 @@
 package org.vaadin.viritin.fields;
 
+import com.vaadin.event.FieldEvents;
 import com.vaadin.event.FieldEvents.BlurListener;
 import com.vaadin.event.FieldEvents.FocusListener;
+import com.vaadin.shared.Registration;
 import org.vaadin.viritin.util.HtmlElementPropertySetter;
 
-import com.vaadin.v7.data.Property;
-import com.vaadin.v7.event.FieldEvents;
 import com.vaadin.ui.Component;
-import com.vaadin.v7.ui.CustomField;
+import com.vaadin.ui.CustomField;
+import com.vaadin.ui.TextField;
 
 /**
  * @param <T> field value type
  * @author Matti Tahvonen
  */
-public abstract class AbstractNumberField<T> extends CustomField<T> implements
-        EagerValidateable, FieldEvents.TextChangeNotifier, FieldEvents.FocusNotifier, FieldEvents.BlurNotifier {
+public abstract class AbstractNumberField<T> extends CustomField<T> 
+        implements FieldEvents.FocusNotifier, FieldEvents.BlurNotifier {
 
     private static final long serialVersionUID = 5925606478174987241L;
 
     private String htmlFieldType = "number";
 
-    protected MTextField tf = new MTextField() {
+    protected TextField tf = new TextField() {
 
         private static final long serialVersionUID = 6823601969399906594L;
 
@@ -39,22 +40,21 @@ public abstract class AbstractNumberField<T> extends CustomField<T> implements
     }
 
     protected HtmlElementPropertySetter s = new HtmlElementPropertySetter(tf);
-    protected Property.ValueChangeListener vcl = new Property.ValueChangeListener() {
+    protected ValueChangeListener<String> vcl = new ValueChangeListener<String>() {
 
         private static final long serialVersionUID = 5034199201545161061L;
 
         @Override
-        public void valueChange(Property.ValueChangeEvent event) {
-            Object value = event.getProperty().getValue();
+        public void valueChange(ValueChangeEvent<String> event) {
+            String value = event.getValue();
             if (value != null) {
-                userInputToValue(String.valueOf(value));
+                userInputToValue(value);
             } else {
                 setValue(null);
             }
         }
-    };
 
-    protected FieldEvents.TextChangeListener tcl;
+    };
 
     protected abstract void userInputToValue(String str);
 
@@ -65,12 +65,11 @@ public abstract class AbstractNumberField<T> extends CustomField<T> implements
     }
 
     @Override
-    protected void setInternalValue(T newValue) {
-        super.setInternalValue(newValue);
-        if (newValue == null) {
+    protected void doSetValue(T value) {
+        if (value == null) {
             tf.setValue(null);
         } else {
-            tf.setValue(valueToPresentation(newValue));
+            tf.setValue(valueToPresentation(value));
         }
     }
 
@@ -90,46 +89,6 @@ public abstract class AbstractNumberField<T> extends CustomField<T> implements
      */
     public void setHtmlFieldType(String htmlFieldType) {
         this.htmlFieldType = htmlFieldType;
-    }
-
-    @Override
-    public void addTextChangeListener(
-            FieldEvents.TextChangeListener listener) {
-        tf.addTextChangeListener(listener);
-    }
-
-
-    @Override
-    public void removeTextChangeListener(
-            FieldEvents.TextChangeListener listener) {
-        tf.removeTextChangeListener(listener);
-    }
-
-    @Override
-    public boolean isEagerValidation() {
-        return tf.isEagerValidation();
-    }
-
-    @Override
-    public void setEagerValidation(boolean eagerValidation) {
-        tf.setEagerValidation(true);
-        if (eagerValidation && tcl == null) {
-            tcl = new FieldEvents.TextChangeListener() {
-
-                private static final long serialVersionUID = 2244473923631502546L;
-
-                @Override
-                public void textChange(
-                        FieldEvents.TextChangeEvent event) {
-                    userInputToValue(event.getText());
-                }
-            };
-            tf.addTextChangeListener(tcl);
-        }
-        if (!eagerValidation && tcl != null) {
-            tf.removeTextChangeListener(tcl);
-            tcl = null;
-        }
     }
 
     @Override
@@ -157,30 +116,18 @@ public abstract class AbstractNumberField<T> extends CustomField<T> implements
     }
 
     @Override
-    public void addBlurListener(BlurListener listener) {
-        tf.addBlurListener(listener);
-    }
-
-
-    @Override
-    public void removeBlurListener(BlurListener listener) {
-        tf.removeBlurListener(listener);
+    public Registration addBlurListener(BlurListener listener) {
+        return tf.addBlurListener(listener);
     }
 
     @Override
-    public void addFocusListener(FocusListener listener) {
-        tf.addFocusListener(listener);
+    public Registration addFocusListener(FocusListener listener) {
+        return tf.addFocusListener(listener);
     }
-
-    @Override
-    public void removeFocusListener(FocusListener listener) {
-        tf.removeFocusListener(listener);
-    }
-
 
     /**
-     * Adds a BlurListener to the Component which gets fired when a Field loses keyboard focus, returning
-     * this instance in a fluent fashion.
+     * Adds a BlurListener to the Component which gets fired when a Field loses
+     * keyboard focus, returning this instance in a fluent fashion.
      *
      * @param listener the listener to be added
      * @return this instance
@@ -191,8 +138,8 @@ public abstract class AbstractNumberField<T> extends CustomField<T> implements
     }
 
     /**
-     * Adds a FocusListener to the Component which gets fired when a Field receives keyboard focus, returning
-     * this instance in a fluent fashion.
+     * Adds a FocusListener to the Component which gets fired when a Field
+     * receives keyboard focus, returning this instance in a fluent fashion.
      *
      * @param listener the listener to be added
      * @return this instance

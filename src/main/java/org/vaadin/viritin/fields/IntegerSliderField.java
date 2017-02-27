@@ -1,14 +1,12 @@
 package org.vaadin.viritin.fields;
 
+import com.vaadin.data.Validator;
 import java.lang.reflect.Field;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-
-import com.vaadin.v7.data.Validator;
-import com.vaadin.v7.data.validator.BeanValidator;
 
 /**
  *
@@ -25,39 +23,41 @@ public class IntegerSliderField extends IntegerField {
     public IntegerSliderField() {
         setHtmlFieldType("range");
     }
-
-    @Override
-    public void addValidator(Validator validator) {
-        super.addValidator(validator);
-        if (validator instanceof BeanValidator) {
-            BeanValidator beanValidator = (BeanValidator) validator;
-            // If there is a bean validator and Max/Min values, uses them
-            // automatically on the client side as well
-            try {
-                // Don't ask why I did this like this...
-                Field propertyNameField = BeanValidator.class.getDeclaredField("propertyName");
-                propertyNameField.setAccessible(true);
-                String fieldName = propertyNameField.get(beanValidator).toString();
-                Field beanClass = BeanValidator.class.getDeclaredField("beanClass");
-                beanClass.setAccessible(true);
-                Class<?> beantype = (Class<?>) beanClass.get(beanValidator);
-                
-                Field field = beantype.getDeclaredField(fieldName);
-                field.setAccessible(true);
-                Max maxAnnotation = field.getAnnotation(Max.class);
-                if(maxAnnotation != null) {
-                    setMax((int) maxAnnotation.value());
-                }
-                Min minAnnotation = field.getAnnotation(Min.class);
-                if(minAnnotation != null) {
-                    setMin((int) minAnnotation.value());
-                }
-            } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
-                Logger.getLogger(IntegerSliderField.class.getName()).
-                        log(Level.SEVERE, null, ex);
-            }
-        }
-    }
+    
+// TODO figure out how to do this in V8...
+//    
+//    @Override
+//    public void addValidator(Validator validator) {
+//        super.addValidator(validator);
+//        if (validator instanceof BeanValidator) {
+//            BeanValidator beanValidator = (BeanValidator) validator;
+//            // If there is a bean validator and Max/Min values, uses them
+//            // automatically on the client side as well
+//            try {
+//                // Don't ask why I did this like this...
+//                Field propertyNameField = BeanValidator.class.getDeclaredField("propertyName");
+//                propertyNameField.setAccessible(true);
+//                String fieldName = propertyNameField.get(beanValidator).toString();
+//                Field beanClass = BeanValidator.class.getDeclaredField("beanClass");
+//                beanClass.setAccessible(true);
+//                Class<?> beantype = (Class<?>) beanClass.get(beanValidator);
+//                
+//                Field field = beantype.getDeclaredField(fieldName);
+//                field.setAccessible(true);
+//                Max maxAnnotation = field.getAnnotation(Max.class);
+//                if(maxAnnotation != null) {
+//                    setMax((int) maxAnnotation.value());
+//                }
+//                Min minAnnotation = field.getAnnotation(Min.class);
+//                if(minAnnotation != null) {
+//                    setMin((int) minAnnotation.value());
+//                }
+//            } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
+//                Logger.getLogger(IntegerSliderField.class.getName()).
+//                        log(Level.SEVERE, null, ex);
+//            }
+//        }
+//    }
 
     public Integer getMax() {
         return max;

@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.Test;
-import org.vaadin.viritin.fields.ElementCollectionField;
-import org.vaadin.viritin.fields.MTextField;
+import org.vaadin.viritin.v7.fields.ElementCollectionField;
+import org.vaadin.viritin.v7.fields.MTextField;
 
 /**
  *

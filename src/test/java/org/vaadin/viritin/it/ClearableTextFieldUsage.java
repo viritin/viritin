@@ -20,18 +20,18 @@ public class ClearableTextFieldUsage extends AbstractTest {
 
         ClearableTextField ctf = new ClearableTextField();
         ctf.setCaption("CTF caption");
-        ctf.setInputPrompt("Enter text");
+        ctf.setPlaceholder("Enter text");
         ctf.setValue("Some Text");
         
-        ctf.setImmediate(true);
 
         ctf.addValueChangeListener(e -> {
             Notification.show("Value: " + ctf.getValue());
         });
 
-        MButton b = new MButton("Toggle required", e -> {
-            ctf.setRequired(!ctf.isRequired());
-        });
+        // TODO figure out how this works in V8
+//        MButton b = new MButton("Toggle required", e -> {
+//            ctf.setRequired(!ctf.isRequired());
+//        });
         MButton b2 = new MButton("Toggle error", e -> {
             if (ctf.getComponentError() == null) {
                 ctf.setComponentError(new UserError("Must be filled"));
@@ -53,6 +53,6 @@ public class ClearableTextFieldUsage extends AbstractTest {
                 .withDescription("Click the X to clear…")
                 .withFullWidth()
                 .withFullHeight()
-                .withContent(new MVerticalLayout(ctf, b, b2, b3, b4));
+                .withContent(new MVerticalLayout(ctf, /* b,*/ b2, b3, b4));
     }
 }

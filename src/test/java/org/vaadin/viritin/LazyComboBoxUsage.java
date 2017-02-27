@@ -3,9 +3,9 @@ package org.vaadin.viritin;
 import junit.framework.Assert;
 import org.apache.commons.lang3.mutable.MutableObject;
 import org.junit.Test;
-import org.vaadin.viritin.fields.LazyComboBox;
-import org.vaadin.viritin.fields.MValueChangeEvent;
-import org.vaadin.viritin.fields.MValueChangeListener;
+import org.vaadin.viritin.v7.fields.LazyComboBox;
+import org.vaadin.viritin.v7.fields.MValueChangeEvent;
+import org.vaadin.viritin.v7.fields.MValueChangeListener;
 import org.vaadin.viritin.testdomain.Person;
 import org.vaadin.viritin.testdomain.Service;
 

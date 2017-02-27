@@ -15,6 +15,7 @@
  */
 package org.vaadin.viritin;
 
+import org.vaadin.viritin.v7.FilterableListContainer;
 import org.vaadin.viritin.testdomain.Person;
 import com.vaadin.v7.data.Container;
 import com.vaadin.v7.data.Container.Filter;

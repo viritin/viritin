@@ -1,7 +1,6 @@
 package org.vaadin.viritin.it;
 
 import com.vaadin.annotations.Theme;
-import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Component;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -11,9 +10,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.viritin.button.DownloadButton;
-import org.vaadin.viritin.button.MButton;
-import org.vaadin.viritin.components.DisclosurePanel;
-import org.vaadin.viritin.label.RichText;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 
 /**

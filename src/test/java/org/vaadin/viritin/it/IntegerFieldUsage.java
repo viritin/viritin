@@ -1,18 +1,18 @@
 package org.vaadin.viritin.it;
 
+import com.vaadin.data.Binder;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Notification;
-import com.vaadin.v7.ui.TextField;
+import com.vaadin.ui.TextField;
+import java.util.Objects;
+
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import org.vaadin.addonhelpers.AbstractTest;
-import org.vaadin.viritin.BeanBinder;
-import org.vaadin.viritin.MBeanFieldGroup;
 import org.vaadin.viritin.fields.IntegerField;
 import org.vaadin.viritin.fields.IntegerSliderField;
-import org.vaadin.viritin.fields.MTextField;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 
 /**
@@ -85,7 +85,7 @@ public class IntegerFieldUsage extends AbstractTest {
         
     }
 
-    private final TextField normalInteger = new MTextField().withCaption("Integer with basic TextField");
+    private final TextField normalInteger = new TextField("Integer with basic TextField");
     private final IntegerField integer = new IntegerField().withCaption("Integer");
     private final IntegerField intti = new IntegerField().withCaption("int");
     private final IntegerField validatedInteger = new IntegerField().withCaption(
@@ -100,27 +100,12 @@ public class IntegerFieldUsage extends AbstractTest {
     public Component getTestComponent() {
 
         final Domain domain = new Domain();
-
-        BeanBinder.bind(domain, this).withEagerValidation(
-                new MBeanFieldGroup.FieldGroupListener<Domain>() {
-            private static final long serialVersionUID = 1901097967848065661L;
-
-            boolean wasvalid = true;
-
-            @Override
-            public void onFieldGroupChange(
-                    MBeanFieldGroup<Domain> beanFieldGroup) {
-                if (wasvalid != beanFieldGroup.isValid()) {
-
-                    if (beanFieldGroup.isValid()) {
-                        Notification.show("Bean is now valid!");
-                    } else {
-                        Notification.show("Bean is invalid!");
-                    }
-                    wasvalid = beanFieldGroup.isValid();
-                }
-            }
-        });
+        
+        Binder<Domain> b = new Binder<>(Domain.class);
+        b.forMemberField(normalInteger).withConverter(toModel->Integer.parseInt(toModel), toPresentation -> Objects.toString(toPresentation));
+        b.bindInstanceFields(this);
+        b.setBean(domain);
+        b.addStatusChangeListener(e -> Notification.show("Bean valid? " + !e.hasValidationErrors()));
 
         Button show = new Button("Show value", new Button.ClickListener() {
             private static final long serialVersionUID = 5019806363620874205L;
@@ -142,8 +127,9 @@ public class IntegerFieldUsage extends AbstractTest {
 
         // Put invalid value to the backing bean, otherwise demo might appear
         // broken
-        validatedInteger.setInvalidCommitted(true);
-        slider.setInvalidCommitted(true);
+        // TODO see how this goes in V8
+        // validatedInteger.setInvalidCommitted(true);
+        // slider.setInvalidCommitted(true);
 
         return new MVerticalLayout(
                 integer,

@@ -3,8 +3,7 @@ package org.vaadin.viritin.it;
 
 import com.vaadin.ui.Component;
 import org.vaadin.addonhelpers.AbstractTest;
-import org.vaadin.viritin.fields.EmailField;
-import org.vaadin.viritin.layouts.MVerticalLayout;
+import org.vaadin.viritin.v7.fields.EmailField;
 
 /**
  *

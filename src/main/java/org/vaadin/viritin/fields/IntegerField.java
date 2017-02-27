@@ -17,6 +17,7 @@ import org.apache.commons.lang3.StringUtils;
 public class IntegerField extends AbstractNumberField<Integer> {
 
     private static final long serialVersionUID = 377246000306551089L;
+    private Integer value;
 
     public IntegerField() {
         setSizeUndefined();
@@ -29,15 +30,10 @@ public class IntegerField extends AbstractNumberField<Integer> {
     @Override
     protected void userInputToValue(String str) {
         if (StringUtils.isNotBlank(str)) {
-            setValue(Integer.parseInt(str));
+            value = Integer.parseInt(str);
         } else {
-            setValue(null);
+            value = null;
         }
-    }
-
-    @Override
-    public Class<? extends Integer> getType() {
-        return Integer.class;
     }
 
     public IntegerField withCaption(String caption) {
@@ -74,4 +70,10 @@ public class IntegerField extends AbstractNumberField<Integer> {
     public IntegerField withFocusListener(FieldEvents.FocusListener listener) {
         return (IntegerField) super.withFocusListener(listener);
     }
+
+    @Override
+    public Integer getValue() {
+        return value;
+    }
+
 }
