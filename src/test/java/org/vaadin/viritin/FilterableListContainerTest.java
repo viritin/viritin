@@ -96,6 +96,7 @@ public class FilterableListContainerTest {
     }
     
     @Test
+    @Ignore("Obsolete with V8")
     public void testFilterableListContainerPerformance() {
         System.out.println(
                 "\n Testing FilterableListContainer from Viritin (with Filter)");
@@ -138,6 +139,7 @@ public class FilterableListContainerTest {
     }
 
     @Test
+    @Ignore("Obsolete with V8")
     public void testSortingWhenFiltered() {
         FilterableListContainer<Person> lc = new FilterableListContainer<>(
                 persons);
