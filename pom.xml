@@ -61,7 +61,7 @@
 
 
     <dependencies>
-<!--        <dependency>
+        <!--        <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-server</artifactId>
             <version>${vaadin.version}</version>
@@ -132,7 +132,7 @@
             <scope>test</scope>
         </dependency>
         <!-- To support websocket commmunication for tests, to be kept in sync 
-             with addon-test-helper jetty dependency. -->
+        with addon-test-helper jetty dependency. -->
         <dependency>
             <groupId>org.eclipse.jetty.websocket</groupId>
             <artifactId>websocket-server</artifactId>
@@ -217,21 +217,21 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.5.1</version>
                 <executions>
-                	<execution>
-                		<id>default-compile</id>
-						<configuration>
-                    		<source>1.7</source>
-                    		<target>1.7</target>
-                		</configuration>
-                	</execution>
-                	<!-- see https://maven.apache.org/guides/mini/guide-default-execution-ids.html -->
-                	<execution>
-                		<id>default-testCompile</id>
-						<configuration>
-                    		<source>1.8</source>
-                    		<target>1.8</target>
-                		</configuration>
-                	</execution>
+                    <execution>
+                        <id>default-compile</id>
+                        <configuration>
+                            <source>1.7</source>
+                            <target>1.7</target>
+                        </configuration>
+                    </execution>
+                    <!-- see https://maven.apache.org/guides/mini/guide-default-execution-ids.html -->
+                    <execution>
+                        <id>default-testCompile</id>
+                        <configuration>
+                            <source>1.8</source>
+                            <target>1.8</target>
+                        </configuration>
+                    </execution>
                 </executions>
                 <configuration>
                     <source>1.8</source>
@@ -321,7 +321,7 @@
                     <releaseProfiles>directorypackage</releaseProfiles>
                 </configuration>
             </plugin>
-                        <plugin>
+            <plugin>
                 <groupId>com.github.webdriverextensions</groupId>
                 <artifactId>webdriverextensions-maven-plugin</artifactId>
                 <version>3.1.1</version>
@@ -335,7 +335,7 @@
                 <configuration>
                     <drivers>
                         <driver>
-                            <name>geckodriver</name>
+                            <name>phantomjs</name>
                         </driver>
                     </drivers>
                 </configuration>
