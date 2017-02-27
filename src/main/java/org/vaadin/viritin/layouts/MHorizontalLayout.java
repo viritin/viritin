@@ -1,16 +1,16 @@
 package org.vaadin.viritin.layouts;
 
-import com.vaadin.server.Resource;
-import com.vaadin.shared.ui.MarginInfo;
+import java.util.Collection;
+
+import org.vaadin.viritin.fluency.ui.FluentHorizontalLayout;
+
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
-import org.vaadin.viritin.MSize;
 
-import java.util.Collection;
-
-public class MHorizontalLayout extends HorizontalLayout {
+public class MHorizontalLayout extends HorizontalLayout
+        implements FluentHorizontalLayout<MHorizontalLayout> {
 
     private static final long serialVersionUID = 524957578263653250L;
 
@@ -24,62 +24,6 @@ public class MHorizontalLayout extends HorizontalLayout {
 
     public MHorizontalLayout with(Component... components) {
         addComponents(components);
-        return this;
-    }
-
-    public MHorizontalLayout withSpacing(boolean spacing) {
-        setSpacing(spacing);
-        return this;
-    }
-
-    public MHorizontalLayout withMargin(boolean marging) {
-        setMargin(marging);
-        return this;
-    }
-
-    public MHorizontalLayout withMargin(MarginInfo marginInfo) {
-        setMargin(marginInfo);
-        return this;
-    }
-
-    public MHorizontalLayout withIcon(Resource icon) {
-        setIcon(icon);
-        return this;
-    }
-
-    public MHorizontalLayout withWidth(String width) {
-        setWidth(width);
-        return this;
-    }
-
-    public MHorizontalLayout withWidth(float width, Unit unit) {
-        setWidth(width, unit);
-        return this;
-    }
-
-    public MHorizontalLayout withFullWidth() {
-        setWidth("100%");
-        return this;
-    }
-
-    public MHorizontalLayout withHeight(String height) {
-        setHeight(height);
-        return this;
-    }
-
-    public MHorizontalLayout withHeight(float height, Unit unit) {
-        setHeight(height, unit);
-        return this;
-    }
-
-    public MHorizontalLayout withFullHeight() {
-        setHeight("100%");
-        return this;
-    }
-
-    public MHorizontalLayout withSize(MSize size) {
-        setWidth(size.getWidth(), size.getWidthUnit());
-        setHeight(size.getHeight(), size.getHeightUnit());
         return this;
     }
 
@@ -143,24 +87,6 @@ public class MHorizontalLayout extends HorizontalLayout {
         return this;
     }
 
-    public MHorizontalLayout withCaption(String caption) {
-        setCaption(caption);
-        return this;
-    }
-
-    public MHorizontalLayout withCaption(String caption, boolean captionAsHtml) {
-        setCaption(caption);
-        setCaptionAsHtml(captionAsHtml);
-        return this;
-    }
-
-    public MHorizontalLayout withStyleName(String... styleNames) {
-        for (String styleName : styleNames) {
-            addStyleName(styleName);
-        }
-        return this;
-    }
-
     /**
      * Adds "spacer" to layout that expands to consume remaining space. If
      * multiple spacers are added they share equally sized slot. Also tries to
@@ -170,17 +96,6 @@ public class MHorizontalLayout extends HorizontalLayout {
      */
     public MHorizontalLayout space() {
         return expand(new Label());
-    }
-
-
-    public MHorizontalLayout withEnabled(boolean enabled) {
-        setEnabled(enabled);
-        return this;
-    }
-
-    public MHorizontalLayout withVisible(boolean visible) {
-        setVisible(visible);
-        return this;
     }
 
     public MHorizontalLayout withSizeUndefined() {
@@ -197,25 +112,4 @@ public class MHorizontalLayout extends HorizontalLayout {
         setHeightUndefined();
         return this;
     }
-
-    public MHorizontalLayout withResponsive(boolean responsive) {
-        setResponsive(responsive);
-        return this;
-    }
-
-    public MHorizontalLayout withDefaultComponentAlignment(Alignment defaultAlignment) {
-        setDefaultComponentAlignment(defaultAlignment);
-        return this;
-    }
-
-    public MHorizontalLayout withId(String id) {
-        setId(id);
-        return this;
-    }
-
-    public MHorizontalLayout withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
 }

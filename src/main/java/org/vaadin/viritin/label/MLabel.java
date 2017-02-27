@@ -15,15 +15,16 @@
  */
 package org.vaadin.viritin.label;
 
-import com.vaadin.shared.ui.ContentMode;
-import org.vaadin.viritin.MSize;
+import org.vaadin.viritin.fluency.server.FluentSizeable;
+import org.vaadin.viritin.fluency.ui.FluentAbstractComponent;
 
+import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.ui.Label;
 
 /**
  * Fluent Label
  */
-public class MLabel extends Label {
+public class MLabel extends Label implements FluentAbstractComponent<MLabel> {
 
     private static final long serialVersionUID = -635245868195615938L;
 
@@ -40,15 +41,11 @@ public class MLabel extends Label {
         setCaption(caption);
     }
 
-    public MLabel withCaption(String caption) {
-        setCaption(caption);
-        return this;
-    }
-
     /**
      * equals to withValue
      *
-     * @param content value of label
+     * @param content
+     *            value of label
      * @return itself
      */
     public MLabel withContent(String content) {
@@ -66,63 +63,13 @@ public class MLabel extends Label {
         return this;
     }
 
-    public MLabel withWidth(String width) {
-        setWidth(width);
-        return this;
-    }
-
-    public MLabel withHeight(String height) {
-        setHeight(height);
-        return this;
-    }
-
-    public MLabel withSize(String width, String height) {
-        setWidth(width);
-        setHeight(height);
-        return this;
-    }
-
-    public MLabel withSize(MSize mSize) {
-        setWidth(mSize.getWidth(), mSize.getWidthUnit());
-        setHeight(mSize.getHeight(), mSize.getHeightUnit());
-        return this;
-    }
-
-    public MLabel withStyleName(String... styleNames) {
-        for (String styleName : styleNames) {
-            addStyleName(styleName);
-        }
-        return this;
-    }
-
-    public MLabel withFullWidth() {
-        setWidth("100%");
-        return this;
-    }
-
-    public MLabel withFullHeight() {
-        setHeight("100%");
-        return this;
-    }
-
+    /**
+     * 
+     * @deprecated use {@link FluentSizeable#withUndefinedHeight()} instead
+     */
+    @Deprecated
     public MLabel withWidthUndefined() {
         setWidthUndefined();
         return this;
     }
-
-    public MLabel withEnabled(boolean enabled) {
-        setEnabled(enabled);
-        return this;
-    }
-
-    public MLabel withVisible(boolean visible) {
-        setVisible(visible);
-        return this;
-    }
-
-    public MLabel withId(String id) {
-        setId(id);
-        return this;
-    }
-
 }

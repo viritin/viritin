@@ -1,15 +1,15 @@
 package org.vaadin.viritin.layouts;
 
-import com.vaadin.server.Resource;
-import com.vaadin.shared.ui.MarginInfo;
+import java.util.Collection;
+
+import org.vaadin.viritin.fluency.ui.FluentVerticalLayout;
+
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.VerticalLayout;
-import org.vaadin.viritin.MSize;
 
-import java.util.Collection;
-
-public class MVerticalLayout extends VerticalLayout {
+public class MVerticalLayout extends VerticalLayout
+        implements FluentVerticalLayout<MVerticalLayout> {
 
     private static final long serialVersionUID = -1806208156595232451L;
 
@@ -23,47 +23,6 @@ public class MVerticalLayout extends VerticalLayout {
 
     public MVerticalLayout with(Component... components) {
         addComponents(components);
-        return this;
-    }
-
-    public MVerticalLayout withSpacing(boolean spacing) {
-        setSpacing(spacing);
-        return this;
-    }
-
-    public MVerticalLayout withMargin(boolean marging) {
-        setMargin(marging);
-        return this;
-    }
-
-    public MVerticalLayout withMargin(MarginInfo marginInfo) {
-        setMargin(marginInfo);
-        return this;
-    }
-
-    public MVerticalLayout withWidth(String width) {
-        setWidth(width);
-        return this;
-    }
-
-    public MVerticalLayout withFullWidth() {
-        setWidth("100%");
-        return this;
-    }
-
-    public MVerticalLayout withHeight(String height) {
-        setHeight(height);
-        return this;
-    }
-
-    public MVerticalLayout withFullHeight() {
-        setHeight("100%");
-        return this;
-    }
-
-    public MVerticalLayout withSize(MSize size) {
-        setWidth(size.getWidth(), size.getWidthUnit());
-        setHeight(size.getHeight(), size.getHeightUnit());
         return this;
     }
 
@@ -126,39 +85,6 @@ public class MVerticalLayout extends VerticalLayout {
         return this;
     }
 
-    public MVerticalLayout withCaption(String caption) {
-        setCaption(caption);
-        return this;
-    }
-
-    public MVerticalLayout withCaption(String caption, boolean captionAsHtml) {
-        setCaption(caption);
-        setCaptionAsHtml(captionAsHtml);
-        return this;
-    }
-
-    public MVerticalLayout withStyleName(String... styleNames) {
-        for (String styleName : styleNames) {
-            addStyleName(styleName);
-        }
-        return this;
-    }
-
-    public MVerticalLayout withIcon(Resource icon) {
-        setIcon(icon);
-        return this;
-    }
-
-    public MVerticalLayout withEnabled(boolean enabled) {
-        setEnabled(enabled);
-        return this;
-    }
-
-    public MVerticalLayout withVisible(boolean visible) {
-        setVisible(visible);
-        return this;
-    }
-
     public MVerticalLayout withSizeUndefined() {
         setSizeUndefined();
         return this;
@@ -171,26 +97,6 @@ public class MVerticalLayout extends VerticalLayout {
 
     public MVerticalLayout withHeightUndefined() {
         setHeightUndefined();
-        return this;
-    }
-
-    public MVerticalLayout withResponsive(boolean responsive) {
-        setResponsive(responsive);
-        return this;
-    }
-
-    public MVerticalLayout withDefaultComponentAlignment(Alignment defaultAlignment) {
-        setDefaultComponentAlignment(defaultAlignment);
-        return this;
-    }
-
-    public MVerticalLayout withId(String id) {
-        setId(id);
-        return this;
-    }
-
-    public MVerticalLayout withDescription(String description) {
-        setDescription(description);
         return this;
     }
 
