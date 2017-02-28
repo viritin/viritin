@@ -17,8 +17,7 @@ package org.vaadin.viritin.it.aspect;
 
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.vaadin.addonhelpers.automated.AbstractWebDriverCase;
 import org.vaadin.addonhelpers.automated.VaadinConditions;
@@ -27,8 +26,7 @@ public class AspectAttributeTest extends AbstractWebDriverCase {
 
 
     public AspectAttributeTest() {
-        FirefoxProfile profile = new FirefoxProfile();
-        WebDriver webDriver = new FirefoxDriver(profile);
+        WebDriver webDriver = new PhantomJSDriver();
         startBrowser(webDriver);
     }
 

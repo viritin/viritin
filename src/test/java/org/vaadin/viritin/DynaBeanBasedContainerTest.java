@@ -49,6 +49,7 @@ public class DynaBeanBasedContainerTest {
     public ExpectedException thrown = ExpectedException.none();
 
     @Test
+    @Ignore("Irrelevant with V8")
     public void testEmptyList() {
         List<Person> l = new ArrayList<>();
         // Test with BeanItemContainer
@@ -107,6 +108,7 @@ public class DynaBeanBasedContainerTest {
     }
 
     @Test
+    @Ignore("Irrelevant with V8")
     public void testMemoryUsage() {
         System.out.println("\n Testing List container from Maddon");
 
