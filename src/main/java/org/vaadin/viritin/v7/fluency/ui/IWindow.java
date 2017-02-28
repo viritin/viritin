@@ -1,6 +1,6 @@
 package org.vaadin.viritin.v7.fluency.ui;
 
-import org.vaadin.viritin.ui.FluentPanel;
+import org.vaadin.viritin.fluency.ui.FluentPanel;
 import org.vaadin.viritin.v7.fluency.event.FluentFieldEvents.FluentBlurNotifier;
 import org.vaadin.viritin.v7.fluency.event.FluentFieldEvents.FluentFocusNotifier;
 
