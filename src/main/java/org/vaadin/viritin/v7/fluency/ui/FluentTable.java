@@ -17,9 +17,9 @@ package org.vaadin.viritin.v7.fluency.ui;
 
 import java.util.Collection;
 
+import org.vaadin.viritin.fluency.event.FluentAction;
 import org.vaadin.viritin.fluency.ui.FluentHasComponents;
 import org.vaadin.viritin.v7.fluency.data.FluentContainer;
-import org.vaadin.viritin.v7.fluency.event.FluentAction;
 import org.vaadin.viritin.v7.fluency.event.FluentItemClickEvent;
 
 import com.vaadin.event.dd.DropHandler;

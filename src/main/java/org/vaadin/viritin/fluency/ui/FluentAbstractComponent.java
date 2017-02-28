@@ -164,4 +164,5 @@ public interface FluentAbstractComponent<S extends FluentAbstractComponent<S>>
         setCaption(caption);
         return withCaptionAsHtml(captionAsHtml);
     }
+
 }

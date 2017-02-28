@@ -1,6 +1,4 @@
-package org.vaadin.viritin.v7.fluency.ui;
-
-import org.vaadin.viritin.fluency.ui.FluentHasComponents;
+package org.vaadin.viritin.fluency.ui;
 
 import com.vaadin.ui.Component;
 import com.vaadin.ui.SingleComponentContainer;
@@ -21,5 +19,8 @@ public interface FluentSingleComponentContainer<S extends FluentSingleComponentC
      * @return this (for method chaining)
      * @see SingleComponentContainer#addComponent(com.vaadin.ui.Component)
      */
-    public S withContent(Component content);
+    public default S withContent(Component content) {
+        ((SingleComponentContainer) this).setContent(content);
+        return (S) this;
+    }
 }

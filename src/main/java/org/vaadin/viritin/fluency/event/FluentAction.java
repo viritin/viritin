@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vaadin.viritin.v7.fluency.event;
+package org.vaadin.viritin.fluency.event;
 
 import com.vaadin.event.Action;
 import com.vaadin.event.ShortcutListener;
@@ -31,7 +31,8 @@ public class FluentAction extends Action {
     /**
      * Constructs a new action with the given caption.
      *
-     * @param caption the caption for the new action.
+     * @param caption
+     *            the caption for the new action.
      */
     public FluentAction(String caption) {
         super(caption);
@@ -41,8 +42,10 @@ public class FluentAction extends Action {
     /**
      * Constructs a new action with the given caption string and icon.
      *
-     * @param caption the caption for the new action.
-     * @param icon the icon for the new action.
+     * @param caption
+     *            the caption for the new action.
+     * @param icon
+     *            the icon for the new action.
      */
     public FluentAction(String caption, Resource icon) {
         super(caption, icon);
@@ -57,13 +60,18 @@ public class FluentAction extends Action {
      */
     public interface FluentNotifier<S extends FluentNotifier<S>>
             extends Notifier, FluentContainer<S> {
-        public <T extends Action & Action.Listener> S withAction(T action);
+        public default <T extends Action & Action.Listener> S withAction(
+                T action) {
+            ((Notifier) this).addAction(action);
+            return (S) this;
+        }
     }
-    
+
     /**
      * A {@link ShortcutNotifier} complemented by fluent setters.
      *
-     * @param <S> Self-referential generic type
+     * @param <S>
+     *            Self-referential generic type
      * @see ShortcutNotifier
      */
     public interface FluentShortcutNotifier<S extends FluentShortcutNotifier<S>>
@@ -76,7 +84,8 @@ public class FluentAction extends Action {
     /**
      * A {@link Container} complemented by fluent setters.
      *
-     * @param <S> Self-referential generic type
+     * @param <S>
+     *            Self-referential generic type
      * @see Container
      */
     public interface FluentContainer<S extends FluentContainer<S>>
@@ -86,11 +95,15 @@ public class FluentAction extends Action {
         /**
          * Registers a new action handler for this container
          *
-         * @param actionHandler the new handler to be added.
+         * @param actionHandler
+         *            the new handler to be added.
          * @return this (for method chaining)
          * @see #addActionHandler(com.vaadin.event.Action.Handler)
          */
-        public S withActionHandler(Action.Handler actionHandler);
+        public default S withActionHandler(Action.Handler actionHandler) {
+            ((Container) this).addActionHandler(actionHandler);
+            return (S) this;
+        }
 
     }
 
@@ -98,7 +111,8 @@ public class FluentAction extends Action {
     /**
      * Sets the caption.
      *
-     * @param caption the caption to set.
+     * @param caption
+     *            the caption to set.
      * @return This action
      * @see #setCaption(java.lang.String)
      */
@@ -111,7 +125,8 @@ public class FluentAction extends Action {
     /**
      * Sets the icon.
      *
-     * @param icon the icon to set.
+     * @param icon
+     *            the icon to set.
      * @return This action
      * @see #setIcon(com.vaadin.server.Resource)
      */
