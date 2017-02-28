@@ -1,7 +1,8 @@
 package org.vaadin.viritin.fields;
 
-import com.vaadin.event.FieldEvents;
 import org.apache.commons.lang3.StringUtils;
+
+import com.vaadin.event.FieldEvents;
 
 /**
  * An field to edit integers.
@@ -14,7 +15,7 @@ import org.apache.commons.lang3.StringUtils;
  *
  * @author Matti Tahvonen
  */
-public class IntegerField extends AbstractNumberField<Integer> {
+public class IntegerField extends AbstractNumberField<IntegerField, Integer> {
 
     private static final long serialVersionUID = 377246000306551089L;
     private Integer value;
@@ -34,31 +35,6 @@ public class IntegerField extends AbstractNumberField<Integer> {
         } else {
             value = null;
         }
-    }
-
-    public IntegerField withCaption(String caption) {
-        setCaption(caption);
-        return this;
-    }
-
-    public IntegerField withId(String id) {
-        setId(id);
-        return this;
-    }
-
-    public IntegerField withFullWidth() {
-        setWidth("100%");
-        return this;
-    }
-
-    public IntegerField withWidth(float width, Unit unit) {
-        setWidth(width, unit);
-        return this;
-    }
-
-    public IntegerField withWidth(String width) {
-        setWidth(width);
-        return this;
     }
 
     @Override
