@@ -1,7 +1,9 @@
 package org.vaadin.viritin.fields;
 
-import com.vaadin.ui.TextField;
+import org.vaadin.viritin.fluency.ui.FluentTextField;
 import org.vaadin.viritin.util.HtmlElementPropertySetter;
+
+import com.vaadin.ui.TextField;
 
 /**
  * Special field type for inputting email address. The type of the field is just
@@ -11,7 +13,8 @@ import org.vaadin.viritin.util.HtmlElementPropertySetter;
  *
  * @author Matti Tahvonen
  */
-public class EmailField extends TextField {
+public class EmailField extends TextField
+        implements FluentTextField<EmailField> {
 
     private static final long serialVersionUID = -4717961169375147779L;
 
