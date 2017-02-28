@@ -45,7 +45,10 @@ public interface FluentFieldEvents extends FieldEvents {
          * @return this (for method chaining)
          * @see #addFocusListener(com.vaadin.event.FieldEvents.FocusListener)
          */
-        public S withFocusListener(FocusListener listener);
+        public default S withFocusListener(FocusListener listener) {
+            ((FocusNotifier) this).addFocusListener(listener);
+            return (S) this;
+        }
 
     }
 
@@ -67,7 +70,10 @@ public interface FluentFieldEvents extends FieldEvents {
          * @return this (for method chaining)
          * @see #addBlurListener(com.vaadin.event.FieldEvents.BlurListener)
          */
-        public S withBlurListener(BlurListener listener);
+        public default S withBlurListener(BlurListener listener) {
+            ((BlurNotifier) this).addBlurListener(listener);
+            return (S) this;
+        }
 
     }
 
@@ -90,7 +96,10 @@ public interface FluentFieldEvents extends FieldEvents {
          * @see
          * #addTextChangeListener(com.vaadin.event.FieldEvents.TextChangeListener)
          */
-        public S withTextChangeListener(TextChangeListener listener);
+        public default S withTextChangeListener(TextChangeListener listener) {
+            ((TextChangeNotifier) this).addTextChangeListener(listener);
+            return (S) this;
+        }
 
     }
 

@@ -18,16 +18,18 @@ package org.vaadin.viritin.v7.fluency.ui;
 import org.vaadin.viritin.fluency.ui.FluentAbstractComponent;
 import org.vaadin.viritin.v7.fluency.data.FluentProperty;
 
-import com.vaadin.ui.AbstractField;
 import com.vaadin.v7.data.util.converter.Converter;
+import com.vaadin.v7.ui.AbstractField;
 
 /**
  * A {@link AbstractField} complemented by fluent setters.
  *
  * @author Max Schuster
- * @param <S> Self-referential generic type
- * @param <T> The type of values in the field, which might not be the same type
- * as that of the data source if converters are used
+ * @param <S>
+ *            Self-referential generic type
+ * @param <T>
+ *            The type of values in the field, which might not be the same type
+ *            as that of the data source if converters are used
  * @see AbstractField
  */
 public interface FluentAbstractField<S extends FluentAbstractField<S, T>, T>
@@ -40,12 +42,16 @@ public interface FluentAbstractField<S extends FluentAbstractField<S, T>, T>
      * for the application. Clears the converter if no application reference is
      * available or if the factory returns null.
      *
-     * @param datamodelType The type of the data model that we want to be able
-     * to convert from
+     * @param datamodelType
+     *            The type of the data model that we want to be able to convert
+     *            from
      * @return this (for method chaining)
      * @see AbstractField#setConverter(java.lang.Class)
      */
-    public S withConverter(Class<?> datamodelType);
+    public default S withConverter(Class<?> datamodelType) {
+        ((AbstractField<T>) this).setConverter(datamodelType);
+        return (S) this;
+    }
 
     // Javadoc copied form Vaadin Framework
     /**
@@ -54,11 +60,15 @@ public interface FluentAbstractField<S extends FluentAbstractField<S, T>, T>
      * field. This will update the property data source in the same way as when
      * {@link #setValue(Object)} is called.
      *
-     * @param value The value to set. Must be the same type as the data source.
+     * @param value
+     *            The value to set. Must be the same type as the data source.
      * @return this (for method chaining)
      * @see AbstractField#setConvertedValue(java.lang.Object)
      */
-    public S withConvertedValue(Object value);
+    public default S withConvertedValue(Object value) {
+        ((AbstractField<S>) this).setConvertedValue(value);
+        return (S) this;
+    }
 
     // Javadoc copied form Vaadin Framework
     /**
@@ -67,12 +77,15 @@ public interface FluentAbstractField<S extends FluentAbstractField<S, T>, T>
      * replaced by the simple name of the data source type. If {1} is present in
      * the message, it will be replaced by the ConversionException message.
      *
-     * @param valueConversionError Message to be shown when conversion of the
-     * value fails
+     * @param valueConversionError
+     *            Message to be shown when conversion of the value fails
      * @return this (for method chaining)
      * @see AbstractField#setConversionError(java.lang.String)
      */
-    public S withConversionError(String valueConversionError);
+    public default S withConversionError(String valueConversionError) {
+        ((AbstractField<S>) this).setConversionError(valueConversionError);
+        return (S) this;
+    }
 
     // Javadoc copied form Vaadin Framework
     /**
@@ -84,23 +97,31 @@ public interface FluentAbstractField<S extends FluentAbstractField<S, T>, T>
      * isValid() and validate() methods still work, but one must show the
      * validation in their own code.
      *
-     * @param validateAutomatically True, if automatic validation is enabled.
+     * @param validateAutomatically
+     *            True, if automatic validation is enabled.
      * @return this (for method chaining)
      * @see AbstractField#setValidationVisible(boolean)
      */
-    public S withValidationVisible(boolean validateAutomatically);
+    public default S withValidationVisible(boolean validateAutomatically) {
+        ((AbstractField<T>) this).setValidationVisible(validateAutomatically);
+        return (S) this;
+    }
 
     // Javadoc copied form Vaadin Framework
     /**
      * Sets the current buffered source exception.
      *
-     * @param currentBufferedSourceException The new current buffered source
-     * exception.
+     * @param currentBufferedSourceException
+     *            The new current buffered source exception.
      * @return this (for method chaining)
-     * @see
-     * AbstractField#setCurrentBufferedSourceException(com.vaadin.data.Buffered.SourceException)
+     * @see AbstractField#setCurrentBufferedSourceException(com.vaadin.data.Buffered.SourceException)
      */
-    public S withCurrentBufferedSourceException(SourceException currentBufferedSourceException);
+    public default S withCurrentBufferedSourceException(
+            SourceException currentBufferedSourceException) {
+        ((AbstractField<T>) this).setCurrentBufferedSourceException(
+                currentBufferedSourceException);
+        return (S) this;
+    }
 
     // Javadoc copied form Vaadin Framework
     /**
@@ -108,10 +129,14 @@ public interface FluentAbstractField<S extends FluentAbstractField<S, T>, T>
      * source type. The converter must have a presentation type that matches the
      * field type.
      *
-     * @param converter The new converter to use.
+     * @param converter
+     *            The new converter to use.
      * @return this (for method chaining)
      * @see AbstractField#setConverter(com.vaadin.data.util.converter.Converter)
      */
-    public S withConverter(Converter<T, ?> converter);
+    public default S withConverter(Converter<T, ?> converter) {
+        ((AbstractField<T>) this).setConverter(converter);
+        return (S) this;
+    }
 
 }

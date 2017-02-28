@@ -44,7 +44,10 @@ public interface FluentField<S extends FluentField<S, T>, T> extends Field<T>,
      * @return this (for method chaining)
      * @see #setRequired(boolean)
      */
-    public S withRequired(boolean required);
+    public default S withRequired(boolean required) {
+        ((Field) this).setRequired(required);
+        return (S) this;
+    }
 
     // Javadoc copied form Vaadin Framework
     /**
@@ -54,6 +57,9 @@ public interface FluentField<S extends FluentField<S, T>, T> extends Field<T>,
      * @return this (for method chaining)
      * @see #setRequiredError(java.lang.String)
      */
-    public S withRequiredError(String requiredMessage);
+    public default S withRequiredError(String requiredMessage) {
+        ((Field) this).setRequiredError(requiredMessage);
+        return (S) this;
+    }
 
 }

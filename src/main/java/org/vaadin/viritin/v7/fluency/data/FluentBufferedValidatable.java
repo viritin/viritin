@@ -37,6 +37,9 @@ public interface FluentBufferedValidatable<S extends FluentBufferedValidatable<S
      * @return this (for method chaining)
      * @see #setInvalidCommitted(boolean)
      */
-    public S withInvalidCommitted(boolean isCommitted);
+    public default S withInvalidCommitted(boolean isCommitted) {
+        ((BufferedValidatable) this).setInvalidCommitted(isCommitted);
+        return (S) this;
+    }
 
 }

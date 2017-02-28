@@ -39,7 +39,10 @@ public interface FluentValidatable<S extends FluentValidatable<S>>
      * @return this (for method chaining)
      * @see #addValidator(com.vaadin.data.Validator)
      */
-    public S withValidator(Validator validator);
+    public default S withValidator(Validator validator) {
+        ((Validatable) this).addValidator(validator);
+        return (S) this;
+    }
 
     // Javadoc copied form Vaadin Framework
     /**
@@ -53,7 +56,10 @@ public interface FluentValidatable<S extends FluentValidatable<S>>
      * @return this (for method chaining)
      * @see #setInvalidAllowed(boolean)
      */
-    public S withInvalidAllowed(boolean invalidValueAllowed)
-            throws UnsupportedOperationException;
+    public default S withInvalidAllowed(boolean invalidValueAllowed)
+            throws UnsupportedOperationException {
+        ((Validatable) this).setInvalidAllowed(invalidValueAllowed);
+        return (S) this;
+    }
 
 }

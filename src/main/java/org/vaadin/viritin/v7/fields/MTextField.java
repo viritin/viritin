@@ -15,22 +15,22 @@
  */
 package org.vaadin.viritin.v7.fields;
 
-import com.vaadin.event.FieldEvents.BlurListener;
 import java.util.EventObject;
 import java.util.Map;
 
 import org.vaadin.viritin.util.HtmlElementPropertySetter;
+import org.vaadin.viritin.v7.fluency.ui.FluentTextField;
 
+import com.vaadin.server.AbstractErrorMessage;
+import com.vaadin.server.CompositeErrorMessage;
+import com.vaadin.server.ErrorMessage;
+import com.vaadin.server.Resource;
 import com.vaadin.v7.data.Property;
 import com.vaadin.v7.data.Validator;
 import com.vaadin.v7.data.util.converter.Converter;
 import com.vaadin.v7.data.util.converter.ConverterUtil;
 import com.vaadin.v7.event.FieldEvents;
 import com.vaadin.v7.event.FieldEvents.TextChangeEvent;
-import com.vaadin.server.AbstractErrorMessage;
-import com.vaadin.server.CompositeErrorMessage;
-import com.vaadin.server.ErrorMessage;
-import com.vaadin.server.Resource;
 import com.vaadin.v7.ui.TextField;
 
 /**
@@ -38,7 +38,8 @@ import com.vaadin.v7.ui.TextField;
  * "nullRepresentation" (""), adds support for "eager validation" (~ validate
  * while typing) and adds some fluent APIs.
  */
-public class MTextField extends TextField implements EagerValidateable {
+public class MTextField extends TextField
+        implements EagerValidateable, FluentTextField<MTextField> {
 
     private static final long serialVersionUID = -9001913175922725871L;
 
@@ -79,10 +80,6 @@ public class MTextField extends TextField implements EagerValidateable {
         super(caption, value);
     }
 
-    public MTextField withCaption(String caption) {
-        setCaption(caption);
-        return this;
-    }
 
     @Override
     protected void setValue(String newFieldValue, boolean repaintIsNotNeeded) throws ReadOnlyException, Converter.ConversionException, Validator.InvalidValueException {
@@ -119,100 +116,6 @@ public class MTextField extends TextField implements EagerValidateable {
         return lastKnownTextChangeValue;
     }
 
-    public MTextField withConversionError(String message) {
-        setConversionError(message);
-        return this;
-    }
-
-    public MTextField withConverter(Converter<String, ?> converter) {
-        setConverter(converter);
-        return this;
-    }
-
-    public MTextField withFullWidth() {
-        setWidth("100%");
-        return this;
-    }
-
-
-    public MTextField withValue(String value) {
-        setValue(value);
-        return this;
-    }
-
-    public MTextField withInputPrompt(String inputPrompt) {
-        setInputPrompt(inputPrompt);
-        return this;
-    }
-
-    public MTextField withReadOnly(boolean readOnly) {
-        setReadOnly(readOnly);
-        return this;
-    }
-
-    public MTextField withValidator(Validator validator) {
-        setImmediate(true);
-        addValidator(validator);
-        return this;
-    }
-
-    public MTextField withWidth(float width, Unit unit) {
-        setWidth(width, unit);
-        return this;
-    }
-
-    public MTextField withWidth(String width) {
-        setWidth(width);
-        return this;
-    }
-
-    public MTextField withNullRepresentation(String nullRepresentation) {
-        setNullRepresentation(nullRepresentation);
-        return this;
-    }
-
-    public MTextField withStyleName(String... styleNames) {
-        for (String styleName : styleNames) {
-            addStyleName(styleName);
-        }
-        return this;
-    }
-
-    public MTextField withIcon(Resource icon) {
-        setIcon(icon);
-        return this;
-    }
-
-    public MTextField withRequired(boolean required) {
-        setRequired(required);
-        return this;
-    }
-
-    public MTextField withRequiredError(String requiredError) {
-        setRequiredError(requiredError);
-        return this;
-    }
-
-    public MTextField withVisible(boolean visible) {
-        setVisible(visible);
-        return this;
-    }
-
-    public MTextField withTextChangeListener(FieldEvents.TextChangeListener listener) {
-        addTextChangeListener(listener);
-        return this;
-    }
-
-    public MTextField withValueChangeListener(Property.ValueChangeListener listener) {
-        addValueChangeListener(listener);
-        return this;
-    }
-
-    public MTextField withBlurListener(BlurListener listener) {
-        addBlurListener(listener);
-        return this;
-    }
-
     public void setSpellcheck(Boolean spellcheck) {
         this.spellcheck = spellcheck;
     }
@@ -225,12 +128,6 @@ public class MTextField extends TextField implements EagerValidateable {
         setSpellcheck(false);
         return this;
     }
-
-    public MTextField withId(String id) {
-        setId(id);
-        return this;
-    }
-
 
     public enum AutoComplete {
         on, off

@@ -49,7 +49,10 @@ public interface FluentProperty<S extends FluentComponent<S> & FluentProperty<S,
      * @return this (for method chaining)
      * @see #setValue(java.lang.Object)
      */
-    public S withValue(T newValue) throws Property.ReadOnlyException;
+    public default S withValue(T newValue) throws Property.ReadOnlyException {
+        ((Property<T>) this).setValue(newValue);
+        return (S) this;
+    }
 
     // Javadoc copied form Vaadin Framework
     /**
@@ -62,7 +65,10 @@ public interface FluentProperty<S extends FluentComponent<S> & FluentProperty<S,
      * @return this (for method chaining)
      * @see #setReadOnly(boolean)
      */
-    public S withReadOnly(boolean newStatus);
+    public default S withReadOnly(boolean newStatus) {
+        ((Property) this).setReadOnly(newStatus);
+        return (S) this;
+    }
 
     /**
      * A {@link ValueChangeNotifier} complemented by fluent setters.
@@ -80,7 +86,11 @@ public interface FluentProperty<S extends FluentComponent<S> & FluentProperty<S,
          * @param listener the new Listener to be registered
          * @return this (for method chaining)
          */
-        public S withValueChangeListener(Property.ValueChangeListener listener);
+        public default S withValueChangeListener(
+                Property.ValueChangeListener listener) {
+            ((ValueChangeNotifier) this).addValueChangeListener(listener);
+            return (S) this;
+        }
 
     }
     
@@ -111,7 +121,10 @@ public interface FluentProperty<S extends FluentComponent<S> & FluentProperty<S,
          * @see #setPropertyDataSource(com.vaadin.data.Property) 
          */
         @SuppressWarnings("rawtypes")
-        public S withPropertyDataSource(Property newDataSource);
+        public default S withPropertyDataSource(Property newDataSource) {
+            ((Viewer) this).setPropertyDataSource(newDataSource);
+            return (S) this;
+        }
 
     }
 
@@ -134,8 +147,12 @@ public interface FluentProperty<S extends FluentComponent<S> & FluentProperty<S,
          * @see
          * #addReadOnlyStatusChangeListener(com.vaadin.data.Property.ReadOnlyStatusChangeListener)
          */
-        public S withReadOnlyStatusChangeListener(
-                Property.ReadOnlyStatusChangeListener listener);
+        public default S withReadOnlyStatusChangeListener(
+                Property.ReadOnlyStatusChangeListener listener) {
+            ((ReadOnlyStatusChangeNotifier) this)
+                    .addReadOnlyStatusChangeListener(listener);
+            return (S) this;
+        }
 
     }
 
