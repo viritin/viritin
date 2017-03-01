@@ -1,5 +1,7 @@
 package org.vaadin.viritin.v7.fields;
 
+import org.vaadin.viritin.fields.CaptionGenerator;
+
 /**
  * Base implementation of the {@link CaptionGenerator} interface. Ensures an
  * empty string as caption if parameter is null.

@@ -1,11 +1,12 @@
 package org.vaadin.viritin.fields;
 
+import org.vaadin.viritin.fluency.ui.FluentCustomField;
+import org.vaadin.viritin.util.HtmlElementPropertySetter;
+
 import com.vaadin.event.FieldEvents;
 import com.vaadin.event.FieldEvents.BlurListener;
 import com.vaadin.event.FieldEvents.FocusListener;
 import com.vaadin.shared.Registration;
-import org.vaadin.viritin.util.HtmlElementPropertySetter;
-
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomField;
 import com.vaadin.ui.TextField;
@@ -14,8 +15,10 @@ import com.vaadin.ui.TextField;
  * @param <T> field value type
  * @author Matti Tahvonen
  */
-public abstract class AbstractNumberField<T> extends CustomField<T> 
-        implements FieldEvents.FocusNotifier, FieldEvents.BlurNotifier {
+public abstract class AbstractNumberField<S extends AbstractNumberField<S, T>, T>
+        extends CustomField<T>
+        implements FieldEvents.FocusNotifier, FieldEvents.BlurNotifier,
+        FluentCustomField<S, T> {
 
     private static final long serialVersionUID = 5925606478174987241L;
 
@@ -132,7 +135,7 @@ public abstract class AbstractNumberField<T> extends CustomField<T>
      * @param listener the listener to be added
      * @return this instance
      */
-    public AbstractNumberField<T> withBlurListener(BlurListener listener) {
+    public AbstractNumberField<S, T> withBlurListener(BlurListener listener) {
         addBlurListener(listener);
         return this;
     }
@@ -144,7 +147,7 @@ public abstract class AbstractNumberField<T> extends CustomField<T>
      * @param listener the listener to be added
      * @return this instance
      */
-    public AbstractNumberField<T> withFocusListener(FocusListener listener) {
+    public AbstractNumberField<S, T> withFocusListener(FocusListener listener) {
         addFocusListener(listener);
         return this;
     }

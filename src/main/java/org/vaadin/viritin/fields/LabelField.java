@@ -1,10 +1,11 @@
 package org.vaadin.viritin.fields;
 
+import org.vaadin.viritin.fluency.ui.FluentCustomField;
+import org.vaadin.viritin.label.RichText;
+
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomField;
 import com.vaadin.ui.Label;
-import org.vaadin.viritin.label.RichText;
-import org.vaadin.viritin.v7.fields.CaptionGenerator;
 
 /**
  * A field which represents the value always in a label, so it is not editable.
@@ -12,13 +13,14 @@ import org.vaadin.viritin.v7.fields.CaptionGenerator;
  * The use case is a non editable value in a form, e.g. an id.
  * <p>
  * The creation of the label text can be controlled via a
- * {@link org.vaadin.viritin.v7.fields.CaptionGenerator}.
+ * {@link org.vaadin.viritin.fields.CaptionGenerator}.
  *
  * @author Daniel Nordhoff-Vergien
  *
  * @param <T> the type of the entity
  */
-public class LabelField<T> extends CustomField<T> {
+public class LabelField<T> extends CustomField<T>
+        implements FluentCustomField<LabelField<T>, T> {
 
     private static final long serialVersionUID = -3079451926367430515L;
 
@@ -59,31 +61,6 @@ public class LabelField<T> extends CustomField<T> {
     private Label label = new RichText();
 
     public LabelField() {
-    }
-
-    public LabelField<T> withFullWidth() {
-        setWidth("100%");
-        return this;
-    }
-
-    public LabelField<T> withWidth(float width, Unit unit) {
-        setWidth(width, unit);
-        return this;
-    }
-
-    public LabelField<T> withWidth(String width) {
-        setWidth(width);
-        return this;
-    }
-
-    public LabelField<T> withCaption(String caption) {
-        setCaption(caption);
-        return this;
-    }
-
-    public LabelField<T> withValue(T newFieldValue) {
-        setValue(newFieldValue);
-        return this;
     }
 
     @Override

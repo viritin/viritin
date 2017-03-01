@@ -5,11 +5,11 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.Notification;
 
 import org.vaadin.addonhelpers.AbstractTest;
-import org.vaadin.viritin.v7.fields.CaptionGenerator;
 import org.vaadin.viritin.v7.fields.CheckBoxGroup;
 import org.vaadin.viritin.v7.fields.LabelField;
 import org.vaadin.viritin.v7.fields.MTextField;
 import org.vaadin.viritin.v7.form.AbstractForm;
+import org.vaadin.viritin.fields.CaptionGenerator;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.vaadin.viritin.testdomain.Group;
 import org.vaadin.viritin.testdomain.Person;

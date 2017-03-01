@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.vaadin.viritin.LazyList;
+import org.vaadin.viritin.fields.CaptionGenerator;
 import org.vaadin.viritin.v7.ListContainer;
 import org.vaadin.viritin.util.HtmlElementPropertySetter;
 

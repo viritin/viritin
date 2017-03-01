@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import org.vaadin.viritin.fields.CaptionGenerator;
 import org.vaadin.viritin.v7.ListContainer;
 import org.vaadin.viritin.v7.fields.config.ComboBoxConfig;
 import org.vaadin.viritin.v7.fields.config.ListSelectConfig;

@@ -1,4 +1,4 @@
-package org.vaadin.viritin.v7.fields;
+package org.vaadin.viritin.fields;
 
 import java.io.Serializable;
 

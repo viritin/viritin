@@ -7,7 +7,6 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.themes.ValoTheme;
 
 import org.vaadin.addonhelpers.AbstractTest;
-import org.vaadin.viritin.v7.fields.CaptionGenerator;
 import org.vaadin.viritin.v7.fields.EnumSelect;
 import org.vaadin.viritin.v7.fields.ElementCollectionField;
 import org.vaadin.viritin.v7.fields.IntegerField;
@@ -15,6 +14,7 @@ import org.vaadin.viritin.v7.fields.LabelField;
 import org.vaadin.viritin.v7.fields.MTextField;
 import org.vaadin.viritin.v7.fields.MultiSelectTable;
 import org.vaadin.viritin.v7.form.AbstractForm;
+import org.vaadin.viritin.fields.CaptionGenerator;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.vaadin.viritin.testdomain.Address;
 import org.vaadin.viritin.testdomain.Group;

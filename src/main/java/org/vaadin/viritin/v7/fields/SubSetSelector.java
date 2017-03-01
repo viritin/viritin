@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.vaadin.viritin.button.MButton;
+import org.vaadin.viritin.fields.CaptionGenerator;
 import org.vaadin.viritin.v7.form.AbstractForm;
 import org.vaadin.viritin.layouts.MHorizontalLayout;
 import org.vaadin.viritin.layouts.MVerticalLayout;
