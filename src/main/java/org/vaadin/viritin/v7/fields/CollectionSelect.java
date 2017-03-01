@@ -8,6 +8,8 @@ import com.vaadin.v7.ui.ListSelect;
 import java.util.Collection;
 import java.util.HashSet;
 
+import org.vaadin.viritin.fields.CaptionGenerator;
+
 /**
  * TODO improve this, just copy pasted from archived SmartFields addon.
  * 

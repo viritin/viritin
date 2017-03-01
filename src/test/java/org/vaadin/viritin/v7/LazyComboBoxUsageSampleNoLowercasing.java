@@ -9,7 +9,7 @@ import com.vaadin.ui.Notification;
 import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.viritin.LazyComboBoxUsage;
 import org.vaadin.viritin.LazyList;
-import org.vaadin.viritin.v7.fields.CaptionGenerator;
+import org.vaadin.viritin.fields.CaptionGenerator;
 import org.vaadin.viritin.v7.fields.LazyComboBox;
 import org.vaadin.viritin.v7.fields.MValueChangeEvent;
 import org.vaadin.viritin.v7.fields.MValueChangeListener;

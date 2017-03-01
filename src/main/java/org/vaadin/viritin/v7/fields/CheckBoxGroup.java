@@ -10,6 +10,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import org.vaadin.viritin.fields.CaptionGenerator;
 import org.vaadin.viritin.v7.ListContainer;
 
 import com.vaadin.v7.data.util.converter.Converter;

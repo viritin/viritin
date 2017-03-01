@@ -1,7 +1,7 @@
 package org.vaadin.viritin.v7.fields;
 
 import org.vaadin.viritin.components.*;
-import org.vaadin.viritin.v7.fields.CaptionGenerator;
+import org.vaadin.viritin.fields.CaptionGenerator;
 import org.vaadin.viritin.v7.fields.TypedSelect;
 
 import java.util.Locale;
