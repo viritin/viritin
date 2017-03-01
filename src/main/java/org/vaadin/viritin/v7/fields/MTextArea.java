@@ -15,20 +15,16 @@
  */
 package org.vaadin.viritin.v7.fields;
 
-import com.vaadin.event.FieldEvents.BlurListener;
-import org.vaadin.viritin.MSize;
+import org.vaadin.viritin.v7.fluency.ui.FluentTextArea;
 
 import com.vaadin.v7.data.Property;
-import com.vaadin.v7.data.Validator;
-import com.vaadin.v7.event.FieldEvents;
-import com.vaadin.server.Resource;
 import com.vaadin.v7.ui.TextArea;
 
 /**
  *
  * @author mattitahvonenitmill
  */
-public class MTextArea extends TextArea {
+public class MTextArea extends TextArea implements FluentTextArea<MTextArea> {
 
     private static final long serialVersionUID = 2513695658302975814L;
 
@@ -58,94 +54,5 @@ public class MTextArea extends TextArea {
 
     public MTextArea(String caption, String value) {
         super(caption, value);
-    }
-
-    public MTextArea withRows(int rows) {
-        setRows(rows);
-        return this;
-    }
-
-    public MTextArea withFullWidth() {
-        setWidth("100%");
-        return this;
-    }
-
-    public MTextArea withValue(String value) {
-        setValue(value);
-        return this;
-    }
-
-    public MTextArea withSize(MSize mSize) {
-        setWidth(mSize.getWidth(), mSize.getWidthUnit());
-        setHeight(mSize.getHeight(), mSize.getHeightUnit());
-        return this;
-    }
-
-    public MTextArea withValidator(Validator validator) {
-        setImmediate(true);
-        addValidator(validator);
-        return this;
-    }
-
-    public MTextArea withWidth(String width) {
-        setWidth(width);
-        return this;
-    }
-
-    public MTextArea withWordwrap(boolean wordwrap) {
-        setWordwrap(wordwrap);
-        return this;
-    }
-
-    public MTextArea withNullRepresentation(String nullRepresentation) {
-        setNullRepresentation(nullRepresentation);
-        return this;
-    }
-
-    public MTextArea withTextChangeListener(FieldEvents.TextChangeListener listener) {
-        addTextChangeListener(listener);
-        return this;
-    }
-
-    public MTextArea withValueChangeListener(Property.ValueChangeListener listener) {
-        addValueChangeListener(listener);
-        return this;
-    }
-
-    public MTextArea withBlurListener(BlurListener listener) {
-        addBlurListener(listener);
-        return this;
-    }
-
-    public MTextArea withStyleName(String... styleNames) {
-        for (String styleName : styleNames) {
-            addStyleName(styleName);
-        }
-        return this;
-    }
-
-    public MTextArea withIcon(Resource icon) {
-        setIcon(icon);
-        return this;
-    }
-
-    public MTextArea withRequired(boolean required) {
-        setRequired(required);
-        return this;
-    }
-
-    public MTextArea withRequiredError(String requiredError) {
-        setRequiredError(requiredError);
-        return this;
-    }
-
-    public MTextArea withId(String id) {
-        setId(id);
-        return this;
-    }
-
-    public MTextArea withVisible(boolean visible) {
-        setVisible(visible);
-        return this;
     }
 }
