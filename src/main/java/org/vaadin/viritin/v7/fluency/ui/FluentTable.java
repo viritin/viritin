@@ -121,7 +121,7 @@ public interface FluentTable<S extends FluentTable<S>> extends
      *
      * @param columnAlignments the Column alignments array.
      * @return this (for method chaining)
-     * @see Table#setColumnAlignments(com.vaadin.ui.Table.Align...)
+     * @see Table#setColumnAlignments(Table.Align...)
      */
     public S withColumnAlignments(Table.Align... columnAlignments);
 
@@ -271,8 +271,7 @@ public interface FluentTable<S extends FluentTable<S>> extends
      * @param propertyId the propertyID identifying the column.
      * @param alignment the desired alignment.
      * @return this (for method chaining)
-     * @see Table#setColumnAlignment(java.lang.Object,
-     * com.vaadin.ui.Table.Align)
+     * @see Table#setColumnAlignment(java.lang.Object, Table.Align)
      */
     public S withColumnAlignment(Object propertyId, Table.Align alignment);
 
@@ -358,7 +357,7 @@ public interface FluentTable<S extends FluentTable<S>> extends
      *
      * @param columnHeaderMode the New value of property columnHeaderMode.
      * @return this (for method chaining)
-     * @see Table#setColumnHeaderMode(com.vaadin.ui.Table.ColumnHeaderMode)
+     * @see Table#setColumnHeaderMode(Table.ColumnHeaderMode)
      */
     public S withColumnHeaderMode(Table.ColumnHeaderMode columnHeaderMode);
 
@@ -407,7 +406,7 @@ public interface FluentTable<S extends FluentTable<S>> extends
      * @param newDataSource the new data source.
      * @param visibleIds IDs of the visible columns
      * @return this (for method chaining)
-     * @see Table#setContainerDataSource(com.vaadin.data.Container,
+     * @see Table#setContainerDataSource(Container,
      * java.util.Collection)
      * @see Table#setContainerDataSource(Container)
      * @see Table#setVisibleColumns(Object[])
@@ -430,11 +429,11 @@ public interface FluentTable<S extends FluentTable<S>> extends
      * left.
      * @return this (for method chaining)
      * @throws UnsupportedOperationException if the operation is not supported.
-     * @see com.vaadin.data.Container#addContainerProperty(Object, Class,
+     * @see Container#addContainerProperty(Object, Class,
      * Object)
      * @see Table#addContainerProperty(java.lang.Object, java.lang.Class,
-     * java.lang.Object, java.lang.String, com.vaadin.server.Resource,
-     * com.vaadin.ui.Table.Align)
+     * java.lang.Object, java.lang.String, Resource,
+     * Table.Align)
      */
     public S withContainerProperty(Object propertyId, Class<?> type,
             Object defaultValue, String columnHeader, Resource columnIcon,
@@ -470,7 +469,7 @@ public interface FluentTable<S extends FluentTable<S>> extends
      * @param generatedColumn the {@link ColumnGenerator} to use for this column
      * @return this (for method chaining)
      * @see Table#addGeneratedColumn(java.lang.Object,
-     * com.vaadin.ui.Table.ColumnGenerator)
+     * Table.ColumnGenerator)
      */
     public S withGeneratedColumn(Object id, Table.ColumnGenerator generatedColumn);
 
@@ -483,7 +482,7 @@ public interface FluentTable<S extends FluentTable<S>> extends
      *
      * @param fieldFactory the field factory to set.
      * @return this (for method chaining)
-     * @see Table#setTableFieldFactory(com.vaadin.ui.TableFieldFactory)
+     * @see Table#setTableFieldFactory(TableFieldFactory)
      * @see Table#isEditable()
      * @see DefaultFieldFactory
      */
@@ -503,7 +502,6 @@ public interface FluentTable<S extends FluentTable<S>> extends
      * @param editable true if table should be editable by user.
      * @return this (for method chaining)
      * @see Table#setEditable(boolean)
-     * @see Field
      * @see TableFieldFactory
      */
     public S withEditable(boolean editable);
@@ -552,7 +550,7 @@ public interface FluentTable<S extends FluentTable<S>> extends
      * @param cellStyleGenerator New cell style generator or null to remove
      * generator.
      * @return this (for method chaining)
-     * @see Table#setCellStyleGenerator(com.vaadin.ui.Table.CellStyleGenerator)
+     * @see Table#setCellStyleGenerator(Table.CellStyleGenerator)
      */
     public S withCellStyleGenerator(Table.CellStyleGenerator cellStyleGenerator);
 
@@ -563,7 +561,7 @@ public interface FluentTable<S extends FluentTable<S>> extends
      *
      * @param newDragMode The drag mode
      * @return this (for method chaining)
-     * @see Table#setDragMode(com.vaadin.ui.Table.TableDragMode)
+     * @see Table#setDragMode(Table.TableDragMode)
      */
     public S withDragMode(Table.TableDragMode newDragMode);
 
@@ -573,7 +571,7 @@ public interface FluentTable<S extends FluentTable<S>> extends
      *
      * @param dropHandler The drop handler of the table
      * @return this (for method chaining)
-     * @see Table#setDropHandler(com.vaadin.event.dd.DropHandler)
+     * @see Table#setDropHandler(DropHandler)
      */
     public S withDropHandler(DropHandler dropHandler);
 
@@ -588,7 +586,7 @@ public interface FluentTable<S extends FluentTable<S>> extends
      *
      * @param mode The select mode of the table
      * @return this (for method chaining)
-     * @see Table#setMultiSelectMode(com.vaadin.shared.ui.MultiSelectMode)
+     * @see Table#setMultiSelectMode(MultiSelectMode)
      */
     public S withMultiSelectMode(MultiSelectMode mode);
 
@@ -604,7 +602,7 @@ public interface FluentTable<S extends FluentTable<S>> extends
      * @param listener The handler which should handle the header click events.
      * @return this (for method chaining)
      * @see
-     * Table#addHeaderClickListener(com.vaadin.ui.Table.HeaderClickListener)
+     * Table#addHeaderClickListener(Table.HeaderClickListener)
      */
     public S withHeaderClickListener(Table.HeaderClickListener listener);
 
@@ -643,7 +641,7 @@ public interface FluentTable<S extends FluentTable<S>> extends
      * @param listener The listener to attach to the Table
      * @return this (for method chaining)
      * @see
-     * Table#addColumnResizeListener(com.vaadin.ui.Table.ColumnResizeListener)
+     * Table#addColumnResizeListener(Table.ColumnResizeListener)
      */
     public S withColumnResizeListener(Table.ColumnResizeListener listener);
 
@@ -655,7 +653,7 @@ public interface FluentTable<S extends FluentTable<S>> extends
      * @param listener The listener to attach to the Table
      * @return this (for method chaining)
      * @see
-     * Table#addColumnReorderListener(com.vaadin.ui.Table.ColumnReorderListener)
+     * Table#addColumnReorderListener(Table.ColumnReorderListener)
      */
     public S withColumnReorderListener(Table.ColumnReorderListener listener);
 
@@ -667,7 +665,7 @@ public interface FluentTable<S extends FluentTable<S>> extends
      * @param listener The listener to attach
      * @return this (for method chaining)
      * @see
-     * Table#addColumnCollapseListener(com.vaadin.ui.Table.ColumnCollapseListener)
+     * Table#addColumnCollapseListener(Table.ColumnCollapseListener)
      */
     public S withColumnCollapseListener(Table.ColumnCollapseListener listener);
 
@@ -679,7 +677,7 @@ public interface FluentTable<S extends FluentTable<S>> extends
      * @param generator The generator to use or null to disable
      * @return this (for method chaining)
      * @see
-     * Table#setItemDescriptionGenerator(com.vaadin.ui.AbstractSelect.ItemDescriptionGenerator)
+     * Table#setItemDescriptionGenerator(AbstractSelect.ItemDescriptionGenerator)
      */
     public S withItemDescriptionGenerator(AbstractSelect.ItemDescriptionGenerator generator);
 
@@ -690,7 +688,7 @@ public interface FluentTable<S extends FluentTable<S>> extends
      *
      * @param generator the new row generator
      * @return this (for method chaining)
-     * @see Table#setRowGenerator(com.vaadin.ui.Table.RowGenerator)
+     * @see Table#setRowGenerator(Table.RowGenerator)
      */
     public S withRowGenerator(Table.RowGenerator generator);
 
@@ -705,8 +703,7 @@ public interface FluentTable<S extends FluentTable<S>> extends
      * @param propertyId The propertyId to format using the converter
      * @param converter The converter to use for the property id
      * @return this (for method chaining)
-     * @see Table#setConverter(java.lang.Object,
-     * com.vaadin.data.util.converter.Converter)
+     * @see Table#setConverter(java.lang.Object, Converter)
      */
     public S withConverter(Object propertyId, Converter<String, ?> converter);
 
@@ -719,7 +716,7 @@ public interface FluentTable<S extends FluentTable<S>> extends
      * @param content the desired collapsible menu content setting
      * @return this (for method chaining)
      * @see
-     * Table#setCollapseMenuContent(com.vaadin.shared.ui.table.CollapseMenuContent)
+     * Table#setCollapseMenuContent(CollapseMenuContent)
      */
     public S withCollapseMenuContent(CollapseMenuContent content);
 

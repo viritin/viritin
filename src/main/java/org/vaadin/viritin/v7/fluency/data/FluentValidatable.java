@@ -37,7 +37,7 @@ public interface FluentValidatable<S extends FluentValidatable<S>>
      *
      * @param validator the new validator
      * @return this (for method chaining)
-     * @see #addValidator(com.vaadin.data.Validator)
+     * @see #addValidator(Validator)
      */
     public default S withValidator(Validator validator) {
         ((Validatable) this).addValidator(validator);

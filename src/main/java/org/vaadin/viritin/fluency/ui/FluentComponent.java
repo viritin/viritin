@@ -275,7 +275,6 @@ public interface FluentComponent<S extends FluentComponent<S>>
      * @see #getStyleName()
      * @see #addStyleName(String)
      * @see #removeStyleName(String)
-     * @see #setSyleName(java.lang.String)
      */
     public default S withStyleName(String... styles) {
         for (String styleName : styles) {

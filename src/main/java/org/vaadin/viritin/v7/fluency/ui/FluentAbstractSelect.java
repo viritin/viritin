@@ -64,7 +64,7 @@ public interface FluentAbstractSelect<S extends FluentAbstractSelect<S>>
      * @param newItemHandler the new item handler
      * @return this (for method chaining)
      * @see
-     * AbstractSelect#setNewItemHandler(com.vaadin.ui.AbstractSelect.NewItemHandler)
+     * AbstractSelect#setNewItemHandler(AbstractSelect.NewItemHandler)
      */
     public S withNewItemHandler(AbstractSelect.NewItemHandler newItemHandler);
 

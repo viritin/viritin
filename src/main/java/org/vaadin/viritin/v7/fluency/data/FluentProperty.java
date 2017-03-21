@@ -118,7 +118,7 @@ public interface FluentProperty<S extends FluentComponent<S> & FluentProperty<S,
          *
          * @param newDataSource the new data source Property
          * @return this (for method chaining)
-         * @see #setPropertyDataSource(com.vaadin.data.Property) 
+         * @see #setPropertyDataSource(Property) 
          */
         @SuppressWarnings("rawtypes")
         public default S withPropertyDataSource(Property newDataSource) {
@@ -145,7 +145,7 @@ public interface FluentProperty<S extends FluentComponent<S> & FluentProperty<S,
          * @param listener the new Listener to be registered
          * @return this (for method chaining)
          * @see
-         * #addReadOnlyStatusChangeListener(com.vaadin.data.Property.ReadOnlyStatusChangeListener)
+         * #addReadOnlyStatusChangeListener(Property.ReadOnlyStatusChangeListener)
          */
         public default S withReadOnlyStatusChangeListener(
                 Property.ReadOnlyStatusChangeListener listener) {

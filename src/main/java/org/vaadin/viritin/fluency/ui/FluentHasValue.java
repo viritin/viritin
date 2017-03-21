@@ -13,6 +13,7 @@ public interface FluentHasValue<S, V> extends HasValue<V> {
      *
      * @param value
      *            the new value
+     * @return this (for method chaining)
      * @throws IllegalArgumentException
      *             if the value is invalid
      */
@@ -32,6 +33,7 @@ public interface FluentHasValue<S, V> extends HasValue<V> {
      * @param readOnly
      *            a boolean value specifying whether the component is put
      *            read-only mode or not
+     * @return this (for method chaining)
      */
     public default S withReadOnly(boolean readOnly) {
         ((HasValue<V>) this).setReadOnly(readOnly);
@@ -46,6 +48,7 @@ public interface FluentHasValue<S, V> extends HasValue<V> {
      * @param requiredIndicatorVisible
      *            <code>true</code> to make the required indicator visible,
      *            <code>false</code> if not
+     * @return this (for method chaining)
      */
     public default S withRequiredIndicatorVisible(
             boolean requiredIndicatorVisible) {

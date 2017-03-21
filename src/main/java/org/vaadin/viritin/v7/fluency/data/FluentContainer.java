@@ -177,7 +177,7 @@ public interface FluentContainer<S extends FluentContainer<S>>
          *
          * @param newDataSource The new data source Item
          * @return this (for method chaining)
-         * @see #setContainerDataSource(com.vaadin.data.Container)
+         * @see #setContainerDataSource(Container)
          */
         public S withContainerDataSource(Container newDataSource);
 
@@ -210,7 +210,7 @@ public interface FluentContainer<S extends FluentContainer<S>>
          * @param listener listener to be added
          * @return this (for method chaining)
          * @see
-         * #addItemSetChangeListener(com.vaadin.data.Container.ItemSetChangeListener)
+         * #addItemSetChangeListener(Container.ItemSetChangeListener)
          */
         public S withItemSetChangeListener(
                 Container.ItemSetChangeListener listener);
@@ -233,7 +233,7 @@ public interface FluentContainer<S extends FluentContainer<S>>
          * @param listener The new Listener to be registered
          * @return this (for method chaining)
          * @see
-         * #addPropertySetChangeListener(com.vaadin.data.Container.PropertySetChangeListener)
+         * #addPropertySetChangeListener(Container.PropertySetChangeListener)
          */
         public S withPropertySetChangeListener(
                 Container.PropertySetChangeListener listener);

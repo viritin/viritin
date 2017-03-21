@@ -65,6 +65,7 @@ public class MLabel extends Label implements FluentAbstractComponent<MLabel> {
 
     /**
      * 
+     * @return this for method chaining
      * @deprecated use {@link FluentSizeable#withUndefinedHeight()} instead
      */
     @Deprecated

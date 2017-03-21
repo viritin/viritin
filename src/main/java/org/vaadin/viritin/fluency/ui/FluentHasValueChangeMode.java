@@ -2,6 +2,7 @@ package org.vaadin.viritin.fluency.ui;
 
 import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.ui.HasValueChangeMode;
+import com.vaadin.data.HasValue.ValueChangeEvent;
 
 public interface FluentHasValueChangeMode<S extends FluentHasValueChangeMode<S>>
         extends HasValueChangeMode, FluentComponent<S> {
@@ -12,6 +13,7 @@ public interface FluentHasValueChangeMode<S extends FluentHasValueChangeMode<S>>
      *            the new mode
      *
      * @see ValueChangeMode
+     * @return this (for method chaining)
      */
     public default S withValueChangeMode(ValueChangeMode valueChangeMode) {
         ((HasValueChangeMode) this).setValueChangeMode(valueChangeMode);
@@ -29,6 +31,7 @@ public interface FluentHasValueChangeMode<S extends FluentHasValueChangeMode<S>>
      *             if given timeout is smaller than 0
      *
      * @see ValueChangeMode
+     * @return this (for method chaining)
      */
     public default S withValueChangeTimeout(int valueChangeTimeout) {
         ((HasValueChangeMode) this).setValueChangeTimeout(valueChangeTimeout);

@@ -17,6 +17,7 @@ public interface FluentCustomField<S extends FluentCustomField<S, T>, T>
      *
      * @param focusDelegate
      *            the focusable component to which focus events are redirected
+     * @return the configured component
      */
     public default S withFocusDelegate(Focusable focusDelegate) {
         ((CustomField<T>) this).setFocusDelegate(focusDelegate);

@@ -17,7 +17,7 @@ public interface FluentSingleComponentContainer<S extends FluentSingleComponentC
      * @param content
      *            a component (typically a layout) to use as content
      * @return this (for method chaining)
-     * @see SingleComponentContainer#addComponent(com.vaadin.ui.Component)
+     * @see SingleComponentContainer#setContent(Component)
      */
     public default S withContent(Component content) {
         ((SingleComponentContainer) this).setContent(content);

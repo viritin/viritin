@@ -114,7 +114,7 @@ public interface FluentAbstractField<S extends FluentAbstractField<S, T>, T>
      * @param currentBufferedSourceException
      *            The new current buffered source exception.
      * @return this (for method chaining)
-     * @see AbstractField#setCurrentBufferedSourceException(com.vaadin.data.Buffered.SourceException)
+     * @see AbstractField#setCurrentBufferedSourceException(com.vaadin.v7.data.Buffered.SourceException)
      */
     public default S withCurrentBufferedSourceException(
             SourceException currentBufferedSourceException) {
@@ -132,7 +132,7 @@ public interface FluentAbstractField<S extends FluentAbstractField<S, T>, T>
      * @param converter
      *            The new converter to use.
      * @return this (for method chaining)
-     * @see AbstractField#setConverter(com.vaadin.data.util.converter.Converter)
+     * @see AbstractField#setConverter(com.vaadin.v7.data.util.converter.Converter)
      */
     public default S withConverter(Converter<T, ?> converter) {
         ((AbstractField<T>) this).setConverter(converter);

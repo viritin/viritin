@@ -143,7 +143,6 @@ public interface FluentAbstractTextField<S extends FluentAbstractTextField<S>>
      * @param inputEventMode
      *            the new mode
      * @return this (for method chaining)
-     * @see AbstractTextField#setTextChangeEventMode(com.vaadin.ui.AbstractTextField.TextChangeEventMode)
      * @see TextChangeEventMode
      */
     public default S withTextChangeEventMode(

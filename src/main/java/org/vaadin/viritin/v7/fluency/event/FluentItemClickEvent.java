@@ -49,7 +49,7 @@ public class FluentItemClickEvent extends ItemClickEvent {
          *
          * @param listener ItemClickListener to be registered
          * @return this (for method chaining)
-         * @see #addItemClickListener(com.vaadin.event.ItemClickEvent.ItemClickListener)
+         * @see #addItemClickListener(ItemClickEvent.ItemClickListener)
          */
         public S withItemClickListener(ItemClickListener listener);
     }

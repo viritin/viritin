@@ -94,7 +94,7 @@ public interface FluentFieldEvents extends FieldEvents {
          * @param listener The text change listener to add
          * @return this (for method chaining)
          * @see
-         * #addTextChangeListener(com.vaadin.event.FieldEvents.TextChangeListener)
+         * #addTextChangeListener(FieldEvents.TextChangeListener)
          */
         public default S withTextChangeListener(TextChangeListener listener) {
             ((TextChangeNotifier) this).addTextChangeListener(listener);

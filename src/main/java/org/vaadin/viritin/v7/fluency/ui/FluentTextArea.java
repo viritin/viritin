@@ -10,6 +10,7 @@ public interface FluentTextArea<S extends FluentTextArea<S>>
      * @param wordwrap
      *            the boolean value specifying if the text area should be in
      *            word-wrap mode.
+     * @return this for method chaining
      * @see TextArea#setWordwrap(boolean)
      * 
      */
@@ -24,6 +25,7 @@ public interface FluentTextArea<S extends FluentTextArea<S>>
      * @param rows
      *            the number of rows for this text area.
      * @see TextArea#setRows(int)
+     * @return this for method chaining
      */
     public default S withRows(int rows) {
         ((TextArea) this).setRows(rows);
