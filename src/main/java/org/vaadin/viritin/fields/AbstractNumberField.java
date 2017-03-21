@@ -49,9 +49,11 @@ public abstract class AbstractNumberField<S extends AbstractNumberField<S, T>, T
 
         @Override
         public void valueChange(ValueChangeEvent<String> event) {
+            T old = getValue();
             String value = event.getValue();
             if (value != null) {
                 userInputToValue(value);
+                fireEvent(new ValueChangeEvent(AbstractNumberField.this, old, true));
             } else {
                 setValue(null);
             }
