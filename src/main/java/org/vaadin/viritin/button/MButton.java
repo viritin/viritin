@@ -18,15 +18,15 @@ package org.vaadin.viritin.button;
 import com.vaadin.server.Resource;
 import com.vaadin.shared.MouseEventDetails;
 import com.vaadin.ui.Button;
-import org.vaadin.viritin.MSize;
 
 import java.util.LinkedHashSet;
+import org.vaadin.viritin.fluency.ui.FluentAbstractComponent;
 
 /**
  * An extension to basic Vaadin button that adds some handy constructors and
  * fluent API.
  */
-public class MButton extends Button {
+public class MButton extends Button implements FluentAbstractComponent<MButton> {
 
     private static final long serialVersionUID = 3859208260278798872L;
 
@@ -56,76 +56,8 @@ public class MButton extends Button {
         super(caption, listener);
     }
 
-    public MButton withIcon(Resource icon) {
-        setIcon(icon);
-        return this;
-    }
-
     public MButton withListener(ClickListener listener) {
         addClickListener(listener);
-        return this;
-    }
-
-    public MButton withStyleName(String... styleNames) {
-        for (String styleName : styleNames) {
-            addStyleName(styleName);
-        }
-        return this;
-    }
-
-    public MButton withCaption(String caption) {
-        setCaption(caption);
-        return this;
-    }
-
-    public MButton withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    public MButton withVisible(boolean visible) {
-        setVisible(visible);
-        return this;
-    }
-
-    public MButton withId(String id) {
-        setId(id);
-        return this;
-    }
-
-    public MButton withWidth(String width) {
-        setWidth(width);
-        return this;
-    }
-
-    public MButton withWidth(float width, Unit unit) {
-        setWidth(width, unit);
-        return this;
-    }
-
-    public MButton withFullWidth() {
-        setWidth("100%");
-        return this;
-    }
-
-    public MButton withHeight(String height) {
-        setHeight(height);
-        return this;
-    }
-
-    public MButton withHeight(float height, Unit unit) {
-        setHeight(height, unit);
-        return this;
-    }
-
-    public MButton withFullHeight() {
-        setHeight("100%");
-        return this;
-    }
-
-    public MButton withSize(MSize size) {
-        setWidth(size.getWidth(), size.getWidthUnit());
-        setHeight(size.getHeight(), size.getHeightUnit());
         return this;
     }
 
@@ -139,7 +71,6 @@ public class MButton extends Button {
      * references.
      */
     public interface MClickListener {
-
         void onClick();
     }
 
