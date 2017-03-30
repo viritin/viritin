@@ -40,9 +40,11 @@ public class RichText extends MLabel {
     private String richText;
 
     public RichText() {
+        setWidth("100%");
     }
 
     public RichText(String content) {
+        setWidth("100%");
         setRichText(content);
     }
 
