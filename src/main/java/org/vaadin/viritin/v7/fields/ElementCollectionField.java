@@ -130,15 +130,16 @@ public class ElementCollectionField<ET> extends AbstractElementCollection<ET> {
     }
 
     protected Component createRemoveButton(final ET v) {
-        MButton b;
+        Button b;
         if (requireVerificationForRemoval) {
             b = new ConfirmButton();
         } else {
             b = new MButton();
         }
-        b.withIcon(FontAwesome.TRASH_O)
-                .withStyleName(ValoTheme.BUTTON_ICON_ONLY, ValoTheme.BUTTON_DANGER)
-                .withListener(new Button.ClickListener() {
+        b.setIcon(FontAwesome.TRASH_O);
+        b.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
+        b.addStyleName(ValoTheme.BUTTON_DANGER);
+        b.addClickListener(new Button.ClickListener() {
             private static final long serialVersionUID = 5019806363620874205L;
                     @Override
                     public void buttonClick(Button.ClickEvent event) {

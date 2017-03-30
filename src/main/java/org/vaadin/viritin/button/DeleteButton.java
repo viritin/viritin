@@ -17,6 +17,7 @@
 package org.vaadin.viritin.button;
 
 import com.vaadin.server.Resource;
+import org.vaadin.viritin.button.MButton.MClickListener;
 
 /**
  * A delete button, commonly used for deleting an entity. Automatically sets
@@ -40,7 +41,7 @@ public class DeleteButton extends ConfirmButton {
         setupDeleteButton();
     }
 
-    public DeleteButton(Resource icon, String caption, String confirmationText, ClickListener listener) {
+    public DeleteButton(Resource icon, String caption, String confirmationText, MClickListener listener) {
         super(icon, caption, confirmationText, listener);
         setupDeleteButton();
     }
@@ -48,11 +49,5 @@ public class DeleteButton extends ConfirmButton {
     private void setupDeleteButton() {
         setStyleName("danger default");
 		setConfirmWindowOkButtonStyle("danger default");
-    }
-
-    @Override
-    public DeleteButton withClickShortcut(int keycode, int... modifiers) {
-        setClickShortcut(keycode, modifiers);
-        return this;
     }
 }

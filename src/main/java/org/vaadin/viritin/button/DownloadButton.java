@@ -3,6 +3,7 @@ package org.vaadin.viritin.button;
 import com.vaadin.server.FileDownloader;
 import com.vaadin.server.Resource;
 import com.vaadin.server.StreamResource;
+import com.vaadin.ui.Button;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,6 +11,7 @@ import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.io.Serializable;
+import org.vaadin.viritin.fluency.ui.FluentAbstractComponent;
 
 /**
  * A helper class to implement typical file downloads.
@@ -29,12 +31,11 @@ import java.io.Serializable;
  * The writing of response is also spawn to separate thread, so in case your
  * resource generation takes lots of time, the UI wont block.
  */
-public class DownloadButton extends MButton {
+public class DownloadButton extends Button implements FluentAbstractComponent<DownloadButton> {
 
     private static final long serialVersionUID = 356223526447669958L;
 
     public interface ContentWriter {
-
         void write(OutputStream stream);
     }
 
@@ -160,23 +161,12 @@ public class DownloadButton extends MButton {
         return this;
     }
 
-    @Override
-    public DownloadButton withClickShortcut(int keycode, int... modifiers) {
-        setClickShortcut(keycode, modifiers);
-        return this;
-    }
-
     public MimeTypeProvider getMimeTypeProvider() {
         return mimeTypeProvider;
     }
 
     public FileNameProvider getFileNameProvider() {
         return fileNameProvider;
-    }
-
-    @Override
-    public DownloadButton withCaption(String caption) {
-        return (DownloadButton) super.withCaption(caption);
     }
 
     public DownloadButton setFileNameProvider(FileNameProvider fileNameProvider) {

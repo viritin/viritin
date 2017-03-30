@@ -19,12 +19,16 @@ import org.vaadin.dialogs.ConfirmDialog;
 
 import com.vaadin.server.Resource;
 import com.vaadin.shared.MouseEventDetails;
+import com.vaadin.ui.Button;
+import java.util.LinkedHashSet;
+import org.vaadin.viritin.button.MButton.MClickListener;
+import org.vaadin.viritin.fluency.ui.FluentAbstractComponent;
 
 /**
  *
  * @author mattitahvonenitmill
  */
-public class ConfirmButton extends MButton {
+public class ConfirmButton extends Button implements FluentAbstractComponent<ConfirmButton> {
 
     private static final long serialVersionUID = -3146998691761708825L;
 
@@ -45,16 +49,36 @@ public class ConfirmButton extends MButton {
     }
 
     public ConfirmButton(Resource icon, String confirmationText,
-            ClickListener listener) {
-        super(icon, listener);
+            MClickListener listener) {
+        super(icon);
+        addClickListener(listener);
         this.confirmationText = confirmationText;
     }
 
     public ConfirmButton(Resource icon, String buttonCaption, String confirmationText,
-            ClickListener listener) {
-        super(icon, buttonCaption, listener);
+            MClickListener listener) {
+        super(buttonCaption, icon);
+        addClickListener(listener);
         this.confirmationText = confirmationText;
     }
+    
+    private LinkedHashSet<MClickListener> mClickListeners;
+
+    public ConfirmButton addClickListener(MClickListener listener) {
+        if (mClickListeners == null) {
+            mClickListeners = new LinkedHashSet<>();
+        }
+        mClickListeners.add(listener);
+        return this;
+    }
+
+    public ConfirmButton removeClickListener(MClickListener listener) {
+        if (mClickListeners != null) {
+            mClickListeners.remove(listener);
+        }
+        return this;
+    }
+
 
     @Override
     protected void fireClick(final MouseEventDetails details) {
@@ -79,113 +103,15 @@ public class ConfirmButton extends MButton {
         super.setClickShortcut(keyCode, modifiers); //To change body of generated methods, choose Tools | Templates.
     }
     
-    @Override
-    public ConfirmButton removeClickListener(MClickListener listener) {
-        super.removeClickListener(listener);
-
-        return this;
-    }
-
-    @Override
-    public ConfirmButton addClickListener(MClickListener listener) {
-        super.addClickListener(listener);
-
-        return this;
-    }
-
-    @Override
-    public ConfirmButton withFullHeight() {
-        super.withFullHeight();
-
-        return this;
-    }
-
-    @Override
-    public ConfirmButton withHeight(float height, Unit unit) {
-        super.withHeight(height, unit);
-
-        return this;
-    }
-
-    @Override
-    public ConfirmButton withHeight(String height) {
-        super.withHeight(height);
-
-        return this;
-    }
-
-    @Override
-    public ConfirmButton withFullWidth() {
-        super.withFullWidth();
-
-        return this;
-    }
-
-    @Override
-    public ConfirmButton withWidth(float width, Unit unit) {
-        super.withWidth(width, unit);
-
-        return this;
-    }
-
-    @Override
-    public ConfirmButton withWidth(String width) {
-        super.withWidth(width);
-
-        return this;
-    }
-
-    @Override
-    public ConfirmButton withId(String id) {
-        super.withId(id);
-
-        return this;
-    }
-
-    @Override
-    public ConfirmButton withVisible(boolean visible) {
-        super.withVisible(visible);
-
-        return this;
-    }
-
-    @Override
-    public ConfirmButton withDescription(String description) {
-        super.withDescription(description);
-
-        return this;
-    }
-
-    @Override
-    public ConfirmButton withCaption(String caption) {
-        super.withCaption(caption);
-
-        return this;
-    }
-
-    @Override
-    public ConfirmButton withStyleName(String... styleNames) {
-        super.withStyleName(styleNames);
-
-        return this;
-    }
-
-    @Override
-    public ConfirmButton withListener(ClickListener listener) {
-        super.withListener(listener);
-
-        return this;
-    }
-
-    @Override
-    public ConfirmButton withIcon(Resource icon) {
-        super.withIcon(icon);
-
-        return this;
-    }
-
     protected void doFireClickListener(final MouseEventDetails details) {
         ConfirmButton.super.fireClick(details);
+        if (mClickListeners != null) {
+            final MButton.MClickListener[] array = mClickListeners.toArray(
+                    new MButton.MClickListener[mClickListeners.size()]);
+            for (MButton.MClickListener l : array) {
+                l.onClick();
+            }
+        }
     }
 
     public String getConfirmWindowCaption() {
@@ -227,12 +153,6 @@ public class ConfirmButton extends MButton {
     public ConfirmButton withI18NCaption(String okCaption, String cancelCaption) {
         this.okCaption = okCaption;
         this.cancelCaption = cancelCaption;
-        return this;
-    }
-
-    @Override
-    public ConfirmButton withClickShortcut(int keycode, int... modifiers) {
-        setClickShortcut(keycode, modifiers);
         return this;
     }
 

@@ -18,12 +18,14 @@ package org.vaadin.viritin.button;
 
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.server.Resource;
+import com.vaadin.ui.Button;
+import org.vaadin.viritin.fluency.ui.FluentAbstractComponent;
 
 /**
  * A primary button, commonly used for e.g. saving an entity. Automatically sets
  * "primary" class name and hooks click shortcut for ENTER.
  */
-public class PrimaryButton extends MButton {
+public class PrimaryButton extends Button implements FluentAbstractComponent<PrimaryButton> {
 
     private static final long serialVersionUID = 1005969185091403505L;
 
@@ -42,12 +44,14 @@ public class PrimaryButton extends MButton {
     }
 
     public PrimaryButton(Resource icon, ClickListener listener) {
-        super(icon, listener);
+        super(icon);
+        addClickListener(listener);
         setupPrimaryButton();
     }
 
     public PrimaryButton(Resource icon, String caption, ClickListener listener) {
-        super(icon, caption, listener);
+        super(caption, icon);
+        addClickListener(listener);
         setupPrimaryButton();
     }
 

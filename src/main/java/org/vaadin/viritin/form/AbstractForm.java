@@ -438,5 +438,11 @@ public abstract class AbstractForm<T> extends CustomComponent {
     public Window getPopup() {
         return popup;
     }
+    
+    public void closePopup() {
+        if(getPopup() != null) {
+            getPopup().close();
+        }
+    }
 
 }
