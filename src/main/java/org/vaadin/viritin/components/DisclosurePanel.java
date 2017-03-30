@@ -23,6 +23,8 @@ public class DisclosurePanel extends VerticalLayout {
     private final MVerticalLayout contentWrapper = new MVerticalLayout();
 
     public DisclosurePanel() {
+        setMargin(false);
+        setSpacing(false);
         toggle.setStyleName(ValoTheme.BUTTON_BORDERLESS);
         contentWrapper.setVisible(false);
         addComponents(toggle, contentWrapper);
