@@ -390,7 +390,7 @@ public interface FluentTable<S extends FluentTable<S>> extends
      *
      * @param mode the One of the modes listed above.
      * @return this (for method chaining)
-     * @see Table#setRowHeaderMode(com.vaadin.ui.Table.RowHeaderMode)
+     * @see Table#setRowHeaderMode(Table.RowHeaderMode)
      */
     public S withRowHeaderMode(Table.RowHeaderMode mode);
 
