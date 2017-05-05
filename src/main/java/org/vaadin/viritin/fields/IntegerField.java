@@ -18,7 +18,6 @@ import com.vaadin.event.FieldEvents;
 public class IntegerField extends AbstractNumberField<IntegerField, Integer> {
 
     private static final long serialVersionUID = 377246000306551089L;
-    private Integer value;
 
     public IntegerField() {
         setSizeUndefined();

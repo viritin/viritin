@@ -23,6 +23,9 @@ public abstract class AbstractNumberField<S extends AbstractNumberField<S, T>, T
     private static final long serialVersionUID = 5925606478174987241L;
 
     private String htmlFieldType = "number";
+    
+    protected T value;
+
 
     protected TextField tf = new TextField() {
 
@@ -42,6 +45,8 @@ public abstract class AbstractNumberField<S extends AbstractNumberField<S, T>, T
                 "function(e) {var c = viritin.getChar(e); return c==null || /^[-\\d\\n\\t\\r]+$/.test(c);}");
     }
 
+    private boolean ignoreValueChange = false;
+    
     protected HtmlElementPropertySetter s = new HtmlElementPropertySetter(tf);
     protected ValueChangeListener<String> vcl = new ValueChangeListener<String>() {
 
@@ -49,13 +54,15 @@ public abstract class AbstractNumberField<S extends AbstractNumberField<S, T>, T
 
         @Override
         public void valueChange(ValueChangeEvent<String> event) {
-            T old = getValue();
-            String value = event.getValue();
-            if (value != null) {
-                userInputToValue(value);
-                fireEvent(new ValueChangeEvent(AbstractNumberField.this, old, true));
-            } else {
-                setValue(null);
+            if(!ignoreValueChange) {
+                T old = getValue();
+                String value = event.getValue();
+                if (value != null) {
+                    userInputToValue(value);
+                    fireEvent(new ValueChangeEvent(AbstractNumberField.this, old, true));
+                } else {
+                    setValue(null);
+                }
             }
         }
 
@@ -74,11 +81,14 @@ public abstract class AbstractNumberField<S extends AbstractNumberField<S, T>, T
 
     @Override
     protected void doSetValue(T value) {
+        this.value = value;
+        ignoreValueChange = true;
         if (value == null) {
             tf.clear();
         } else {
             tf.setValue(valueToPresentation(value));
         }
+        ignoreValueChange = false;
     }
 
     protected String valueToPresentation(T newValue) {
