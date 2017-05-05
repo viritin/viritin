@@ -72,7 +72,7 @@ public abstract class AbstractNumberField<S extends AbstractNumberField<S, T>, T
     @Override
     protected void doSetValue(T value) {
         if (value == null) {
-            tf.setValue(null);
+            tf.clear();
         } else {
             tf.setValue(valueToPresentation(value));
         }
