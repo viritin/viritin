@@ -3,6 +3,11 @@ package org.vaadin.viritin.util;
 import com.vaadin.ui.JavaScript;
 import com.vaadin.ui.JavaScriptFunction;
 import elemental.json.JsonArray;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 import java.util.UUID;
 
@@ -21,6 +26,31 @@ public class BrowserCookie {
     public static void setCookie(String key, String value) {
         setCookie(key, value, "/");
     }
+
+    public static void setCookie(String key, String value, LocalDateTime expirationTime) {
+       
+        String expires = toCookieGMTDate(expirationTime);
+        
+        JavaScript.getCurrent().execute(String.format(
+                "document.cookie = \"%s=%s; Expires=%s\";", key, value, expires
+        ));
+    }
+
+    private static String toCookieGMTDate(LocalDateTime expirationTime) {
+        ZonedDateTime zdt = ZonedDateTime.of(expirationTime, ZoneOffset.UTC);
+        String expires = zdt.format(DateTimeFormatter.RFC_1123_DATE_TIME);
+        return expires;
+    }
+    
+    public static void setCookie(String key, String value, String path, LocalDateTime expirationTime) {
+       
+        String expires = toCookieGMTDate(expirationTime);
+        
+        JavaScript.getCurrent().execute(String.format(
+                "document.cookie = \"%s=%s; path=%s\"; Expires=%s\";", key, value, path, expires
+        ));
+    }
+
     public static void setCookie(String key, String value, String path) {
         JavaScript.getCurrent().execute(String.format(
                 "document.cookie = \"%s=%s; path=%s\";", key, value, path

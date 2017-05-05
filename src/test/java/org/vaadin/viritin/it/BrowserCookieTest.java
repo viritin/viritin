@@ -5,6 +5,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
+import java.time.LocalDateTime;
 import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.vaadin.viritin.util.BrowserCookie;
@@ -13,7 +14,6 @@ import org.vaadin.viritin.util.BrowserCookie;
  *
  * @author Matti Tahvonen
  */
-@Theme("valo")
 public class BrowserCookieTest extends AbstractTest {
 
     @Override
@@ -26,6 +26,14 @@ public class BrowserCookieTest extends AbstractTest {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 BrowserCookie.setCookie(key.getValue(), value.getValue());
+            }
+        });
+
+        Button setWithExpiration = new Button("Set value with Expiration", new Button.ClickListener() {
+
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                BrowserCookie.setCookie(key.getValue(), value.getValue(), LocalDateTime.now().plusMinutes(1));
             }
         });
         
@@ -43,7 +51,7 @@ public class BrowserCookieTest extends AbstractTest {
             }
         });
         
-        return new MVerticalLayout(key, value, set, get);
+        return new MVerticalLayout(key, value, set, setWithExpiration, get);
     }
 
 }
