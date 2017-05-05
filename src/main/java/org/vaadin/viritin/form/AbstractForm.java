@@ -337,7 +337,7 @@ public abstract class AbstractForm<T> extends CustomComponent {
         }
     }
 
-    private void setSaveButton(Button button) {
+    public void setSaveButton(Button button) {
         this.saveButton = button;
         saveButton.addClickListener(new Button.ClickListener() {
 
