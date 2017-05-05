@@ -61,11 +61,14 @@ public abstract class AbstractNumberField<S extends AbstractNumberField<S, T>, T
 
     };
 
+    public AbstractNumberField() {
+        tf.addValueChangeListener(vcl);
+    }
+
     protected abstract void userInputToValue(String str);
 
     @Override
     protected Component initContent() {
-        tf.addValueChangeListener(vcl);
         return tf;
     }
 
