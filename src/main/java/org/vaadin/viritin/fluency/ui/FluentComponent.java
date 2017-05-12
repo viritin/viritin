@@ -320,64 +320,7 @@ public interface FluentComponent<S extends FluentComponent<S>>
     }
 
     // Javadoc copied form Vaadin Framework
-    /**
-     * Registers a new (generic) component event listener for the component.
-     *
-     * <pre>
-     * class Listening extends CustomComponent implements Listener {
-     *     // Stored for determining the source of an event
-     *     Button ok;
-     *
-     *     Label status; // For displaying info about the event
-     *
-     *     public Listening() {
-     *         VerticalLayout layout = new VerticalLayout();
-     *
-     *         // Some miscellaneous component
-     *         TextField name = new TextField(&quot;Say it all here&quot;);
-     *         name.addListener(this);
-     *         name.setImmediate(true);
-     *         layout.addComponent(name);
-     *
-     *         // Handle button clicks as generic events instead
-     *         // of Button.ClickEvent events
-     *         ok = new Button(&quot;OK&quot;);
-     *         ok.addListener(this);
-     *         layout.addComponent(ok);
-     *
-     *         // For displaying information about an event
-     *         status = new Label(&quot;&quot;);
-     *         layout.addComponent(status);
-     *
-     *         setCompositionRoot(layout);
-     *     }
-     *
-     *     public void componentEvent(Event event) {
-     *         // Act according to the source of the event
-     *         if (event.getSource() == ok)
-     *             getWindow().showNotification(&quot;Click!&quot;);
-     *
-     *         status.setValue(
-     *                 &quot;Event from &quot; + event.getSource().getClass().getName()
-     *                         + &quot;: &quot; + event.getClass().getName());
-     *     }
-     * }
-     *
-     * Listening listening = new Listening();
-     * layout.addComponent(listening);
-     * </pre>
-     *
-     * @param listener
-     *            the new Listener to be registered.
-     * @return this (for method chaining)
-     * @see Component.Event
-     * @see #addListener(com.vaadin.ui.Component.Listener)
-     */
-    public default S withListener(Component.Listener listener) {
-        ((Component) this).addListener(listener);
-        return (S) this;
-    }
-
+  
     /**
      * A {@link Focusable} complemented by fluent setters.
      * 
