@@ -8,6 +8,11 @@ import org.vaadin.viritin.fluency.ui.FluentAbstractField;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.ItemCaptionGenerator;
 
+/**
+ * A field that can be easily used to edit enumeration types.
+ * 
+ * @param <T> the type of Enum edited by this field
+ */
 public class EnumSelect<T extends Enum<T>> extends ComboBox<T> implements FluentAbstractField<EnumSelect<T>, T> {
 	private static final long serialVersionUID = 6512803610855055709L;
 
