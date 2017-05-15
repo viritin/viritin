@@ -3,12 +3,19 @@ package org.vaadin.viritin.it;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Notification;
-import com.vaadin.ui.TextField;
+import com.vaadin.ui.themes.ValoTheme;
+import java.util.List;
 
 import org.vaadin.addonhelpers.AbstractTest;
+import org.vaadin.viritin.fields.ElementCollectionField;
+import org.vaadin.viritin.fields.EnumSelect;
 import org.vaadin.viritin.fields.IntegerField;
+import org.vaadin.viritin.fields.LabelField;
+import org.vaadin.viritin.fields.MTextField;
 import org.vaadin.viritin.form.AbstractForm;
 import org.vaadin.viritin.layouts.MVerticalLayout;
+import org.vaadin.viritin.testdomain.Address;
+import org.vaadin.viritin.testdomain.Address.AddressType;
 import org.vaadin.viritin.testdomain.Person;
 import org.vaadin.viritin.testdomain.Service;
 
@@ -22,23 +29,20 @@ public class EditPersonV8 extends AbstractTest {
 
     public static class AddressRow {
 
-//        EnumSelect<Address.AddressType> type = new EnumSelect<>();
-//        MTextField street = new MTextField().withInputPrompt("street");
-//        MTextField city = new MTextField().withInputPrompt("city");
-//        MTextField zipCode = new MTextField().withInputPrompt("zip");
+        EnumSelect<AddressType> type = new EnumSelect<>(AddressType.class);
+        MTextField street = new MTextField().withInputPrompt("street");
+        MTextField city = new MTextField().withInputPrompt("city");
+        // TODO try to make MBinder that configures basic converters automatically
+        // e.g. if using basic MTextField for zipCode
+        IntegerField zipCode = new IntegerField().withPlaceHolder("zip");
         {
-//            type.setStyleName(ValoTheme.OPTIONGROUP_HORIZONTAL);
-//            // If you don't want toString presentation of your enums,
-//            // you can do whatwever you want here
-//            type.setCaptionGenerator(
-//                    new CaptionGenerator<Address.AddressType>() {
-//                private static final long serialVersionUID = -5994389052707708278L;
-//
-//                @Override
-//                public String getCaption(Address.AddressType option) {
-//                    return option.toString().toLowerCase();
-//                }
-//            });
+            type.setStyleName(ValoTheme.OPTIONGROUP_HORIZONTAL);
+            // If you don't want toString presentation of your enums,
+            // you can do whatwever you want here
+            type.setItemCaptionGenerator( (AddressType option) -> {
+                    return option.toString().toLowerCase();
+                }
+            );
         }
     }
 
@@ -46,22 +50,21 @@ public class EditPersonV8 extends AbstractTest {
 
         private static final long serialVersionUID = -2299890309080845494L;
 
-//        private final MTextField firstName = new MTextField("Name")
-//                .withAutocompleteOff()
-//                .withAutoCorrectOff()
-//                .withAutoCapitalizeOff()
-//                .withSpellCheckOff();
-        private final TextField firstName = new TextField("Name");
+        private final MTextField firstName = new MTextField("Name")
+                .withAutocompleteOff()
+                .withAutoCorrectOff()
+                .withAutoCapitalizeOff()
+                .withSpellCheckOff();
 
         // TODO figure out what is wrong with IntegerField, not bound properly
         private final IntegerField age = new IntegerField("Age");
 
-//        private final LabelField<Integer> id = new LabelField<>(Integer.class)
-//                .withCaption("ID");
-//        private final ElementCollectionField<Address> addresses = new ElementCollectionField<>(
-//                Address.class, AddressRow.class).withCaption("Addressess")
+        private final LabelField<Integer> id = new LabelField<Integer>().withCaption("ID");
+        private final ElementCollectionField<Address, List<Address>> addresses = new ElementCollectionField<Address, List<Address>>(
+                Address.class, AddressRow.class).withCaption("Addressess")
 //                .addElementAddedListener(ElementCollections.addedListener)
-//                .addElementRemovedListener(ElementCollections.removeListener);
+//                .addElementRemovedListener(ElementCollections.removeListener)
+                ;
 //        private final MultiSelectTable<Group> groups = new MultiSelectTable<Group>().
 //                withProperties("name")
 //                .setOptions(Service.getAvailableGroups());
@@ -71,7 +74,7 @@ public class EditPersonV8 extends AbstractTest {
 
         @Override
         protected Component createContent() {
-            return new MVerticalLayout(firstName, age,
+            return new MVerticalLayout(id, firstName, age, addresses,
                     getToolbar());
         }
 
@@ -98,6 +101,12 @@ public class EditPersonV8 extends AbstractTest {
         });
 
         Person p = Service.getPerson();
+        Address address = new Address();
+        address.setCity("Paimio");
+        address.setStreet("Sampsala");
+        address.setType(AddressType.Home);
+        address.setZipCode(1234);
+        p.getAddresses().add(address);
         form.setEntity(p);
 
         form.setSavedHandler(new AbstractForm.SavedHandler<Person>() {
