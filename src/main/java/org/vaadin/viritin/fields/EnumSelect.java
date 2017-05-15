@@ -12,7 +12,7 @@ public class EnumSelect<T extends Enum<T>> extends ComboBox<T> implements Fluent
 	private static final long serialVersionUID = 6512803610855055709L;
 
 	public EnumSelect(Class<T> enumClass) {
-		this("", enumClass);
+		this(null, enumClass);
 	}
 
 	public EnumSelect(String caption, Class<T> enumClass) {
