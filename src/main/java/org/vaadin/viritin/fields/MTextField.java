@@ -17,12 +17,18 @@ package org.vaadin.viritin.fields;
 
 import com.vaadin.ui.TextField;
 import org.vaadin.viritin.fluency.ui.FluentTextField;
+import org.vaadin.viritin.util.HtmlElementPropertySetter;
 
 /**
  *
  * @author mstahv
  */
 public class MTextField extends TextField implements FluentTextField<MTextField> {
+
+    private AutoComplete autocomplete;
+    private AutoCapitalize autocapitalize;
+    private AutoCorrect autocorrect;
+    private Boolean spellcheck;
 
     public MTextField() {
     }
@@ -46,5 +52,109 @@ public class MTextField extends TextField implements FluentTextField<MTextField>
     public MTextField(String caption, String value, ValueChangeListener<String> valueChangeListener) {
         super(caption, value, valueChangeListener);
     }
+
+    public void setSpellcheck(Boolean spellcheck) {
+        this.spellcheck = spellcheck;
+    }
+
+    public Boolean getSpellcheck() {
+        return spellcheck;
+    }
+
+    public MTextField withSpellCheckOff() {
+        setSpellcheck(false);
+        return this;
+    }
+
+    public enum Spellcheck {
+        on, off
+    }
+
+    public enum AutoComplete {
+        on, off
+    }
+
+    public enum AutoCorrect {
+        on, off
+    }
+
+    public enum AutoCapitalize {
+        on, off
+    }
     
+        public MTextField withAutocompleteOff() {
+        return setAutocomplete(AutoComplete.off);
+    }
+
+    public MTextField setAutocomplete(AutoComplete autocomplete) {
+        this.autocomplete = autocomplete;
+        return this;
+    }
+
+    public AutoComplete getAutocomplete() {
+        return autocomplete;
+    }
+
+    public MTextField withAutoCapitalizeOff() {
+        return setAutoCapitalize(AutoCapitalize.off);
+    }
+
+    public MTextField setAutoCapitalize(AutoCapitalize autoCapitalize) {
+        this.autocapitalize = autoCapitalize;
+        return this;
+    }
+
+    public AutoCapitalize getAutoCapitalize() {
+        return autocapitalize;
+    }
+
+    public MTextField withAutoCorrectOff() {
+        return setAutoCorrect(AutoCorrect.off);
+    }
+
+    public MTextField setAutoCorrect(AutoCorrect autoCorrect) {
+        this.autocorrect = autoCorrect;
+        return this;
+    }
+
+    public AutoCorrect getAutoCorrect() {
+        return autocorrect;
+    }
+
+    private HtmlElementPropertySetter heps;
+
+    protected HtmlElementPropertySetter getHtmlElementPropertySetter() {
+        if (heps == null) {
+            heps = new HtmlElementPropertySetter(this);
+        }
+        return heps;
+    }
+
+    @Override
+    public void beforeClientResponse(boolean initial) {
+        super.beforeClientResponse(initial);
+        if (initial) {
+            if(spellcheck != null) {
+                getHtmlElementPropertySetter().setProperty(
+                        "spellcheck", spellcheck);
+            }
+            if (autocomplete != null) {
+                // sending here to keep value if toggling visibility
+                getHtmlElementPropertySetter().setProperty("autocomplete",
+                        autocomplete.toString());
+            }
+            if (autocorrect != null) {
+                // sending here to keep value if toggling visibility
+                getHtmlElementPropertySetter().setProperty("autocorrect",
+                        autocorrect.toString());
+            }
+            if (autocapitalize != null) {
+                // sending here to keep value if toggling visibility
+                getHtmlElementPropertySetter().setProperty("autocapitalize",
+                        autocapitalize.toString());
+            }
+        }
+    }
+
+
 }
