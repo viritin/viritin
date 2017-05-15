@@ -23,9 +23,8 @@ public abstract class AbstractNumberField<S extends AbstractNumberField<S, T>, T
     private static final long serialVersionUID = 5925606478174987241L;
 
     private String htmlFieldType = "number";
-    
-    protected T value;
 
+    protected T value;
 
     protected TextField tf = new TextField() {
 
@@ -46,7 +45,7 @@ public abstract class AbstractNumberField<S extends AbstractNumberField<S, T>, T
     }
 
     private boolean ignoreValueChange = false;
-    
+
     protected HtmlElementPropertySetter s = new HtmlElementPropertySetter(tf);
     protected ValueChangeListener<String> vcl = new ValueChangeListener<String>() {
 
@@ -54,7 +53,7 @@ public abstract class AbstractNumberField<S extends AbstractNumberField<S, T>, T
 
         @Override
         public void valueChange(ValueChangeEvent<String> event) {
-            if(!ignoreValueChange) {
+            if (!ignoreValueChange) {
                 T old = getValue();
                 String value = event.getValue();
                 if (value != null) {
@@ -165,6 +164,11 @@ public abstract class AbstractNumberField<S extends AbstractNumberField<S, T>, T
     public AbstractNumberField<S, T> withFocusListener(FocusListener listener) {
         addFocusListener(listener);
         return this;
+    }
+
+    public S withPlaceHolder(String placeHolderText) {
+        tf.setPlaceholder(placeHolderText);
+        return (S) this;
     }
 
 }
