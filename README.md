@@ -26,7 +26,7 @@ E.g. this very common Vaadin code...
 BeanFieldGroup<Contact> binder = new BeanFieldGroup<Contact>(Contact.class);
 binder.setBuffered(false);
 binder.bindMemberFields(view);
-binder.setItemDataSource(contanct);
+binder.setItemDataSource(contact);
 ```
 
 ...becomes like this:
