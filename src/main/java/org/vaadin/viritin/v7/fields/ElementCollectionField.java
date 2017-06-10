@@ -257,7 +257,7 @@ public class ElementCollectionField<ET> extends AbstractElementCollection<ET> {
     public void clear() {
         if (inited) {
             items.clear();
-            int rows = inited ? 1 : 0;
+            int rows = 1;
             while (layout.getRows() > rows) {
                 layout.removeRow(rows);
             }
