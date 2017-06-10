@@ -12,7 +12,7 @@ import org.vaadin.viritin.LazyList;
  * is probably useful also other but Vaadin applications as well.
  *
  * @author Matti Tahvonen
- * @param <T> The type of the objects in the list
+ * @param <T> The type of the objects in the list, must be srializable
  */
 public class SortableLazyList<T> extends LazyList<T> implements Serializable {
 
