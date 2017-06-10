@@ -282,7 +282,7 @@ public class ElementCollectionField<ET, CT extends Collection<ET>> extends Abstr
     public void clear() {
         if (inited) {
             items.clear();
-            int rows = inited ? 1 : 0;
+            int rows = 1;
             while (layout.getRows() > rows) {
                 layout.removeRow(rows);
             }
