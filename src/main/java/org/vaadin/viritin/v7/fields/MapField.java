@@ -433,7 +433,7 @@ public class MapField<K, V> extends CustomField<Map> {
             delete.addClickListener(new Button.ClickListener() {
                 @Override
                 public void buttonClick(Button.ClickEvent event) {
-                    Object removed = getValue().remove(oldKey);
+                    getValue().remove(oldKey);
                     pojoToEditor.remove(oldKey);
                     Iterator<Component> iterator = mainLayout.iterator();
                     int idx = 0;
