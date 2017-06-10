@@ -206,8 +206,8 @@ public class LazyList<T> extends AbstractList<T> implements Serializable {
             }
             page = findPageFromCache(pageIndexForReqest);
         }
-        final T get = page.get(indexOnPage);
-        return get;
+
+        return page != null ? page.get(indexOnPage) : null;
     }
 
     protected void initCacheFormPage(final int pageIndexForReqest) {
