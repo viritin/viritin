@@ -47,7 +47,7 @@ import javax.validation.ValidatorFactory;
  * </ul>
  *
  * @author Matti Tahvonen
- * @param <CT>
+ * @param <CT> The collection-type.
  * @param <ET> The type in the entity collection. The type must have empty
  * paremeter constructor or you have to provide Instantiator.
  */
@@ -511,7 +511,7 @@ public abstract class AbstractElementCollection<ET, CT extends Collection<ET>> e
     /**
      * Returns a shared Validator instance to use. An instance is created using
      * the validator factory if necessary and thereafter reused by the
-     * {@link BeanValidator} instance.
+     * BeanValidator instance.
      *
      * @return the JSR-303 {@link javax.validation.Validator} to use
      */
