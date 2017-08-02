@@ -163,7 +163,8 @@ public abstract class AbstractElementCollection<ET, CT extends Collection<ET>> e
                     return;
                 }
                 getAndEnsureValue().add(newInstance);
-                fireEvent(new ElementAddedEvent(AbstractElementCollection.this,
+                fireEvent(
+                        new ElementAddedEvent<>(AbstractElementCollection.this,
                         newInstance));
                 setPersisted(newInstance, true);
                 onElementAdded();
@@ -175,7 +176,8 @@ public abstract class AbstractElementCollection<ET, CT extends Collection<ET>> e
         private void fireValueChange() {
             // TODO FFS, old value with mutable object, eh
             // TODO FFS, how to detect 
-            fireEvent(new ValueChangeEvent(AbstractElementCollection.this, null, true));
+            fireEvent(new ValueChangeEvent<>(AbstractElementCollection.this,
+                    null, true));
         }
     };
 
@@ -276,7 +278,7 @@ public abstract class AbstractElementCollection<ET, CT extends Collection<ET>> e
         this.editorType = formType;
     }
 
-    public AbstractElementCollection(Class<ET> elementType, Instantiator i,
+    public AbstractElementCollection(Class<ET> elementType, Instantiator<ET> i,
             Class<?> formType) {
         this.elementType = elementType;
         this.instantiator = i;
@@ -398,14 +400,14 @@ public abstract class AbstractElementCollection<ET, CT extends Collection<ET>> e
     public void addElement(ET instance) {
         getAndEnsureValue().add(instance);
         addInternalElement(instance);
-        fireEvent(new ValueChangeEvent(this, null, true));
+        fireEvent(new ValueChangeEvent<>(this, null, true));
         fireEvent(new ElementAddedEvent<>(this, instance));
     }
 
     public void removeElement(ET elemnentToBeRemoved) {
         removeInternalElement(elemnentToBeRemoved);
         getAndEnsureValue().remove(elemnentToBeRemoved);
-        fireEvent(new ValueChangeEvent(this, null, true));
+        fireEvent(new ValueChangeEvent<>(this, null, true));
         fireEvent(new ElementRemovedEvent<>(this, elemnentToBeRemoved));
     }
 
