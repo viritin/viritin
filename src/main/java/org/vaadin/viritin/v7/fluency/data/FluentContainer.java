@@ -61,10 +61,11 @@ public interface FluentContainer<S extends FluentContainer<S>>
     }
 
     /**
-     * A {@link Sortable} complemented by fluent setters.
+     * A {@link Container.Sortable} complemented by fluent setters.
      *
-     * @param <S> Self-referential generic type
-     * @see Sortable
+     * @param <S>
+     *            Self-referential generic type
+     * @see Container.Sortable
      */
     public interface FluentSortable<S extends FluentSortable<S>>
             extends Sortable {
