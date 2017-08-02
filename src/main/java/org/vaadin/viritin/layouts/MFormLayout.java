@@ -1,10 +1,7 @@
 package org.vaadin.viritin.layouts;
 
-import org.vaadin.viritin.MSize;
 import org.vaadin.viritin.fluency.ui.FluentFormLayout;
 
-import com.vaadin.server.Resource;
-import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.FormLayout;
 
