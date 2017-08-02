@@ -1,10 +1,5 @@
 package org.vaadin.viritin.fields;
 
-import com.vaadin.data.BeanValidationBinder;
-import com.vaadin.data.Binder;
-import com.vaadin.data.HasValue;
-import com.vaadin.data.StatusChangeEvent;
-import com.vaadin.data.StatusChangeListener;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -15,21 +10,27 @@ import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+
+import com.vaadin.data.BeanValidationBinder;
+import com.vaadin.data.Binder;
+import com.vaadin.data.HasValue;
+import com.vaadin.data.StatusChangeEvent;
+import com.vaadin.data.StatusChangeListener;
+import com.vaadin.shared.util.SharedUtil;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomField;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
 import com.vaadin.util.ReflectTools;
-import com.vaadin.v7.ui.DefaultFieldFactory;
-import java.util.Optional;
-import java.util.Set;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 
 /**
  * NOTE, this V8 compatible version of this class should still be considered experimental.
@@ -451,8 +452,7 @@ public abstract class AbstractElementCollection<ET, CT extends Collection<ET>> e
     protected String getPropertyHeader(String propertyName) {
         String header = propertyToHeader.get(propertyName);
         if (header == null) {
-            // TODO figure out a way to do without deprecated class
-            header = DefaultFieldFactory.createCaptionByPropertyId(propertyName);
+            header = SharedUtil.propertyIdToHumanFriendly(propertyName);
         }
         return header;
     }
