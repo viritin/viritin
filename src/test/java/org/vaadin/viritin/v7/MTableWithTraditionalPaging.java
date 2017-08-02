@@ -1,20 +1,21 @@
 package org.vaadin.viritin.v7;
 
+import org.vaadin.addonhelpers.AbstractTest;
+import org.vaadin.viritin.button.MButton;
+import org.vaadin.viritin.layouts.MHorizontalLayout;
+import org.vaadin.viritin.layouts.MVerticalLayout;
+import org.vaadin.viritin.testdomain.Person;
+import org.vaadin.viritin.testdomain.Service;
+import org.vaadin.viritin.v7.fields.MTable;
+
 import com.vaadin.annotations.Theme;
-import com.vaadin.server.FontAwesome;
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.themes.ValoTheme;
-import org.vaadin.addonhelpers.AbstractTest;
-import org.vaadin.viritin.button.MButton;
-import org.vaadin.viritin.v7.fields.MTable;
-import org.vaadin.viritin.layouts.MHorizontalLayout;
-import org.vaadin.viritin.layouts.MVerticalLayout;
-import org.vaadin.viritin.testdomain.Person;
-import org.vaadin.viritin.testdomain.Service;
 
 /**
  *
@@ -63,10 +64,14 @@ public class MTableWithTraditionalPaging extends AbstractTest {
         }
 
         private void initButtons() {
-            first = new MButton(FontAwesome.FAST_BACKWARD, handler).withStyleName(ValoTheme.BUTTON_BORDERLESS);
-            last = new MButton(FontAwesome.FAST_FORWARD, handler).withStyleName(ValoTheme.BUTTON_BORDERLESS);
-            next = new MButton(FontAwesome.FORWARD, handler).withStyleName(ValoTheme.BUTTON_BORDERLESS);
-            previous = new MButton(FontAwesome.BACKWARD, handler).withStyleName(ValoTheme.BUTTON_BORDERLESS);
+            first = new MButton(VaadinIcons.FAST_BACKWARD, handler)
+                    .withStyleName(ValoTheme.BUTTON_BORDERLESS);
+            last = new MButton(VaadinIcons.FAST_FORWARD, handler)
+                    .withStyleName(ValoTheme.BUTTON_BORDERLESS);
+            next = new MButton(VaadinIcons.FORWARD, handler)
+                    .withStyleName(ValoTheme.BUTTON_BORDERLESS);
+            previous = new MButton(VaadinIcons.BACKWARDS, handler)
+                    .withStyleName(ValoTheme.BUTTON_BORDERLESS);
         }
 
         public interface PagingListener {

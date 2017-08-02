@@ -1,23 +1,24 @@
 package org.vaadin.viritin.v7;
 
-import com.vaadin.annotations.Theme;
-import com.vaadin.server.FontAwesome;
-import com.vaadin.server.Resource;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.Notification;
+import java.util.List;
+
 import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.viritin.LazyComboBoxUsage;
 import org.vaadin.viritin.LazyList;
 import org.vaadin.viritin.fields.CaptionGenerator;
+import org.vaadin.viritin.layouts.MVerticalLayout;
+import org.vaadin.viritin.testdomain.Person;
+import org.vaadin.viritin.v7.fields.IconGenerator;
 import org.vaadin.viritin.v7.fields.LazyComboBox;
 import org.vaadin.viritin.v7.fields.MValueChangeEvent;
 import org.vaadin.viritin.v7.fields.MValueChangeListener;
-import org.vaadin.viritin.layouts.MVerticalLayout;
-import org.vaadin.viritin.testdomain.Person;
 
-import java.util.List;
-import org.vaadin.viritin.v7.fields.IconGenerator;
+import com.vaadin.annotations.Theme;
+import com.vaadin.icons.VaadinIcons;
+import com.vaadin.server.Resource;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.Notification;
 
 @Theme("valo")
 public class LazyComboBoxUsageSample extends AbstractTest {
@@ -67,7 +68,7 @@ public class LazyComboBoxUsageSample extends AbstractTest {
 
                     @Override
                     public Resource getIcon(Person option) {
-                        return FontAwesome.AMBULANCE;
+                                return VaadinIcons.AMBULANCE;
                     }
                 });
         
