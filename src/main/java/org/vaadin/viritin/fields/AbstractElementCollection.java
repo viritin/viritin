@@ -34,7 +34,8 @@ import com.vaadin.util.ReflectTools;
 import com.vaadin.v7.ui.DefaultFieldFactory;
 
 /**
- * NOTE, this V8 compatible version of this class should still be considered experimental.
+ * NOTE, this V8 compatible version of this class should still be considered
+ * experimental.
  * <p>
  * A superclass for fields suitable for editing collection of referenced objects
  * tied to parent object only. E.g. OneToMany/ElementCollection fields in JPA
@@ -50,8 +51,10 @@ import com.vaadin.v7.ui.DefaultFieldFactory;
  *
  * @author Matti Tahvonen
  * @param <CT>
- * @param <ET> The type in the entity collection. The type must have empty
- * paremeter constructor or you have to provide Instantiator.
+ *            The type of the collection.
+ * @param <ET>
+ *            The type in the entity collection. The type must have empty
+ *            paremeter constructor or you have to provide Instantiator.
  */
 public abstract class AbstractElementCollection<ET, CT extends Collection<ET>> extends CustomField<CT> {
 
