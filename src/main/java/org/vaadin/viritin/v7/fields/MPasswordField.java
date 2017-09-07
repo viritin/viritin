@@ -21,6 +21,7 @@ import java.util.EventObject;
 import com.vaadin.v7.data.Property;
 import com.vaadin.v7.data.Validator;
 import com.vaadin.v7.data.util.converter.Converter;
+import com.vaadin.v7.data.util.converter.ConverterUtil;
 import com.vaadin.v7.event.FieldEvents;
 import com.vaadin.v7.event.FieldEvents.TextChangeEvent;
 import com.vaadin.server.AbstractErrorMessage;
