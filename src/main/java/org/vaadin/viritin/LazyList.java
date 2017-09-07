@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.WeakHashMap;
 
 /**
@@ -206,8 +207,8 @@ public class LazyList<T> extends AbstractList<T> implements Serializable {
             }
             page = findPageFromCache(pageIndexForReqest);
         }
-        final T get = page.get(indexOnPage);
-        return get;
+
+        return page != null ? page.get(indexOnPage) : null;
     }
 
     protected void initCacheFormPage(final int pageIndexForReqest) {
@@ -308,6 +309,8 @@ public class LazyList<T> extends AbstractList<T> implements Serializable {
 
             @Override
             public T next() {
+                if (!hasNext()) throw new NoSuchElementException();
+
                 index++;
                 return get(index);
             }

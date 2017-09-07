@@ -131,8 +131,7 @@ public class DynaBeanItem<T> implements Item {
         if (getDynaBean().getDynaClass().getDynaProperty(propertyName) == null) {
             DefaultResolver defaultResolver = new DefaultResolver();
             if (!(defaultResolver.hasNested(propertyName) || defaultResolver.
-                    isIndexed(propertyName) || defaultResolver.hasNested(
-                    propertyName))) {
+                    isIndexed(propertyName))) {
                 // Lazy query container detects some debug properties via 
                 // Item!! 
                 return null;
