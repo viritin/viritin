@@ -56,4 +56,18 @@ public interface FluentHasValue<S, V> extends HasValue<V> {
                 .setRequiredIndicatorVisible(requiredIndicatorVisible);
         return (S) this;
     }
+
+    /**
+     * Adds a value change listener. The listener is called when the value of
+     * this {@code HasValue} is changed either by the user or programmatically.
+     *
+     * @see HasValue#addValueChangeListener(com.vaadin.data.HasValue.ValueChangeListener)
+     * @param listener
+     *            the value change listener, not null
+     * @return this (for method chaining) <b>NOT</b> a registration
+     */
+    public default S withValueChangeListener(ValueChangeListener<V> listener) {
+        ((HasValue<V>) this).addValueChangeListener(listener);
+        return (S) this;
+    }
 }
