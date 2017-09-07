@@ -167,6 +167,9 @@ public abstract class AbstractForm<T> extends CustomComponent {
 
     public void setSaveCaption(String saveCaption) {
         this.saveCaption = saveCaption;
+        if(saveButton != null) {
+            getSaveButton().setCaption(getSaveCaption());
+        }
     }
 
     public String getModalWindowTitle() {
@@ -183,6 +186,9 @@ public abstract class AbstractForm<T> extends CustomComponent {
 
     public void setDeleteCaption(String deleteCaption) {
         this.deleteCaption = deleteCaption;
+        if(deleteButton != null) {
+            getDeleteButton().setCaption(getDeleteCaption());
+        }
     }
 
     public String getCancelCaption() {
@@ -191,6 +197,9 @@ public abstract class AbstractForm<T> extends CustomComponent {
 
     public void setCancelCaption(String cancelCaption) {
         this.cancelCaption = cancelCaption;
+        if(resetButton != null) {
+            getResetButton().setCaption(getCancelCaption());
+        }
     }
 
     public Binder<T> getBinder() {
