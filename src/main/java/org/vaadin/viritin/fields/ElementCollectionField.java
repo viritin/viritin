@@ -87,7 +87,7 @@ import org.vaadin.viritin.form.AbstractForm;
  * @author Matti Tahvonen
  * @param <ET> The type in the entity collection. The type must have empty
  * parameter constructor or you have to provide Instantiator.
- * @param <CT>
+ * @param <CT> the type of collection
  *
  */
 public class ElementCollectionField<ET, CT extends Collection<ET>> extends AbstractElementCollection<ET,CT> {
