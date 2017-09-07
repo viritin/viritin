@@ -1,9 +1,7 @@
 package org.vaadin.viritin.layouts;
 
-import org.vaadin.viritin.MSize;
 import org.vaadin.viritin.fluency.ui.FluentCssLayout;
 
-import com.vaadin.server.Resource;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
 

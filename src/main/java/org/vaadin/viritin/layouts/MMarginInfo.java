@@ -11,6 +11,7 @@ public class MMarginInfo extends MarginInfo {
         super(enabled);
     }
 
+    @Deprecated
     public MMarginInfo(int bitMask) {
         super(bitMask);
     }

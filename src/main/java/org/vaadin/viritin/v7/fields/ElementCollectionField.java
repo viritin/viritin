@@ -1,24 +1,25 @@
 package org.vaadin.viritin.v7.fields;
 
-import com.vaadin.server.FontAwesome;
-import com.vaadin.v7.ui.AbstractField;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Component;
-import com.vaadin.v7.ui.Field;
-import com.vaadin.ui.GridLayout;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.themes.ValoTheme;
-import org.vaadin.viritin.v7.MBeanFieldGroup;
-import org.vaadin.viritin.button.ConfirmButton;
-import org.vaadin.viritin.button.MButton;
-import org.vaadin.viritin.v7.form.AbstractForm;
-import org.vaadin.viritin.layouts.MGridLayout;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.vaadin.viritin.button.ConfirmButton;
+import org.vaadin.viritin.button.MButton;
+import org.vaadin.viritin.layouts.MGridLayout;
+import org.vaadin.viritin.v7.MBeanFieldGroup;
+import org.vaadin.viritin.v7.form.AbstractForm;
+
+import com.vaadin.icons.VaadinIcons;
+import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.themes.ValoTheme;
+import com.vaadin.v7.ui.AbstractField;
+import com.vaadin.v7.ui.Field;
 
 /**
  * A field suitable for editing collection of referenced objects tied to parent
@@ -110,7 +111,7 @@ public class ElementCollectionField<ET> extends AbstractElementCollection<ET> {
             layout.setComponentAlignment(c, Alignment.MIDDLE_LEFT);
         }
         if (getPopupEditor() != null) {
-            MButton b = new MButton(FontAwesome.EDIT)
+            MButton b = new MButton(VaadinIcons.PENCIL)
                     .withStyleName(ValoTheme.BUTTON_ICON_ONLY)
                     .withListener(new Button.ClickListener() {
                 private static final long serialVersionUID = 5019806363620874205L;
@@ -136,7 +137,7 @@ public class ElementCollectionField<ET> extends AbstractElementCollection<ET> {
         } else {
             b = new MButton();
         }
-        b.setIcon(FontAwesome.TRASH_O);
+        b.setIcon(VaadinIcons.TRASH);
         b.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
         b.addStyleName(ValoTheme.BUTTON_DANGER);
         b.addClickListener(new Button.ClickListener() {

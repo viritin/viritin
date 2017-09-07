@@ -15,16 +15,17 @@
  */
 package org.vaadin.viritin.it;
 
-import com.vaadin.annotations.Theme;
-import com.vaadin.server.FontAwesome;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Component;
 import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.label.MLabel;
 import org.vaadin.viritin.layouts.MHorizontalLayout;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.vaadin.viritin.ui.MNotification;
+
+import com.vaadin.annotations.Theme;
+import com.vaadin.icons.VaadinIcons;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Component;
 
 /**
  *
@@ -40,43 +41,49 @@ public class MNotificationExapmle extends AbstractTest {
         MVerticalLayout layout = new MVerticalLayout(
                 new MLabel("MNotification Examples").withStyleName("h1"),
                 new MHorizontalLayout(
-                        new MButton(FontAwesome.COMMENT, "Humanized", new Button.ClickListener() {
+                        new MButton(VaadinIcons.COMMENT, "Humanized",
+                                new Button.ClickListener() {
                             private static final long serialVersionUID = 5019806363620874205L;
                             
                             @Override
                             public void buttonClick(Button.ClickEvent event) {
                                 MNotification.humanized("Humanized", "This is a humanized notification!")
-                                        .withIcon(FontAwesome.COMMENT);
+                                                .withIcon(VaadinIcons.COMMENT);
                             }
                         }).withStyleName("primary"),
-                        new MButton(FontAwesome.TIMES, "Error", new Button.ClickListener() {
+                        new MButton(VaadinIcons.CLOSE, "Error",
+                                new Button.ClickListener() {
                             private static final long serialVersionUID = 5019806363620874205L;
                             
                             @Override
                             public void buttonClick(Button.ClickEvent event) {
                                 MNotification.error("Error", "This is an error notification!")
-                                        .withIcon(FontAwesome.TIMES);
+                                                .withIcon(VaadinIcons.CLOSE);
                             }
                         }).withStyleName("danger"),
-                        new MButton(FontAwesome.EXCLAMATION_TRIANGLE, "Warning", new Button.ClickListener() {
+                        new MButton(VaadinIcons.EXCLAMATION, "Warning",
+                                new Button.ClickListener() {
                             private static final long serialVersionUID = 5019806363620874205L;
                             
                             @Override
                             public void buttonClick(Button.ClickEvent event) {
                                 MNotification.warning("Warning", "This is a warning notification!")
-                                        .withIcon(FontAwesome.EXCLAMATION_TRIANGLE);
+                                                .withIcon(
+                                                        VaadinIcons.EXCLAMATION);
                             }
                         }),
-                        new MButton(FontAwesome.DOWNLOAD, "Tray", new Button.ClickListener() {
+                        new MButton(VaadinIcons.DOWNLOAD, "Tray",
+                                new Button.ClickListener() {
                             private static final long serialVersionUID = 5019806363620874205L;
                             
                             @Override
                             public void buttonClick(Button.ClickEvent event) {
                                 MNotification.tray("Tray", "This is a tray notification!")
-                                        .withIcon(FontAwesome.DOWNLOAD);
+                                                .withIcon(VaadinIcons.DOWNLOAD);
                             }
                         }).withStyleName("friendly"),
-                        new MButton(FontAwesome.WHEELCHAIR, "Assistive", new Button.ClickListener() {
+                        new MButton(VaadinIcons.ACCESSIBILITY, "Assistive",
+                                new Button.ClickListener() {
                             private static final long serialVersionUID = 5019806363620874205L;
                             
                             @Override

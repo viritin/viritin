@@ -9,21 +9,21 @@ import java.util.List;
 
 import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.fields.CaptionGenerator;
-import org.vaadin.viritin.v7.form.AbstractForm;
 import org.vaadin.viritin.layouts.MHorizontalLayout;
 import org.vaadin.viritin.layouts.MVerticalLayout;
+import org.vaadin.viritin.v7.form.AbstractForm;
 
-import com.vaadin.v7.data.Property;
-import com.vaadin.server.FontAwesome;
-import com.vaadin.v7.ui.AbstractSelect;
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.v7.ui.ComboBox;
 import com.vaadin.ui.Component;
-import com.vaadin.v7.ui.CustomField;
-import com.vaadin.v7.ui.Table;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
+import com.vaadin.v7.data.Property;
+import com.vaadin.v7.ui.AbstractSelect;
+import com.vaadin.v7.ui.ComboBox;
+import com.vaadin.v7.ui.CustomField;
+import com.vaadin.v7.ui.Table;
 
 /**
  * Selects a set of beans from a larger set of choices. Bit similar UI component
@@ -98,7 +98,7 @@ public class SubSetSelector<ET> extends CustomField<Collection> implements Abstr
      * @return the content (String or Component)
      */
     protected Object getToolColumnContent(final ET entity) {
-        Button button = new Button(FontAwesome.MINUS);
+        Button button = new Button(VaadinIcons.MINUS);
         button.setDescription("Removes the selection from the list");
         button.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
         button.addClickListener(new Button.ClickListener() {
@@ -142,7 +142,8 @@ public class SubSetSelector<ET> extends CustomField<Collection> implements Abstr
         this.newInstanceForm = newInstanceForm;
         if (newInstanceForm != null) {
             if (newInstanceBtn == null) {
-                newInstanceBtn = new MButton(FontAwesome.PLUS).withStyleName(ValoTheme.BUTTON_ICON_ONLY);
+                newInstanceBtn = new MButton(VaadinIcons.PLUS)
+                        .withStyleName(ValoTheme.BUTTON_ICON_ONLY);
                 newInstanceBtn.addClickListener(new Button.ClickListener() {
                     @Override
                     public void buttonClick(ClickEvent clickEvent) {

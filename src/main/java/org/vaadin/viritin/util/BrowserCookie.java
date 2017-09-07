@@ -1,15 +1,15 @@
 package org.vaadin.viritin.util;
 
-import com.vaadin.ui.JavaScript;
-import com.vaadin.ui.JavaScriptFunction;
-import elemental.json.JsonArray;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-
 import java.util.UUID;
+
+import com.vaadin.ui.JavaScript;
+import com.vaadin.ui.JavaScriptFunction;
+
+import elemental.json.JsonArray;
 
 /**
  * A helper that provides access to browser cookies.
