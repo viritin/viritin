@@ -1,10 +1,5 @@
 package org.vaadin.viritin.fields;
 
-import com.vaadin.data.BeanValidationBinder;
-import com.vaadin.data.Binder;
-import com.vaadin.data.HasValue;
-import com.vaadin.data.StatusChangeEvent;
-import com.vaadin.data.StatusChangeListener;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -15,21 +10,27 @@ import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+
+import com.vaadin.data.BeanValidationBinder;
+import com.vaadin.data.Binder;
+import com.vaadin.data.HasValue;
+import com.vaadin.data.StatusChangeEvent;
+import com.vaadin.data.StatusChangeListener;
+import com.vaadin.shared.util.SharedUtil;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomField;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
 import com.vaadin.util.ReflectTools;
-import com.vaadin.v7.ui.DefaultFieldFactory;
-import java.util.Optional;
-import java.util.Set;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 
 /**
  * NOTE, this V8 compatible version of this class should still be considered experimental.
@@ -47,7 +48,7 @@ import javax.validation.ValidatorFactory;
  * </ul>
  *
  * @author Matti Tahvonen
- * @param <CT> The collection-type.
+ * @param <CT> The type of collection
  * @param <ET> The type in the entity collection. The type must have empty
  * paremeter constructor or you have to provide Instantiator.
  */
@@ -162,7 +163,8 @@ public abstract class AbstractElementCollection<ET, CT extends Collection<ET>> e
                     return;
                 }
                 getAndEnsureValue().add(newInstance);
-                fireEvent(new ElementAddedEvent(AbstractElementCollection.this,
+                fireEvent(
+                        new ElementAddedEvent<>(AbstractElementCollection.this,
                         newInstance));
                 setPersisted(newInstance, true);
                 onElementAdded();
@@ -174,7 +176,8 @@ public abstract class AbstractElementCollection<ET, CT extends Collection<ET>> e
         private void fireValueChange() {
             // TODO FFS, old value with mutable object, eh
             // TODO FFS, how to detect 
-            fireEvent(new ValueChangeEvent(AbstractElementCollection.this, null, true));
+            fireEvent(new ValueChangeEvent<>(AbstractElementCollection.this,
+                    null, true));
         }
     };
 
@@ -275,7 +278,7 @@ public abstract class AbstractElementCollection<ET, CT extends Collection<ET>> e
         this.editorType = formType;
     }
 
-    public AbstractElementCollection(Class<ET> elementType, Instantiator i,
+    public AbstractElementCollection(Class<ET> elementType, Instantiator<ET> i,
             Class<?> formType) {
         this.elementType = elementType;
         this.instantiator = i;
@@ -397,14 +400,14 @@ public abstract class AbstractElementCollection<ET, CT extends Collection<ET>> e
     public void addElement(ET instance) {
         getAndEnsureValue().add(instance);
         addInternalElement(instance);
-        fireEvent(new ValueChangeEvent(this, null, true));
+        fireEvent(new ValueChangeEvent<>(this, null, true));
         fireEvent(new ElementAddedEvent<>(this, instance));
     }
 
     public void removeElement(ET elemnentToBeRemoved) {
         removeInternalElement(elemnentToBeRemoved);
         getAndEnsureValue().remove(elemnentToBeRemoved);
-        fireEvent(new ValueChangeEvent(this, null, true));
+        fireEvent(new ValueChangeEvent<>(this, null, true));
         fireEvent(new ElementRemovedEvent<>(this, elemnentToBeRemoved));
     }
 
@@ -451,8 +454,7 @@ public abstract class AbstractElementCollection<ET, CT extends Collection<ET>> e
     protected String getPropertyHeader(String propertyName) {
         String header = propertyToHeader.get(propertyName);
         if (header == null) {
-            // TODO figure out a way to do without deprecated class
-            header = DefaultFieldFactory.createCaptionByPropertyId(propertyName);
+            header = SharedUtil.propertyIdToHumanFriendly(propertyName);
         }
         return header;
     }
@@ -510,8 +512,7 @@ public abstract class AbstractElementCollection<ET, CT extends Collection<ET>> e
 
     /**
      * Returns a shared Validator instance to use. An instance is created using
-     * the validator factory if necessary and thereafter reused by the
-     * BeanValidator instance.
+     * the validator factory if necessary and thereafter reused.
      *
      * @return the JSR-303 {@link javax.validation.Validator} to use
      */

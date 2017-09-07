@@ -1,12 +1,12 @@
 package org.vaadin.viritin.it;
 
-import com.vaadin.annotations.Theme;
-import com.vaadin.server.FontAwesome;
-import com.vaadin.ui.Component;
 import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.viritin.components.DisclosurePanel;
 import org.vaadin.viritin.label.RichText;
 import org.vaadin.viritin.layouts.MVerticalLayout;
+
+import com.vaadin.icons.VaadinIcons;
+import com.vaadin.ui.Component;
 
 /**
  * An example how to extend
@@ -23,8 +23,8 @@ public class DisclosurePanelExample extends AbstractTest {
         RichText c = new RichText().withMarkDown("This is the content");
 
         DisclosurePanel d = new DisclosurePanel("Expert Mode", c)
-        .setClosedIcon(FontAwesome.CARET_RIGHT)
-        .setOpenIcon(FontAwesome.CARET_DOWN);
+                .setClosedIcon(VaadinIcons.CARET_RIGHT)
+                .setOpenIcon(VaadinIcons.CARET_DOWN);
 
         return new MVerticalLayout(d);
 

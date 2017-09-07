@@ -1,23 +1,23 @@
 package org.vaadin.viritin.v7.fields;
 
+import org.vaadin.viritin.button.MButton;
+import org.vaadin.viritin.layouts.MHorizontalLayout;
+
 import com.vaadin.event.FieldEvents.BlurListener;
 import com.vaadin.event.FieldEvents.FocusListener;
+import com.vaadin.icons.VaadinIcons;
+import com.vaadin.server.ErrorMessage;
+import com.vaadin.server.Page;
+import com.vaadin.server.Resource;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.Layout;
+import com.vaadin.ui.themes.ValoTheme;
 import com.vaadin.v7.data.Property;
 import com.vaadin.v7.data.util.converter.Converter;
 import com.vaadin.v7.event.FieldEvents;
-import com.vaadin.server.ErrorMessage;
-import com.vaadin.server.FontAwesome;
-import com.vaadin.server.Page;
-import com.vaadin.server.Resource;
 import com.vaadin.v7.ui.AbstractTextField;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Component;
 import com.vaadin.v7.ui.CustomField;
-import com.vaadin.v7.ui.HorizontalLayout;
-import com.vaadin.ui.Layout;
-import com.vaadin.ui.themes.ValoTheme;
-import org.vaadin.viritin.button.MButton;
-import org.vaadin.viritin.layouts.MHorizontalLayout;
 
 /**
  * A textfield with an attached button, that clears the textfield. Most methods
@@ -30,7 +30,8 @@ import org.vaadin.viritin.layouts.MHorizontalLayout;
 public class ClearableTextField extends CustomField {
 
     private final MTextField textfield = new MTextField();
-    private final MButton clearButton = new MButton(FontAwesome.TIMES).withStyleName(ValoTheme.BUTTON_ICON_ONLY);
+    private final MButton clearButton = new MButton(VaadinIcons.CLOSE)
+            .withStyleName(ValoTheme.BUTTON_ICON_ONLY);
     private final MHorizontalLayout root = new MHorizontalLayout()
             .expand(textfield).add(clearButton)
             .withSpacing(false)

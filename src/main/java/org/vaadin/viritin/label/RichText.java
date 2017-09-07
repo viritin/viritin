@@ -15,7 +15,6 @@
  */
 package org.vaadin.viritin.label;
 
-import com.vaadin.shared.ui.ContentMode;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -24,6 +23,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 import org.markdown4j.Markdown4jProcessor;
 import org.vaadin.viritin.MSize;
+
+import com.vaadin.shared.ui.ContentMode;
 
 /**
  * XSS safe rich text label with either Markdown syntax or raw html (sanitized
@@ -173,8 +174,15 @@ public class RichText extends MLabel {
     }
 
     @Override
+    @Deprecated
     public RichText withWidthUndefined() {
-        super.withWidthUndefined();
+        super.withUndefinedWidth();
+        return this;
+    }
+
+    @Override
+    public RichText withUndefinedWidth() {
+        super.withUndefinedWidth();
         return this;
     }
 

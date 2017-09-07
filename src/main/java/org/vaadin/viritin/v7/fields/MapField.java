@@ -1,25 +1,26 @@
 package org.vaadin.viritin.v7.fields;
 
-import com.vaadin.v7.data.Property;
-import com.vaadin.v7.data.Validator;
-import com.vaadin.server.FontAwesome;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Component;
-import com.vaadin.v7.ui.CustomField;
-import com.vaadin.ui.GridLayout;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.Layout;
-import com.vaadin.v7.ui.TextField;
-import com.vaadin.util.ReflectTools;
-import org.vaadin.viritin.v7.MBeanFieldGroup;
-import org.vaadin.viritin.v7.MBeanFieldGroup.FieldGroupListener;
-
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
+import org.vaadin.viritin.v7.MBeanFieldGroup;
+import org.vaadin.viritin.v7.MBeanFieldGroup.FieldGroupListener;
+
+import com.vaadin.icons.VaadinIcons;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.Layout;
+import com.vaadin.util.ReflectTools;
+import com.vaadin.v7.data.Property;
+import com.vaadin.v7.data.Validator;
+import com.vaadin.v7.ui.CustomField;
+import com.vaadin.v7.ui.TextField;
 
 /**
  * A field to edit simple map structures like string to Integer/Double/Float 
@@ -429,7 +430,7 @@ public class MapField<K, V> extends CustomField<Map> {
         EntryEditor(TextField ke, TextField valueEditor, K k) {
             this.keyEditor = ke;
             this.valueEditor = valueEditor;
-            delete = new Button(FontAwesome.TRASH);
+            delete = new Button(VaadinIcons.TRASH);
             delete.addClickListener(new Button.ClickListener() {
                 @Override
                 public void buttonClick(Button.ClickEvent event) {

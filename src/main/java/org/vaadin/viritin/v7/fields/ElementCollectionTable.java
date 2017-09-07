@@ -1,18 +1,19 @@
 package org.vaadin.viritin.v7.fields;
 
-import com.vaadin.server.FontAwesome;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.Layout;
-import com.vaadin.v7.ui.Table;
-import com.vaadin.ui.themes.ValoTheme;
-import org.vaadin.viritin.v7.MBeanFieldGroup;
-import org.vaadin.viritin.button.MButton;
-import org.vaadin.viritin.layouts.MVerticalLayout;
-
 import java.util.ArrayList;
 import java.util.IdentityHashMap;
 import java.util.List;
+
+import org.vaadin.viritin.button.MButton;
+import org.vaadin.viritin.layouts.MVerticalLayout;
+import org.vaadin.viritin.v7.MBeanFieldGroup;
+
+import com.vaadin.icons.VaadinIcons;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.Layout;
+import com.vaadin.ui.themes.ValoTheme;
+import com.vaadin.v7.ui.Table;
 
 /**
  * A field suitable for editing collection of referenced objects tied to parent
@@ -60,7 +61,7 @@ public class ElementCollectionTable<ET> extends AbstractElementCollection<ET> {
 
     private MTable<ET> table;
 
-    private MButton addButton = new MButton(FontAwesome.PLUS,
+    private MButton addButton = new MButton(VaadinIcons.PLUS,
             new Button.ClickListener() {
 
                 private static final long serialVersionUID = 6115218255676556647L;
@@ -172,7 +173,8 @@ public class ElementCollectionTable<ET> extends AbstractElementCollection<ET> {
                                     final Object itemId,
                                     Object columnId) {
 
-                                MButton b = new MButton(FontAwesome.TRASH_O).
+                                MButton b = new MButton(VaadinIcons.TRASH)
+                                        .
                                 withListener(
                                         new Button.ClickListener() {
 

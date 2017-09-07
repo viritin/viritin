@@ -16,8 +16,20 @@
 package org.vaadin.viritin.fields;
 
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.vaadin.viritin.button.ConfirmButton;
+import org.vaadin.viritin.button.MButton;
+import org.vaadin.viritin.form.AbstractForm;
+import org.vaadin.viritin.layouts.MGridLayout;
+
 import com.vaadin.data.Binder;
-import com.vaadin.server.FontAwesome;
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -25,17 +37,6 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.themes.ValoTheme;
-import org.vaadin.viritin.button.ConfirmButton;
-import org.vaadin.viritin.button.MButton;
-import org.vaadin.viritin.layouts.MGridLayout;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.vaadin.viritin.form.AbstractForm;
 
 /**
  * NOTE, this V8 compatible version of this class should still be considered experimental.
@@ -87,7 +88,7 @@ import org.vaadin.viritin.form.AbstractForm;
  * @author Matti Tahvonen
  * @param <ET> The type in the entity collection. The type must have empty
  * parameter constructor or you have to provide Instantiator.
- * @param <CT> The collection-type.
+ * @param <CT> the type of collection
  *
  */
 public class ElementCollectionField<ET, CT extends Collection<ET>> extends AbstractElementCollection<ET,CT> {
@@ -134,7 +135,7 @@ public class ElementCollectionField<ET, CT extends Collection<ET>> extends Abstr
             layout.setComponentAlignment(c, Alignment.MIDDLE_LEFT);
         }
         if (getPopupEditor() != null) {
-            MButton b = new MButton(FontAwesome.EDIT)
+            MButton b = new MButton(VaadinIcons.PENCIL)
                     .withStyleName(ValoTheme.BUTTON_ICON_ONLY)
                     .withListener(new Button.ClickListener() {
                 private static final long serialVersionUID = 5019806363620874205L;
@@ -160,7 +161,7 @@ public class ElementCollectionField<ET, CT extends Collection<ET>> extends Abstr
         } else {
             b = new MButton();
         }
-        b.setIcon(FontAwesome.TRASH_O);
+        b.setIcon(VaadinIcons.TRASH);
         b.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
         b.addStyleName(ValoTheme.BUTTON_DANGER);
         b.addClickListener(new Button.ClickListener() {
