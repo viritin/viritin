@@ -50,6 +50,7 @@ import com.vaadin.ui.themes.ValoTheme;
  * <li>The field is always non buffered
  * <li>The element type needs to have an empty parameter constructor or user
  * must provide an Instantiator.
+ * <li>If a read-only field is needed, e.g. for an id, use LabelField
  * </ul>
  *
  * Elements in the edited collection are modified with BeanFieldGroup. Fields
@@ -57,6 +58,7 @@ import com.vaadin.ui.themes.ValoTheme;
  * List&gt;Address&lt; adresses:
  * <pre><code>
  *  public static class AddressRow {
+ *      LabelField id = new LabelField();
  *      EnumSelect type = new EnumSelect();
  *      MTextField street = new MTextField();
  *      MTextField city = new MTextField();
