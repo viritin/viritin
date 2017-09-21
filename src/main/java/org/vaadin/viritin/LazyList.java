@@ -3,6 +3,7 @@ package org.vaadin.viritin;
 import java.io.Serializable;
 import java.util.AbstractList;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +23,8 @@ import java.util.WeakHashMap;
 public class LazyList<T> extends AbstractList<T> implements Serializable {
 
     private static final long serialVersionUID = 2423832460602269469L;
+
+    private Runnable refreshCallback;
 
     private List<T> findPageFromCache(int pageIndexForReqest) {
         int p = pageIndexForReqest - pageIndex;
@@ -287,12 +290,54 @@ public class LazyList<T> extends AbstractList<T> implements Serializable {
 
     @Override
     public List<T> subList(int fromIndex, int toIndex) {
+        if (refreshCallback != null && !isLoadedIntoCache(fromIndex, toIndex)) {
+            int nonCachedSize = countProvider.size();
+            if (size() != nonCachedSize) {
+                reset();
+                refreshCallback.run();
+                if (toIndex > nonCachedSize) {
+                    if (nonCachedSize > fromIndex){
+                        return new ArrayList<>(super.subList(fromIndex, nonCachedSize));
+                    } else {
+                        return Collections.EMPTY_LIST;
+                    }
+                }
+            }
+        }
+
         final int sizeOfSublist = toIndex - fromIndex;
         if (sizeOfSublist > maxPages * (pageSize -1)) {
             // Increase the amount of cached pages if necessary
             maxPages = sizeOfSublist/pageSize + 1;
         }
+
         return new ArrayList<>(super.subList(fromIndex, toIndex));
+    }
+
+    private boolean isLoadedIntoCache(int fromIndex, int toIndex) {
+        return fromIndex >= cachedFromIndex()
+                && toIndex <= cachedToIndex();
+    }
+
+    private int cachedFromIndex() {
+        if (pageIndex < 0) {
+            return 0;
+        }
+        return pageIndex * pageSize;
+    }
+
+    private int cachedToIndex() {
+        if (pageIndex < 0) {
+            return 0;
+        }
+
+        int numberOfCachedItems = 0;
+
+        for (List<T> page : pages) {
+            numberOfCachedItems += page.size();
+        }
+
+        return numberOfCachedItems + pageIndex * pageSize;
     }
 
     @Override
@@ -320,6 +365,10 @@ public class LazyList<T> extends AbstractList<T> implements Serializable {
                 throw new UnsupportedOperationException("Not supported.");
             }
         };
+    }
+
+    public void setRefreshCallback(Runnable callback){
+        this.refreshCallback = callback;
     }
 
     /**
