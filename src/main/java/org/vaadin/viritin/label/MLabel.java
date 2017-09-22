@@ -15,7 +15,6 @@
  */
 package org.vaadin.viritin.label;
 
-import org.vaadin.viritin.fluency.server.FluentSizeable;
 import org.vaadin.viritin.fluency.ui.FluentAbstractComponent;
 
 import com.vaadin.shared.ui.ContentMode;
@@ -61,15 +60,5 @@ public class MLabel extends Label implements FluentAbstractComponent<MLabel> {
     public MLabel withContentMode(ContentMode mode) {
         setContentMode(mode);
         return this;
-    }
-
-    /**
-     * 
-     * @return this for method chaining
-     * @deprecated use {@link FluentSizeable#withUndefinedWidth()} instead
-     */
-    @Deprecated
-    public MLabel withWidthUndefined() {
-        return withUndefinedWidth();
     }
 }

@@ -84,20 +84,4 @@ public class MVerticalLayout extends VerticalLayout
         setExpandRatio(component, ratio);
         return this;
     }
-
-    public MVerticalLayout withSizeUndefined() {
-        setSizeUndefined();
-        return this;
-    }
-
-    public MVerticalLayout withWidthUndefined() {
-        setWidthUndefined();
-        return this;
-    }
-
-    public MVerticalLayout withHeightUndefined() {
-        setHeightUndefined();
-        return this;
-    }
-
 }

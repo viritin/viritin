@@ -27,19 +27,4 @@ public class MPanel extends Panel implements FluentPanel<MPanel> {
     public MPanel(String caption, Component content) {
         super(caption, content);
     }
-
-    public MPanel withSizeUndefined() {
-        setSizeUndefined();
-        return this;
-    }
-
-    public MPanel withWidthUndefined() {
-        setWidthUndefined();
-        return this;
-    }
-
-    public MPanel withHeightUndefined() {
-        setHeightUndefined();
-        return this;
-    }
 }
