@@ -1,21 +1,21 @@
 package org.vaadin.viritin.v7.locale;
 
-import org.vaadin.viritin.it.locale.*;
-import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
-
-import java.net.MalformedURLException;
-import java.util.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 import org.junit.Ignore;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.*;
+import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
-import org.openqa.selenium.*;
-import org.openqa.selenium.firefox.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.vaadin.addonhelpers.automated.*;
+import org.vaadin.addonhelpers.automated.AbstractWebDriverCase;
+import org.vaadin.addonhelpers.automated.VaadinConditions;
 import org.vaadin.addonhelpers.components.VaadinComboBox;
 
 @RunWith(Parameterized.class)

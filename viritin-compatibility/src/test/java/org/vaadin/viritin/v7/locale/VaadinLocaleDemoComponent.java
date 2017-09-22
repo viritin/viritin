@@ -1,12 +1,12 @@
 package org.vaadin.viritin.v7.locale;
 
-import org.vaadin.viritin.it.locale.*;
-import com.vaadin.ui.CustomComponent;
-import java.util.*;
-
+import java.util.Date;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import org.vaadin.viritin.layouts.MVerticalLayout;
-
-import com.vaadin.v7.ui.*;
+import com.vaadin.ui.CustomComponent;
+import com.vaadin.v7.ui.DateField;
+import com.vaadin.v7.ui.Label;
 /**
  * This is an example how components can change their locale
  * @author Daniel Nordhoff-Vergien
