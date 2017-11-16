@@ -15,17 +15,24 @@
 
 package org.vaadin.viritin.it.aspect;
 
+import org.junit.Ignore;
 import org.junit.Test;
-import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.vaadin.addonhelpers.automated.AbstractWebDriverCase;
 import org.vaadin.addonhelpers.automated.VaadinConditions;
 
 public class AspectAttributeTest extends AbstractWebDriverCase {
 
+
+    public AspectAttributeTest() {
+        WebDriver webDriver = new PhantomJSDriver();
+        startBrowser(webDriver);
+    }
+
     @Test
     public void testLanguageByBrowser() throws InterruptedException {
-        startBrowser();
         driver.navigate().to(
                 "http://localhost:5678/"
                         + MTableLazyLoadingWithEntityAspect.class.getCanonicalName());

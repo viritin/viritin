@@ -311,7 +311,7 @@
                 <configuration>
                     <drivers>
                         <driver>
-                            <name>geckodriver</name>
+                            <name>phantomjs</name>
                         </driver>
                     </drivers>
                 </configuration>
