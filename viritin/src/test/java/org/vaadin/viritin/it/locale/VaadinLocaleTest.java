@@ -36,7 +36,9 @@ public class VaadinLocaleTest extends AbstractWebDriverCase {
         this.expectedLanguage = expectedLanuage;
         FirefoxProfile profile = new FirefoxProfile();
         profile.setPreference("intl.accept_languages", language);
-        WebDriver webDriver = new FirefoxDriver(profile);
+        final FirefoxOptions firefoxOptions = new FirefoxOptions();
+        firefoxOptions.setProfile(profile);
+        WebDriver webDriver = new FirefoxDriver(firefoxOptions);
         startBrowser(webDriver);
     }
 
@@ -46,8 +48,7 @@ public class VaadinLocaleTest extends AbstractWebDriverCase {
         driver.navigate().to(
                 "http://localhost:5678/"
                         + VaadinLocaleDemo.class.getCanonicalName());
-        new WebDriverWait(driver, 30).until(VaadinConditions
-                .ajaxCallsCompleted());
+        new WebDriverWait(driver, 30).until(VaadinConditions::ajaxCallsCompleted);
 
         VaadinComboBox languageSelectionBox = new VaadinComboBox(
                 driver.findElement(By.id("language-selection")));

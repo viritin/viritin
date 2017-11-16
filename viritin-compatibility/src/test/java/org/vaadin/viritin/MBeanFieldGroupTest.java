@@ -1,7 +1,7 @@
 package org.vaadin.viritin;
 
-import org.vaadin.viritin.v7.MBeanFieldGroup;
-import org.vaadin.viritin.v7.BeanBinder;
+import org.vaadin.viritinv7.MBeanFieldGroup;
+import org.vaadin.viritinv7.BeanBinder;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
@@ -14,8 +14,8 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.vaadin.viritin.v7.fields.MTextField;
-import org.vaadin.viritin.v7.form.AbstractForm;
+import org.vaadin.viritinv7.fields.MTextField;
+import org.vaadin.viritinv7.form.AbstractForm;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 
 import com.vaadin.v7.ui.AbstractField;

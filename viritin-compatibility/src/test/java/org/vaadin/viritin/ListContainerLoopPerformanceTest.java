@@ -1,6 +1,6 @@
 package org.vaadin.viritin;
 
-import org.vaadin.viritin.v7.ListContainer;
+import org.vaadin.viritinv7.ListContainer;
 import com.vaadin.v7.data.Item;
 import com.vaadin.v7.data.Property;
 import com.vaadin.v7.data.util.BeanItemContainer;

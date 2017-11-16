@@ -7,10 +7,10 @@ import com.vaadin.v7.ui.ListSelect;
 import org.apache.commons.lang3.mutable.MutableObject;
 import org.junit.Assert;
 import org.junit.Test;
-import org.vaadin.viritin.v7.fields.MValueChangeEvent;
-import org.vaadin.viritin.v7.fields.MValueChangeListener;
-import org.vaadin.viritin.v7.fields.TypedSelect;
-import org.vaadin.viritin.v7.fields.config.ComboBoxConfig;
+import org.vaadin.viritinv7.fields.MValueChangeEvent;
+import org.vaadin.viritinv7.fields.MValueChangeListener;
+import org.vaadin.viritinv7.fields.TypedSelect;
+import org.vaadin.viritinv7.fields.config.ComboBoxConfig;
 import org.vaadin.viritin.fields.CaptionGenerator;
 import org.vaadin.viritin.testdomain.Person;
 

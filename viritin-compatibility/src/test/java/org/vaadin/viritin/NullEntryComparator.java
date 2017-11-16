@@ -16,7 +16,7 @@
 
 package org.vaadin.viritin;
 
-import org.vaadin.viritin.v7.ListContainer;
+import org.vaadin.viritinv7.ListContainer;
 import org.vaadin.viritin.testdomain.Person;
 import java.util.ArrayList;
 import org.junit.Test;

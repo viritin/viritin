@@ -4,7 +4,7 @@ package org.vaadin.viritin;
 import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
-import org.vaadin.viritin.v7.grid.MGrid;
+import org.vaadin.viritinv7.grid.MGrid;
 import org.vaadin.viritin.testdomain.Person;
 import org.vaadin.viritin.testdomain.Service;
 

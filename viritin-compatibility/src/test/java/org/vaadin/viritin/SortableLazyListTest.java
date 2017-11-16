@@ -1,6 +1,6 @@
 package org.vaadin.viritin;
 
-import org.vaadin.viritin.v7.SortableLazyList;
+import org.vaadin.viritinv7.SortableLazyList;
 import org.junit.Assert;
 import org.junit.Test;
 import org.vaadin.viritin.testdomain.Person;

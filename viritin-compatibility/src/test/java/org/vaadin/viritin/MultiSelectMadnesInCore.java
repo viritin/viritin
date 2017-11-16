@@ -1,6 +1,6 @@
 package org.vaadin.viritin;
 
-import org.vaadin.viritin.v7.ListContainer;
+import org.vaadin.viritinv7.ListContainer;
 import com.vaadin.v7.data.util.converter.Converter;
 import com.vaadin.ui.Component;
 import com.vaadin.v7.ui.Table;
@@ -12,8 +12,8 @@ import java.util.Locale;
 import java.util.Set;
 import junit.framework.Assert;
 import org.junit.Test;
-import org.vaadin.viritin.v7.fields.MultiSelectTable;
-import org.vaadin.viritin.v7.form.AbstractForm;
+import org.vaadin.viritinv7.fields.MultiSelectTable;
+import org.vaadin.viritinv7.form.AbstractForm;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.vaadin.viritin.testdomain.Group;
 import org.vaadin.viritin.testdomain.Person;

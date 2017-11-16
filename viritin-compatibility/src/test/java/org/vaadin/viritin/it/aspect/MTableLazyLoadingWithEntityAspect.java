@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 import org.apache.commons.beanutils.BeanComparator;
 import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.viritin.LazyList;
-import org.vaadin.viritin.v7.fields.MTable;
+import org.vaadin.viritinv7.fields.MTable;
 import org.vaadin.viritin.testdomain.Service;
 import org.vaadin.viritin.testdomain.User;
 
