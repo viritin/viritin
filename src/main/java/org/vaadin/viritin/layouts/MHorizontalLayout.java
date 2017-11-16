@@ -97,19 +97,4 @@ public class MHorizontalLayout extends HorizontalLayout
     public MHorizontalLayout space() {
         return expand(new Label());
     }
-
-    public MHorizontalLayout withSizeUndefined() {
-        setSizeUndefined();
-        return this;
-    }
-
-    public MHorizontalLayout withWidthUndefined() {
-        setWidthUndefined();
-        return this;
-    }
-
-    public MHorizontalLayout withHeightUndefined() {
-        setHeightUndefined();
-        return this;
-    }
 }
