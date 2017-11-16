@@ -1,20 +1,21 @@
 package org.vaadin.viritin.v7;
 
-import com.vaadin.annotations.Theme;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.Notification;
 import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.viritin.button.MButton;
-import org.vaadin.viritin.v7.fields.EnumSelect;
-import org.vaadin.viritin.v7.fields.ElementCollectionField;
-import org.vaadin.viritin.v7.fields.MTextField;
-import org.vaadin.viritin.v7.form.AbstractForm;
 import org.vaadin.viritin.layouts.MFormLayout;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.vaadin.viritin.testdomain.Address;
 import org.vaadin.viritin.testdomain.Person;
 import org.vaadin.viritin.testdomain.Service;
+import org.vaadin.viritin.v7.fields.ElementCollectionField;
+import org.vaadin.viritin.v7.fields.EnumSelect;
+import org.vaadin.viritin.v7.fields.MTextField;
+import org.vaadin.viritin.v7.form.AbstractForm;
+
+import com.vaadin.annotations.Theme;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.Notification;
 
 /**
  *
@@ -47,7 +48,7 @@ public class ElementCollectionWithPopupEditor extends AbstractTest {
         @Override
         protected Component createContent() {
             return new MFormLayout(type, street, city, zipCode, getToolbar())
-                    .withWidthUndefined()
+                    .withUndefinedWidth()
                     .withMargin(true);
         }
         

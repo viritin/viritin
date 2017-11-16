@@ -8,8 +8,6 @@
     <packaging>bundle</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <vaadin.version>8.1.3</vaadin.version>
-        <vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
 
         <!-- ZIP Manifest fields -->
         <Implementation-Version>${project.version}</Implementation-Version>
@@ -59,19 +57,20 @@
         </repository>
     </repositories>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.vaadin</groupId>
+                <artifactId>vaadin-bom</artifactId>
+                <version>8.1.6</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
 
     <dependencies>
-        <!--        <dependency>
-            <groupId>com.vaadin</groupId>
-            <artifactId>vaadin-server</artifactId>
-            <version>${vaadin.version}</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>vaadin-theme-compiler</artifactId>
-                    <groupId>com.vaadin</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>-->
         <dependency>
             <groupId>org.vaadin.addon</groupId>
             <artifactId>confirmdialog</artifactId>
@@ -131,7 +130,6 @@
         <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-client-compiled</artifactId>
-            <version>${vaadin.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -154,30 +152,22 @@
         <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-compatibility-client-compiled</artifactId>
-            <version>${vaadin.version}</version>
             <scope>test</scope>
         </dependency>        
         <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-themes</artifactId>
-            <version>${vaadin.version}</version>
             <scope>test</scope>
         </dependency>        
         <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-push</artifactId>
-            <version>${vaadin.version}</version>
             <scope>test</scope>
         </dependency>        
     </dependencies>
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>com.vaadin</groupId>
-                <artifactId>vaadin-maven-plugin</artifactId>
-                <version>8.0.0</version>
-            </plugin>
                 
             <!-- add proper OGSI entries to manifest -->
             <plugin>

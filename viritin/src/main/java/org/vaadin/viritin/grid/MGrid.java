@@ -24,11 +24,18 @@ import org.vaadin.viritin.fluency.ui.FluentAbstractComponent;
  * @author mstahv
  */
 public class MGrid<T> extends Grid<T> implements FluentAbstractComponent<MGrid<T>> {
-    
+
+    /**
+     * Creates an MGrid without explicit bean type. Note that certain features
+     * may not work when using this constructor.
+     */
+    public MGrid() {
+    }
+
     public MGrid(Class<T> beanType) {
         super(beanType);
     }
-    
+
     public MGrid<T> withProperties(String... properties) {
         setColumns(properties);
         return this;
@@ -47,5 +54,5 @@ public class MGrid<T> extends Grid<T> implements FluentAbstractComponent<MGrid<T
         setItems(rows);
         return this;
     }
-    
+
 }

@@ -16,24 +16,4 @@ public class MFormLayout extends FormLayout
     public MFormLayout(Component... children) {
         super(children);
     }
-
-    public MFormLayout withSizeUndefined() {
-        setSizeUndefined();
-        return this;
-    }
-
-    public MFormLayout withWidthUndefined() {
-        setWidthUndefined();
-        return this;
-    }
-
-    public MFormLayout withHeightUndefined() {
-        setHeightUndefined();
-        return this;
-    }
-
-    public MFormLayout with(Component... components) {
-        addComponents(components);
-        return this;
-    }
 }

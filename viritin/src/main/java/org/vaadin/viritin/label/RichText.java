@@ -174,13 +174,6 @@ public class RichText extends MLabel {
     }
 
     @Override
-    @Deprecated
-    public RichText withWidthUndefined() {
-        super.withUndefinedWidth();
-        return this;
-    }
-
-    @Override
     public RichText withUndefinedWidth() {
         super.withUndefinedWidth();
         return this;

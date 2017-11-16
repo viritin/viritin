@@ -54,19 +54,4 @@ public class MGridLayout extends GridLayout
     public MGridLayout add(Collection<Component> component) {
         return with(component.toArray(new Component[component.size()]));
     }
-
-    public MGridLayout withSizeUndefined() {
-        setSizeUndefined();
-        return this;
-    }
-
-    public MGridLayout withWidthUndefined() {
-        setWidthUndefined();
-        return this;
-    }
-
-    public MGridLayout withHeightUndefined() {
-        setHeightUndefined();
-        return this;
-    }
 }
