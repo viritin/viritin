@@ -171,4 +171,60 @@ public abstract class AbstractNumberField<S extends AbstractNumberField<S, T>, T
         return (S) this;
     }
 
+    @Override
+    public String getStyleName() {
+        return tf.getStyleName();
+    }
+
+    @Override
+    public void setStyleName(String style) {
+        tf.setStyleName(style);
+    }
+
+    @Override
+    public void setPrimaryStyleName(String style) {
+        tf.setPrimaryStyleName(style);
+    }
+
+    @Override
+    public String getPrimaryStyleName() {
+        return tf.getPrimaryStyleName();
+    }
+
+    @Override
+    public void addStyleName(String style) {
+        tf.addStyleName(style);
+    }
+
+    @Override
+    public void removeStyleName(String style) {
+        tf.removeStyleName(style);
+    }
+
+    @Override
+    public void setStyleName(String style, boolean add) {
+        tf.setStyleName(style, add);
+    }
+
+    @Override
+    public S withPrimaryStyleName(String style) {
+        tf.setPrimaryStyleName(style);
+        return (S) this;
+    }
+
+    @Override
+    public S withStyleName(String... styles) {
+        tf.addStyleNames(styles);
+        return (S) this;
+    }
+
+    @Override
+    public void addStyleNames(String... styles) {
+        tf.addStyleNames(styles);
+    }
+
+    @Override
+    public void removeStyleNames(String... styles) {
+        tf.removeStyleNames(styles);
+    }
 }
