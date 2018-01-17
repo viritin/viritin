@@ -421,13 +421,17 @@ public abstract class AbstractForm<T> extends CustomComponent {
             for (Component component : cc) {
                 if (component instanceof AbstractTextField) {
                     AbstractTextField abstractTextField = (AbstractTextField) component;
-                    abstractTextField.selectAll();
-                    return true;
+                    if (!abstractTextField.isReadOnly()) {
+                        abstractTextField.selectAll();
+                        fieldFound = true;
+                    }
                 }
                 if (component instanceof AbstractField) {
                     AbstractField abstractField = (AbstractField) component;
-                    abstractField.focus();
-                    return true;
+                    if (!abstractField.isReadOnly()) {
+                        abstractField.focus();
+                        fieldFound = true;
+                    }
                 }
                 if (component instanceof AbstractComponentContainer) {
                     if (findFieldAndFocus(component)) {
