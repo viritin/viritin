@@ -56,7 +56,7 @@ public class DoubleField extends AbstractNumberField<DoubleField, Double> {
         s.setProperty("type", getHtmlFieldType());
         // prevent all but numbers or single dot after a number with a simple js
         s.setJavaScriptEventHandler("keypress",
-                "function(e) {if(e.metaKey || e.ctrlKey) return true; var c = viritin.getChar(e); if(c === '.' && this.value != '' && this.value.indexOf('.') == -1) return true; return c==null || /^[-\\d\\n\\t\\r]+$/.test(c);}");
+                "function(e) {if(e.metaKey || e.ctrlKey) return true; var c = viritin.getChar(e); if( (c === '.' || c === ',') && this.value != '' && this.value.indexOf('.') == -1 && this.value.indexOf(',') == -1) return true; return c==null || /^[-\\d\\n\\t\\r]+$/.test(c);}");
         }
 
 }
