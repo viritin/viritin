@@ -30,6 +30,9 @@ public class DoubleField extends AbstractNumberField<DoubleField, Double> {
     @Override
     protected void userInputToValue(String str) {
         if (StringUtils.isNotBlank(str)) {
+            // a hacky support for locales that use comma as a decimal separator
+            // some browser do the conversion already on the browser, IE don't
+            str = str.replaceAll(",", ".");
             value = Double.parseDouble(str);
         } else {
             value = null;
