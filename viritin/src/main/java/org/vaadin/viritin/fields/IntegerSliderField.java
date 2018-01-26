@@ -1,13 +1,5 @@
 package org.vaadin.viritin.fields;
 
-import com.vaadin.data.Validator;
-import java.lang.reflect.Field;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-
 /**
  *
  * @author Matti Tahvonen

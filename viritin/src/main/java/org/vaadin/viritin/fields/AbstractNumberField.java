@@ -41,7 +41,7 @@ public abstract class AbstractNumberField<S extends AbstractNumberField<S, T>, T
         s.setProperty("type", getHtmlFieldType());
         // prevent all but numbers with a simple js
         s.setJavaScriptEventHandler("keypress",
-                "function(e) {var c = viritin.getChar(e); return c==null || /^[-\\d\\n\\t\\r]+$/.test(c);}");
+                "function(e) {if(e.metaKey || e.ctrlKey) return true; var c = viritin.getChar(e); return c==null || /^[-\\d\\n\\t\\r]+$/.test(c);}");
     }
 
     private boolean ignoreValueChange = false;

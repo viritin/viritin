@@ -45,8 +45,16 @@ public class DownloadButtonExample extends AbstractTest {
             // Mime type can be set with setter, but also dynamically
             return "text/dynamically-set-odd-file-type";
         }).withCaption("Click to download");
+        
+        DownloadButton simple = new DownloadButton(out -> {
+            try {
+                out.write("Foobar".getBytes());
+            } catch (IOException ex) {
+                Logger.getLogger(DownloadButtonExample.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }).withCaption("Simple Download");
 
-        return new MVerticalLayout(d);
+        return new MVerticalLayout(d, simple);
 
     }
 
