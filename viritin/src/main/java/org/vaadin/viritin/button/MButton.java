@@ -38,12 +38,12 @@ public class MButton extends Button implements FluentAbstractComponent<MButton> 
     }
 
     public MButton(Resource icon, ClickListener listener) {
-        super(null, listener);
+        super((String) null, listener);
         setIcon(icon);
     }
 
     public MButton(Resource icon, String caption, ClickListener listener) {
-        super(null, listener);
+        super((String) null, listener);
         setIcon(icon);
         setCaption(caption);
     }
