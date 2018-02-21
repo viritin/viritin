@@ -130,8 +130,16 @@ public abstract class AbstractForm<T> extends CustomComponent {
     /**
      * @return true if bean has been changed since last setEntity call.
      */
-    public boolean hasChanges() {
+    protected boolean hasChanges() {
         return hasChanges;
+    }
+
+    protected void setHasChanges(boolean hasChanges) {
+        this.hasChanges = hasChanges;
+    }
+
+    protected boolean isValid() {
+        return binder.isValid();
     }
 
     public void setSavedHandler(SavedHandler<T> savedHandler) {
@@ -167,7 +175,7 @@ public abstract class AbstractForm<T> extends CustomComponent {
 
     public void setSaveCaption(String saveCaption) {
         this.saveCaption = saveCaption;
-        if(saveButton != null) {
+        if (saveButton != null) {
             getSaveButton().setCaption(getSaveCaption());
         }
     }
@@ -186,7 +194,7 @@ public abstract class AbstractForm<T> extends CustomComponent {
 
     public void setDeleteCaption(String deleteCaption) {
         this.deleteCaption = deleteCaption;
-        if(deleteButton != null) {
+        if (deleteButton != null) {
             getDeleteButton().setCaption(getDeleteCaption());
         }
     }
@@ -197,7 +205,7 @@ public abstract class AbstractForm<T> extends CustomComponent {
 
     public void setCancelCaption(String cancelCaption) {
         this.cancelCaption = cancelCaption;
-        if(resetButton != null) {
+        if (resetButton != null) {
             getResetButton().setCaption(getCancelCaption());
         }
     }
@@ -257,7 +265,7 @@ public abstract class AbstractForm<T> extends CustomComponent {
 
     protected void adjustSaveButtonState() {
         if (isBound()) {
-            boolean valid = binder.isValid();
+            boolean valid = isValid();
             getSaveButton().setEnabled(hasChanges() && valid);
         }
     }
@@ -451,9 +459,9 @@ public abstract class AbstractForm<T> extends CustomComponent {
     public Window getPopup() {
         return popup;
     }
-    
+
     public void closePopup() {
-        if(getPopup() != null) {
+        if (getPopup() != null) {
             getPopup().close();
         }
     }
