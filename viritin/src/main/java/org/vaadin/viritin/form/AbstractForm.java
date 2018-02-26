@@ -130,7 +130,7 @@ public abstract class AbstractForm<T> extends CustomComponent {
     /**
      * @return true if bean has been changed since last setEntity call.
      */
-    protected boolean hasChanges() {
+    public boolean hasChanges() {
         return hasChanges;
     }
 
@@ -138,7 +138,7 @@ public abstract class AbstractForm<T> extends CustomComponent {
         this.hasChanges = hasChanges;
     }
 
-    protected boolean isValid() {
+    public boolean isValid() {
         return binder.isValid();
     }
 
