@@ -19,11 +19,15 @@ public class DoubleField extends AbstractNumberField<DoubleField, Double> {
 
     private static final long serialVersionUID = 377246000306551089L;
 
+	private String step = "any";
+	private Double definedStep;
+
     public DoubleField() {
         setSizeUndefined();
     }
 
     public DoubleField(String caption) {
+        setSizeUndefined();
         setCaption(caption);
     }
 
@@ -49,6 +53,11 @@ public class DoubleField extends AbstractNumberField<DoubleField, Double> {
         return (DoubleField) super.withFocusListener(listener);
     }
 
+	public DoubleField withStep(Double step) {
+		this.definedStep = step;
+		return this;
+	}
+
     @Override
     public Double getValue() {
         return value;
@@ -56,6 +65,17 @@ public class DoubleField extends AbstractNumberField<DoubleField, Double> {
 
     @Override
     protected void configureHtmlElement() {
+		if (definedStep != null) {
+			step = String.valueOf(definedStep);
+
+		} else if (getValue() != null) {
+			String s = String.valueOf(getValue()).replaceAll("\\d", "0").replaceAll("(\\d{1})$", "1");
+			if ("any".equals(step) || s.length() > step.length()) {
+				step = s;
+			}
+		}
+		s.setProperty("step", step);
+
         s.setProperty("type", getHtmlFieldType());
         // prevent all but numbers or single dot after a number with a simple js
         s.setJavaScriptEventHandler("keypress",
