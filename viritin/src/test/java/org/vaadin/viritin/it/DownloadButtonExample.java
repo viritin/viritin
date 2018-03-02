@@ -1,7 +1,8 @@
 package org.vaadin.viritin.it;
 
-import com.vaadin.annotations.Theme;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.Notification;
+import com.vaadin.ui.UI;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
@@ -17,13 +18,19 @@ import org.vaadin.viritin.layouts.MVerticalLayout;
  *
  * @author Matti Tahvonen
  */
-@Theme("valo")
 public class DownloadButtonExample extends AbstractTest {
 
     private static final long serialVersionUID = 2638100034569162593L;
 
+    public DownloadButtonExample() {
+        // Polling or Push needs to be enable to support response written hooks
+        getUI().setPollInterval(1000);
+    }
+
     @Override
     public Component getTestComponent() {
+        
+        final UI ui = getUI();
         DownloadButton d = new DownloadButton((OutputStream out) -> {
             try {
                 // super easy to provide dynamic content
@@ -45,6 +52,12 @@ public class DownloadButtonExample extends AbstractTest {
             // Mime type can be set with setter, but also dynamically
             return "text/dynamically-set-odd-file-type";
         }).withCaption("Click to download");
+        
+        d.setDisableOnClick(true);
+        d.addDownloadCompletedListener(() -> { 
+            d.setEnabled(true);
+            Notification.show("The response has been written to the client");
+        });
         
         DownloadButton simple = new DownloadButton(out -> {
             try {

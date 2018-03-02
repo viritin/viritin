@@ -3,6 +3,8 @@ package org.vaadin.viritin.button;
 import com.vaadin.server.FileDownloader;
 import com.vaadin.server.Resource;
 import com.vaadin.server.StreamResource;
+import com.vaadin.server.VaadinRequest;
+import com.vaadin.server.VaadinResponse;
 import com.vaadin.ui.Button;
 
 import java.io.IOException;
@@ -11,6 +13,8 @@ import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.LinkedHashSet;
 import org.vaadin.viritin.fluency.ui.FluentAbstractComponent;
 
 /**
@@ -35,9 +39,17 @@ public class DownloadButton extends Button implements FluentAbstractComponent<Do
 
     private static final long serialVersionUID = 356223526447669958L;
 
-    public interface ContentWriter {
+    public interface ContentWriter extends Serializable {
+
         void write(OutputStream stream);
     }
+
+    public interface DownloadCompletedListener extends Serializable {
+
+        void onCompleted();
+    }
+
+    private Collection<DownloadCompletedListener> downloadCompletedListeners;
 
     private ContentWriter writer;
     private MimeTypeProvider mimeTypeProvider;
@@ -86,13 +98,56 @@ public class DownloadButton extends Button implements FluentAbstractComponent<Do
      * used.
      */
     public DownloadButton() {
-        new FileDownloader(streamResource).extend(this);
+        new FileDownloader(streamResource) {
+            @Override
+            public boolean handleConnectorRequest(VaadinRequest request, VaadinResponse response, String path) throws IOException {
+                final boolean handleConnectorRequest = super.handleConnectorRequest(request, response, path);
+                if (handleConnectorRequest) {
+                    afterResponseWritten();
+                }
+                return handleConnectorRequest;
+            }
+
+        }.extend(this);
 
     }
 
     public DownloadButton(ContentWriter writer) {
         this();
         this.writer = writer;
+    }
+
+    /**
+     * Adds a listener that is notified when the download has been sent to the
+     * client. Note that you need to enable push connection or use UI.setPollingInterval
+     * to make UI modifications visible automatically.
+     * 
+     * @param listener the listener to be notified
+     * @return the download button
+     */
+    public DownloadButton addDownloadCompletedListener(DownloadCompletedListener listener) {
+        if (downloadCompletedListeners == null) {
+            downloadCompletedListeners = new LinkedHashSet<>();
+        }
+        downloadCompletedListeners.add(listener);
+        return this;
+    }
+
+    public void removeDownloadCompletedListener(DownloadCompletedListener listener) {
+        downloadCompletedListeners.remove(listener);
+    }
+
+    /**
+     * A hook for extension to do something after the response has been sent to
+     * the client.
+     */
+    protected void afterResponseWritten() {
+        if (downloadCompletedListeners != null) {
+            getUI().access(() -> {
+                downloadCompletedListeners.forEach(DownloadCompletedListener::onCompleted);
+            });
+        }
+
     }
 
     /**
