@@ -20,7 +20,7 @@ public class DoubleField extends AbstractNumberField<DoubleField, Double> {
     private static final long serialVersionUID = 377246000306551089L;
 
 	private String step = "any";
-	private String definedStep;
+	private Double definedStep;
 
     public DoubleField() {
         setSizeUndefined();
@@ -53,7 +53,7 @@ public class DoubleField extends AbstractNumberField<DoubleField, Double> {
         return (DoubleField) super.withFocusListener(listener);
     }
 
-	public DoubleField withStep(String step) {
+	public DoubleField withStep(Double step) {
 		this.definedStep = step;
 		return this;
 	}
@@ -65,8 +65,8 @@ public class DoubleField extends AbstractNumberField<DoubleField, Double> {
 
     @Override
     protected void configureHtmlElement() {
-		if (StringUtils.isNotBlank(definedStep)) {
-			step = definedStep;
+		if (definedStep != null) {
+			step = String.valueOf(definedStep);
 
 		} else if (getValue() != null) {
 			String s = String.valueOf(getValue()).replaceAll("\\d", "0").replaceAll("(\\d{1})$", "1");
