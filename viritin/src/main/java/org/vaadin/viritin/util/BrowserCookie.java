@@ -1,10 +1,12 @@
 package org.vaadin.viritin.util;
 
+import com.vaadin.data.HasValue;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
+import java.util.Objects;
 
 import com.vaadin.ui.JavaScript;
 import com.vaadin.ui.JavaScriptFunction;
@@ -78,5 +80,64 @@ public class BrowserCookie {
                 callbackid,key
         ));
 
+    }
+    
+        /**
+     *
+     * Binds a HasValue&lt;V&gt; to a cookie that lives for a month. The cookies value is updated via a
+     * ValueChangeListener.
+     *
+     * @param <V> The value-type of the HasValue&lt;&gt;
+     * @param field The HasValue&lt;V&gt; that gets bound.
+     * @param name The name of the cookie
+     * @param cb A BrowserCookie.Callback that gets called with the actual value of the cookie. The value is guaranteed to be not null.
+     *
+     * @throws IllegalArgumentException if field or name are null or if name is empty.
+     */
+    public static <V> void bindValueToCookie(HasValue<V> field, String name, Callback cb) {
+        if (Objects.isNull(name) || name.isEmpty()) {
+            throw new IllegalArgumentException("Name must not be null or empty");
+        }
+        if (Objects.isNull(field)) {
+            throw new IllegalArgumentException("Field must not be null");
+        }
+
+        detectCookieValue(name, (v) -> {
+                                    if (v != null) {
+                                        cb.onValueDetected(v);
+                                    }
+                                });
+
+        field.addValueChangeListener((event) -> {
+            setCookie(name, event.getValue().toString(), LocalDateTime.now().plusMonths(1l));
+        });
+    }
+
+    /**
+     * Binds a HasValue&lt;String&gt; to a cookie that lives for a month. The cookies value is updated via a
+     * ValueChangeListener. Its crrent value is copied into the HasValue&lt;String&gt;.
+     *
+     * @param field The HasValue&lt;String&gt; that gets bound.
+     * @param name The name of the cookie
+     *
+     * @throws IllegalArgumentException if field or name are null or if name is empty.
+     */
+    public static void bindValueToCookie(HasValue<String> field, String name) {
+        if (Objects.isNull(name) || name.isEmpty()) {
+            throw new IllegalArgumentException("Name must not be null or empty");
+        }
+        if (Objects.isNull(field)) {
+            throw new IllegalArgumentException("Field must not be null");
+        }
+
+        detectCookieValue(name, (v) -> {
+                                    if (v != null) {
+                                        field.setValue(v);
+                                    }
+                                });
+
+        field.addValueChangeListener((event) -> {
+            setCookie(name, event.getValue(), LocalDateTime.now().plusMonths(1l));
+        });
     }
 }
