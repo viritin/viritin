@@ -21,79 +21,29 @@ import org.vaadin.viritin.testdomain.Service;
  */
 @Theme("valo")
 public class GridLazyLoadingAndSorting extends AbstractTest {
+    
+    ServiceLayerExample service = new ServiceLayerExample();
 
     @Override
     public Component getTestComponent() {
 
-        final List<Person> orig = Service.getListOfPersons(1000);
-
         final MGrid<Person> g = new MGrid<>(
                 new SortableLazyList.SortablePagingProvider<Person>() {
-                    private static final long serialVersionUID = 8990276045925275684L;
+            private static final long serialVersionUID = 8990276045925275684L;
 
-                    @Override
+            @Override
             public List<Person> findEntities(int firstRow, boolean sortAscending,
-                    String property) {
-                List<Person> listOfPersons = new ArrayList<>(orig);
-                if (property != null) {
-
-                    Collections.sort(listOfPersons, new BeanComparator<>(
-                            property));
-                    if (!sortAscending) {
-                        Collections.reverse(listOfPersons);
-                    }
-                }
-                int last = firstRow + LazyList.DEFAULT_PAGE_SIZE;
-                if (last > listOfPersons.size()) {
-                    last = listOfPersons.size();
-                }
-                return new ArrayList<>(listOfPersons.subList(firstRow,
-                        last));
+                    String sortProperty) {
+                return service.findPersons(sortProperty, sortAscending, firstRow, LazyList.DEFAULT_PAGE_SIZE);
             }
         },
                 new LazyList.CountProvider() {
 
-                    private static final long serialVersionUID = 6575441260380762210L;
+            private static final long serialVersionUID = 6575441260380762210L;
 
-                    @Override
+            @Override
             public int size() {
-                return orig.size();
-            }
-        }
-        );
-
-        final MGrid<Person> g2 = new MGrid<>(Person.class);
-        g2.lazyLoadFrom(
-                new SortableLazyList.SortablePagingProvider<Person>() {
-                    private static final long serialVersionUID = 6584091430092559501L;
-
-                    @Override
-            public List<Person> findEntities(int firstRow, boolean sortAscending,
-                    String property) {
-                List<Person> listOfPersons = new ArrayList<>(orig);
-                if (property != null) {
-
-                    Collections.sort(listOfPersons, new BeanComparator<>(
-                            property));
-                    if (!sortAscending) {
-                        Collections.reverse(listOfPersons);
-                    }
-                }
-                int last = firstRow + LazyList.DEFAULT_PAGE_SIZE;
-                if (last > listOfPersons.size()) {
-                    last = listOfPersons.size();
-                }
-                return new ArrayList<>(listOfPersons.subList(firstRow,
-                        last));
-            }
-        },
-                new LazyList.CountProvider() {
-
-                    private static final long serialVersionUID = -7613809143021239619L;
-
-                    @Override
-            public int size() {
-                return orig.size();
+                return service.size();
             }
         }
         );
@@ -101,11 +51,28 @@ public class GridLazyLoadingAndSorting extends AbstractTest {
         Button b = new Button("Reset loading strategy (should maintaine sort order)");
         b.addClickListener(e -> {
             g.lazyLoadFrom((int firstRow, boolean sortAscending, String property) -> {
-                List<Person> listOfPersons = new ArrayList<>(orig);
-                if (property != null) {
-                    
+                return service.findPersons(property, sortAscending, firstRow, LazyList.DEFAULT_PAGE_SIZE);
+            }, () -> service.size());
+
+        });
+
+        return new MVerticalLayout(b, g);
+    }
+
+    /**
+     * An example service layer. The data is here just in memory, which we'll 
+     * sort/filter in the methods, but in real world case you'd of course make 
+     * e.g. DB queries based on the parameters.
+     */
+    public static class ServiceLayerExample {
+
+        final List<Person> orig = Service.getListOfPersons(1000);
+
+        public List<Person> findPersons(String sortProperty, boolean sortAscending, int firstRow, int DEFAULT_PAGE_SIZE) {
+            List<Person> listOfPersons = new ArrayList<>(orig);
+                if (sortProperty != null) {
                     Collections.sort(listOfPersons, new BeanComparator<>(
-                            property));
+                            sortProperty));
                     if (!sortAscending) {
                         Collections.reverse(listOfPersons);
                     }
@@ -116,11 +83,13 @@ public class GridLazyLoadingAndSorting extends AbstractTest {
                 }
                 return new ArrayList<>(listOfPersons.subList(firstRow,
                         last));
-            }, () -> orig.size());
 
-        });
+        }
+        
+        public int size() {
+            return orig.size();
+        }
 
-        return new MVerticalLayout(b, g, g2);
     }
 
 }
