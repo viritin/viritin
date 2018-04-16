@@ -37,7 +37,7 @@ public class LabelField<T> extends CustomField<T>
         return value;
     }
 
-    private static class ToStringCaptionGenerator<T> implements
+    protected static class ToStringCaptionGenerator<T> implements
             CaptionGenerator<T> {
 
         private static final long serialVersionUID = 1149675718238329960L;
