@@ -1,8 +1,6 @@
 package org.vaadin.viritin.fields;
 
 import org.vaadin.viritin.label.Header;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.Label;
 
 /**
  * A field which represents the value always in a header, so it is not editable.
@@ -23,38 +21,19 @@ public class HeaderField<T> extends LabelField<T>
 
     public HeaderField(String caption) {
         super(caption);
+        label = new Header("");
     }
-
-    private CaptionGenerator<T> captionGenerator = new ToStringCaptionGenerator<>();
-    private Header header = new Header("");
 
     public HeaderField() {
-    }
+	label = new Header("");
+    }   
 
-    @Override
-    protected Component initContent() {
-        updateLabel();
-
-        return header;
-    }
-
-    @Override
-    protected void updateLabel() {
-        String caption;
-        if (captionGenerator != null) {
-            caption = captionGenerator.getCaption(getValue());
-        } else {
-            caption = getValue().toString();
-        }
-        header.setValue(caption);
-    }
-
-    public Label getHeader() {
-        return header;
+    public Header getLabel() {
+        return (Header)label;
     }
 
     public void setHeaderLevel(int headerLevel) {
-	header.setHeaderLevel(headerLevel);
+	((Header)label).setHeaderLevel(headerLevel);
     }
     
 }
