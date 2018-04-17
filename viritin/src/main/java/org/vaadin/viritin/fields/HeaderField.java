@@ -29,11 +29,11 @@ public class HeaderField<T> extends LabelField<T> {
 
     @Override
     public Header getLabel() {
-	return (Header) getLabel();
+	return (Header) super.getLabel();
     }
     
     public void setLabel(Header label) {
-	setLabel(label);
+	super.setLabel(label);
     }
 
     public void setHeaderLevel(int headerLevel) {
