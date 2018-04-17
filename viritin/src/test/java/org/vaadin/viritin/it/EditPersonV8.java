@@ -9,6 +9,7 @@ import java.util.List;
 import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.viritin.fields.ElementCollectionField;
 import org.vaadin.viritin.fields.EnumSelect;
+import org.vaadin.viritin.fields.HeaderField;
 import org.vaadin.viritin.fields.IntegerField;
 import org.vaadin.viritin.fields.LabelField;
 import org.vaadin.viritin.fields.MTextField;
@@ -59,7 +60,7 @@ public class EditPersonV8 extends AbstractTest {
         // TODO figure out what is wrong with IntegerField, not bound properly
         private final IntegerField age = new IntegerField("Age");
 
-        private final LabelField<Integer> id = new LabelField<Integer>().withCaption("ID");
+        private final HeaderField<Integer> id = new HeaderField<Integer>("ID");
         private final ElementCollectionField<Address, List<Address>> addresses = new ElementCollectionField<Address, List<Address>>(
                 Address.class, AddressRow.class).withCaption("Addressess")
 //                .addElementAddedListener(ElementCollections.addedListener)

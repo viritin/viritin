@@ -20,11 +20,11 @@ public class HeaderField<T> extends LabelField<T> {
 
     public HeaderField(String caption) {
 	super(caption);
-	setLabel(new Header(""));
+	super.setLabel(new Header(""));
     }
 
     public HeaderField() {
-	setLabel(new Header(""));
+	super.setLabel(new Header(""));
     }
 
     @Override
