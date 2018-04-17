@@ -14,26 +14,29 @@ import org.vaadin.viritin.label.Header;
  *
  * @param <T> the type of the entity
  */
-public class HeaderField<T> extends LabelField<T>
-        {
-    
+public class HeaderField<T> extends LabelField<T> {
+
     private static final long serialVersionUID = -6461526936461789654L;
 
     public HeaderField(String caption) {
-        super(caption);
-        label = new Header("");
+	super(caption);
+	setLabel(new Header(""));
     }
 
     public HeaderField() {
-	label = new Header("");
-    }   
+	setLabel(new Header(""));
+    }
 
+    @Override
     public Header getLabel() {
-        return (Header)label;
+	return (Header) getLabel();
+    }
+    
+    public void setLabel(Header label) {
+	setLabel(label);
     }
 
     public void setHeaderLevel(int headerLevel) {
-	((Header)label).setHeaderLevel(headerLevel);
+	getLabel().setHeaderLevel(headerLevel);
     }
-    
 }

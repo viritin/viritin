@@ -58,7 +58,7 @@ public class LabelField<T> extends CustomField<T>
     }
 
     private CaptionGenerator<T> captionGenerator = new ToStringCaptionGenerator<>();
-    protected Label label = new RichText();
+    private Label label = new RichText();
 
     public LabelField() {
     }
