@@ -349,27 +349,15 @@ public abstract class AbstractElementCollection<ET, CT extends Collection<ET>> e
 
     private final Map<ET, EditorStuff> pojoToEditor = new IdentityHashMap<>();
 
-    protected Binder<ET> instantiateBinder(Class<ET> elementClass) {
-		return new BeanValidationBinder<>(elementClass);
-	}
-    
-    protected Binder<ET> getFieldGroupFor(ET pojo) {
-        EditorStuff es = pojoToEditor.get(pojo);
-        if (es == null) {
-            Object o = createEditorInstance(pojo);
-            Binder<ET> binder = instantiateBinder(elementType);
-            binder.bindInstanceFields(o);
-            binder.setBean(pojo);
-            binder.addStatusChangeListener(scl);
-            es = new EditorStuff(binder, o);
-            // TODO listen for all changes for proper modified/validity changes
-            pojoToEditor.put(pojo, es);
-        }
-        return es.bfg;
-    }
-
-    protected Component getComponentFor(ET pojo, String property) {
-        EditorStuff editorsstuff = pojoToEditor.get(pojo);
+    /**
+     * Provides EditorStuff for pojo - creates a new one or reuses one from pojoToEditor map.
+     * Returned EditorStuff is never null.
+     * 
+     * @param pojo
+     * @return editor stuff
+     */
+    protected EditorStuff provideEditorStuff(ET pojo) {
+    	EditorStuff editorsstuff = pojoToEditor.get(pojo);
         if (editorsstuff == null) {
             Object o = createEditorInstance(pojo);
             Binder<ET> binder = instantiateBinder(elementType);
@@ -380,6 +368,19 @@ public abstract class AbstractElementCollection<ET, CT extends Collection<ET>> e
             // TODO listen for all changes for proper modified/validity changes
             pojoToEditor.put(pojo, editorsstuff);
         }
+        return editorsstuff;
+    }
+
+    protected Binder<ET> instantiateBinder(Class<ET> elementClass) {
+		return new BeanValidationBinder<>(elementClass);
+	}
+
+    protected Binder<ET> getFieldGroupFor(ET pojo) {
+        return provideEditorStuff(pojo).bfg;
+    }
+
+    protected Component getComponentFor(ET pojo, String property) {
+        EditorStuff editorsstuff = provideEditorStuff(pojo);
         Component c = null;
         Optional<Binder.Binding<ET, ?>> binding = editorsstuff.bfg.getBinding(property);
         if (binding.isPresent()) {
@@ -398,7 +399,6 @@ public abstract class AbstractElementCollection<ET, CT extends Collection<ET>> e
                 c = new Label("");
             }
         }
-
         return c;
     }
 
