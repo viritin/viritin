@@ -349,11 +349,15 @@ public abstract class AbstractElementCollection<ET, CT extends Collection<ET>> e
 
     private final Map<ET, EditorStuff> pojoToEditor = new IdentityHashMap<>();
 
+    protected Binder<ET> instantiateBinder(Class<ET> elementClass) {
+		return new BeanValidationBinder<>(elementClass);
+	}
+    
     protected Binder<ET> getFieldGroupFor(ET pojo) {
         EditorStuff es = pojoToEditor.get(pojo);
         if (es == null) {
             Object o = createEditorInstance(pojo);
-            Binder<ET> binder = new BeanValidationBinder<>(elementType);
+            Binder<ET> binder = instantiateBinder(elementType);
             binder.bindInstanceFields(o);
             binder.setBean(pojo);
             binder.addStatusChangeListener(scl);
@@ -368,7 +372,7 @@ public abstract class AbstractElementCollection<ET, CT extends Collection<ET>> e
         EditorStuff editorsstuff = pojoToEditor.get(pojo);
         if (editorsstuff == null) {
             Object o = createEditorInstance(pojo);
-            Binder<ET> binder = new BeanValidationBinder<>(elementType);
+            Binder<ET> binder = instantiateBinder(elementType);
             binder.bindInstanceFields(o);
             binder.addStatusChangeListener(scl);
             editorsstuff = new EditorStuff(binder, o);
