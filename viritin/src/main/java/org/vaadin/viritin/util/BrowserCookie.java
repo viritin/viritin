@@ -28,11 +28,11 @@ public class BrowserCookie {
     }
 
     public static void setCookie(String key, String value, LocalDateTime expirationTime) {
-       
+
         String expires = toCookieGMTDate(expirationTime);
-        
+
         JavaScript.getCurrent().execute(String.format(
-                "document.cookie = \"%s=%s; Expires=%s\";", key, value, expires
+            "document.cookie = \"%s=%s; expires=%s\";", key, value, expires
         ));
     }
 
@@ -41,11 +41,11 @@ public class BrowserCookie {
         String expires = zdt.format(DateTimeFormatter.RFC_1123_DATE_TIME);
         return expires;
     }
-    
+
     public static void setCookie(String key, String value, String path, LocalDateTime expirationTime) {
-       
+
         String expires = toCookieGMTDate(expirationTime);
-        
+
         JavaScript.getCurrent().execute(String.format(
                 "document.cookie = \"%s=%s; path=%s\"; Expires=%s\";", key, value, path, expires
         ));
@@ -72,9 +72,9 @@ public class BrowserCookie {
                 }
             }
         });
-        
+
         JavaScript.getCurrent().execute(String.format(
-                "var nameEQ = \"%2$s=\";var ca = document.cookie.split(';');for(var i=0;i < ca.length;i++) {var c = ca[i];while (c.charAt(0)==' ') c = c.substring(1,c.length); if (c.indexOf(nameEQ) == 0) {%1$s( c.substring(nameEQ.length,c.length)); return;};} %1$s();", 
+                "var nameEQ = \"%2$s=\";var ca = document.cookie.split(';');for(var i=0;i < ca.length;i++) {var c = ca[i];while (c.charAt(0)==' ') c = c.substring(1,c.length); if (c.indexOf(nameEQ) == 0) {%1$s( c.substring(nameEQ.length,c.length)); return;};} %1$s();",
                 callbackid,key
         ));
 
