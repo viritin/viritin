@@ -374,6 +374,7 @@ public abstract class AbstractElementCollection<ET, CT extends Collection<ET>> e
             Object o = createEditorInstance(pojo);
             Binder<ET> binder = instantiateBinder(elementType);
             binder.bindInstanceFields(o);
+            binder.setBean(pojo);
             binder.addStatusChangeListener(scl);
             editorsstuff = new EditorStuff(binder, o);
             // TODO listen for all changes for proper modified/validity changes
