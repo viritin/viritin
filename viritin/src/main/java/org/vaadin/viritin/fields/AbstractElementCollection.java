@@ -349,7 +349,7 @@ public abstract class AbstractElementCollection<ET, CT extends Collection<ET>> e
 
     private final Map<ET, EditorStuff> pojoToEditor = new IdentityHashMap<>();
 
-    protected final Binder<ET> getFieldGroupFor(ET pojo) {
+    protected Binder<ET> getFieldGroupFor(ET pojo) {
         EditorStuff es = pojoToEditor.get(pojo);
         if (es == null) {
             Object o = createEditorInstance(pojo);
@@ -364,7 +364,7 @@ public abstract class AbstractElementCollection<ET, CT extends Collection<ET>> e
         return es.bfg;
     }
 
-    protected final Component getComponentFor(ET pojo, String property) {
+    protected Component getComponentFor(ET pojo, String property) {
         EditorStuff editorsstuff = pojoToEditor.get(pojo);
         if (editorsstuff == null) {
             Object o = createEditorInstance(pojo);
