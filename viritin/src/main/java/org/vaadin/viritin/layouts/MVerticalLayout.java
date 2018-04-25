@@ -1,12 +1,11 @@
 package org.vaadin.viritin.layouts;
 
-import java.util.Collection;
-
-import org.vaadin.viritin.fluency.ui.FluentVerticalLayout;
-
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.VerticalLayout;
+import org.vaadin.viritin.fluency.ui.FluentVerticalLayout;
+
+import java.util.Collection;
 
 public class MVerticalLayout extends VerticalLayout
         implements FluentVerticalLayout<MVerticalLayout> {
@@ -29,28 +28,6 @@ public class MVerticalLayout extends VerticalLayout
     public MVerticalLayout alignAll(Alignment alignment) {
         for (Component component : this) {
             setComponentAlignment(component, alignment);
-        }
-        return this;
-    }
-
-    /**
-     * Expands selected components. Also adds to layout and sets the only sane
-     * height for expanded components (100%) if needed.
-     *
-     * @param componentsToExpand components that should be expanded
-     * @return the object itself for further configuration
-     */
-    public MVerticalLayout expand(Component... componentsToExpand) {
-        if (getHeight() < 0) {
-            // Make full height if no other size is set
-            withFullHeight();
-        }
-        for (Component component : componentsToExpand) {
-            if (component.getParent() != this) {
-                addComponent(component);
-            }
-            setExpandRatio(component, 1);
-            component.setHeight(100, Unit.PERCENTAGE);
         }
         return this;
     }
