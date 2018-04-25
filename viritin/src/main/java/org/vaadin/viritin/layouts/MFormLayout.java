@@ -1,9 +1,10 @@
 package org.vaadin.viritin.layouts;
 
 import com.vaadin.ui.Alignment;
+import org.vaadin.viritin.fluency.ui.FluentFormLayout;
+
 import com.vaadin.ui.Component;
 import com.vaadin.ui.FormLayout;
-import org.vaadin.viritin.fluency.ui.FluentFormLayout;
 
 import java.util.Collection;
 
@@ -40,24 +41,8 @@ public class MFormLayout extends FormLayout
     }
 
     public MFormLayout add(Component component, Alignment alignment) {
-        return add(component).withAlign(component, alignment);
-    }
-
-    public MFormLayout add(Component component, float ratio) {
-        return add(component).withExpand(component, ratio);
-    }
-
-    public MFormLayout add(Component component, Alignment alignment, float ratio) {
-        return add(component).withAlign(component, alignment).withExpand(component, ratio);
-    }
-
-    public MFormLayout withAlign(Component component, Alignment alignment) {
+        add(component);
         setComponentAlignment(component, alignment);
-        return this;
-    }
-
-    public MFormLayout withExpand(Component component, float ratio) {
-        setExpandRatio(component, ratio);
         return this;
     }
 

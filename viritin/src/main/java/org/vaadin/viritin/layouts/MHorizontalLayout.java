@@ -1,12 +1,13 @@
 package org.vaadin.viritin.layouts;
 
+import java.util.Collection;
+
+import org.vaadin.viritin.fluency.ui.FluentHorizontalLayout;
+
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
-import org.vaadin.viritin.fluency.ui.FluentHorizontalLayout;
-
-import java.util.Collection;
 
 public class MHorizontalLayout extends HorizontalLayout
         implements FluentHorizontalLayout<MHorizontalLayout> {
@@ -29,6 +30,29 @@ public class MHorizontalLayout extends HorizontalLayout
     public MHorizontalLayout alignAll(Alignment alignment) {
         for (Component component : this) {
             setComponentAlignment(component, alignment);
+        }
+        return this;
+    }
+
+    /**
+     * Expands selected components. Also sets the only sane width for expanded
+     * components (100%).
+     *
+     * @param componentsToExpand the components that should be expanded
+     * @return the object itself for further configuration
+     */
+    public MHorizontalLayout expand(Component... componentsToExpand) {
+        if (getWidth() < 0) {
+            // Make full height if no other size is set
+            withFullWidth();
+        }
+
+        for (Component component : componentsToExpand) {
+            if (component.getParent() != this) {
+                addComponent(component);
+            }
+            setExpandRatio(component, 1);
+            component.setWidth(100, Unit.PERCENTAGE);
         }
         return this;
     }

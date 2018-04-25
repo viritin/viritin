@@ -15,13 +15,14 @@ public interface FluentAbstractOrderedLayout<S extends FluentAbstractLayout<S> &
         FluentLayout.FluentMarginHandler<S>,
         FluentLayout.FluentSpacingHandler<S>, FluentAbstractLayout<S> {
     // Javadoc copied form Vaadin Framework
-
     /**
      * Adds a component into indexed position in this container.
      *
-     * @param c     the component to be added.
-     * @param index the index of the component position. The components currently
-     *              in and after the position are shifted forwards.
+     * @param c
+     *            the component to be added.
+     * @param index
+     *            the index of the component position. The components currently
+     *            in and after the position are shifted forwards.
      * @return this (for method chaining)
      * @see AbstractOrderedLayout#addComponent(Component, int)
      */
@@ -31,12 +32,12 @@ public interface FluentAbstractOrderedLayout<S extends FluentAbstractLayout<S> &
     }
 
     // Javadoc copied form Vaadin Framework
-
     /**
      * Adds a component into this container. The component is added to the left
      * or on top of the other components.
      *
-     * @param c the component to be added.
+     * @param c
+     *            the component to be added.
      * @return this (for method chaining)
      * @see AbstractOrderedLayout#addComponentAsFirst(Component)
      */
@@ -46,62 +47,44 @@ public interface FluentAbstractOrderedLayout<S extends FluentAbstractLayout<S> &
     }
 
     // Javadoc copied form Vaadin Framework
-
     /**
      * <p>
      * This method is used to control how excess space in layout is distributed
      * among components. Excess space may exist if layout is sized and contained
      * non relatively sized components don't consume all available space.
-     * <p>
+     * 
      * <p>
      * Example how to distribute 1:3 (33%) for component1 and 2:3 (67%) for
      * component2 :
-     * <p>
+     * 
      * <code>
      * layout.setExpandRatio(component1, 1);<br>
      * layout.setExpandRatio(component2, 2);
      * </code>
-     * <p>
+     * 
      * <p>
      * If no ratios have been set, the excess space is distributed evenly among
      * all components.
-     * <p>
+     * 
      * <p>
      * Note, that width or height (depending on orientation) needs to be defined
      * for this method to have any effect.
      *
-     * @param component the component in this layout which expand ratio is to be set
-     * @param ratio     new expand ratio (greater or equal to 0)
-     * @return this (for method chaining)
-     * @throws IllegalArgumentException if the expand ratio is negative or the component is not a
-     *                                  direct child of the layout
      * @see Sizeable
+     * 
+     * @param component
+     *            the component in this layout which expand ratio is to be set
+     * @param ratio
+     *            new expand ratio (greater or equal to 0)
+     * 
+     * @return this (for method chaining)
      * @see AbstractOrderedLayout#setExpandRatio(Component, float)
+     * @throws IllegalArgumentException
+     *             if the expand ratio is negative or the component is not a
+     *             direct child of the layout
      */
     public default S withExpandRatio(Component component, float ratio) {
         ((AbstractOrderedLayout) this).setExpandRatio(component, ratio);
-        return (S) this;
-    }
-
-    /**
-     * Expands selected components. Also adds to layout and sets the only sane
-     * height for expanded components (100%) if needed.
-     *
-     * @param componentsToExpand components that should be expanded
-     * @return the object itself for further configuration
-     */
-    public default S expand(Component... componentsToExpand) {
-        if (getHeight() < 0) {
-            // Make full height if no other size is set
-            withFullHeight();
-        }
-        for (Component component : componentsToExpand) {
-            if (component.getParent() != this) {
-                addComponent(component);
-            }
-            withExpandRatio(component, 1);
-            component.setHeight(100, Unit.PERCENTAGE);
-        }
         return (S) this;
     }
 }
