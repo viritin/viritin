@@ -6,7 +6,7 @@ import com.vaadin.ui.Component;
 
 /**
  * The base interface for fluent versions of {@link AbstractOrderedLayout}
- * 
+ *
  * @author Daniel Nordhoff-Vergien
  * @see AbstractOrderedLayout
  */
@@ -17,7 +17,7 @@ public interface FluentAbstractOrderedLayout<S extends FluentAbstractLayout<S> &
     // Javadoc copied form Vaadin Framework
     /**
      * Adds a component into indexed position in this container.
-     * 
+     *
      * @param c
      *            the component to be added.
      * @param index
@@ -35,7 +35,7 @@ public interface FluentAbstractOrderedLayout<S extends FluentAbstractLayout<S> &
     /**
      * Adds a component into this container. The component is added to the left
      * or on top of the other components.
-     * 
+     *
      * @param c
      *            the component to be added.
      * @return this (for method chaining)
@@ -69,7 +69,7 @@ public interface FluentAbstractOrderedLayout<S extends FluentAbstractLayout<S> &
      * <p>
      * Note, that width or height (depending on orientation) needs to be defined
      * for this method to have any effect.
-     * 
+     *
      * @see Sizeable
      * 
      * @param component
