@@ -1,6 +1,5 @@
 package org.vaadin.viritin.button;
 
-import com.vaadin.server.ErrorMessage;
 import com.vaadin.server.FileDownloader;
 import com.vaadin.server.Resource;
 import com.vaadin.server.StreamResource;
