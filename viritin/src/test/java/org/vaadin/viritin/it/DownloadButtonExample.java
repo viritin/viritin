@@ -67,7 +67,11 @@ public class DownloadButtonExample extends AbstractTest {
             }
         }).withCaption("Simple Download");
 
-        return new MVerticalLayout(d, simple);
+        DownloadButton failing = new DownloadButton(out -> {
+            throw new RuntimeException("Issue generating a file!");
+        }).withCaption("Failing Download");
+
+        return new MVerticalLayout(d, simple, failing);
 
     }
 

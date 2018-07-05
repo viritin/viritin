@@ -1,8 +1,10 @@
 package org.vaadin.viritin.button;
 
+import com.vaadin.server.ErrorMessage;
 import com.vaadin.server.FileDownloader;
 import com.vaadin.server.Resource;
 import com.vaadin.server.StreamResource;
+import com.vaadin.server.UserError;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinResponse;
 import com.vaadin.ui.Button;
@@ -163,11 +165,19 @@ public class DownloadButton extends Button implements FluentAbstractComponent<Do
                 try {
                     getWriter().write(out);
                     out.close();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
+                } catch (Exception e) {
+                    getUI().access(() -> {
+                        handleErrorInFileGeneration(e);
+                    });
                 }
             }
         }.start();
+    }
+
+    protected void handleErrorInFileGeneration(Exception e) {
+        setComponentError(new UserError(e.getMessage()));
+        fireComponentErrorEvent();
+        throw new RuntimeException(e);
     }
 
     public ContentWriter getWriter() {
