@@ -353,7 +353,7 @@ public abstract class AbstractElementCollection<ET, CT extends Collection<ET>> e
      * Provides EditorStuff for pojo - creates a new one or reuses one from pojoToEditor map.
      * Returned EditorStuff is never null.
      * 
-     * @param pojo
+     * @param pojo the entity for which editor needs to be generated
      * @return editor stuff
      */
     protected EditorStuff provideEditorStuff(ET pojo) {
