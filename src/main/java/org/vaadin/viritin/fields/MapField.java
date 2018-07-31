@@ -206,6 +206,10 @@ public class MapField<K, V> extends CustomField<Map> {
         return tf;
     }
 
+    protected Button createDeleteButton() {
+        return new Button(FontAwesome.TRASH);
+    }
+
     private void replaceValue(K key, String value) {
         if (key == null) {
             // new value without proper key, ignore
@@ -430,7 +434,7 @@ public class MapField<K, V> extends CustomField<Map> {
         EntryEditor(TextField ke, TextField valueEditor, K k) {
             this.keyEditor = ke;
             this.valueEditor = valueEditor;
-            delete = new Button(FontAwesome.TRASH);
+            delete = createDeleteButton();
             delete.addClickListener(new Button.ClickListener() {
                 @Override
                 public void buttonClick(Button.ClickEvent event) {
