@@ -316,7 +316,6 @@ public class MapField<K, V> extends CustomField<Map> {
         clearCurrentEditors();
         Map<K, V> value = newValue;
         if (value != null) {
-
             for (Map.Entry<K, V> entry : value.entrySet()) {
                 K key = entry.getKey();
                 V value1 = entry.getValue();
@@ -332,7 +331,7 @@ public class MapField<K, V> extends CustomField<Map> {
 
     private void createNewEntryRow() throws ReadOnlyException {
         TextField keyEditor = createKeyEditorInstance();
-        TextField valueEditor = createKeyEditorInstance();
+        TextField valueEditor = createValueEditorInstance();
         newEntryEditor = new EntryEditor(keyEditor, valueEditor, null);
 
         addRowForEntry(newEntryEditor, null, null);
