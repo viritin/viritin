@@ -61,8 +61,7 @@ public class MapField<K, V> extends CustomField<Map> {
                     return;
                 }
                 getAndEnsureValue().put(newInstance, null);
-                fireEvent(new ElementAddedEvent(MapField.this,
-                        newInstance));
+                fireEvent(new ElementAddedEvent(MapField.this, newInstance));
                 setPersisted(newInstance, true);
                 onElementAdded();
             }
@@ -73,20 +72,20 @@ public class MapField<K, V> extends CustomField<Map> {
     private boolean allowNewItems = true;
     private boolean allowRemovingItems = true;
     private boolean allowEditItems = true;
+    private boolean showHeader = true;
     private final Map<K, EntryEditor> pojoToEditor = new HashMap<>();
     private EntryEditor newEntryEditor;
 
     public MapField() {
     }
 
-    public MapField(Class<K> elementType,
-            Class<?> formType) {
+    public MapField(Class<K> elementType, Class<?> formType) {
         this.keyType = elementType;
         this.editorType = formType;
     }
 
     private void ensureInited() {
-        if (mainLayout.getComponentCount() == 0) {
+        if (mainLayout.getComponentCount() == 0 && showHeader) {
             mainLayout.addComponent(new Label("Key ->"));
             mainLayout.addComponent(new Label("Value"));
             mainLayout.addComponent(new Label("Delete entry"));
@@ -134,6 +133,15 @@ public class MapField<K, V> extends CustomField<Map> {
         return allowEditItems;
     }
 
+    public boolean isShowHeader() {
+        return showHeader;
+    }
+
+    public MapField<K, V> setAllowNewItems(boolean allowNewItems) {
+        this.allowNewItems = allowNewItems;
+        return this;
+    }
+
     public MapField<K, V> setAllowEditItems(boolean allowEditItems) {
         this.allowEditItems = allowEditItems;
         return this;
@@ -141,6 +149,11 @@ public class MapField<K, V> extends CustomField<Map> {
 
     public MapField<K, V> setAllowRemovingItems(boolean allowRemovingItems) {
         this.allowRemovingItems = allowRemovingItems;
+        return this;
+    }
+
+    public MapField<K, V> setShowHeader(boolean showHeader) {
+        this.showHeader = showHeader;
         return this;
     }
 
