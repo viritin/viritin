@@ -318,19 +318,24 @@ public class MapField<K, V> extends CustomField<Map> {
     protected void setInternalValue(Map newValue) {
         super.setInternalValue(newValue);
         clearCurrentEditors();
+
+        // make sure that the header is always initialized
+        ensureInited();
+
         Map<K, V> value = newValue;
-        if (value != null) {
+        if (value != null && !value.isEmpty()) {
             for (Map.Entry<K, V> entry : value.entrySet()) {
                 K key = entry.getKey();
                 V value1 = entry.getValue();
                 addInternalElement(key, value1);
             }
         }
+
         if (isAllowNewItems()) {
             createNewEntryRow();
         }
-        onElementAdded();
 
+        onElementAdded();
     }
 
     private void createNewEntryRow() throws ReadOnlyException {
