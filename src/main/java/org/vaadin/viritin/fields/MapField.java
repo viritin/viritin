@@ -367,8 +367,10 @@ public class MapField<K, V> extends CustomField<Map> {
     }
 
     private void clearCurrentEditors() {
-        while (mainLayout.getRows() > 1) {
-            mainLayout.removeRow(1);
+        // remove the row, until there are components left in the layout
+        // the getRows() method is unreliable, as it returns 1, even if the layout is empty
+        while (mainLayout.getComponentCount() > 1) {
+            mainLayout.removeRow(0);
         }
     }
 
