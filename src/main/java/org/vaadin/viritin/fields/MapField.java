@@ -61,8 +61,7 @@ public class MapField<K, V> extends CustomField<Map> {
                     return;
                 }
                 getAndEnsureValue().put(newInstance, null);
-                fireEvent(new ElementAddedEvent(MapField.this,
-                        newInstance));
+                fireEvent(new ElementAddedEvent(MapField.this, newInstance));
                 setPersisted(newInstance, true);
                 onElementAdded();
             }
@@ -73,20 +72,20 @@ public class MapField<K, V> extends CustomField<Map> {
     private boolean allowNewItems = true;
     private boolean allowRemovingItems = true;
     private boolean allowEditItems = true;
+    private boolean showHeader = true;
     private final Map<K, EntryEditor> pojoToEditor = new HashMap<>();
     private EntryEditor newEntryEditor;
 
     public MapField() {
     }
 
-    public MapField(Class<K> elementType,
-            Class<?> formType) {
+    public MapField(Class<K> elementType, Class<?> formType) {
         this.keyType = elementType;
         this.editorType = formType;
     }
 
     private void ensureInited() {
-        if (mainLayout.getComponentCount() == 0) {
+        if (mainLayout.getComponentCount() == 0 && showHeader) {
             mainLayout.addComponent(new Label("Key ->"));
             mainLayout.addComponent(new Label("Value"));
             mainLayout.addComponent(new Label("Delete entry"));
@@ -134,6 +133,15 @@ public class MapField<K, V> extends CustomField<Map> {
         return allowEditItems;
     }
 
+    public boolean isShowHeader() {
+        return showHeader;
+    }
+
+    public MapField<K, V> setAllowNewItems(boolean allowNewItems) {
+        this.allowNewItems = allowNewItems;
+        return this;
+    }
+
     public MapField<K, V> setAllowEditItems(boolean allowEditItems) {
         this.allowEditItems = allowEditItems;
         return this;
@@ -141,6 +149,11 @@ public class MapField<K, V> extends CustomField<Map> {
 
     public MapField<K, V> setAllowRemovingItems(boolean allowRemovingItems) {
         this.allowRemovingItems = allowRemovingItems;
+        return this;
+    }
+
+    public MapField<K, V> setShowHeader(boolean showHeader) {
+        this.showHeader = showHeader;
         return this;
     }
 
@@ -204,6 +217,10 @@ public class MapField<K, V> extends CustomField<Map> {
     protected TextField createValueEditorInstance() {
         MTextField tf = new MTextField().withInputPrompt("value");
         return tf;
+    }
+
+    protected Button createDeleteButton() {
+        return new Button(FontAwesome.TRASH);
     }
 
     private void replaceValue(K key, String value) {
@@ -314,25 +331,29 @@ public class MapField<K, V> extends CustomField<Map> {
     protected void setInternalValue(Map newValue) {
         super.setInternalValue(newValue);
         clearCurrentEditors();
-        Map<K, V> value = newValue;
-        if (value != null) {
 
+        // make sure that the header is always initialized
+        ensureInited();
+
+        Map<K, V> value = newValue;
+        if (value != null && !value.isEmpty()) {
             for (Map.Entry<K, V> entry : value.entrySet()) {
                 K key = entry.getKey();
                 V value1 = entry.getValue();
                 addInternalElement(key, value1);
             }
         }
+
         if (isAllowNewItems()) {
             createNewEntryRow();
         }
-        onElementAdded();
 
+        onElementAdded();
     }
 
     private void createNewEntryRow() throws ReadOnlyException {
         TextField keyEditor = createKeyEditorInstance();
-        TextField valueEditor = createKeyEditorInstance();
+        TextField valueEditor = createValueEditorInstance();
         newEntryEditor = new EntryEditor(keyEditor, valueEditor, null);
 
         addRowForEntry(newEntryEditor, null, null);
@@ -368,8 +389,10 @@ public class MapField<K, V> extends CustomField<Map> {
     }
 
     private void clearCurrentEditors() {
-        while (mainLayout.getRows() > 1) {
-            mainLayout.removeRow(1);
+        // remove the row, until there are components left in the layout
+        // the getRows() method is unreliable, as it returns 1, even if the layout is empty
+        while (mainLayout.getComponentCount() > 1) {
+            mainLayout.removeRow(0);
         }
     }
 
@@ -429,7 +452,7 @@ public class MapField<K, V> extends CustomField<Map> {
         EntryEditor(TextField ke, TextField valueEditor, K k) {
             this.keyEditor = ke;
             this.valueEditor = valueEditor;
-            delete = new Button(FontAwesome.TRASH);
+            delete = createDeleteButton();
             delete.addClickListener(new Button.ClickListener() {
                 @Override
                 public void buttonClick(Button.ClickEvent event) {
