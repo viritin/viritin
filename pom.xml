@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.vaadin</groupId>
     <artifactId>viritin</artifactId>
-    <version>1.62</version>
+    <version>1.63-SNAPSHOT</version>
     <name>Viritin</name>
     <packaging>bundle</packaging>
     <properties>
@@ -29,7 +29,7 @@
         <url>https://github.com/viritin/viritin</url>
         <connection>scm:git:git://github.com/viritin/viritin.git</connection>
         <developerConnection>scm:git:ssh://git@github.com:/viritin/viritin.git</developerConnection>
-        <tag>viritin-1.62</tag>
+        <tag>viritin-1.37</tag>
     </scm>
 
     <issueManagement>
