@@ -1,4 +1,7 @@
 [![Build Status](https://travis-ci.org/viritin/viritin.svg?branch=master)](https://travis-ci.org/viritin/viritin)
+[![Published on Vaadin  Directory](https://img.shields.io/badge/Vaadin%20Directory-published-00b4f0.svg)](https://vaadin.com/directory/component/viritin)
+[![Stars on vaadin.com/directory](https://img.shields.io/vaadin-directory/star/viritin.svg)](https://vaadin.com/directory/component/viritin)
+
 # Viritin - The "commons" library  for Vaadin
 
 **Note, Attention, Alert for existing users**, Maddon was recently renamed to Viritin. New Maven coordinates: org.vaadin:viritin:1.22 (or whatever the latest version). After dependency change fixing imports in broken classes should do the thing. In addition to package rename, there is one potentially breaking change. EagerValidation is now default in AbstractForm.
