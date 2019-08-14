@@ -40,7 +40,7 @@ public class SizelessDataCommunicator<T> extends DataCommunicator<T> {
             return;
         }
 
-        if (initial || reset) {
+        if (initial) {
             rpc.reset(0);
         }
 
