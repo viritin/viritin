@@ -1,6 +1,6 @@
 language: java
 jdk:
-  - oraclejdk8
+  - openjdk8
 addons:
   firefox: "latest-esr"
 before_script:
