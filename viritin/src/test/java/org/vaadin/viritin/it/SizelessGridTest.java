@@ -15,14 +15,16 @@
  */
 package org.vaadin.viritin.it;
 
-import com.vaadin.data.provider.CallbackDataProvider;
-import com.vaadin.data.provider.QuerySortOrder;
-import com.vaadin.ui.Component;
 import java.util.List;
+
 import org.vaadin.addonhelpers.AbstractTest;
-import org.vaadin.viritin.grid.SizelessGrid;
+import org.vaadin.viritin.grid.LazyGrid;
 import org.vaadin.viritin.testdomain.Person;
 import org.vaadin.viritin.testdomain.Service;
+
+import com.vaadin.data.provider.QuerySortOrder;
+import com.vaadin.shared.data.sort.SortDirection;
+import com.vaadin.ui.Component;
 
 /**
  *
@@ -32,12 +34,23 @@ public class SizelessGridTest extends AbstractTest {
 
     @Override
     public Component getTestComponent() {
-        SizelessGrid<Person> grid = new SizelessGrid<>(Person.class);
+        LazyGrid<Person> grid = new LazyGrid<>(Person.class);
+        grid.setColumns("firstName", "lastName", "age");
         
         grid.setItems((List<QuerySortOrder> sortOrder, int offset,
                 int limit) -> {
+
+            if(sortOrder.size() > 0) {
+            	System.err.println("Getting sorted data...");
+            	QuerySortOrder querySortOrder = sortOrder.get(0);
+            	boolean asc = querySortOrder.getDirection() == SortDirection.ASCENDING;
+            	String prop = querySortOrder.getSorted();
+            	return Service.findAll(offset, limit, prop, asc).stream();
+            }
             return Service.findAll(offset, limit).stream();
         });
+        
+        
         
         return grid;
     }

@@ -8,6 +8,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import org.apache.commons.beanutils.BeanComparator;
+import org.apache.commons.collections.comparators.ReverseComparator;
+
 /**
  *
  * @author Matti Tahvonen
@@ -56,6 +59,27 @@ public class Service {
         if (end > pagedBase.size()) {
             end = pagedBase.size();
         }
+        return pagedBase.subList((int) start, end);
+    }
+
+    public static List<Person> findAll(long start, long maxResults, String sortProperty, boolean asc) {
+        System.err.println("findAll " + start + " " + maxResults);
+        if (pagedBase == null) {
+            pagedBase = getListOfPersons((int) COUNT);
+        }
+        int end = (int) (start + maxResults);
+        if (end > pagedBase.size()) {
+            end = pagedBase.size();
+        }
+        
+        if(sortProperty != null) {
+            if(!asc) {
+            	pagedBase.sort(new ReverseComparator(new BeanComparator<Person>(sortProperty)));
+            } else {
+                pagedBase.sort(new BeanComparator<Person>(sortProperty));
+            }
+        }
+        
         return pagedBase.subList((int) start, end);
     }
 

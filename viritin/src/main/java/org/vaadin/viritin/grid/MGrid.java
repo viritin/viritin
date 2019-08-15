@@ -15,6 +15,7 @@
  */
 package org.vaadin.viritin.grid;
 
+import com.vaadin.data.provider.DataCommunicator;
 import com.vaadin.ui.Grid;
 import java.util.List;
 import org.vaadin.viritin.fluency.ui.FluentAbstractComponent;
@@ -34,6 +35,14 @@ public class MGrid<T> extends Grid<T> implements FluentAbstractComponent<MGrid<T
 
     public MGrid(Class<T> beanType) {
         super(beanType);
+    }
+    
+    protected MGrid(Class<T> beanType, DataCommunicator<T> dataCommunicator) {
+        super(beanType, dataCommunicator);
+    }
+
+    protected MGrid( DataCommunicator<T> dataCommunicator) {
+        super(dataCommunicator);
     }
 
     public MGrid<T> withProperties(String... properties) {
