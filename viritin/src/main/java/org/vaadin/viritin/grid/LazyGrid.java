@@ -36,7 +36,7 @@ import com.vaadin.server.SerializableSupplier;
  * <pre>
  * <code>
  * personTable.setPageSize(100);
- * personTable.setItems( (sortOrder, offset, limit) -> {
+ * personTable.setItems( (sortOrder, offset, limit) -&gt; {
  *   Sort.Direction sortDirection = sortOrder.isEmpty() || sortOrder.get(0).getDirection() == SortDirection.ASCENDING ? Sort.Direction.ASC : Sort.Direction.DESC;
  *   String sortProperty = sortOrder.isEmpty() ? "id" : sortOrder.get(0).getSorted();
  *    return repo.findByNameLikeIgnoreCase(likeFilter, 
