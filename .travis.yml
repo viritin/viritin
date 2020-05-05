@@ -1,12 +1,11 @@
 language: java
+services:
+  - xvfb
 jdk:
   - openjdk8
 addons:
   firefox: "latest-esr"
-before_script:
-  - "export DISPLAY=:99.0"
-  - "sh -e /etc/init.d/xvfb start"
-  - sleep 3 # give xvfb some time to start
+
 before_install:
   - "export PATH=$PWD/travis_phantomjs/phantomjs-2.1.1-linux-x86_64/bin:$PATH"
   - if [ $(phantomjs --version) != '2.1.1' ]; then 
