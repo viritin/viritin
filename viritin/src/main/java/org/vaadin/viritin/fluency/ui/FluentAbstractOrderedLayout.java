@@ -4,6 +4,8 @@ import com.vaadin.server.Sizeable;
 import com.vaadin.ui.AbstractOrderedLayout;
 import com.vaadin.ui.Component;
 
+import java.util.function.Consumer;
+
 /**
  * The base interface for fluent versions of {@link AbstractOrderedLayout}
  *
@@ -85,6 +87,19 @@ public interface FluentAbstractOrderedLayout<S extends FluentAbstractLayout<S> &
      */
     public default S withExpandRatio(Component component, float ratio) {
         ((AbstractOrderedLayout) this).setExpandRatio(component, ratio);
+        return (S) this;
+    }
+
+    /**
+     *
+     * @param applyToChild
+     *          apply some action to all child components
+     *          For example: layout.forEachChild(c -> c.setWidth("100"))
+     *
+     * @return this (for method chaining)
+     */
+    default S forEachChild(Consumer<Component> applyToChild) {
+        this.iterator().forEachRemaining(applyToChild);
         return (S) this;
     }
 }
