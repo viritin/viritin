@@ -76,10 +76,11 @@ public interface FluentHasComponents<S extends FluentHasComponents<S>>
     }
 
     /**
-     *
+     * A method to apply some action to all child components.
+     * 
      * @param applyToChild
      *          apply some action to all child components
-     *          For example: layout.forEachChild(c -> c.setWidth("100"))
+     *          For example: layout.forEachChild(c -&gt; c.setWidth("100"))
      *
      * @return this (for method chaining)
      */

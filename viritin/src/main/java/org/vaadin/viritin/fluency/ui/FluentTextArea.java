@@ -23,6 +23,7 @@ public interface FluentTextArea<S extends FluentTextArea<S>>
    * Sets the number of rows in the text area.
    *
    * @param rows the number of rows for this text area.
+   * @return this object for further configuration 
    */
   public default S withRows(int rows) {
     ((TextArea) this).setRows(rows);
@@ -33,6 +34,7 @@ public interface FluentTextArea<S extends FluentTextArea<S>>
    * Sets the text area's word-wrap mode on or off.
    *
    * @param wordWrap <code>true</code> to use word-wrap mode <code>false</code> otherwise.
+   * @return this object for further configuration 
    */
   public default S withWordWrap(boolean wordWrap) {
     ((TextArea) this).setWordWrap(wordWrap);
