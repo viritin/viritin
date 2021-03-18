@@ -15,7 +15,10 @@
  */
 package org.vaadin.viritin.fluency.ui;
 
+import com.vaadin.ui.Component;
 import com.vaadin.ui.HasComponents;
+
+import java.util.function.Consumer;
 
 /**
  * A {@link HasComponents} complemented by fluent setters.
@@ -70,6 +73,19 @@ public interface FluentHasComponents<S extends FluentHasComponents<S>>
             return (S) this;
         }
 
+    }
+
+    /**
+     *
+     * @param applyToChild
+     *          apply some action to all child components
+     *          For example: layout.forEachChild(c -> c.setWidth("100"))
+     *
+     * @return this (for method chaining)
+     */
+    default S forEachChild(Consumer<Component> applyToChild) {
+        this.iterator().forEachRemaining(applyToChild);
+        return (S) this;
     }
 
 }
