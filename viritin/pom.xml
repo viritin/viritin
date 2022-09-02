@@ -16,6 +16,8 @@
         <Implementation-Vendor>${project.organization.name}</Implementation-Vendor>
         <Vaadin-License-Title>Apache License 2.0</Vaadin-License-Title>
         <Vaadin-Addon>${project.artifactId}-${project.version}.jar</Vaadin-Addon>
+        <!-- Doing release by manullay uploading to vaadin.com/directory -->
+        <maven.deploy.skip>true</maven.deploy.skip>
     </properties>
 
     <organization>
@@ -33,14 +35,7 @@
     <issueManagement>
         <system>GitHub</system>
         <url>https://github.com/viritin/viritin/issues</url>
-    </issueManagement>
-    
-    <distributionManagement>
-        <repository>
-            <id>v4</id>
-            <url>sftp://virit.in/home/dev/maven2/</url>
-        </repository>
-    </distributionManagement>
+    </issueManagement>   
 
     <licenses>
         <license>
@@ -138,17 +133,6 @@
             <version>5.4.3.Final</version>
             <scope>test</scope>
         </dependency>        
-<!--        <dependency>
-            <groupId>javax.el</groupId>
-            <artifactId>javax.el-api</artifactId>
-            <version>2.2.4</version>
-        </dependency>-->
-        <!--        <dependency>
-            <groupId>org.apache.bval</groupId>
-            <artifactId>bval-jsr303</artifactId>
-            <version>0.5</version>
-            <scope>test</scope>
-        </dependency>-->
         <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-compatibility-client-compiled</artifactId>
