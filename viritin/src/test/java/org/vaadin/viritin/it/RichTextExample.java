@@ -1,7 +1,7 @@
 package org.vaadin.viritin.it;
 
 import com.vaadin.ui.Component;
-import org.jsoup.safety.Whitelist;
+import org.jsoup.safety.Safelist;
 import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.viritin.fields.LabelField;
 import org.vaadin.viritin.label.RichText;
@@ -23,8 +23,8 @@ public class RichTextExample extends AbstractTest {
         // This one will tolerate quite a lot more
         RichText example2 = new RichText("<h1 style='color:red'>Jou!</h1>") {
             @Override
-            public Whitelist getWhitelist() {
-                return Whitelist.relaxed().addAttributes("h1",
+            public Safelist getWhitelist() {
+                return Safelist.relaxed().addAttributes("h1",
                         "style");
             }
         };
@@ -38,8 +38,8 @@ public class RichTextExample extends AbstractTest {
         LabelField<Integer> lf = new LabelField<>();
         lf.setLabel(new RichText() {
             @Override
-            public Whitelist getWhitelist() {
-                return Whitelist.relaxed().addAttributes("h1",
+            public Safelist getWhitelist() {
+                return Safelist.relaxed().addAttributes("h1",
                         "style");
             }
         });

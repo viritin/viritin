@@ -18,7 +18,7 @@ package org.vaadin.viritin.label;
 import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.ui.Label;
 import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
+import org.jsoup.safety.Safelist;
 
 
 /**
@@ -33,8 +33,8 @@ public class Header extends Label {
     private String text;
     private int headerLevel = 1;
 
-    protected Whitelist getWhitelist() {
-        return Whitelist.none();
+    protected Safelist getWhitelist() {
+        return Safelist.none();
     }
 
     /**
@@ -45,7 +45,7 @@ public class Header extends Label {
      * override the getter method for whitelist instead.
      */
     @Deprecated
-    public Header setWhitelist(Whitelist whitelist) {
+    public Header setWhitelist(Safelist whitelist) {
         markAsDirty();
         return this;
     }

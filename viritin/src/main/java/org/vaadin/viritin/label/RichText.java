@@ -20,11 +20,11 @@ import java.io.InputStream;
 
 import org.apache.commons.io.IOUtils;
 import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
 import org.markdown4j.Markdown4jProcessor;
 import org.vaadin.viritin.MSize;
 
 import com.vaadin.shared.ui.ContentMode;
+import org.jsoup.safety.Safelist;
 
 /**
  * XSS safe rich text label with either Markdown syntax or raw html (sanitized
@@ -37,7 +37,7 @@ public class RichText extends MLabel {
 
     private static final long serialVersionUID = -6926829115110918731L;
 
-    transient private Whitelist whitelist;
+    transient private Safelist whitelist;
     private String richText;
 
     public RichText() {
@@ -88,9 +88,9 @@ public class RichText extends MLabel {
         return setRichText(text.replaceAll("(\\r|\\n|\\r\\n)+", "<br />"));
     }
 
-    public Whitelist getWhitelist() {
+    public Safelist getWhitelist() {
         if (whitelist == null) {
-            return Whitelist.relaxed();
+            return Safelist.relaxed();
         }
         return whitelist;
     }
@@ -103,7 +103,7 @@ public class RichText extends MLabel {
      * if you need to support serialiazation
      */
     @Deprecated
-    public RichText setWhitelist(Whitelist whitelist) {
+    public RichText setWhitelist(Safelist whitelist) {
         this.whitelist = whitelist;
         markAsDirty();
         return this;
