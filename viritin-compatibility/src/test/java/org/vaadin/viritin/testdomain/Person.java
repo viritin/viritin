@@ -18,8 +18,8 @@ package org.vaadin.viritin.testdomain;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 /**
  *

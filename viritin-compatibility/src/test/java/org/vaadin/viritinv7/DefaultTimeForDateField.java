@@ -6,8 +6,8 @@ import com.vaadin.v7.ui.DateField;
 import com.vaadin.ui.Notification;
 import java.util.Date;
 import java.util.Map;
-import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.viritinv7.fields.MDateField;
+import org.vaadin.viritin.it.AbstractTest;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 
 /**

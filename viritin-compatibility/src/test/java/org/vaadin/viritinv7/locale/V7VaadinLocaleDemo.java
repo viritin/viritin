@@ -4,8 +4,8 @@ import org.vaadin.viritinv7.fields.MValueChangeListener;
 import org.vaadin.viritinv7.fields.MValueChangeEvent;
 import java.util.*;
 
-import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.viritinv7.fields.LocaleSelect;
+import org.vaadin.viritin.it.AbstractTest;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.vaadin.viritin.util.VaadinLocale;
 

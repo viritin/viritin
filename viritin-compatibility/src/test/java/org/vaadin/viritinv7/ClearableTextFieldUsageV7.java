@@ -4,7 +4,6 @@ import org.vaadin.viritin.it.*;
 import com.vaadin.server.UserError;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Notification;
-import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritinv7.fields.ClearableTextField;
 import org.vaadin.viritin.layouts.MPanel;

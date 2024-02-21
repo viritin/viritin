@@ -2,8 +2,8 @@ package org.vaadin.viritinv7;
 
 import com.vaadin.ui.Component;
 import java.util.List;
-import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.viritinv7.grid.MGrid;
+import org.vaadin.viritin.it.AbstractTest;
 import org.vaadin.viritin.testdomain.Person;
 import org.vaadin.viritin.testdomain.Service;
 

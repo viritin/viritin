@@ -224,7 +224,7 @@ Run the following mvn command to start a small application
 (http://localhost:9998) with all usage examples under `org.vaadin.viritin.it`.
 
 ```
-mvn -e exec:java -Dexec.mainClass="org.vaadin.viritin.it.UiRunner" -Dexec.classpathScope=test
+mvn jetty:run -Prun
 ```
 
 ## Download a release

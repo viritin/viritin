@@ -4,8 +4,8 @@ import java.lang.reflect.Field;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 
 import com.vaadin.v7.data.Validator;
 import com.vaadin.v7.data.validator.BeanValidator;
@@ -23,6 +23,7 @@ public class IntegerSliderField extends IntegerField {
     private Integer step;
 
     public IntegerSliderField() {
+    	tf.setPrimaryStyleName("v-widget v-slider");
         setHtmlFieldType("range");
     }
 
@@ -116,5 +117,5 @@ public class IntegerSliderField extends IntegerField {
     public IntegerSliderField withCaption(String caption) {
         return (IntegerSliderField) super.withCaption(caption);
     }
-    
+
 }

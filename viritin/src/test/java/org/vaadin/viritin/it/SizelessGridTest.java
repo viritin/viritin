@@ -17,7 +17,6 @@ package org.vaadin.viritin.it;
 
 import java.util.List;
 
-import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.viritin.grid.LazyGrid;
 import org.vaadin.viritin.testdomain.Person;
 import org.vaadin.viritin.testdomain.Service;

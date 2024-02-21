@@ -2,9 +2,9 @@ package org.vaadin.viritinv7.examples;
 
 import java.util.ArrayList;
 
-import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.viritinv7.fields.ElementCollectionField;
 import org.vaadin.viritinv7.fields.MTextField;
+import org.vaadin.viritin.it.AbstractTest;
 import org.vaadin.viritin.testdomain.Person;
 
 import com.vaadin.annotations.Theme;

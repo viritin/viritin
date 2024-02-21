@@ -7,10 +7,9 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
 import java.util.Objects;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import org.vaadin.addonhelpers.AbstractTest;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import org.vaadin.viritin.fields.IntegerField;
 import org.vaadin.viritin.fields.IntegerSliderField;
 import org.vaadin.viritin.layouts.MVerticalLayout;

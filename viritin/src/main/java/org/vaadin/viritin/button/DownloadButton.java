@@ -120,7 +120,7 @@ public class DownloadButton extends Button implements FluentAbstractComponent<Do
 
     /**
      * Adds a listener that is notified when the download has been sent to the
-     * client. Note that you need to enable push connection or use UI.setPollingInterval
+     * client. Note that you need to use UI.setPollingInterval
      * to make UI modifications visible automatically.
      * 
      * @param listener the listener to be notified

@@ -6,7 +6,6 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
 import java.time.LocalDateTime;
-import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.vaadin.viritin.util.BrowserCookie;
 

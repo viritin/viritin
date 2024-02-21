@@ -9,9 +9,9 @@ import com.vaadin.ui.themes.ValoTheme;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
-import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.viritinv7.fields.MTextField;
 import org.vaadin.viritinv7.grid.MGrid;
+import org.vaadin.viritin.it.AbstractTest;
 import org.vaadin.viritin.testdomain.Person;
 import org.vaadin.viritin.testdomain.Service;
 

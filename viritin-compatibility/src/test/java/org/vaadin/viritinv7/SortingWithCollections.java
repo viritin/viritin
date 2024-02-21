@@ -7,8 +7,8 @@ import java.util.Comparator;
 import java.util.List;
 import org.apache.commons.beanutils.BeanComparator;
 
-import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.viritinv7.fields.MTable;
+import org.vaadin.viritin.it.AbstractTest;
 import org.vaadin.viritin.testdomain.Person;
 import org.vaadin.viritin.testdomain.Service;
 

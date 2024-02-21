@@ -15,7 +15,6 @@
  */
 package org.vaadin.viritin.it;
 
-import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.label.MLabel;
 import org.vaadin.viritin.layouts.MHorizontalLayout;

@@ -8,7 +8,7 @@ import static org.junit.Assert.assertThat;
 import java.util.Arrays;
 import java.util.Locale;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 import org.junit.After;
 import org.junit.Assert;

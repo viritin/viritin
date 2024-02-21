@@ -31,14 +31,14 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.MessageInterpolator;
-import javax.validation.Validation;
-import javax.validation.ValidationException;
-import javax.validation.ValidatorFactory;
-import javax.validation.constraints.NotNull;
-import javax.validation.groups.Default;
-import javax.validation.metadata.ConstraintDescriptor;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.MessageInterpolator;
+import jakarta.validation.Validation;
+import jakarta.validation.ValidationException;
+import jakarta.validation.ValidatorFactory;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.groups.Default;
+import jakarta.validation.metadata.ConstraintDescriptor;
 
 import org.vaadin.viritinv7.fields.EagerValidateable;
 
@@ -239,7 +239,7 @@ public class MBeanFieldGroup<T> extends BeanFieldGroup<T> implements
 
     // For JSR303 validation at class level
     private static ValidatorFactory factory;
-    private transient javax.validation.Validator javaxBeanValidator;
+    private transient jakarta.validation.Validator javaxBeanValidator;
     private Class<?>[] validationGroups;
 
     public Class<?>[] getValidationGroups() {

@@ -1,7 +1,7 @@
 package org.vaadin.viritinv7;
 
-import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.viritin.button.MButton;
+import org.vaadin.viritin.it.AbstractTest;
 import org.vaadin.viritin.layouts.MFormLayout;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.vaadin.viritin.testdomain.Address;

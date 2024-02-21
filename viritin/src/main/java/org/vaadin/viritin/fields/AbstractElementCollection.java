@@ -15,10 +15,10 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
 
 import com.vaadin.data.BeanValidationBinder;
 import com.vaadin.data.Binder;
@@ -519,7 +519,7 @@ public abstract class AbstractElementCollection<ET, CT extends Collection<ET>> e
      * Returns a shared Validator instance to use. An instance is created using
      * the validator factory if necessary and thereafter reused.
      *
-     * @return the JSR-303 {@link javax.validation.Validator} to use
+     * @return the JSR-303 {@link jakarta.validation.Validator} to use
      */
     protected Validator getJavaxBeanValidator() {
         if (javaxBeanValidator == null) {

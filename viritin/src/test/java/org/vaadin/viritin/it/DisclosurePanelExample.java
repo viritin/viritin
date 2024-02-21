@@ -1,6 +1,5 @@
 package org.vaadin.viritin.it;
 
-import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.viritin.components.DisclosurePanel;
 import org.vaadin.viritin.label.RichText;
 import org.vaadin.viritin.layouts.MVerticalLayout;

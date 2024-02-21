@@ -10,9 +10,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.viritinv7.MBeanFieldGroup;
 import org.vaadin.viritinv7.fields.MultiSelectTable;
+import org.vaadin.viritin.it.AbstractTest;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.vaadin.viritin.util.BrowserCookie;
 

@@ -8,8 +8,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
-import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.viritinv7.fields.TypedSelect;
+import org.vaadin.viritin.it.AbstractTest;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 
 /**

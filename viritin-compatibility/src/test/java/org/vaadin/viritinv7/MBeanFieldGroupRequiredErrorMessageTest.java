@@ -10,8 +10,8 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.vaadin.addonhelpers.automated.AbstractWebDriverCase;
-import org.vaadin.addonhelpers.automated.VaadinConditions;
+import org.vaadin.viritin.it.AbstractWebDriverCase;
+import org.vaadin.viritin.it.VaadinConditions;
 
 import java.util.Arrays;
 import java.util.Collection;

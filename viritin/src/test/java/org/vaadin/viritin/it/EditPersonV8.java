@@ -6,12 +6,10 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.themes.ValoTheme;
 import java.util.List;
 
-import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.viritin.fields.ElementCollectionField;
 import org.vaadin.viritin.fields.EnumSelect;
 import org.vaadin.viritin.fields.HeaderField;
 import org.vaadin.viritin.fields.IntegerField;
-import org.vaadin.viritin.fields.LabelField;
 import org.vaadin.viritin.fields.MTextField;
 import org.vaadin.viritin.form.AbstractForm;
 import org.vaadin.viritin.layouts.MVerticalLayout;

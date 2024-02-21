@@ -24,9 +24,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.viritinv7.BeanBinder;
 import org.vaadin.viritinv7.fields.CommaSeparatedCollectionField;
+import org.vaadin.viritin.it.AbstractTest;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 
 public class CommaSeparatedCollectionFieldUsage extends AbstractTest {

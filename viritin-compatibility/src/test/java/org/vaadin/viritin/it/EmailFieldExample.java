@@ -2,7 +2,6 @@
 package org.vaadin.viritin.it;
 
 import com.vaadin.ui.Component;
-import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.viritinv7.fields.EmailField;
 
 /**

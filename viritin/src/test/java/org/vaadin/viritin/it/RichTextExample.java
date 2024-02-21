@@ -2,7 +2,6 @@ package org.vaadin.viritin.it;
 
 import com.vaadin.ui.Component;
 import org.jsoup.safety.Safelist;
-import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.viritin.fields.LabelField;
 import org.vaadin.viritin.label.RichText;
 import org.vaadin.viritin.layouts.MVerticalLayout;

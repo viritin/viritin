@@ -15,9 +15,9 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.vaadin.addonhelpers.automated.AbstractWebDriverCase;
-import org.vaadin.addonhelpers.automated.VaadinConditions;
-import org.vaadin.addonhelpers.components.VaadinComboBox;
+import org.vaadin.viritin.it.AbstractWebDriverCase;
+import org.vaadin.viritin.it.VaadinComboBox;
+import org.vaadin.viritin.it.VaadinConditions;
 
 @RunWith(Parameterized.class)
 public class VaadinLocaleTest extends AbstractWebDriverCase {

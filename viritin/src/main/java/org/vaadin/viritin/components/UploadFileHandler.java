@@ -49,8 +49,8 @@ public class UploadFileHandler extends Upload implements Receiver {
          * You can read the file contents from the given InputStream.
          * <p>
          * Note, that this method is not executed in the UI thread. If you want
-         * to modify the UI from it, by sure to use UI.access (and possibly Push 
-         * annotation) to handle locking properly.
+         * to modify the UI from it, by sure to use UI.access (and possibly 
+         * polling) to handle locking properly.
          *
          * @param content the file content
          * @param fileName the name of the file in users device

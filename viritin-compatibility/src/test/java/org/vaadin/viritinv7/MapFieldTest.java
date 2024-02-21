@@ -20,9 +20,9 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.Notification;
 import java.util.HashMap;
 import java.util.Map;
-import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.viritinv7.BeanBinder;
 import org.vaadin.viritinv7.fields.MapField;
+import org.vaadin.viritin.it.AbstractTest;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 
 /**

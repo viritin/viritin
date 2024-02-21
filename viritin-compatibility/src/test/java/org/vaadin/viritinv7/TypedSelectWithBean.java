@@ -7,8 +7,8 @@ import com.vaadin.v7.ui.Label;
 import java.time.LocalDate;
 import java.util.function.Consumer;
 
-import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.viritinv7.fields.TypedSelect;
+import org.vaadin.viritin.it.AbstractTest;
 import org.vaadin.viritin.layouts.MGridLayout;
 
 /**

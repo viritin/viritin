@@ -7,10 +7,8 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
 import java.util.Objects;
 
-import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.viritin.fields.DoubleField;
 import org.vaadin.viritin.layouts.MVerticalLayout;
-import org.vaadin.viritin.util.HtmlElementPropertySetter;
 
 /**
  *

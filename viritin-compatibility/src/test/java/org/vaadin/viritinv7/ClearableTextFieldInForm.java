@@ -5,9 +5,9 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Notification;
 
-import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.viritinv7.fields.ClearableTextField;
 import org.vaadin.viritinv7.form.AbstractForm;
+import org.vaadin.viritin.it.AbstractTest;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.vaadin.viritin.testdomain.Person;
 import org.vaadin.viritin.testdomain.Service;

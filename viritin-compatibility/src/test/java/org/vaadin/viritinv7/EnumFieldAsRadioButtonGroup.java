@@ -6,8 +6,8 @@ import com.vaadin.ui.Component;
 import com.vaadin.v7.ui.OptionGroup;
 import com.vaadin.ui.themes.ValoTheme;
 
-import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.viritinv7.fields.EnumSelect;
+import org.vaadin.viritin.it.AbstractTest;
 import org.vaadin.viritin.testdomain.Address.AddressType;
 
 /**

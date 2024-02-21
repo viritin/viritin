@@ -2,9 +2,9 @@ package org.vaadin.viritinv7;
 
 import java.util.List;
 
-import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.viritinv7.grid.GeneratedPropertyListContainer;
 import org.vaadin.viritinv7.grid.MGrid;
+import org.vaadin.viritin.it.AbstractTest;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.vaadin.viritin.testdomain.Address;
 import org.vaadin.viritin.testdomain.Person;

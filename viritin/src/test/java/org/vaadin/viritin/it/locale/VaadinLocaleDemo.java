@@ -2,8 +2,8 @@ package org.vaadin.viritin.it.locale;
 
 import java.util.*;
 
-import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.viritin.components.LocaleSelect;
+import org.vaadin.viritin.it.AbstractTest;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.vaadin.viritin.util.VaadinLocale;
 

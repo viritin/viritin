@@ -10,9 +10,9 @@ import com.vaadin.ui.Window;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.viritin.fields.MTextField;
 import org.vaadin.viritin.grid.MGrid;
+import org.vaadin.viritin.it.AbstractTest;
 import org.vaadin.viritin.layouts.MHorizontalLayout;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.vaadin.viritin.testdomain.Person;

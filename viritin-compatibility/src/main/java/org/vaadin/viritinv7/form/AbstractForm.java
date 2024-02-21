@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import javax.validation.groups.Default;
+import jakarta.validation.groups.Default;
 
 import org.vaadin.viritinv7.BeanBinder;
 import org.vaadin.viritinv7.MBeanFieldGroup;

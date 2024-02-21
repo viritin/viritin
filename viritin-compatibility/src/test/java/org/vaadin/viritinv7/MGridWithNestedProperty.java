@@ -2,9 +2,9 @@ package org.vaadin.viritinv7;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.ui.Component;
-import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.vaadin.viritin.NestedPropertyTest;
+import org.vaadin.viritin.it.AbstractTest;
 import org.vaadin.viritinv7.grid.MGrid;
 
 @Theme("valo")

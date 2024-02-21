@@ -12,7 +12,8 @@ import com.vaadin.v7.ui.VerticalLayout;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.vaadin.addonhelpers.AbstractTest;
+
+import org.vaadin.viritin.it.AbstractTest;
 import org.vaadin.viritinv7.fields.LazyComboBox;
 
 @Theme("valo")

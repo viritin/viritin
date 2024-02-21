@@ -1,6 +1,5 @@
 package org.vaadin.viritinv7;
 
-import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.viritinv7.grid.MGrid;
 import org.vaadin.viritin.testdomain.Person;
 
@@ -8,6 +7,8 @@ import com.vaadin.ui.Component;
 import com.vaadin.v7.ui.Grid;
 import com.vaadin.v7.ui.Grid.Column;
 import com.vaadin.v7.ui.Label;
+
+import org.vaadin.viritin.it.AbstractTest;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 
 public class GridSaveSettingsTest extends AbstractTest {

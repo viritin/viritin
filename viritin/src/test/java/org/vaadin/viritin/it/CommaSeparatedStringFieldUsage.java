@@ -10,7 +10,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
-import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.viritin.fields.CommaSeparatedStringField;
 import org.vaadin.viritin.fields.DoubleField;
 import org.vaadin.viritin.layouts.MVerticalLayout;

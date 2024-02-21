@@ -20,8 +20,8 @@ import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.vaadin.addonhelpers.automated.AbstractWebDriverCase;
-import org.vaadin.addonhelpers.automated.VaadinConditions;
+import org.vaadin.viritin.it.AbstractWebDriverCase;
+import org.vaadin.viritin.it.VaadinConditions;
 
 public class AspectAttributeTest extends AbstractWebDriverCase {
 

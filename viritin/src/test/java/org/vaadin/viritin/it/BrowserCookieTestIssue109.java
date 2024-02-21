@@ -1,15 +1,12 @@
 package org.vaadin.viritin.it;
 
-import com.vaadin.annotations.Push;
 import com.vaadin.annotations.Theme;
-import com.vaadin.shared.communication.PushMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.vaadin.viritin.util.BrowserCookie;
 
@@ -18,10 +15,13 @@ import org.vaadin.viritin.util.BrowserCookie;
  * @author Matti Tahvonen
  */
 @Theme("valo")
-@Push(PushMode.MANUAL)
 public class BrowserCookieTestIssue109 extends AbstractTest {
 
-    @Override
+	public BrowserCookieTestIssue109() {
+        getUI().setPollInterval(1000);
+	}
+
+	@Override
     public Component getTestComponent() {
         final TextField key = new TextField("Cookie key");
         final TextField value = new TextField("Cookie Value");
@@ -47,7 +47,6 @@ public class BrowserCookieTestIssue109 extends AbstractTest {
                                 BrowserCookie.setCookie(key.getValue(), value.
                                         getValue());
                                 Notification.show("Cookie set!");
-                                push();
                             }
                         });
                     }

@@ -9,7 +9,6 @@ import java.io.UnsupportedEncodingException;
 import java.time.Instant;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.viritin.button.DownloadButton;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 

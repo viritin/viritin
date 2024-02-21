@@ -9,11 +9,11 @@ import com.vaadin.v7.ui.DateField;
 import com.vaadin.ui.Notification;
 import java.util.Date;
 import java.util.Locale;
-import javax.validation.constraints.Future;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
-import org.vaadin.addonhelpers.AbstractTest;
+import org.vaadin.viritin.it.AbstractTest;
 import org.vaadin.viritin.it.FieldMatch;
 import org.vaadin.viritinv7.MBeanFieldGroup;
 import org.vaadin.viritinv7.fields.EnumSelect;

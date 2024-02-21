@@ -4,7 +4,6 @@ import com.vaadin.annotations.Theme;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Notification;
-import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.viritin.button.ConfirmButton;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 

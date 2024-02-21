@@ -2,10 +2,10 @@ package org.vaadin.viritinv7;
 
 import java.util.List;
 
-import org.vaadin.addonhelpers.AbstractTest;
 import org.vaadin.viritin.LazyComboBoxUsage;
 import org.vaadin.viritin.LazyList;
 import org.vaadin.viritin.fields.CaptionGenerator;
+import org.vaadin.viritin.it.AbstractTest;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.vaadin.viritin.testdomain.Person;
 import org.vaadin.viritinv7.fields.IconGenerator;
