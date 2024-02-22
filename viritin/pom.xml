@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.vaadin</groupId>
     <artifactId>viritin-jakarta</artifactId>
-    <version>2.14.2-SNAPSHOT</version>
+    <version>2.14.1-jakarta</version>
     <name>Viritin Jakarta</name>
     <packaging>jar</packaging>
     <properties>
@@ -30,7 +30,7 @@
         <url>https://github.com/viritin/viritin</url>
         <connection>scm:git:git://github.com/viritin/viritin.git</connection>
         <developerConnection>scm:git:ssh://git@github.com:/viritin/viritin.git</developerConnection>
-        <tag>viritin-1.37</tag>
+        <tag>viritin-jakarta-2.14.1-jakarta</tag>
     </scm>
 
     <issueManagement>
