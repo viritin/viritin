@@ -4,7 +4,7 @@
 
 # Viritin - The "commons" library  for Vaadin
 
-**Note, Attention, Alert for existing users**, Maddon was recently renamed to Viritin. New Maven coordinates: org.vaadin:viritin:1.22 (or whatever the latest version). After dependency change fixing imports in broken classes should do the thing. In addition to package rename, there is one potentially breaking change. EagerValidation is now default in AbstractForm.
+**Note, Attention, Alert for existing users**, for modern Vaadin versions (up from version 10), use [the different repository](https://github.com/viritin/flow-viritin).
 
 #### [Documentation](https://github.com/viritin/viritin/wiki) project is going on in wiki
 
